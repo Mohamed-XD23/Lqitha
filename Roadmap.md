@@ -30,10 +30,10 @@
 
 > **Goal:** Bootstrap the project with a production-ready developer environment.
 
-- [ ] Initialize **Next.js 15+** (App Router, TypeScript)
-- [ ] Configure **Tailwind CSS** & **Shadcn UI**
-- [ ] Set up **Git** repository and project structure
-- [ ] Configure `.env` file structure (DB URLs, Auth secrets)
+- [x] Initialize **Next.js 15+** (App Router, TypeScript)
+- [x] Configure **Tailwind CSS** & **Shadcn UI**
+- [x] Set up **Git** repository and project structure
+- [x] Configure `.env` file structure (DB URLs, Auth secrets)
 
 ---
 
@@ -43,16 +43,16 @@
 
 ### 🔧 Back-end / Server
 
-- [ ] Install **Prisma ORM**
-- [ ] Setup **PostgreSQL** instance (e.g., [Neon.tech](https://neon.tech))
-- [ ] Define `schema.prisma`
+- [x] Install **Prisma ORM**
+- [x] Setup **PostgreSQL** instance (e.g., [Neon.tech](https://neon.tech))
+- [x] Define `schema.prisma`
   - `User` · `Item` · `ClaimRequest` · `VerificationQuestion`
-- [ ] Run initial migration → `npx prisma migrate dev`
+- [x] Run initial migration → `npx prisma migrate dev`
 
 ### 🎨 Front-end / UI
 
-- [ ] Create standard `Layout.tsx` (Navbar, Footer, Providers)
-- [ ] Build basic landing page structure
+- [X] Create standard `Layout.tsx` (Navbar, Footer, Providers)
+- [X] Build basic landing page structure
 
 ---
 
