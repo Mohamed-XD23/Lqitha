@@ -67,8 +67,8 @@
 
 ### 🎨 Front-end / UI
 
-- [ ] Build **Login** & **Register** pages
-- [ ] Implement **Protected Routes** (middleware) for authenticated-only actions
+- [x] Build **Login** & **Register** pages
+- [x] Implement **Protected Routes** (middleware) for authenticated-only actions
 
 ---
 
