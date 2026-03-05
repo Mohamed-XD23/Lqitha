@@ -62,8 +62,8 @@
 
 ### 🔧 Back-end / Server
 
-- [ ] Integrate **Auth.js** (NextAuth) with GitHub / Google / Credentials provider
-- [ ] Create **Prisma Adapter** for database sessions
+- [x] Integrate **Auth.js** (NextAuth) with GitHub / Google / Credentials provider
+- [x] Create **Prisma Adapter** for database sessions
 
 ### 🎨 Front-end / UI
 
