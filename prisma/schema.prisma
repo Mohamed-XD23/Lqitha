@@ -37,6 +37,7 @@ model Item {
   location       String
   date           DateTime
   imageUrl       String?
+  phone          String         // مخفي حتى يحدث Match
   status         ItemStatus     @default(ACTIVE)
   secretQuestion String?
   secretAnswer   String?

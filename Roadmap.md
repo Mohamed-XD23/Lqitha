@@ -78,7 +78,7 @@
 
 ### 🔧 Back-end / Server
 
-- [ ] Write Server Action `createItem()` — PostgreSQL insertion
+- [x] Write Server Action `createItem()` — PostgreSQL insertion
 - [ ] Write Server Action `getItems()` — with pagination & filters
 
 ### 🎨 Front-end / UI
