@@ -79,16 +79,15 @@
 ### 🔧 Back-end / Server
 
 - [x] Write Server Action `createItem()` — PostgreSQL insertion
-- [ ] Write Server Action `getItems()` — with pagination & filters
+- [x] Write Server Action `getItems()` — with pagination & filters
 
 ### 🎨 Front-end / UI
 
-- [ ] Build **"Create Item"** multi-step form (React Hook Form & Zod)
-- [ ] Implement **Item Feed** on the home page
-- [ ] Create **"Item Details"** dynamic route → `/item/[id]`
+- [x] Build **"Create Item"** multi-step form (React Hook Form & Zod)
+- [x] Implement **Item Feed** on the home page
+- [x] Create **"Item Details"** dynamic route → `/item/[id]`
 
----
-
+--
 ## Phase 4 · The "Lqitha" Security Engine
 
 > [!IMPORTANT]
