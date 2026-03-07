@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { itemSchema, type ItemFormData } from "@/lib/validation/item.schema";
 import { createItem } from "@/actions/item.actions";
 import { formatDate } from "@/lib/utils/date";
+import { Eye, EyeOff } from "lucide-react";
 
 // مكوّن شريط التقدم
 function StepIndicator({ current, total }: { current: number; total: number }) {
@@ -41,6 +42,7 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
 export default function NewItemPage() {
     const [step, setStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [showAnswer, setShowAnswer] = useState(false);
     const router = useRouter();
 
     // React Hook Form يحمل حالة كل الخطوات معاً
@@ -193,33 +195,67 @@ export default function NewItemPage() {
             {/* ===== STEP 3 ===== */}
             {step === 3 && (
                 <div className="flex flex-col gap-5">
-                    {watchedType === "FOUND" ? (
-                        <>
-                            <div className="rounded-xl bg-amber-50 border border-amber-200 p-4 text-sm text-amber-800">
-                                🔐 هذا السؤال سيُطرح على من يدّعي ملكية الغرض — تأكد أن الإجابة لا يعرفها إلا المالك الحقيقي.
-                            </div>
-                            <div>
-                                <label className="mb-1 block text-sm font-semibold">السؤال السري</label>
-                                <input {...register("secretQuestion")}
-                                    placeholder="مثال: ما هو اللون الداخلي للمحفظة؟"
-                                    className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black" />
-                                {errors.secretQuestion && <p className="mt-1 text-xs text-red-500">{errors.secretQuestion.message}</p>}
-                            </div>
-                            <div>
-                                <label className="mb-1 block text-sm font-semibold">الإجابة السرية</label>
-                                <input {...register("secretAnswer")} type="password"
-                                    placeholder="الإجابة التي يعرفها المالك فقط"
-                                    className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black" />
-                                {errors.secretAnswer && <p className="mt-1 text-xs text-red-500">{errors.secretAnswer.message}</p>}
-                            </div>
-                        </>
-                    ) : (
-                        <div className="rounded-xl bg-gray-50 border p-6 text-center text-sm text-gray-500">
-                            <span className="text-3xl">✅</span>
-                            <p className="mt-2">لا يوجد سؤال تحقق للبلاغات المفقودة.</p>
-                            <p className="mt-1">انقر التالي للمراجعة.</p>
+                    <div className={`rounded-xl border p-4 text-sm ${watchedType === "FOUND"
+                        ? "border-amber-200 bg-amber-50 text-amber-800"
+                        : "border-blue-200 bg-blue-50 text-blue-800"
+                        }`}>
+                        {watchedType === "FOUND" ? (
+                            <>
+                                🔐 <strong>أنت وجدت الغرض</strong> — ضع سؤالاً لا يعرف إجابته إلا المالك الحقيقي.
+                                <br />
+                                <span className="text-xs opacity-75 mt-1 block">
+                                    {'مثال: "ما لون المحفظة من الداخل؟" أو "ماذا يوجد داخل الحقيبة؟"'}
+                                </span>
+                            </>
+                        ) : (
+                            <>
+                                🔐 <strong>أنت فقدت الغرض</strong> — ضع سؤالاً يثبت أن من يجيب عليه فعلاً يحمل غرضك.
+                                <br />
+                                <span className="text-xs opacity-75 mt-1 block">
+                                    {'مثال: "ما هي العلامة المميزة على المفتاح؟" أو "ما الذي كان في جيب الحقيبة الأمامية؟"'}
+                                </span>
+                            </>
+                        )}
+                    </div>
+
+                    <div>
+                        <label className="mb-1 block text-sm font-semibold">السؤال السري</label>
+                        <input
+                            {...register("secretQuestion")}
+                            placeholder={
+                                watchedType === "FOUND"
+                                    ? 'مثال: ما لون المحفظة من الداخل؟'
+                                    : 'مثال: ما هي العلامة المميزة على الغرض؟'
+                            }
+                            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black"
+                        />
+                        {errors.secretQuestion && (
+                            <p className="mt-1 text-xs text-red-500">{errors.secretQuestion.message}</p>
+                        )}
+                    </div>
+
+                    <div>
+                        <label className="mb-1 block text-sm font-semibold">الإجابة السرية</label>
+                        {/* نضع الحقل والزر في div واحد لوضع الزر بداخل الحقل */}
+                        <div className="relative">
+                            <input
+                                {...register("secretAnswer")}
+                                type={showAnswer ? "text" : "password"}
+                                placeholder="الإجابة التي يعرفها صاحب الغرض فقط"
+                                className="w-full rounded-lg border px-3 py-2 pl-10 text-sm outline-none focus:ring-2 focus:ring-black"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowAnswer(!showAnswer)}
+                                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
+                            >
+                                {showAnswer ? <EyeOff size={16} /> : <Eye size={16} />}
+                            </button>
                         </div>
-                    )}
+                        {errors.secretAnswer && (
+                            <p className="mt-1 text-xs text-red-500">{errors.secretAnswer.message}</p>
+                        )}
+                    </div>
                 </div>
             )}
 
@@ -232,9 +268,9 @@ export default function NewItemPage() {
                         { label: "الفئة", value: watchedValues.category },
                         { label: "الوصف", value: watchedValues.description },
                         { label: "المدينة", value: watchedValues.location },
-                        { label: "التاريخ و الوقت", value: formatDate(watchedValues.date) },// عمل Format للتاريخ و الوقت DD/MM/YYYY HH:MM
-                        { label: "رقم الهاتف", value: "🔒 مخفي حتى يحدث تطابق" },
-                        ...(watchedValues.type === "FOUND"
+                        { label: "التاريخ والوقت", value: formatDate(watchedValues.date) },
+                        { label: "رقم الهاتف", value: watchedValues.phone }, // ← أغلقنا الـ object هنا
+                        ...(watchedValues.secretQuestion  // ← نعرض السؤال لكلا النوعين إذا كان موجوداً
                             ? [{ label: "السؤال السري", value: watchedValues.secretQuestion }]
                             : []),
                     ].map(({ label, value }) => (
@@ -243,6 +279,12 @@ export default function NewItemPage() {
                             <span className="text-gray-800">{value}</span>
                         </div>
                     ))}
+
+                    {/* ملاحظة خاصة برقم الهاتف — تظهر خارج الـ map */}
+                    <div className="flex items-start gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-xs text-blue-700">
+                        <span>ℹ️</span>
+                        <span>رقم هاتفك لن يظهر للآخرين حتى يتم التحقق من ملكية الغرض بنجاح.</span>
+                    </div>
                 </div>
             )}
 

@@ -36,14 +36,11 @@ export const itemSchema = z
   })
   .refine(
     (data) => {
-      // إذا كان النوع FOUND يجب وجود السؤال والإجابة
-      if (data.type === "FOUND") {
-        return !!data.secretQuestion && !!data.secretAnswer;
-      }
-      return true;
+      // السؤال والإجابة مطلوبان لكلا النوعين
+      return !!data.secretQuestion && !!data.secretAnswer;
     },
     {
-      message: "السؤال السري والإجابة مطلوبان عند نشر غرض موجود",
+      message: "السؤال السري والإجابة مطلوبان",
       path: ["secretQuestion"],
     },
   );

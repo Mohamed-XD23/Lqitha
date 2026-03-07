@@ -99,8 +99,9 @@ export default async function ItemPage({ params }: ItemPageProps) {
                     ) : (
                         <ClaimButton
                             itemId={item.id}
+                            itemType={item.type}
                             isLoggedIn={isLoggedIn}
-                            secretQuestion={item.type === "FOUND" ? item.secretQuestion : null}
+                            secretQuestion={item.secretQuestion ?? null}
                         />
                     )}
                 </div>

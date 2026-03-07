@@ -161,3 +161,94 @@ export async function getItemById(id: string) {
 
   return item;
 }
+
+// === Submit Claim for item ===
+
+export async function submitClaim(itemId: string, plainTextAnswer: string) {
+  // 1. التحقق من تسجيل الدخول
+  const session = await auth();
+  if (!session?.user?.id) {
+    return { error: "يجب تسجيل الدخول أولاً" };
+  }
+
+  const claimantId = session.user.id;
+
+  // 2. جلب البلاغ مع hashedAnswer و maxAttempts
+  // نجلب hashedAnswer هنا على الـ Server فقط — لا يُرسل للمتصفح أبداً
+  const item = await db.item.findUnique({
+    where: { id: itemId },
+    select: {
+      id: true,
+      status: true,
+      userId: true,
+      secretAnswer: true,  // الـ Hash — يبقى على الـ Server
+      maxAttempts: true,
+    },
+  });
+
+  if (!item) return { error: "البلاغ غير موجود" };
+  if (item.status !== "ACTIVE") return { error: "هذا البلاغ لم يعد نشطاً" };
+  if (item.userId === claimantId) return { error: "لا يمكنك المطالبة ببلاغك الخاص" };
+
+  // 3. إيجاد أو إنشاء ClaimRequest
+  // @@unique([itemId, claimantId]) تضمن أن كل مستخدم يملك طلباً واحداً فقط
+  const claimRequest = await db.claimRequest.upsert({
+    where: { itemId_claimantId: { itemId, claimantId } },
+    update: {}, // لا نُحدّث شيئاً — فقط نجلب الموجود
+    create: { itemId, claimantId },
+    include: { attempts: true },
+  });
+
+  // 4. التحقق من عدد المحاولات السابقة
+  // هذا هو الـ Rate Limiting — نمنع Brute Force
+  if (claimRequest.attempts.length >= item.maxAttempts) {
+    return {
+      error: `لقد استنفدت الحد الأقصى من المحاولات (${item.maxAttempts})`,
+      locked: true,
+    };
+  }
+
+  // 5. المقارنة عبر bcrypt — قلب النظام الأمني
+  // نُطبّق نفس التحويل الذي طبّقناه عند الحفظ: toLowerCase().trim()
+  const isCorrect = item.secretAnswer
+    ? await bcrypt.compare(
+        plainTextAnswer.toLowerCase().trim(),
+        item.secretAnswer
+      )
+    : false;
+
+  // 6. تحديد الحالة الجديدة بناءً على النتيجة والمحاولات
+  // المنطق: إجابة صحيحة → ACCEPTED
+  //         إجابة خاطئة وهذه آخر محاولة → REJECTED
+  //         إجابة خاطئة وما زال هناك محاولات → PENDING
+  const attemptsAfter = claimRequest.attempts.length + 1;
+  const newStatus = isCorrect
+    ? "ACCEPTED"
+    : attemptsAfter >= item.maxAttempts
+    ? "REJECTED"
+    : "PENDING";
+
+  // 7. تسجيل المحاولة وتحديث الحالة في عملية واحدة — Transaction
+  // نستخدم Transaction لضمان أن الخطوتين تحدثان معاً أو لا تحدثان أبداً
+  await db.$transaction([
+    db.claimAttempt.create({
+      data: {
+        answer: plainTextAnswer, // نخزّن النص الخام للـ Audit Trail
+        isCorrect,
+        claimId: claimRequest.id,
+      },
+    }),
+    db.claimRequest.update({
+      where: { id: claimRequest.id },
+      data: { status: newStatus },
+    }),
+  ]);
+
+  // 8. إرجاع النتيجة للـ Client — بدون أي بيانات حساسة
+  return {
+    success: true,
+    isCorrect,
+    status: newStatus,
+    attemptsLeft: item.maxAttempts - attemptsAfter,
+  };
+}

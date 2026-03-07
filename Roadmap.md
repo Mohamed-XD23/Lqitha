@@ -95,17 +95,17 @@
 
 ### 🔧 Back-end / Server
 
-- [ ] Install `bcrypt` for hashing
-- [ ] Write Server Action `submitClaim()`:
+- [x] Install `bcrypt` for hashing
+- [x] Write Server Action `submitClaim()`:
   1. Accept `itemId` and `plainTextAnswer`
-  2. Fetch `hashedAnswer` from DB
+  2. Fetch `hashedAnswer` from DB **on the Server only — never sent to the Client**
   3. Run `bcrypt.compare()`
   4. Update `ClaimRequest` table based on result
 
 ### 🎨 Front-end / UI
 
-- [ ] Build **"Claim Item"** Modal / Form
-- [ ] Implement feedback UI (✅ Success / ❌ Error states after submission)
+- [x] Build **"Claim Item"** Modal / Form
+- [x] Implement feedback UI (✅ Success / ❌ Error states after submission)
 
 ---
 
