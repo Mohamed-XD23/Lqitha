@@ -43,6 +43,7 @@ model Item {
   secretAnswer   String?
   userId         String
   user           User           @relation(fields: [userId], references: [id])
+  maxAttempts    Int            @default(3) // قابل للتغيير من الـ Admin
   claims         ClaimRequest[]
   createdAt      DateTime       @default(now())
 }
@@ -54,8 +55,20 @@ model ClaimRequest {
   item      Item          @relation(fields: [itemId], references: [id])
   claimantId String
   claimant  User          @relation(fields: [claimantId], references: [id])
+  attempts   ClaimAttempt[]
   messages  Message[]
   createdAt DateTime      @default(now())
+
+  @@unique([itemId, claimantId])
+}
+
+model ClaimAttempt {
+  id        String       @id @default(cuid())
+  answer    String       
+  isCorrect Boolean      //نتيجة bcrypt.compare()
+  claimId   String
+  claim     ClaimRequest @relation(fields: [claimId], references: [id])
+  createdAt DateTime     @default(now())
 }
 
 model Message {
