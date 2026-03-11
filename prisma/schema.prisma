@@ -51,6 +51,7 @@ model Item {
 model ClaimRequest {
   id        String        @id @default(cuid())
   status    ClaimStatus   @default(PENDING)
+  rejectedBy  String?      // "system" | "owner" — لتمييز نوع الرفض
   itemId    String
   item      Item          @relation(fields: [itemId], references: [id])
   claimantId String
