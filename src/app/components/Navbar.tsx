@@ -16,6 +16,8 @@ export default async function Navbar() {
             Browse
           </Link>
 
+          <Link href="/dashboard">Dashboard</Link>
+
           {session?.user && (
             <Link href="/items/new" className="text-gray-600 hover:text-black">
               Post Item

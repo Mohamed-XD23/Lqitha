@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import db from "@/lib/db";
 import { itemSchema } from "@/lib/validation/item.schema";
 import { ItemType, ItemStatus } from "@/generated/prisma";
+import { recalculateTrustScore } from "./dashboard.actions";
 
 // ===Create Item===
 
@@ -239,10 +240,16 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
       },
     }),
     db.claimRequest.update({
-      where: { id: claimRequest.id },
-      data: { status: newStatus },
-    }),
+  where: { id: claimRequest.id },
+  data: {
+    status: newStatus,
+    // نضع "system" فقط عند الرفض الآلي
+    ...(newStatus === "REJECTED" && { rejectedBy: "system" }),
+  },
+}),
   ]);
+
+  await recalculateTrustScore(claimantId);
 
   // 8. إرجاع النتيجة للـ Client — بدون أي بيانات حساسة
   return {
