@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { respondToClaim } from "@/actions/item.actions";
 import ChatButton from "@/components/chat/ChatButton";
+import { toast } from "sonner";
 
 // نعرّف نوع المطالبة بناءً على ما يُرجعه getItemWithClaims()
 interface Claimant {
@@ -47,6 +48,7 @@ export default function ClaimsSection({
     setLoadingId(claimId);
     startTransition(async () => {
       await respondToClaim(claimId, itemId, response);
+      toast.success(response === "ACCEPTED" ? "تم قبول المطالبة ✓" : "تم رفض المطالبة");
       setLoadingId(null);
     });
   }

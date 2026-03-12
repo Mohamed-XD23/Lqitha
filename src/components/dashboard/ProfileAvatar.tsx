@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import ImageUploader from "@/components/ui/ImageUploader";
 import { updateProfileImage } from "@/actions/dashboard.actions";
+import { toast } from "sonner";
 
 interface Props {
   name: string;
@@ -17,6 +18,7 @@ export default function ProfileAvatar({ name, image }: Props) {
   function handleChange(url: string) {
     startTransition(async () => {
       await updateProfileImage(url);
+      toast.success("تم تحديث الصورة ✓");
       setCurrentImage(url);
       setEditing(false);
     });

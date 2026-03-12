@@ -9,6 +9,7 @@ import { formatDate } from "@/lib/utils/date";
 import { Eye, EyeOff } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import ImageUploader from "@/components/ui/ImageUploader";
+import { toast } from "sonner";
 // مكوّن شريط التقدم
 function StepIndicator({ current, total }: { current: number; total: number }) {
   const steps = ["معلومات الغرض", "المكان والتواصل", "سؤال التحقق", "المراجعة"];
@@ -98,10 +99,11 @@ export default function NewItemPage() {
     setIsSubmitting(true);
     const result = await createItem(getValues());
     if (result.error) {
-      alert(result.error);
+      toast.error(result.error);
       setIsSubmitting(false);
       return;
     }
+    toast.success("تم نشر البلاغ بنجاح ✓");
     router.push(`/items/${result.itemId}`);
   }
 

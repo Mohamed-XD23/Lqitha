@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { submitClaim } from "@/actions/item.actions";
 import Link from "next/link";
+import { toast } from "sonner";
 
 interface ClaimButtonProps {
   itemId: string;
-  itemType: "LOST" | "FOUND"
+  itemType: "LOST" | "FOUND";
   isLoggedIn: boolean;
   secretQuestion: string | null;
 }
@@ -29,7 +30,6 @@ export default function ClaimButton({
 
   if (!isLoggedIn) {
     return (
-
       <Link
         href="/login"
         className="block w-full rounded-xl bg-black py-3 text-center text-sm font-semibold text-white hover:bg-gray-800"
@@ -46,13 +46,19 @@ export default function ClaimButton({
     }
     setIsLoading(true);
     setError(null);
-
     const response = await submitClaim(itemId, answer);
 
     if (response.error) {
+      toast.error(response.error);
       setError(response.error);
       setIsLoading(false);
       return;
+    }
+
+    if (response.isCorrect) {
+      toast.success("إجابة صحيحة! تم إرسال مطالبتك ✓");
+    } else if (response.status === "REJECTED") {
+      toast.error("استنفدت جميع المحاولات ✕");
     }
 
     // نعرض النتيجة داخل الـ Modal نفسه
@@ -64,23 +70,25 @@ export default function ClaimButton({
     setIsLoading(false);
   }
 
-
   return (
     // TODO: استبدال الزر بـ "تم المطالبة به" إذا كان المستخدم قد أرسل طلباً مسبقاً
     // المنطق: جلب ClaimRequest الخاص بهذا المستخدم وهذا البلاغ من قاعدة البيانات
     // إذا وُجد → عرض حالته (PENDING / ACCEPTED / REJECTED) بدلاً من زر المطالبة
     <>
       <button
-        onClick={() => secretQuestion ? setShowModal(true) : submitClaim(itemId, "")}
+        onClick={() =>
+          secretQuestion ? setShowModal(true) : submitClaim(itemId, "")
+        }
         className="w-full rounded-xl bg-black py-3 text-sm font-semibold text-white hover:bg-gray-800"
       >
-        {itemType === "FOUND" ? "أنا صاحب هذا الغرض 🔑" : "أنا وجدت هذا الغرض 📦"}
+        {itemType === "FOUND"
+          ? "أنا صاحب هذا الغرض 🔑"
+          : "أنا وجدت هذا الغرض 📦"}
       </button>
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-
             {/* حالة النتيجة — تظهر بعد الإرسال */}
             {result ? (
               <div className="text-center">
@@ -98,7 +106,11 @@ export default function ClaimButton({
                       : `إجابة غير صحيحة. تبقّى لك ${result.attemptsLeft} محاولة.`}
                 </p>
                 <button
-                  onClick={() => { setShowModal(false); setResult(null); setAnswer(""); }}
+                  onClick={() => {
+                    setShowModal(false);
+                    setResult(null);
+                    setAnswer("");
+                  }}
                   className="w-full rounded-lg bg-black py-2.5 text-sm font-medium text-white"
                 >
                   إغلاق
@@ -108,7 +120,9 @@ export default function ClaimButton({
               /* حالة السؤال — تظهر قبل الإرسال */
               <>
                 <h2 className="mb-2 text-lg font-bold">
-                  {itemType === "FOUND" ? "أثبت أنك المالك 🔐" : "أثبت أنك وجدت الغرض 🔐"}
+                  {itemType === "FOUND"
+                    ? "أثبت أنك المالك 🔐"
+                    : "أثبت أنك وجدت الغرض 🔐"}
                 </h2>
 
                 <p className="mb-4 text-sm text-gray-500">
@@ -134,7 +148,11 @@ export default function ClaimButton({
 
                 <div className="flex gap-3">
                   <button
-                    onClick={() => { setShowModal(false); setAnswer(""); setError(null); }}
+                    onClick={() => {
+                      setShowModal(false);
+                      setAnswer("");
+                      setError(null);
+                    }}
                     className="flex-1 rounded-lg border py-2.5 text-sm font-medium hover:bg-gray-50"
                   >
                     إلغاء

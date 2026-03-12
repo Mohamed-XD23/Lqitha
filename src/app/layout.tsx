@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
-import {ChatProvider}  from "@/context/ChatContext";
+import { ChatProvider } from "@/context/ChatContext";
 import ChatSidebar from "@/components/chat/ChatSidebar";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"] });
@@ -26,6 +27,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
           <ChatSidebar />
+          <Toaster position="bottom-right" richColors />
         </ChatProvider>
       </body>
     </html>
