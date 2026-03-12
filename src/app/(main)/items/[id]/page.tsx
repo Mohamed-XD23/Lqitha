@@ -97,6 +97,10 @@ export default async function ItemPage({ params }: ItemPageProps) {
                         >
                             إدارة هذا البلاغ ← Dashboard
                         </Link>
+                    ) : item.status === "RESOLVED" ? (
+                        <div className="rounded-xl bg-gray-100 py-3 text-center text-sm text-gray-500">
+                            ✅ تم إيجاد صاحب هذا البلاغ
+                        </div>
                     ) : (
                         <ClaimButton
                             itemId={item.id}

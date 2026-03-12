@@ -221,7 +221,7 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
     : false;
 
   // 6. تحديد الحالة الجديدة بناءً على النتيجة والمحاولات
-  // المنطق: إجابة صحيحة → ACCEPTED
+  // المنطق: إجابة صحيحة → PENDING
   //         إجابة خاطئة وهذه آخر محاولة → REJECTED
   //         إجابة خاطئة وما زال هناك محاولات → PENDING
   const attemptsAfter = claimRequest.attempts.length + 1;
@@ -252,6 +252,7 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
   ]);
 
   await recalculateTrustScore(claimantId);
+  await recalculateTrustScore(session.user.id)
 
   // 8. إرجاع النتيجة للـ Client — بدون أي بيانات حساسة
   return {
@@ -329,6 +330,12 @@ export async function respondToClaim(
         data: { status: "RESOLVED" },
       }),
     ]);
+
+    // نحسب Trust Score للمالك أيضاً (+15 لأن البلاغ أصبح RESOLVED)
+    await recalculateTrustScore(session.user.id);
+    // وللمطالب المقبول (+10 لأن مطالبته قُبلت)
+    const acceptedClaim = await db.claimRequest.findUnique({ where: { id: claimId }, select: { claimantId: true } });
+    if (acceptedClaim) await recalculateTrustScore(acceptedClaim.claimantId);
   } else {
     // رفض يدوي من المالك
     await db.claimRequest.update({
