@@ -6,6 +6,7 @@ import db from "@/lib/db";
 import { itemSchema } from "@/lib/validation/item.schema";
 import { ItemType, ItemStatus } from "@/generated/prisma";
 import { recalculateTrustScore } from "./dashboard.actions";
+import { revalidatePath } from "next/cache";
 
 // ===Create Item===
 
@@ -182,14 +183,15 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
       id: true,
       status: true,
       userId: true,
-      secretAnswer: true,  // الـ Hash — يبقى على الـ Server
+      secretAnswer: true, // الـ Hash — يبقى على الـ Server
       maxAttempts: true,
     },
   });
 
   if (!item) return { error: "البلاغ غير موجود" };
   if (item.status !== "ACTIVE") return { error: "هذا البلاغ لم يعد نشطاً" };
-  if (item.userId === claimantId) return { error: "لا يمكنك المطالبة ببلاغك الخاص" };
+  if (item.userId === claimantId)
+    return { error: "لا يمكنك المطالبة ببلاغك الخاص" };
 
   // 3. إيجاد أو إنشاء ClaimRequest
   // @@unique([itemId, claimantId]) تضمن أن كل مستخدم يملك طلباً واحداً فقط
@@ -214,7 +216,7 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
   const isCorrect = item.secretAnswer
     ? await bcrypt.compare(
         plainTextAnswer.toLowerCase().trim(),
-        item.secretAnswer
+        item.secretAnswer,
       )
     : false;
 
@@ -224,10 +226,10 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
   //         إجابة خاطئة وما زال هناك محاولات → PENDING
   const attemptsAfter = claimRequest.attempts.length + 1;
   const newStatus = isCorrect
-    ? "ACCEPTED"
+    ? "PENDING"
     : attemptsAfter >= item.maxAttempts
-    ? "REJECTED"
-    : "PENDING";
+      ? "REJECTED"
+      : "PENDING";
 
   // 7. تسجيل المحاولة وتحديث الحالة في عملية واحدة — Transaction
   // نستخدم Transaction لضمان أن الخطوتين تحدثان معاً أو لا تحدثان أبداً
@@ -240,13 +242,13 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
       },
     }),
     db.claimRequest.update({
-  where: { id: claimRequest.id },
-  data: {
-    status: newStatus,
-    // نضع "system" فقط عند الرفض الآلي
-    ...(newStatus === "REJECTED" && { rejectedBy: "system" }),
-  },
-}),
+      where: { id: claimRequest.id },
+      data: {
+        status: newStatus,
+        isVerified: isCorrect, // ← أضف هذا
+        ...(newStatus === "REJECTED" && { rejectedBy: "system" }),
+      },
+    }),
   ]);
 
   await recalculateTrustScore(claimantId);
@@ -258,4 +260,83 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
     status: newStatus,
     attemptsLeft: item.maxAttempts - attemptsAfter,
   };
+}
+
+export async function getItemWithClaims(itemId:string) {
+  const session = await auth();
+  if(!session?.user?.id) return null;
+
+  return db.item.findUnique({
+    where:{
+      id: itemId,
+      userId: session.user.id //لضمان ان المالك فقط من يرى هذا
+    },
+    include:{
+      claims:{
+        where:{ isVerified: true}, //فقط للذين قبل طلبهم 
+        include:{
+          claimant:{
+            select:{ 
+              id: true,
+              name: true,
+              image: true,
+              trustScore: true,
+            },
+          },
+        },
+        orderBy: {createdAt: "desc"},
+      },
+    },
+  });
+}
+
+export async function respondToClaim(
+  claimId: string,
+  itemId: string,
+  response: "ACCEPTED" | "REJECTED"
+) {
+  const session = await auth();
+  if (!session?.user?.id) return { error: "يجب تسجيل الدخول أولاً" };
+
+  // تأكد أن المستخدم هو مالك البلاغ
+  const item = await db.item.findUnique({
+    where: { id: itemId, userId: session.user.id },
+    select: { id: true },
+  });
+
+  if (!item) return { error: "غير مصرح لك بهذا الإجراء" };
+
+  if (response === "ACCEPTED") {
+    // 3 عمليات في transaction واحدة
+    await db.$transaction([
+      // 1. قبول هذه المطالبة
+      db.claimRequest.update({
+        where: { id: claimId },
+        data: { status: "ACCEPTED" },
+      }),
+      // 2. رفض باقي المطالبات تلقائياً
+      db.claimRequest.updateMany({
+        where: {
+          itemId,
+          id: { not: claimId },
+          status: "PENDING",
+        },
+        data: { status: "REJECTED", rejectedBy: "system" },
+      }),
+      // 3. إغلاق البلاغ
+      db.item.update({
+        where: { id: itemId },
+        data: { status: "RESOLVED" },
+      }),
+    ]);
+  } else {
+    // رفض يدوي من المالك
+    await db.claimRequest.update({
+      where: { id: claimId },
+      data: { status: "REJECTED", rejectedBy: "owner" },
+    });
+  }
+
+  revalidatePath(`/items/${itemId}`);
+  return { success: true };
 }

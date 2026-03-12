@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 import { auth } from "@/lib/auth";
-import { getItemById } from "@/actions/item.actions";
+import { getItemById, getItemWithClaims } from "@/actions/item.actions";
 import { formatDate } from "@/lib/utils/date";
 import ClaimButton from "@/components/items/ClaimButton";
+import ClaimsSection from "@/components/items/ClaimsSection"; // ← جديد
 import Link from "next/link";
 
 interface ItemPageProps {
@@ -17,17 +18,18 @@ const CATEGORY_LABELS: Record<string, string> = {
 export default async function ItemPage({ params }: ItemPageProps) {
     const { id } = await params;
 
-    // نجلب البيانات والـ session بالتوازي لتوفير الوقت
     const [item, session] = await Promise.all([
         getItemById(id),
         auth(),
     ]);
 
-    // إذا لم يوجد البلاغ نعرض 404
     if (!item) return notFound();
 
     const isOwner = session?.user?.id === item.user.id;
     const isLoggedIn = !!session?.user;
+
+    // نجلب المطالبات فقط إذا كان المستخدم هو المالك
+    const itemWithClaims = isOwner ? await getItemWithClaims(id) : null;
 
     return (
         <div className="mx-auto max-w-3xl px-4 py-10">
@@ -75,7 +77,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
                         </div>
                     </div>
 
-                    {/* معلومات الناشر مع Trust Score */}
+                    {/* معلومات الناشر */}
                     <div className="flex items-center gap-3 rounded-xl border p-4">
                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 text-sm font-bold">
                             {item.user.name?.[0]?.toUpperCase()}
@@ -88,7 +90,6 @@ export default async function ItemPage({ params }: ItemPageProps) {
                         </div>
                     </div>
 
-                    {/* زر المطالبة — يتغير حسب حالة المستخدم */}
                     {isOwner ? (
                         <Link
                             href="/dashboard"
@@ -106,6 +107,14 @@ export default async function ItemPage({ params }: ItemPageProps) {
                     )}
                 </div>
             </div>
-        </div >
+
+            {/* ── قسم المطالبات ── يظهر فقط للمالك */}
+            {isOwner && itemWithClaims && (
+                <ClaimsSection
+                    claims={itemWithClaims.claims}
+                    itemId={id}
+                />
+            )}
+        </div>
     );
 }
