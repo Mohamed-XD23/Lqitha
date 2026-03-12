@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils/date";
+import ChatButton from "@/components/chat/ChatButton";
+import { useChatContext } from "@/context/ChatContext";
+import { MessageSquare } from "lucide-react";
 
 // ── Types ──
 interface Listing {
@@ -19,46 +22,131 @@ interface Claim {
   status: "PENDING" | "ACCEPTED" | "REJECTED";
   rejectedBy: string | null;
   createdAt: Date;
-  item: { id: string; title: string; type: "LOST" | "FOUND" };
+  item: { id: string; title: string; type: "LOST" | "FOUND"; userId: string };
 }
 
 interface Props {
   listings: Listing[];
   claims: Claim[];
+  currentUserId: string;
+  currentUserName: string;
+  currentUserImage?: string | null;
 }
 
 // ── Status Badge ──
-function StatusBadge({ status, rejectedBy }: { status: string; rejectedBy?: string | null }) {
+function StatusBadge({
+  status,
+  rejectedBy,
+}: {
+  status: string;
+  rejectedBy?: string | null;
+}) {
   const styles: Record<string, string> = {
-    ACTIVE:   "bg-blue-50 text-blue-600 border-blue-200",
+    ACTIVE: "bg-blue-50 text-blue-600 border-blue-200",
     RESOLVED: "bg-green-50 text-green-600 border-green-200",
     ACCEPTED: "bg-green-50 text-green-600 border-green-200",
     REJECTED: "bg-red-50 text-red-600 border-red-200",
-    PENDING:  "bg-amber-50 text-amber-600 border-amber-200",
+    PENDING: "bg-amber-50 text-amber-600 border-amber-200",
   };
   const labels: Record<string, string> = {
-    ACTIVE:   "نشط",
+    ACTIVE: "نشط",
     RESOLVED: "محلول",
     ACCEPTED: "مقبول ✓",
     REJECTED: rejectedBy === "owner" ? "مرفوض من المالك" : "مرفوض",
-    PENDING:  "قيد الانتظار",
+    PENDING: "قيد الانتظار",
   };
 
   return (
-    <span className={`rounded-full border px-3 py-1 text-xs font-medium ${styles[status]}`}>
+    <span
+      className={`rounded-full border px-3 py-1 text-xs font-medium ${styles[status]}`}
+    >
       {labels[status]}
     </span>
   );
 }
 
+function MessagesTab({
+  claims,
+  currentUserId,
+  currentUserName,
+  currentUserImage,
+}: {
+  claims: Claim[];
+  currentUserId: string;
+  currentUserName: string;
+  currentUserImage?: string | null;
+}) {
+  const { openChat } = useChatContext();
+  const [isPending, startTransition] = useTransition();
+
+  const acceptedClaims = claims.filter((c) => c.status === "ACCEPTED");
+
+  if (acceptedClaims.length === 0) {
+    return (
+      <p className="py-8 text-center text-sm text-gray-400">
+        لا توجد محادثات بعد
+      </p>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-3">
+      {acceptedClaims.map((claim) => (
+        <button
+          key={claim.id}
+          onClick={() => {
+            startTransition(async () => {
+              const { createChatChannel } =
+                await import("@/actions/chat.actions");
+              const result = await createChatChannel(
+                claim.id,
+                claim.item.userId,
+                currentUserId,
+              );
+              if (result.channelId) {
+                openChat({
+                  channelId: result.channelId,
+                  userId: currentUserId,
+                  userName: currentUserName,
+                  userImage: currentUserImage,
+                });
+              }
+            });
+          }}
+          className="flex items-center gap-3 rounded-xl border px-5 py-4 text-left hover:bg-gray-50 transition-colors w-full"
+        >
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100">
+            <MessageSquare className="h-5 w-5 text-indigo-600" />
+          </div>
+          <div className="flex-1 text-right">
+            <p className="font-medium text-gray-900">{claim.item.title}</p>
+            <p className="text-xs text-gray-400">
+              {formatDate(claim.createdAt)}
+            </p>
+          </div>
+          <span className="text-xs text-indigo-600">فتح ←</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
 // ── Main Component ──
-export default function DashboardTabs({ listings, claims }: Props) {
-  const [activeTab, setActiveTab] = useState<"listings" | "claims" | "messages">("listings");
+export default function DashboardTabs({
+  listings,
+  claims,
+  currentUserId,
+  currentUserName,
+  currentUserImage,
+}: Props) {
+  const [activeTab, setActiveTab] = useState<
+    "listings" | "claims" | "messages"
+  >("listings");
 
   const tabs = [
     { key: "listings", label: "My Listings", count: listings.length },
-    { key: "claims",   label: "My Claims",   count: claims.length },
-    { key: "messages", label: "Messages",    count: 0 },
+    { key: "claims", label: "My Claims", count: claims.length },
+    { key: "messages", label: "Messages", count: 0 },
   ] as const;
 
   return (
@@ -87,7 +175,6 @@ export default function DashboardTabs({ listings, claims }: Props) {
 
       {/* Tab Content */}
       <div className="p-6">
-
         {/* My Listings */}
         {activeTab === "listings" && (
           <div className="flex flex-col gap-3">
@@ -102,9 +189,13 @@ export default function DashboardTabs({ listings, claims }: Props) {
                   className="flex items-center justify-between rounded-xl border px-5 py-4 hover:bg-gray-50"
                 >
                   <div className="flex items-center gap-3">
-                    <span className={`h-2.5 w-2.5 rounded-full ${
-                      item.status === "ACTIVE" ? "bg-blue-500" : "bg-green-500"
-                    }`} />
+                    <span
+                      className={`h-2.5 w-2.5 rounded-full ${
+                        item.status === "ACTIVE"
+                          ? "bg-blue-500"
+                          : "bg-green-500"
+                      }`}
+                    />
                     <div>
                       <p className="font-medium text-gray-900">{item.title}</p>
                       <p className="text-xs text-gray-400">
@@ -143,20 +234,35 @@ export default function DashboardTabs({ listings, claims }: Props) {
                   className="flex items-center justify-between rounded-xl border px-5 py-4 hover:bg-gray-50"
                 >
                   <div>
-                    <p className="font-medium text-gray-900">{claim.item.title}</p>
+                    <p className="font-medium text-gray-900">
+                      {claim.item.title}
+                    </p>
                     <p className="text-xs text-gray-400">
                       {formatDate(claim.createdAt)} ·{" "}
                       {claim.item.type === "LOST" ? "🔍 مفقود" : "📦 موجود"}
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <StatusBadge status={claim.status} rejectedBy={claim.rejectedBy} />
+                    <StatusBadge
+                      status={claim.status}
+                      rejectedBy={claim.rejectedBy}
+                    />
                     <Link
                       href={`/items/${claim.item.id}`}
                       className="text-sm font-medium text-indigo-600 hover:underline"
                     >
                       View
                     </Link>
+                    {claim.status === "ACCEPTED" && (
+                      <ChatButton
+                        claimId={claim.id}
+                        ownerId={claim.item.userId}
+                        claimantId={currentUserId}
+                        currentUserId={currentUserId}
+                        currentUserName={currentUserName}
+                        currentUserImage={currentUserImage}
+                      />
+                    )}
                   </div>
                 </div>
               ))
@@ -166,11 +272,13 @@ export default function DashboardTabs({ listings, claims }: Props) {
 
         {/* Messages — Phase 5 Chat */}
         {activeTab === "messages" && (
-          <p className="py-8 text-center text-sm text-gray-400">
-            ✉️ نظام الرسائل قيد البناء...
-          </p>
+          <MessagesTab
+            claims={claims}
+            currentUserId={currentUserId}
+            currentUserName={currentUserName}
+            currentUserImage={currentUserImage}
+          />
         )}
-
       </div>
     </div>
   );

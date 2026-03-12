@@ -37,6 +37,9 @@ export default async function DashboardPage() {
         <DashboardTabs
           listings={user.items}
           claims={user.claims}
+          currentUserId={session.user.id!}
+          currentUserName={session.user.name ?? "مستخدم"}
+          currentUserImage={session.user.image}
         />
 
       </div>

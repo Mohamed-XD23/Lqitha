@@ -1,6 +1,7 @@
 "use server";
 import { auth } from "@/lib/auth";
 import db from "@/lib/db";
+import { revalidatePath } from "next/cache";
 
 // Full data for Dashboard
 export async function getDashboardData() {
@@ -45,6 +46,7 @@ export async function getDashboardData() {
               id: true,
               title: true,
               type: true,
+              userId: true,
             },
           },
         },
@@ -146,4 +148,17 @@ export async function recalculateTrustScore(userId: string) {
     where: { id: userId },
     data: { trustScore: Math.max(0, score) },
   });
+}
+
+export async function updateProfileImage(imageUrl: string) {
+  const session = await auth();
+  if (!session?.user?.id) return { error: "Unauthorized" };
+
+  await db.user.update({
+    where: { id: session.user.id },
+    data: { image: imageUrl },
+  });
+
+  revalidatePath("/dashboard");
+  return { success: true };
 }
