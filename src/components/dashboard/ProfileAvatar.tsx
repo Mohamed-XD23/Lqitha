@@ -26,11 +26,19 @@ export default function ProfileAvatar({ name, image }: Props) {
 
   if (editing) {
     return (
-      <div className="mb-4 w-full">
+      <div style={{ width: "100%", marginBottom: "16px" }}>
         <ImageUploader value={currentImage ?? ""} onChange={handleChange} />
         <button
           onClick={() => setEditing(false)}
-          className="mt-2 text-xs text-gray-400 hover:text-gray-600"
+          style={{
+            fontFamily: "var(--font-outfit)",
+            fontSize: "11px",
+            color: "#7A7A8C",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            marginTop: "8px",
+          }}
         >
           إلغاء
         </button>
@@ -40,22 +48,47 @@ export default function ProfileAvatar({ name, image }: Props) {
 
   return (
     <div
-      className="relative mb-4 group cursor-pointer"
       onClick={() => setEditing(true)}
+      style={{ position: "relative", cursor: "pointer", marginBottom: "8px" }}
+      className="group"
     >
       {currentImage ? (
         <img
           src={currentImage}
           alt={name}
-          className="h-20 w-20 rounded-full object-cover ring-2 ring-gray-100"
+          style={{
+            width: "80px",
+            height: "80px",
+            borderRadius: "50%",
+            objectFit: "cover",
+            border: "2px solid rgba(196,163,90,0.3)",
+          }}
         />
       ) : (
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-indigo-100 text-2xl font-bold text-indigo-600">
+        <div
+          style={{
+            width: "80px",
+            height: "80px",
+            borderRadius: "50%",
+            background: "rgba(196,163,90,0.1)",
+            border: "2px solid rgba(196,163,90,0.3)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontFamily: "var(--font-cormorant), serif",
+            fontSize: "28px",
+            fontWeight: 400,
+            color: "#C4A35A",
+          }}
+        >
           {name.charAt(0).toUpperCase()}
         </div>
       )}
-      <div className="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-        <span className="text-white text-xs">تغيير</span>
+      <div className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+        <i
+          className="fa-solid fa-camera"
+          style={{ color: "#C4A35A", fontSize: "16px" }}
+        />
       </div>
     </div>
   );

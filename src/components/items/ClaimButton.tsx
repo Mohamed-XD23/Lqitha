@@ -32,7 +32,19 @@ export default function ClaimButton({
     return (
       <Link
         href="/login"
-        className="block w-full rounded-xl bg-black py-3 text-center text-sm font-semibold text-white hover:bg-gray-800"
+        style={{
+          display: "block",
+          textAlign: "center",
+          fontFamily: "var(--font-outfit)",
+          fontSize: "18px",
+          fontWeight: 500,
+          letterSpacing: "2px",
+          textTransform: "uppercase",
+          padding: "14px 32px",
+          borderRadius: "2px",
+          background: "#C4A35A",
+          color: "#080810",
+        }}
       >
         سجّل الدخول للمطالبة بهذا الغرض
       </Link>
@@ -47,21 +59,17 @@ export default function ClaimButton({
     setIsLoading(true);
     setError(null);
     const response = await submitClaim(itemId, answer);
-
     if (response.error) {
       toast.error(response.error);
       setError(response.error);
       setIsLoading(false);
       return;
     }
-
     if (response.isCorrect) {
       toast.success("إجابة صحيحة! تم إرسال مطالبتك ✓");
     } else if (response.status === "REJECTED") {
       toast.error("استنفدت جميع المحاولات ✕");
     }
-
-    // نعرض النتيجة داخل الـ Modal نفسه
     setResult({
       isCorrect: response.isCorrect!,
       status: response.status!,
@@ -71,36 +79,79 @@ export default function ClaimButton({
   }
 
   return (
-    // TODO: استبدال الزر بـ "تم المطالبة به" إذا كان المستخدم قد أرسل طلباً مسبقاً
-    // المنطق: جلب ClaimRequest الخاص بهذا المستخدم وهذا البلاغ من قاعدة البيانات
-    // إذا وُجد → عرض حالته (PENDING / ACCEPTED / REJECTED) بدلاً من زر المطالبة
     <>
       <button
         onClick={() =>
           secretQuestion ? setShowModal(true) : submitClaim(itemId, "")
         }
-        className="w-full rounded-xl bg-black py-3 text-sm font-semibold text-white hover:bg-gray-800"
+        style={{
+          width: "100%",
+          fontFamily: "var(--font-outfit)",
+          fontSize: "18px",
+          fontWeight: 500,
+          letterSpacing: "2px",
+          textTransform: "uppercase",
+          padding: "14px 32px",
+          borderRadius: "2px",
+          background: "#C4A35A",
+          color: "#080810",
+          border: "none",
+          cursor: "pointer",
+        }}
       >
-        {itemType === "FOUND"
-          ? "أنا صاحب هذا الغرض 🔑"
-          : "أنا وجدت هذا الغرض 📦"}
+        {itemType === "FOUND" ? "أنا صاحب هذا الغرض" : "أنا وجدت هذا الغرض"}
       </button>
 
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-            {/* حالة النتيجة — تظهر بعد الإرسال */}
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 50,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "rgba(0,0,0,0.7)",
+            padding: "16px",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              maxWidth: "440px",
+              background: "#13131F",
+              border: "1px solid rgba(196,163,90,0.2)",
+              borderRadius: "4px",
+              padding: "32px",
+            }}
+          >
             {result ? (
-              <div className="text-center">
-                <div className="text-5xl mb-4">
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontSize: "48px", marginBottom: "16px" }}>
                   {result.isCorrect ? "✅" : "❌"}
                 </div>
-                <h2 className="text-lg font-bold mb-2">
+                <h2
+                  style={{
+                    fontFamily: "var(--font-cormorant), serif",
+                    fontSize: "28px",
+                    fontWeight: 400,
+                    color: "#F2EFE8",
+                    marginBottom: "8px",
+                  }}
+                >
                   {result.isCorrect ? "إجابة صحيحة!" : "إجابة خاطئة"}
                 </h2>
-                <p className="text-sm text-gray-500 mb-4">
+                <p
+                  style={{
+                    fontFamily: "var(--font-outfit)",
+                    fontSize: "15px",
+                    color: "#7A7A8C",
+                    marginBottom: "24px",
+                    lineHeight: 1.6,
+                  }}
+                >
                   {result.isCorrect
-                    ? "تم إرسال طلبك إلى الشخص الذي وجد الغرض. سيتواصل معك قريباً."
+                    ? "تم إرسال طلبك. سيتواصل معك صاحب البلاغ قريباً."
                     : result.status === "REJECTED"
                       ? "لقد استنفدت جميع محاولاتك."
                       : `إجابة غير صحيحة. تبقّى لك ${result.attemptsLeft} محاولة.`}
@@ -111,27 +162,66 @@ export default function ClaimButton({
                     setResult(null);
                     setAnswer("");
                   }}
-                  className="w-full rounded-lg bg-black py-2.5 text-sm font-medium text-white"
+                  style={{
+                    width: "100%",
+                    fontFamily: "var(--font-outfit)",
+                    fontSize: "18px",
+                    fontWeight: 500,
+                    letterSpacing: "2px",
+                    textTransform: "uppercase",
+                    padding: "12px",
+                    borderRadius: "2px",
+                    background: "#C4A35A",
+                    color: "#080810",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
                 >
                   إغلاق
                 </button>
               </div>
             ) : (
-              /* حالة السؤال — تظهر قبل الإرسال */
               <>
-                <h2 className="mb-2 text-lg font-bold">
+                <h2
+                  style={{
+                    fontFamily: "var(--font-cormorant), serif",
+                    fontSize: "28px",
+                    fontWeight: 400,
+                    color: "#F2EFE8",
+                    marginBottom: "8px",
+                  }}
+                >
                   {itemType === "FOUND"
-                    ? "أثبت أنك المالك 🔐"
-                    : "أثبت أنك وجدت الغرض 🔐"}
+                    ? "أثبت أنك المالك"
+                    : "أثبت أنك وجدت الغرض"}
                 </h2>
-
-                <p className="mb-4 text-sm text-gray-500">
+                <p
+                  style={{
+                    fontFamily: "var(--font-outfit)",
+                    fontSize: "14px",
+                    color: "#7A7A8C",
+                    marginBottom: "20px",
+                    lineHeight: 1.6,
+                  }}
+                >
                   {itemType === "FOUND"
-                    ? "أجب على السؤال التالي لإثبات أنك صاحب الغرض:"
-                    : "أجب على السؤال التالي لإثبات أنك فعلاً تحمل الغرض:"}
+                    ? "أجب على السؤال لإثبات ملكيتك:"
+                    : "أجب على السؤال لإثبات أنك تحمل الغرض:"}
                 </p>
 
-                <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-medium text-amber-800">
+                <div
+                  style={{
+                    background: "rgba(196,163,90,0.06)",
+                    border: "1px solid rgba(196,163,90,0.2)",
+                    borderRadius: "2px",
+                    padding: "16px",
+                    marginBottom: "16px",
+                    fontFamily: "var(--font-outfit)",
+                    fontSize: "15px",
+                    color: "#C4A35A",
+                    lineHeight: 1.6,
+                  }}
+                >
                   {secretQuestion}
                 </div>
 
@@ -141,28 +231,77 @@ export default function ClaimButton({
                   onChange={(e) => setAnswer(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSubmitAnswer()}
                   placeholder="إجابتك..."
-                  className="mb-2 w-full rounded-lg border px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-black"
+                  style={{
+                    width: "100%",
+                    background: "#0F0F1A",
+                    border: "1px solid rgba(196,163,90,0.18)",
+                    borderRadius: "2px",
+                    padding: "12px 16px",
+                    fontFamily: "var(--font-outfit)",
+                    fontSize: "15px",
+                    color: "#F2EFE8",
+                    outline: "none",
+                    marginBottom: "8px",
+                  }}
                 />
 
-                {error && <p className="mb-3 text-xs text-red-500">{error}</p>}
+                {error && (
+                  <p
+                    style={{
+                      fontFamily: "var(--font-outfit)",
+                      fontSize: "14px",
+                      color: "#D48080",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    {error}
+                  </p>
+                )}
 
-                <div className="flex gap-3">
+                <div style={{ display: "flex", gap: "12px", marginTop: "8px" }}>
                   <button
                     onClick={() => {
                       setShowModal(false);
                       setAnswer("");
                       setError(null);
                     }}
-                    className="flex-1 rounded-lg border py-2.5 text-sm font-medium hover:bg-gray-50"
+                    style={{
+                      flex: 1,
+                      fontFamily: "var(--font-outfit)",
+                      fontSize: "12px",
+                      fontWeight: 400,
+                      letterSpacing: "2px",
+                      textTransform: "uppercase",
+                      padding: "12px",
+                      borderRadius: "2px",
+                      background: "transparent",
+                      color: "#7A7A8C",
+                      border: "1px solid rgba(196,163,90,0.2)",
+                      cursor: "pointer",
+                    }}
                   >
                     إلغاء
                   </button>
                   <button
                     onClick={handleSubmitAnswer}
                     disabled={isLoading}
-                    className="flex-1 rounded-lg bg-black py-2.5 text-sm font-medium text-white disabled:opacity-50"
+                    style={{
+                      flex: 1,
+                      fontFamily: "var(--font-outfit)",
+                      fontSize: "12px",
+                      fontWeight: 500,
+                      letterSpacing: "2px",
+                      textTransform: "uppercase",
+                      padding: "12px",
+                      borderRadius: "2px",
+                      background: "#C4A35A",
+                      color: "#080810",
+                      border: "none",
+                      cursor: "pointer",
+                      opacity: isLoading ? 0.6 : 1,
+                    }}
                   >
-                    {isLoading ? "جاري التحقق..." : "تحقق ✓"}
+                    {isLoading ? "جارٍ التحقق..." : "تحقق"}
                   </button>
                 </div>
               </>

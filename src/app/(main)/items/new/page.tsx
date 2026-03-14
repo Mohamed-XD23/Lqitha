@@ -136,7 +136,13 @@ export default function NewItemPage() {
                     {...register("type")}
                     className="hidden"
                   />
-                  <span className="text-2xl">{t === "LOST" ? "🔍" : "📦"}</span>
+                  <span className="text-2xl">
+                    {t === "LOST" ? (
+                      <i className="fa-solid fa-magnifying-glass" />
+                    ) : (
+                      <i className="fa-solid fa-box" />
+                    )}
+                  </span>
                   <span className="mt-1 font-semibold">
                     {t === "LOST" ? "مفقود" : "موجود"}
                   </span>
@@ -287,7 +293,7 @@ export default function NewItemPage() {
           >
             {watchedType === "FOUND" ? (
               <>
-                🔐 <strong>أنت وجدت الغرض</strong> — ضع سؤالاً لا يعرف إجابته
+                <i className="fa-solid fa-key" /> <strong>أنت وجدت الغرض</strong> — ضع سؤالاً لا يعرف إجابته
                 إلا المالك الحقيقي.
                 <br />
                 <span className="text-xs opacity-75 mt-1 block">
@@ -298,7 +304,7 @@ export default function NewItemPage() {
               </>
             ) : (
               <>
-                🔐 <strong>أنت فقدت الغرض</strong> — ضع سؤالاً يثبت أن من يجيب
+                <i className="fa-solid fa-key" /> <strong>أنت فقدت الغرض</strong> — ضع سؤالاً يثبت أن من يجيب
                 عليه فعلاً يحمل غرضك.
                 <br />
                 <span className="text-xs opacity-75 mt-1 block">
@@ -365,7 +371,16 @@ export default function NewItemPage() {
           {[
             {
               label: "نوع البلاغ",
-              value: watchedValues.type === "LOST" ? "🔍 مفقود" : "📦 موجود",
+              value:
+                watchedValues.type === "LOST" ? (
+                  <>
+                    <i className="fa-solid fa-magnifying-glass" /> مفقود
+                  </>
+                ) : (
+                  <>
+                    <i className="fa-solid fa-box" /> موجود
+                  </>
+                ),
             },
             { label: "العنوان", value: watchedValues.title },
             { label: "الفئة", value: watchedValues.category },
