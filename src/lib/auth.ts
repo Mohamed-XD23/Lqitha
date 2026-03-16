@@ -6,6 +6,7 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import db from "@/lib/db";
+import { authConfig } from "./auth.config";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -13,6 +14,7 @@ const loginSchema = z.object({
 });
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  ...authConfig,
   adapter: PrismaAdapter(db as unknown as PrismaClient),
   providers: [
     Google({
@@ -41,15 +43,4 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
-  session: { strategy: "jwt" },
-  callbacks: {
-    jwt({ token, user }) {
-      if (user) token.id = user.id;
-      return token;
-    },
-    session({ session, token }) {
-      session.user.id = token.id as string;
-      return session;
-    },
-  },
 });
