@@ -307,8 +307,7 @@ export default function NewItemPage() {
                     control={form.control}
                     render={({ field }) => (
                       <ImageUploader
-                        endpoint="itemImage"
-                        value={field.value ?? null}
+                        value={field.value ?? undefined}
                         onChange={field.onChange}
                       />
                     )}
