@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { auth } from "@/lib/auth";
 import db from "@/lib/db";
 import { itemSchema } from "@/lib/validation/item.schema";
-import { ItemType, ItemStatus } from "@/generated/prisma";
+import { ItemType, ItemStatus } from "@prisma/client";
 import { recalculateTrustScore } from "./dashboard.actions";
 import { revalidatePath } from "next/cache";
 
