@@ -10,40 +10,30 @@ interface ItemCardProps {
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
-  PHONE: "هاتف",
-  KEYS: "مفاتيح",
-  WALLET: "محفظة",
-  DOCUMENTS: "وثائق",
-  ELECTRONICS: "إلكترونيات",
-  OTHER: "أخرى",
+  PHONE: "Phone",
+  KEYS: "Keys",
+  WALLET: "Wallet",
+  DOCUMENTS: "Documents",
+  ELECTRONICS: "Electronics",
+  OTHER: "Other",
 };
 
 export default function ItemCard({ item }: ItemCardProps) {
   return (
     <Link
       href={`/items/${item.id}`}
-      className="group flex flex-col rounded-sm transition-all hover:-translate-y-1"
-      style={{
-        background: "#13131F",
-        border: "1px solid rgba(196,163,90,0.18)",
-      }}
+      className="group flex flex-col rounded-xl transition-all hover:-translate-y-1 bg-void border border-gold/18"
     >
       {/* Image */}
-      <div
-        className="aspect-video w-full overflow-hidden"
-        style={{ background: "#0F0F1A" }}
-      >
+      <div className="aspect-video w-full overflow-hidden rounded-t-xl bg-obsidian">
         {item.imageUrl ? (
           <img
             src={item.imageUrl}
             alt={item.title}
-            className="h-full w-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+            className="h-full w-full object-cover opacity-80 group-hover:opacity-100 transition-opacity hover:scale-110 rounded-t-xl"
           />
         ) : (
-          <div
-            className="flex h-full items-center justify-center"
-            style={{ color: "#7A7A8C", fontSize: "32px" }}
-          >
+          <div className="flex h-full items-center justify-center bg-obsidian rounded-xl text-slate text-4xl">
             {item.type === "LOST" ? (
               <i className="fa-solid fa-magnifying-glass" />
             ) : (
@@ -57,75 +47,28 @@ export default function ItemCard({ item }: ItemCardProps) {
       <div className="flex flex-col gap-3 p-5">
         <div className="flex items-center justify-between">
           <span
-            style={{
-              fontFamily: "var(--font-outfit)",
-              fontSize: "9px",
-              fontWeight: 500,
-              letterSpacing: "2px",
-              textTransform: "uppercase",
-              padding: "4px 10px",
-              borderRadius: "40px",
-              background:
-                item.type === "LOST"
-                  ? "rgba(200,100,100,0.08)"
-                  : "rgba(100,200,130,0.08)",
-              color: item.type === "LOST" ? "#D48080" : "#7DC99A",
-              border:
-                item.type === "LOST"
-                  ? "1px solid rgba(200,100,100,0.2)"
-                  : "1px solid rgba(100,200,130,0.2)",
-            }}
+            className={`font-outfit text-[9px] font-medium tracking-[2px] uppercase px-2.5 py-1 rounded-full border ${
+              item.type === "LOST"
+                ? "bg-red-500/10 text-red-400 border-red-500/20"
+                : "bg-green-500/10 text-green-400 border-green-500/20"
+            }`}
           >
-            {item.type === "LOST" ? "مفقود" : "موجود"}
+            {item.type === "LOST" ? "LOST" : "FOUND"}
           </span>
-          <span
-            style={{
-              fontFamily: "var(--font-outfit)",
-              fontSize: "10px",
-              color: "#7A7A8C",
-              letterSpacing: "1px",
-            }}
-          >
+          <span className="font-outfit text-[10px] text-slate tracking-wider">
             {CATEGORY_LABELS[item.category] ?? item.category}
           </span>
         </div>
 
-        <h3
-          style={{
-            fontFamily: "var(--font-cormorant), serif",
-            fontSize: "20px",
-            fontWeight: 400,
-            color: "#F2EFE8",
-            lineHeight: 1.2,
-          }}
-        >
+        <h3 className="font-cormorant text-2xl font-normal text-ivory leading-tight">
           {item.title}
         </h3>
 
-        <div
-          className="flex items-center justify-between"
-          style={{
-            borderTop: "1px solid rgba(196,163,90,0.1)",
-            paddingTop: "12px",
-            marginTop: "4px",
-          }}
-        >
-          <span
-            style={{
-              fontFamily: "var(--font-outfit)",
-              fontSize: "11px",
-              color: "#7A7A8C",
-            }}
-          >
+        <div className="flex items-center justify-between border-t border-gold/10 pt-3 mt-1">
+          <span className="font-outfit text-xs text-slate">
             <i className="fa-solid fa-location-dot mr-1" /> {item.location}
           </span>
-          <span
-            style={{
-              fontFamily: "var(--font-outfit)",
-              fontSize: "11px",
-              color: "#7A7A8C",
-            }}
-          >
+          <span className="font-outfit text-xs text-slate">
             {formatDate(item.date)}
           </span>
         </div>

@@ -43,7 +43,7 @@ export default function ClaimsSection({
     startTransition(async () => {
       await respondToClaim(claimId, itemId, response);
       toast.success(
-        response === "ACCEPTED" ? "تم قبول المطالبة ✓" : "تم رفض المطالبة",
+        response === "ACCEPTED" ? "Claim accepted ✓" : "Claim rejected",
       );
       setLoadingId(null);
     });
@@ -51,192 +51,75 @@ export default function ClaimsSection({
 
   if (claims.length === 0) {
     return (
-      <div
-        style={{
-          marginTop: "40px",
-          border: "1px dashed rgba(196,163,90,0.2)",
-          borderRadius: "2px",
-          padding: "32px",
-          textAlign: "center",
-        }}
-      >
-        <p
-          style={{
-            fontFamily: "var(--font-outfit)",
-            fontSize: "12px",
-            color: "#7A7A8C",
-            letterSpacing: "1px",
-          }}
-        >
-          لا توجد مطالبات بعد
+      <div className="mt-10 border border-dashed border-gold/20 rounded-lg py-12 text-center bg-obsidian/20">
+        <p className="font-outfit text-xs text-slate tracking-widest uppercase opacity-60">
+          No claims yet
         </p>
       </div>
     );
   }
 
   return (
-    <div style={{ marginTop: "48px" }}>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "12px",
-          marginBottom: "20px",
-        }}
-      >
-        <h2
-          style={{
-            fontFamily: "var(--font-cormorant), serif",
-            fontSize: "28px",
-            fontWeight: 400,
-            color: "#F2EFE8",
-          }}
-        >
-          المطالبات الواردة
+    <div className="mt-12">
+      <div className="flex items-center gap-4 mb-6">
+        <h2 className="font-cormorant text-2xl font-light text-ivory">
+          Incoming Claims
         </h2>
-        <span
-          style={{
-            fontFamily: "var(--font-outfit)",
-            fontSize: "10px",
-            fontWeight: 500,
-            letterSpacing: "2px",
-            padding: "4px 12px",
-            borderRadius: "40px",
-            background: "rgba(196,163,90,0.1)",
-            color: "#C4A35A",
-            border: "1px solid rgba(196,163,90,0.25)",
-          }}
-        >
-          {pendingClaims.length} معلقة
+        <span className="font-outfit text-[10px] font-medium tracking-widest uppercase px-3 py-1 rounded-full bg-gold/10 text-gold border border-gold/25">
+          {pendingClaims.length} Pending
         </span>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+      <div className="flex flex-col gap-3">
         {claims.map((claim) => (
           <div
             key={claim.id}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: "16px 20px",
-              background: "#13131F",
-              border: "1px solid rgba(196,163,90,0.15)",
-              borderRadius: "2px",
-            }}
+            className="flex items-center justify-between px-6 py-4 bg-void border border-gold/15 rounded-xl hover:border-gold/30 transition-all shadow-lg group"
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <div
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "50%",
-                  background: "rgba(196,163,90,0.1)",
-                  border: "1px solid rgba(196,163,90,0.25)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontFamily: "var(--font-outfit)",
-                  fontSize: "14px",
-                  fontWeight: 500,
-                  color: "#C4A35A",
-                  flexShrink: 0,
-                }}
-              >
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-full bg-gold/10 border border-gold/25 flex items-center justify-center font-outfit text-sm font-medium text-gold shrink-0 transition-transform group-hover:scale-105">
                 {claim.claimant.name?.[0]?.toUpperCase() ?? "?"}
               </div>
               <div>
-                <p
-                  style={{
-                    fontFamily: "var(--font-outfit)",
-                    fontSize: "13px",
-                    fontWeight: 500,
-                    color: "#F2EFE8",
-                  }}
-                >
+                <p className="font-outfit text-sm font-medium text-ivory transition-colors group-hover:text-gold">
                   {claim.claimant.name}
                 </p>
-                <p
-                  style={{
-                    fontFamily: "var(--font-outfit)",
-                    fontSize: "11px",
-                    color: "#7A7A8C",
-                    marginTop: "2px",
-                  }}
-                >
-                  <i className="fa-solid fa-star mr-1" /> {claim.claimant.trustScore} · أجاب الإجابة الصحيحة ✅
-                </p>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <p className="font-outfit text-[11px] text-slate">
+                    <i className="fa-solid fa-star text-gold mr-1" /> {claim.claimant.trustScore}
+                  </p>
+                  <span className="text-[10px] text-emerald-400 font-medium">· Provided correct answer ✅</span>
+                </div>
               </div>
             </div>
 
             {claim.status === "PENDING" ? (
-              <div style={{ display: "flex", gap: "8px" }}>
+              <div className="flex gap-2">
                 <button
                   onClick={() => handleRespond(claim.id, "ACCEPTED")}
                   disabled={isPending}
-                  style={{
-                    fontFamily: "var(--font-outfit)",
-                    fontSize: "10px",
-                    fontWeight: 500,
-                    letterSpacing: "2px",
-                    textTransform: "uppercase",
-                    padding: "8px 18px",
-                    borderRadius: "2px",
-                    background: "#C4A35A",
-                    color: "#080810",
-                    border: "none",
-                    cursor: "pointer",
-                    opacity: isPending ? 0.5 : 1,
-                  }}
+                  className="font-outfit text-[10px] font-bold tracking-widest uppercase px-5 py-2 rounded-full bg-gold text-void hover:bg-ivory transition-all shadow-md shadow-gold/10 disabled:opacity-50"
                 >
-                  {loadingId === claim.id ? "..." : "قبول"}
+                  {loadingId === claim.id ? "..." : "Accept"}
                 </button>
                 <button
                   onClick={() => handleRespond(claim.id, "REJECTED")}
                   disabled={isPending}
-                  style={{
-                    fontFamily: "var(--font-outfit)",
-                    fontSize: "10px",
-                    fontWeight: 400,
-                    letterSpacing: "2px",
-                    textTransform: "uppercase",
-                    padding: "8px 18px",
-                    borderRadius: "2px",
-                    background: "transparent",
-                    color: "#D48080",
-                    border: "1px solid rgba(200,100,100,0.25)",
-                    cursor: "pointer",
-                    opacity: isPending ? 0.5 : 1,
-                  }}
+                  className="font-outfit text-[10px] font-medium tracking-widest uppercase px-5 py-2 rounded-full bg-transparent text-red-400 border border-red-400/20 hover:bg-red-400/5 transition-all disabled:opacity-50"
                 >
-                  {loadingId === claim.id ? "..." : "رفض"}
+                  {loadingId === claim.id ? "..." : "Reject"}
                 </button>
               </div>
             ) : (
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "8px" }}
-              >
+              <div className="flex items-center gap-3">
                 <span
-                  style={{
-                    fontFamily: "var(--font-outfit)",
-                    fontSize: "10px",
-                    fontWeight: 500,
-                    letterSpacing: "2px",
-                    textTransform: "uppercase",
-                    padding: "5px 12px",
-                    borderRadius: "40px",
-                    background:
-                      claim.status === "ACCEPTED"
-                        ? "rgba(100,200,130,0.08)"
-                        : "rgba(200,100,100,0.08)",
-                    color: claim.status === "ACCEPTED" ? "#7DC99A" : "#D48080",
-                    border:
-                      claim.status === "ACCEPTED"
-                        ? "1px solid rgba(100,200,130,0.2)"
-                        : "1px solid rgba(200,100,100,0.2)",
-                  }}
+                  className={`font-outfit text-[10px] font-bold tracking-widest uppercase px-4 py-1.5 rounded-full border ${
+                    claim.status === "ACCEPTED"
+                      ? "bg-emerald-500/5 text-emerald-400 border-emerald-500/20"
+                      : "bg-red-500/5 text-red-400 border-red-500/20"
+                  }`}
                 >
-                  {claim.status === "ACCEPTED" ? "مقبول ✓" : "مرفوض ✕"}
+                  {claim.status === "ACCEPTED" ? "Accepted ✓" : "Rejected ✕"}
                 </span>
                 {claim.status === "ACCEPTED" && (
                   <ChatButton

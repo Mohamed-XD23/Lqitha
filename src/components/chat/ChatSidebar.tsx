@@ -1,6 +1,5 @@
 "use client";
 
-import { X } from "lucide-react";
 import { useChatContext } from "@/context/ChatContext";
 import ChatWindow from "./ChatWindow";
 
@@ -16,18 +15,18 @@ export default function ChatSidebar() {
 
       {/* Drawer */}
       <div
-        className={`fixed right-0 top-0 z-50 h-full w-full max-w-md bg-white shadow-2xl transition-transform duration-300 ${
+        className={`fixed right-0 top-0 z-50 h-full w-full max-w-md shadow-2xl transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b px-4 py-3">
-          <h3 className="font-semibold text-gray-900">المحادثة</h3>
+        <div className="flex items-center justify-between bg-[#C4A35A] border-b px-4 py-3">
+          <h3 className="font-semibold text-xl text-[#13131F]">Chat</h3>
           <button
             onClick={closeChat}
-            className="rounded-full p-1 hover:bg-gray-100"
+            className="rounded-full px-1.5 py-2 hover:bg-[#F2EFE8]/60 flex items-center justify-center"
           >
-            <X className="h-5 w-5 text-gray-500" />
+            <i className="fa-solid fa-xmark text-[#13131F] text-xl"></i>
           </button>
         </div>
 

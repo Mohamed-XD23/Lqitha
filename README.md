@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lqitha — Lost · Found · Verified
 
-## Getting Started
+A secure digital platform for lost & found item management with ownership verification. Built for young adults who demand clarity, trust, and precision in every interaction.
 
-First, run the development server:
+## 🌟 Overview
+
+Lqitha (Arabic for "Found it") is a modern solution to the age-old problem of lost items. We provide a premium, secure environment where users can report lost belongings, list found items, and undergo a verified claim process to ensure items reach their rightful owners.
+
+## 🛠 Tech Stack
+
+- **Framework**: [Next.js](https://nextjs.org/) (App Router)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Database**: [Prisma](https://www.prisma.io/) with PostgreSQL
+- **Authentication**: [NextAuth.js](https://next-auth.js.org/)
+- **UI Components**: Radix UI & Shadcn/UI
+- **Fonts**: Cormorant Garamond (Display) & Outfit (Interface)
+
+## 🚀 Getting Started
+
+First, install the dependencies:
+
+```bash
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🎨 Brand Identity
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The project follows a strict brand identity.
+- **Primary Colors**: Obsidian (#080810), Sahara Gold (#C4A35A), Ivory (#F2EFE8).
+- **Voice**: Professional, Precise, Secure, Timeless.
 
-## Learn More
+## 📄 License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is part of a Final Year Project.

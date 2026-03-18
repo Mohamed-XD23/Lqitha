@@ -4,13 +4,13 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useCallback } from "react";
 
 const CATEGORIES = [
-  { value: "", label: "الكل" },
-  { value: "PHONE", label: "هاتف" },
-  { value: "KEYS", label: "مفاتيح" },
-  { value: "WALLET", label: "محفظة" },
-  { value: "DOCUMENTS", label: "وثائق" },
-  { value: "ELECTRONICS", label: "إلكترونيات" },
-  { value: "OTHER", label: "أخرى" },
+  { value: "", label: "All" },
+  { value: "PHONE", label: "Phone" },
+  { value: "KEYS", label: "Keys" },
+  { value: "WALLET", label: "Wallet" },
+  { value: "DOCUMENTS", label: "Documents" },
+  { value: "ELECTRONICS", label: "Electronics" },
+  { value: "OTHER", label: "Other" },
 ];
 
 export default function FilterBar() {
@@ -35,60 +35,33 @@ export default function FilterBar() {
   const currentType = searchParams.get("type") || "";
   const currentCategory = searchParams.get("category") || "";
 
-  const activeStyle = {
-    background: "#C4A35A",
-    color: "#080810",
-    border: "1px solid #C4A35A",
-  };
-  const inactiveStyle = {
-    background: "transparent",
-    color: "#7A7A8C",
-    border: "1px solid rgba(196,163,90,0.2)",
-  };
+  const activeClass = "bg-gold text-obsidian border-gold";
+  const inactiveClass = "bg-transparent text-slate border-gold/20";
 
   return (
     <div className="flex flex-col gap-4">
       {/* Search */}
       <input
         type="text"
-        placeholder="ابحث عن غرض..."
+        placeholder="Search..."
         defaultValue={searchParams.get("search") || ""}
         onChange={(e) => updateFilter("search", e.target.value)}
-        style={{
-          background: "#13131F",
-          border: "1px solid rgba(196,163,90,0.18)",
-          color: "#F2EFE8",
-          fontFamily: "var(--font-outfit)",
-          fontSize: "14px",
-          padding: "12px 16px",
-          borderRadius: "2px",
-          outline: "none",
-          width: "100%",
-        }}
+        className="bg-void/80 border border-gold/18 text-ivory/60 font-outfit text-base px-4 py-3 rounded-lg outline-none w-full placeholder:text-slate/50 transition-colors focus:border-gold/30"
       />
 
       {/* Type Filter */}
       <div className="flex gap-2">
         {[
-          { value: "", label: "الكل" },
-          { value: "LOST", label: "مفقود" },
-          { value: "FOUND", label: "موجود" },
+          { value: "", label: "All" },
+          { value: "LOST", label: "Lost" },
+          { value: "FOUND", label: "Found" },
         ].map(({ value, label }) => (
           <button
             key={value}
             onClick={() => updateFilter("type", value)}
-            style={{
-              fontFamily: "var(--font-outfit)",
-              fontSize: "12px",
-              fontWeight: 500,
-              letterSpacing: "2px",
-              textTransform: "uppercase",
-              padding: "8px 16px",
-              borderRadius: "2px",
-              cursor: "pointer",
-              transition: "all 0.2s",
-              ...(currentType === value ? activeStyle : inactiveStyle),
-            }}
+            className={`font-outfit text-[11px] font-medium tracking-[2px] uppercase px-4 py-2 rounded-lg cursor-pointer border transition-all duration-200 ${
+              currentType === value ? activeClass : inactiveClass
+            }`}
           >
             {label}
           </button>
@@ -101,17 +74,9 @@ export default function FilterBar() {
           <button
             key={value}
             onClick={() => updateFilter("category", value)}
-            style={{
-              fontFamily: "var(--font-outfit)",
-              fontSize: "12px",
-              fontWeight: 400,
-              letterSpacing: "1px",
-              padding: "6px 14px",
-              borderRadius: "2px",
-              cursor: "pointer",
-              transition: "all 0.2s",
-              ...(currentCategory === value ? activeStyle : inactiveStyle),
-            }}
+            className={`font-outfit text-[11px] font-normal tracking-wider px-3.5 py-1.5 rounded-[10px] cursor-pointer border transition-all duration-200 ${
+              currentCategory === value ? activeClass : inactiveClass
+            }`}
           >
             {label}
           </button>

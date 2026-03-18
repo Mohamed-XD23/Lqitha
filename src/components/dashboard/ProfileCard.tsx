@@ -1,4 +1,4 @@
-import { formatDate } from "@/lib/utils/date";
+import { formatDateOnly } from "@/lib/utils/date";
 import ProfileAvatar from "./ProfileAvatar";
 
 interface Props {
@@ -18,74 +18,23 @@ export default function ProfileCard({
     trustScore >= 70 ? "#7DC99A" : trustScore >= 40 ? "#C4A35A" : "#D48080";
 
   return (
-    <div
-      style={{
-        background: "#13131F",
-        border: "1px solid rgba(196,163,90,0.18)",
-        borderRadius: "4px",
-        padding: "32px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        textAlign: "center",
-      }}
-    >
+    <div className="bg-void border-2 border-gold/18 rounded-xl p-8 flex flex-col items-center text-center">
       <ProfileAvatar name={name} image={image} />
 
-      <h2
-        style={{
-          fontFamily: "var(--font-cormorant), serif",
-          fontSize: "22px",
-          fontWeight: 400,
-          color: "#F2EFE8",
-          marginTop: "8px",
-        }}
-      >
+      <h2 className="font-cormorant text-2xl font-normal text-ivory mt-2">
         {name}
       </h2>
-      <p
-        style={{
-          fontFamily: "var(--font-outfit)",
-          fontSize: "11px",
-          color: "#7A7A8C",
-          letterSpacing: "1px",
-          marginTop: "6px",
-        }}
-      >
-        عضو منذ {formatDate(createdAt)}
+      <p className="font-outfit text-[10px] text-slate tracking-wider mt-1.5">
+        member since {formatDateOnly(createdAt)}
       </p>
 
-      <div
-        style={{
-          marginTop: "24px",
-          width: "100%",
-          background: "#0F0F1A",
-          border: "1px solid rgba(196,163,90,0.15)",
-          borderRadius: "2px",
-          padding: "20px 16px",
-        }}
-      >
-        <p
-          style={{
-            fontFamily: "var(--font-outfit)",
-            fontSize: "9px",
-            fontWeight: 500,
-            letterSpacing: "3px",
-            textTransform: "uppercase",
-            color: "#7A7A8C",
-          }}
-        >
+      <div className="mt-6 w-full bg-obsidian border border-gold/15 rounded-lg p-5">
+        <p className="font-outfit text-[10px] font-medium tracking-[3px] uppercase text-slate">
           Trust Score
         </p>
-        <p
-          style={{
-            fontFamily: "var(--font-cormorant), serif",
-            fontSize: "52px",
-            fontWeight: 300,
-            color: scoreColor,
-            lineHeight: 1,
-            marginTop: "8px",
-          }}
+        <p 
+          className="font-cormorant text-5xl font-light leading-none mt-2"
+          style={{ color: scoreColor }}
         >
           {trustScore}
         </p>

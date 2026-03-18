@@ -64,13 +64,13 @@ export default function ImageUploader({ value, onChange }: Props) {
           {loading ? (
             <>
               <Loader2 className="w-8 h-8 text-muted-foreground animate-spin" />
-              <p className="text-sm text-muted-foreground">{"جارٍ الرفع..."}</p>
+              <p className="text-sm text-muted-foreground">Uploading...</p>
             </>
           ) : (
             <>
               <ImageIcon className="w-8 h-8 text-muted-foreground" />
               <p className="text-sm text-muted-foreground">
-                {"انقر لرفع صورة"}
+                Click to upload image
               </p>
             </>
           )}

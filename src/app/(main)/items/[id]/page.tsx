@@ -11,12 +11,12 @@ interface ItemPageProps {
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
-  PHONE: "هاتف",
-  KEYS: "مفاتيح",
-  WALLET: "محفظة",
-  DOCUMENTS: "وثائق",
-  ELECTRONICS: "إلكترونيات",
-  OTHER: "أخرى",
+  PHONE: "Phone",
+  KEYS: "Keys",
+  WALLET: "Wallet",
+  DOCUMENTS: "Documents",
+  ELECTRONICS: "Electronics",
+  OTHER: "Other",
 };
 
 export default async function ItemPage({ params }: ItemPageProps) {
@@ -29,247 +29,157 @@ export default async function ItemPage({ params }: ItemPageProps) {
   const itemWithClaims = isOwner ? await getItemWithClaims(id) : null;
 
   return (
-    <div style={{ background: "#080810", minHeight: "100vh" }}>
-      <div className="mx-auto max-w-4xl px-6 py-12">
-        {/* Breadcrumb */}
-        <div className="mb-8 flex items-center gap-3">
+    <div className="bg-obsidian min-h-screen">
+      <div className="mx-auto max-w-4xl px-6 py-16">
+        {/* Header / Breadcrumb */}
+        <div className="mb-10 flex items-center gap-4">
           <span
-            style={{
-              fontFamily: "var(--font-outfit)",
-              fontSize: "10px",
-              fontWeight: 500,
-              letterSpacing: "2px",
-              textTransform: "uppercase",
-              padding: "5px 14px",
-              borderRadius: "40px",
-              background:
-                item.type === "LOST"
-                  ? "rgba(200,100,100,0.08)"
-                  : "rgba(100,200,130,0.08)",
-              color: item.type === "LOST" ? "#D48080" : "#7DC99A",
-              border:
-                item.type === "LOST"
-                  ? "1px solid rgba(200,100,100,0.2)"
-                  : "1px solid rgba(100,200,130,0.2)",
-            }}
+            className={`font-outfit text-[10px] font-medium tracking-[2px] uppercase px-4 py-1.5 rounded-full border ${
+              item.type === "LOST"
+                ? "bg-red-500/10 text-red-400 border-red-500/20"
+                : "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+            }`}
           >
-            {item.type === "LOST" ? "مفقود" : "موجود"}
+            {item.type === "LOST" ? "Lost" : "Found"}
           </span>
-          <span
-            style={{
-              fontFamily: "var(--font-outfit)",
-              fontSize: "11px",
-              color: "#7A7A8C",
-              letterSpacing: "1px",
-            }}
-          >
+          <span className="font-outfit text-[11px] text-slate tracking-wider uppercase opacity-60">
             {CATEGORY_LABELS[item.category]}
           </span>
         </div>
 
-        <div className="grid gap-10 md:grid-cols-2">
-          {/* Image */}
-          <div
-            className="aspect-square overflow-hidden rounded-sm"
-            style={{
-              background: "#0F0F1A",
-              border: "1px solid rgba(196,163,90,0.15)",
-            }}
-          >
-            {item.imageUrl ? (
-              <img
-                src={item.imageUrl}
-                alt={item.title}
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <div className="flex h-full items-center justify-center text-6xl">
-                {item.type === "LOST" ? (
-                  <i className="fa-solid fa-magnifying-glass" />
-                ) : (
-                  <i className="fa-solid fa-box" />
-                )}
-              </div>
-            )}
+        <div className="grid gap-12 md:grid-cols-2">
+          {/* Image Section */}
+          <div className="relative group">
+            <div className="aspect-square overflow-hidden rounded-xl bg-void border-2 border-gold/18 shadow-2xl relative z-10">
+              {item.imageUrl ? (
+                <img
+                  src={item.imageUrl}
+                  alt={item.title}
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              ) : (
+                <div className="flex h-full items-center justify-center text-6xl text-gold/20 bg-gradient-to-br from-void to-obsidian">
+                  {item.type === "LOST" ? (
+                    <i className="fa-solid fa-magnifying-glass" />
+                  ) : (
+                    <i className="fa-solid fa-box" />
+                  )}
+                </div>
+              )}
+            </div>
+            {/* Decorative background element */}
+            <div className="absolute -inset-2 bg-gradient-to-r from-gold/20 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-1" />
           </div>
 
-          {/* Details */}
-          <div className="flex flex-col gap-6">
-            <h1
-              style={{
-                fontFamily: "var(--font-cormorant), serif",
-                fontSize: "42px",
-                fontWeight: 300,
-                color: "#F2EFE8",
-                lineHeight: 1.1,
-              }}
-            >
-              {item.title}
-            </h1>
+          {/* Content Section */}
+          <div className="flex flex-col gap-8">
+            <div className="space-y-4">
+              <h1 className="font-cormorant text-5xl font-light text-ivory leading-[1.1]">
+                {item.title}
+              </h1>
+              <p className="font-outfit text-[15px] font-light text-slate leading-relaxed">
+                {item.description}
+              </p>
+            </div>
 
-            <p
-              style={{
-                fontFamily: "var(--font-outfit)",
-                fontSize: "14px",
-                fontWeight: 300,
-                color: "#B0B0C0",
-                lineHeight: 1.7,
-              }}
-            >
-              {item.description}
-            </p>
-
-            {/* Info Grid */}
-            <div
-              style={{
-                border: "1px solid rgba(196,163,90,0.15)",
-                borderRadius: "2px",
-                overflow: "hidden",
-              }}
-            >
+            {/* Property Grid */}
+            <div className="bg-void border border-gold/15 rounded-xl overflow-hidden shadow-xl">
               {[
-                { label: "الفئة", value: CATEGORY_LABELS[item.category] },
+                { label: "Category", value: CATEGORY_LABELS[item.category], icon: "fa-tag" },
                 {
-                  label: "الموقع",
-                  value: (
-                    <>
-                      <i className="fa-solid fa-location-dot mr-1" /> {item.location}
-                    </>
-                  ),
+                  label: "Location",
+                  icon: "fa-location-dot",
+                  value: item.location,
                 },
-                { label: "التاريخ", value: formatDate(item.date) },
-              ].map((row, i) => (
+                { label: "Date", icon: "fa-calendar", value: formatDate(item.date) },
+              ].map((row: any, i: number) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between px-5 py-3"
-                  style={{
-                    borderBottom:
-                      i < 2 ? "1px solid rgba(196,163,90,0.1)" : "none",
-                  }}
+                  className="flex items-center justify-between px-6 py-4 border-b border-gold/10 last:border-0 hover:bg-gold/5 transition-colors"
                 >
-                  <span
-                    style={{
-                      fontFamily: "var(--font-outfit)",
-                      fontSize: "11px",
-                      letterSpacing: "1px",
-                      color: "#7A7A8C",
-                    }}
-                  >
-                    {row.label}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-outfit)",
-                      fontSize: "13px",
-                      color: "#F2EFE8",
-                    }}
-                  >
+                  <div className="flex items-center gap-3">
+                    <i className={`fa-solid ${row.icon} text-[10px] text-gold/50`} />
+                    <span className="font-outfit text-[11px] uppercase tracking-widest text-slate">
+                      {row.label}
+                    </span>
+                  </div>
+                  <span className="font-outfit text-sm font-medium text-ivory">
                     {row.value}
                   </span>
                 </div>
               ))}
             </div>
 
-            {/* Publisher */}
-            <div
-              className="flex items-center gap-4 px-5 py-4"
-              style={{
-                border: "1px solid rgba(196,163,90,0.15)",
-                borderRadius: "2px",
-              }}
-            >
-              <div
-                className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold flex-shrink-0"
-                style={{
-                  background: "rgba(196,163,90,0.1)",
-                  color: "#C4A35A",
-                  border: "1px solid rgba(196,163,90,0.3)",
-                }}
-              >
+            {/* Publisher Profile */}
+            <div className="flex items-center gap-4 bg-void border border-gold/15 rounded-xl px-6 py-5 shadow-lg group hover:border-gold/30 transition-all">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold/10 border border-gold/30 text-gold font-bold flex-shrink-0 transition-transform group-hover:scale-110">
                 {item.user.name?.[0]?.toUpperCase()}
               </div>
-              <div>
-                <p
-                  style={{
-                    fontFamily: "var(--font-outfit)",
-                    fontSize: "13px",
-                    fontWeight: 500,
-                    color: "#F2EFE8",
-                  }}
-                >
+              <div className="flex-1">
+                <p className="font-outfit text-sm font-medium text-ivory tracking-tight transition-colors group-hover:text-gold">
                   {item.user.name}
                 </p>
-                <p
-                  style={{
-                    fontFamily: "var(--font-outfit)",
-                    fontSize: "11px",
-                    color: "#7A7A8C",
-                    marginTop: "2px",
-                  }}
-                >
-                  <i className="fa-solid fa-star mr-1" /> Trust Score:{" "}
-                  {item.user.trustScore}
-                </p>
+                <div className="flex items-center gap-2 mt-1">
+                  <div className="flex gap-0.5 text-gold text-[10px]">
+                    {[...Array(5)].map((_, i) => (
+                      <i key={i} className="fa-solid fa-star" />
+                    ))}
+                  </div>
+                  <p className="font-outfit text-[10px] text-slate uppercase tracking-widest font-medium">
+                    Trust Score: {item.user.trustScore}
+                  </p>
+                </div>
               </div>
+              <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
             </div>
 
-            {/* Action */}
-            {isOwner ? (
-              <Link
-                href="/dashboard"
-                style={{
-                  display: "block",
-                  textAlign: "center",
-                  fontFamily: "var(--font-outfit)",
-                  fontSize: "11px",
-                  fontWeight: 500,
-                  letterSpacing: "2px",
-                  textTransform: "uppercase",
-                  padding: "14px 32px",
-                  borderRadius: "2px",
-                  border: "1px solid rgba(196,163,90,0.3)",
-                  color: "#C4A35A",
-                }}
-              >
-                إدارة هذا البلاغ ← Dashboard
-              </Link>
-            ) : item.status === "RESOLVED" ? (
-              <div
-                style={{
-                  textAlign: "center",
-                  padding: "14px",
-                  fontFamily: "var(--font-outfit)",
-                  fontSize: "12px",
-                  letterSpacing: "2px",
-                  color: "#7DC99A",
-                  border: "1px solid rgba(100,200,130,0.2)",
-                  borderRadius: "2px",
-                  background: "rgba(100,200,130,0.05)",
-                }}
-              >
-                ✓ تم إيجاد صاحب هذا البلاغ
-              </div>
-            ) : (
-              <ClaimButton
-                itemId={item.id}
-                itemType={item.type}
-                isLoggedIn={isLoggedIn}
-                secretQuestion={item.secretQuestion ?? null}
-              />
-            )}
+            {/* Action Section */}
+            <div className="mt-4">
+              {isOwner ? (
+                <Link
+                  href="/dashboard"
+                  className="flex items-center justify-center gap-3 w-full font-outfit text-[11px] font-bold tracking-[3px] uppercase py-4 rounded-full border border-gold/30 text-gold bg-gold/5 hover:bg-gold hover:text-void transition-all duration-300 shadow-lg shadow-gold/5"
+                >
+                  Manage this Report
+                  <i className="fa-solid fa-arrow-left text-[10px]" />
+                </Link>
+              ) : item.status === "RESOLVED" ? (
+                <div className="flex items-center justify-center gap-3 w-full py-4 font-outfit text-[12px] font-medium tracking-wide text-emerald-400 bg-emerald-500/5 border border-emerald-500/20 rounded-full">
+                  <i className="fa-solid fa-circle-check" />
+                  This report has been successfully resolved
+                </div>
+              ) : (
+                <ClaimButton
+                  itemId={item.id}
+                  itemType={item.type}
+                  isLoggedIn={isLoggedIn}
+                  secretQuestion={item.secretQuestion ?? null}
+                />
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Claims Section */}
+        {/* Admin/Claims Section */}
         {isOwner && itemWithClaims && session?.user && (
-          <ClaimsSection
-            claims={itemWithClaims.claims}
-            itemId={id}
-            ownerId={item.user.id}
-            currentUserId={session.user.id!}
-            currentUserName={session.user.name ?? "مستخدم"}
-            currentUserImage={session.user.image}
-          />
+          <div className="mt-20">
+            <div className="mb-8 flex items-center justify-between border-b border-gold/10 pb-4">
+              <h2 className="font-cormorant text-3xl font-light text-ivory">
+                Recovery Requests
+              </h2>
+              <span className="bg-gold/10 text-gold border border-gold/20 px-3 py-1 rounded-full text-[12px] font-outfit uppercase tracking-widest">
+                {itemWithClaims.claims.length} Requests
+              </span>
+            </div>
+            <ClaimsSection
+              claims={itemWithClaims.claims}
+              itemId={id}
+              ownerId={item.user.id}
+              currentUserId={session.user.id!}
+              currentUserName={session.user.name ?? "User"}
+              currentUserImage={session.user.image}
+            />
+          </div>
         )}
       </div>
     </div>

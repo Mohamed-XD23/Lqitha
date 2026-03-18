@@ -22,7 +22,7 @@ export default function LoginPage() {
       redirect: false,
     });
     if (result?.error) {
-      setError("البريد الإلكتروني أو كلمة المرور غير صحيحة.");
+      setError("Invalid email or password.");
       setLoading(false);
       return;
     }
@@ -30,159 +30,78 @@ export default function LoginPage() {
     router.refresh();
   }
 
-  const inputStyle = {
-    width: "100%",
-    background: "#0F0F1A",
-    border: "1px solid rgba(196,163,90,0.18)",
-    borderRadius: "2px",
-    padding: "12px 16px",
-    fontFamily: "var(--font-outfit)",
-    fontSize: "13px",
-    color: "#F2EFE8",
-    outline: "none",
-  };
-  const labelStyle = {
-    fontFamily: "var(--font-outfit)",
-    fontSize: "10px",
-    fontWeight: 500,
-    letterSpacing: "2px",
-    textTransform: "uppercase" as const,
-    color: "#7A7A8C",
-    display: "block",
-    marginBottom: "8px",
-  };
-
   return (
-    <div
-      style={{
-        background: "#080810",
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "24px",
-      }}
-    >
-      <div style={{ width: "100%", maxWidth: "420px" }}>
+    <div className="bg-obsidian min-h-screen flex items-center justify-center p-6">
+      <div className="w-full max-w-[420px]">
         {/* Logo */}
-        <div style={{ textAlign: "center", marginBottom: "40px" }}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "12px",
-              marginBottom: "8px",
-            }}
-          >
+        <div className="text-center mb-10">
+          <div className="flex items-center justify-center gap-3 mb-2">
             <svg width="24" height="34" viewBox="0 0 261.42 370" fill="none">
               <path
                 d="M261.42,278v84c0,4.42-3.58,8-8,8H8c-4.42,0-8-3.58-8-8v-174.57l100-100v182.57h153.42c4.42,0,8,3.58,8,8Z"
-                fill="#C4A35A"
+                fill="var(--color-gold)"
               />
               <path
                 d="M100,.03L0,100.03V8C0,3.58,3.58,0,8,0h92v.03Z"
-                fill="#7A7A8C"
+                fill="var(--color-slate)"
               />
             </svg>
-            <span
-              style={{
-                fontFamily: "var(--font-cormorant), serif",
-                fontSize: "28px",
-                fontWeight: 300,
-                letterSpacing: "4px",
-                color: "#F2EFE8",
-              }}
-            >
+            <span className="font-cormorant text-3xl font-light tracking-[4px] text-ivory">
               LQITHA
             </span>
           </div>
-          <p
-            style={{
-              fontFamily: "var(--font-outfit)",
-              fontSize: "10px",
-              letterSpacing: "3px",
-              textTransform: "uppercase",
-              color: "#7A7A8C",
-            }}
-          >
+          <p className="font-outfit text-[10px] tracking-[3px] uppercase text-slate">
             Lost · Found · Verified
           </p>
         </div>
 
         {/* Card */}
-        <div
-          style={{
-            background: "#13131F",
-            border: "1px solid rgba(196,163,90,0.18)",
-            borderRadius: "4px",
-            padding: "40px",
-          }}
-        >
-          <h1
-            style={{
-              fontFamily: "var(--font-cormorant), serif",
-              fontSize: "32px",
-              fontWeight: 300,
-              color: "#F2EFE8",
-              marginBottom: "28px",
-            }}
-          >
-            تسجيل الدخول
+        <div className="bg-void border border-gold/18 rounded-xl p-10 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent" />
+          
+          <h1 className="font-cormorant text-3xl font-light text-ivory mb-8 text-center">
+            Sign In
           </h1>
 
-          <form
-            onSubmit={handleSubmit}
-            style={{ display: "flex", flexDirection: "column", gap: "20px" }}
-          >
-            <div>
-              <label style={labelStyle}>البريد الإلكتروني</label>
-              <input name="email" type="email" required style={inputStyle} />
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <div className="space-y-2">
+              <label className="font-outfit text-[10px] font-medium tracking-[2px] uppercase text-slate block">
+                Email Address
+              </label>
+              <input 
+                name="email" 
+                type="email" 
+                required 
+                className="w-full bg-obsidian border border-gold/18 rounded-lg px-4 py-3 font-outfit text-sm text-ivory outline-none focus:border-gold/50 transition-all placeholder:text-slate/30"
+                placeholder="email@example.com"
+              />
             </div>
 
-            <div>
-              <label style={labelStyle}>كلمة المرور</label>
-              <div style={{ position: "relative" }}>
+            <div className="space-y-2">
+              <label className="font-outfit text-[10px] font-medium tracking-[2px] uppercase text-slate block">
+                Password
+              </label>
+              <div className="relative">
                 <input
                   name="password"
                   type={showPassword ? "text" : "password"}
                   required
-                  style={{ ...inputStyle, paddingRight: "44px" }}
+                  className="w-full bg-obsidian border border-gold/18 rounded-lg px-4 py-3 font-outfit text-sm text-ivory outline-none focus:border-gold/50 transition-all pr-12"
+                  placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  style={{
-                    position: "absolute",
-                    right: "12px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    color: "#7A7A8C",
-                    fontSize: "14px",
-                  }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-slate hover:text-gold transition-colors"
                 >
-                  <i
-                    className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
-                  />
+                  <i className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`} />
                 </button>
               </div>
             </div>
 
             {error && (
-              <p
-                style={{
-                  fontFamily: "var(--font-outfit)",
-                  fontSize: "12px",
-                  color: "#D48080",
-                  padding: "10px 14px",
-                  background: "rgba(200,100,100,0.06)",
-                  border: "1px solid rgba(200,100,100,0.2)",
-                  borderRadius: "2px",
-                }}
-              >
+              <p className="font-outfit text-xs text-red-400 py-3 px-4 bg-red-400/5 border border-red-400/20 rounded-lg">
+                <i className="fa-solid fa-circle-exclamation mr-2" />
                 {error}
               </p>
             )}
@@ -190,102 +109,32 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              style={{
-                fontFamily: "var(--font-outfit)",
-                fontSize: "11px",
-                fontWeight: 500,
-                letterSpacing: "2px",
-                textTransform: "uppercase",
-                padding: "14px",
-                borderRadius: "2px",
-                background: "#C4A35A",
-                color: "#080810",
-                border: "none",
-                cursor: "pointer",
-                opacity: loading ? 0.6 : 1,
-              }}
+              className="font-outfit text-[11px] font-bold tracking-[2px] uppercase py-4 rounded-full bg-gold text-void hover:bg-ivory transition-all shadow-lg shadow-gold/20 disabled:opacity-50 mt-2"
             >
-              {loading ? "جارٍ الدخول..." : "دخول"}
+              {loading ? "Signing In..." : "Sign In"}
             </button>
           </form>
 
           {/* Divider */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              margin: "24px 0",
-            }}
-          >
-            <div
-              style={{
-                flex: 1,
-                height: "1px",
-                background: "rgba(196,163,90,0.15)",
-              }}
-            />
-            <span
-              style={{
-                fontFamily: "var(--font-outfit)",
-                fontSize: "10px",
-                letterSpacing: "2px",
-                textTransform: "uppercase",
-                color: "#7A7A8C",
-              }}
-            >
-              أو
-            </span>
-            <div
-              style={{
-                flex: 1,
-                height: "1px",
-                background: "rgba(196,163,90,0.15)",
-              }}
-            />
+          <div className="flex items-center gap-4 my-8">
+            <div className="flex-1 h-px bg-gold/10" />
+            <span className="font-outfit text-[9px] tracking-[2px] uppercase text-slate/60">OR</span>
+            <div className="flex-1 h-px bg-gold/10" />
           </div>
 
           {/* Google */}
           <button
             onClick={() => signIn("google", { callbackUrl: "/" })}
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "10px",
-              fontFamily: "var(--font-outfit)",
-              fontSize: "11px",
-              fontWeight: 400,
-              letterSpacing: "2px",
-              textTransform: "uppercase",
-              padding: "13px",
-              borderRadius: "2px",
-              background: "transparent",
-              color: "#F2EFE8",
-              border: "1px solid rgba(196,163,90,0.2)",
-              cursor: "pointer",
-            }}
+            className="w-full flex items-center justify-center gap-3 font-outfit text-[10px] font-medium tracking-[2px] uppercase py-3.5 rounded-full bg-transparent text-ivory border border-gold/20 hover:bg-gold/5 transition-all"
           >
-            <i className="fa-brands fa-google" style={{ color: "#C4A35A" }} />
-            المتابعة مع Google
+            <i className="fa-brands fa-google text-gold" />
+            Continue with Google
           </button>
 
-          <p
-            style={{
-              fontFamily: "var(--font-outfit)",
-              fontSize: "12px",
-              color: "#7A7A8C",
-              textAlign: "center",
-              marginTop: "24px",
-            }}
-          >
-            ليس لديك حساب؟{" "}
-            <Link
-              href="/register"
-              style={{ color: "#C4A35A", textDecoration: "none" }}
-            >
-              إنشاء حساب
+          <p className="font-outfit text-sm text-slate text-center mt-8">
+            Don't have an account?{" "}
+            <Link href="/register" className="text-gold hover:text-ivory transition-colors font-medium">
+              Create Account
             </Link>
           </p>
         </div>

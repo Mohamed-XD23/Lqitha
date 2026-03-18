@@ -15,8 +15,12 @@ interface Props {
 }
 
 export default function ChatButton({
-  claimId, ownerId, claimantId,
-  currentUserId, currentUserName, currentUserImage,
+  claimId,
+  ownerId,
+  claimantId,
+  currentUserId,
+  currentUserName,
+  currentUserImage,
 }: Props) {
   const { openChat } = useChatContext();
   const [isPending, startTransition] = useTransition();
@@ -39,10 +43,20 @@ export default function ChatButton({
     <button
       onClick={handleOpen}
       disabled={isPending}
-      className="flex items-center gap-2 rounded-lg bg-indigo-50 px-3 py-1.5 text-sm font-medium text-indigo-600 hover:bg-indigo-100 transition-colors disabled:opacity-50"
+      className="flex items-center justify-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors disabled:opacity-50"
+      style={{
+        background: "#F2EFE8",
+        cursor: isPending ? "not-allowed" : "pointer",
+        textAlign: "right",
+        opacity: isPending ? 0.7 : 1,
+        color: "#080810",
+        fontSize: "15px",
+        fontWeight: 500,
+        fontFamily: "var(--font-outfit)",
+      }}
     >
-      <MessageSquare className="w-4 h-4" />
-      {isPending ? "..." : "فتح المحادثة"}
+      <MessageSquare className="w-3 h-3" />
+      {isPending ? "..." : "Chat"}
     </button>
   );
 }

@@ -32,28 +32,16 @@ export default function ClaimButton({
     return (
       <Link
         href="/login"
-        style={{
-          display: "block",
-          textAlign: "center",
-          fontFamily: "var(--font-outfit)",
-          fontSize: "18px",
-          fontWeight: 500,
-          letterSpacing: "2px",
-          textTransform: "uppercase",
-          padding: "14px 32px",
-          borderRadius: "2px",
-          background: "#C4A35A",
-          color: "#080810",
-        }}
+        className="block text-center font-outfit text-sm font-bold tracking-[3px] uppercase py-4 rounded-full bg-gold text-void hover:bg-ivory transition-all duration-300 shadow-lg shadow-gold/20"
       >
-        سجّل الدخول للمطالبة بهذا الغرض
+        Sign in to claim this item
       </Link>
     );
   }
 
   async function handleSubmitAnswer() {
     if (!answer.trim()) {
-      setError("يرجى إدخال الإجابة");
+      setError("Please enter an answer");
       return;
     }
     setIsLoading(true);
@@ -66,9 +54,9 @@ export default function ClaimButton({
       return;
     }
     if (response.isCorrect) {
-      toast.success("إجابة صحيحة! تم إرسال مطالبتك ✓");
+      toast.success("Correct answer! Your claim has been sent ✓");
     } else if (response.status === "REJECTED") {
-      toast.error("استنفدت جميع المحاولات ✕");
+      toast.error("You have exhausted all attempts ✕");
     }
     setResult({
       isCorrect: response.isCorrect!,
@@ -84,77 +72,30 @@ export default function ClaimButton({
         onClick={() =>
           secretQuestion ? setShowModal(true) : submitClaim(itemId, "")
         }
-        style={{
-          width: "100%",
-          fontFamily: "var(--font-outfit)",
-          fontSize: "18px",
-          fontWeight: 500,
-          letterSpacing: "2px",
-          textTransform: "uppercase",
-          padding: "14px 32px",
-          borderRadius: "2px",
-          background: "#C4A35A",
-          color: "#080810",
-          border: "none",
-          cursor: "pointer",
-        }}
+        className="w-full font-outfit text-sm font-bold tracking-[3px] uppercase py-4 rounded-full bg-gold text-void hover:bg-ivory transition-all duration-300 shadow-lg shadow-gold/20 cursor-pointer"
       >
-        {itemType === "FOUND" ? "أنا صاحب هذا الغرض" : "أنا وجدت هذا الغرض"}
+        {itemType === "FOUND" ? "I am the owner" : "I found this item"}
       </button>
 
       {showModal && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 50,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: "rgba(0,0,0,0.7)",
-            padding: "16px",
-          }}
-        >
-          <div
-            style={{
-              width: "100%",
-              maxWidth: "440px",
-              background: "#13131F",
-              border: "1px solid rgba(196,163,90,0.2)",
-              borderRadius: "4px",
-              padding: "32px",
-            }}
-          >
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className="w-full max-w-md bg-void border border-gold/20 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent" />
+            
             {result ? (
-              <div style={{ textAlign: "center" }}>
-                <div style={{ fontSize: "48px", marginBottom: "16px" }}>
-                  {result.isCorrect ? "✅" : "❌"}
+              <div className="text-center py-4">
+                <div className="text-5xl mb-6 animate-bounce">
+                  {result.isCorrect ? "✨" : "🚫"}
                 </div>
-                <h2
-                  style={{
-                    fontFamily: "var(--font-cormorant), serif",
-                    fontSize: "28px",
-                    fontWeight: 400,
-                    color: "#F2EFE8",
-                    marginBottom: "8px",
-                  }}
-                >
-                  {result.isCorrect ? "إجابة صحيحة!" : "إجابة خاطئة"}
+                <h2 className="font-cormorant text-3xl font-light text-ivory mb-3">
+                  {result.isCorrect ? "Correct Answer!" : "Incorrect Answer"}
                 </h2>
-                <p
-                  style={{
-                    fontFamily: "var(--font-outfit)",
-                    fontSize: "15px",
-                    color: "#7A7A8C",
-                    marginBottom: "24px",
-                    lineHeight: 1.6,
-                  }}
-                >
+                <p className="font-outfit text-sm text-slate mb-8 leading-relaxed max-w-[280px] mx-auto">
                   {result.isCorrect
-                    ? "تم إرسال طلبك. سيتواصل معك صاحب البلاغ قريباً."
+                    ? "Your request has been sent successfully. The owner will contact you soon."
                     : result.status === "REJECTED"
-                      ? "لقد استنفدت جميع محاولاتك."
-                      : `إجابة غير صحيحة. تبقّى لك ${result.attemptsLeft} محاولة.`}
+                      ? "You have exhausted all your attempts for this item."
+                      : `Incorrect answer. You have ${result.attemptsLeft} attempts remaining.`}
                 </p>
                 <button
                   onClick={() => {
@@ -162,149 +103,75 @@ export default function ClaimButton({
                     setResult(null);
                     setAnswer("");
                   }}
-                  style={{
-                    width: "100%",
-                    fontFamily: "var(--font-outfit)",
-                    fontSize: "18px",
-                    fontWeight: 500,
-                    letterSpacing: "2px",
-                    textTransform: "uppercase",
-                    padding: "12px",
-                    borderRadius: "2px",
-                    background: "#C4A35A",
-                    color: "#080810",
-                    border: "none",
-                    cursor: "pointer",
-                  }}
+                  className="w-full font-outfit text-[11px] font-bold tracking-[2px] uppercase py-3 rounded-full bg-gold text-void hover:bg-ivory transition-all"
                 >
-                  إغلاق
+                  Close
                 </button>
               </div>
             ) : (
-              <>
-                <h2
-                  style={{
-                    fontFamily: "var(--font-cormorant), serif",
-                    fontSize: "28px",
-                    fontWeight: 400,
-                    color: "#F2EFE8",
-                    marginBottom: "8px",
-                  }}
-                >
-                  {itemType === "FOUND"
-                    ? "أثبت أنك المالك"
-                    : "أثبت أنك وجدت الغرض"}
-                </h2>
-                <p
-                  style={{
-                    fontFamily: "var(--font-outfit)",
-                    fontSize: "14px",
-                    color: "#7A7A8C",
-                    marginBottom: "20px",
-                    lineHeight: 1.6,
-                  }}
-                >
-                  {itemType === "FOUND"
-                    ? "أجب على السؤال لإثبات ملكيتك:"
-                    : "أجب على السؤال لإثبات أنك تحمل الغرض:"}
-                </p>
-
-                <div
-                  style={{
-                    background: "rgba(196,163,90,0.06)",
-                    border: "1px solid rgba(196,163,90,0.2)",
-                    borderRadius: "2px",
-                    padding: "16px",
-                    marginBottom: "16px",
-                    fontFamily: "var(--font-outfit)",
-                    fontSize: "15px",
-                    color: "#C4A35A",
-                    lineHeight: 1.6,
-                  }}
-                >
-                  {secretQuestion}
-                </div>
-
-                <input
-                  type="text"
-                  value={answer}
-                  onChange={(e) => setAnswer(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleSubmitAnswer()}
-                  placeholder="إجابتك..."
-                  style={{
-                    width: "100%",
-                    background: "#0F0F1A",
-                    border: "1px solid rgba(196,163,90,0.18)",
-                    borderRadius: "2px",
-                    padding: "12px 16px",
-                    fontFamily: "var(--font-outfit)",
-                    fontSize: "15px",
-                    color: "#F2EFE8",
-                    outline: "none",
-                    marginBottom: "8px",
-                  }}
-                />
-
-                {error && (
-                  <p
-                    style={{
-                      fontFamily: "var(--font-outfit)",
-                      fontSize: "14px",
-                      color: "#D48080",
-                      marginBottom: "12px",
-                    }}
-                  >
-                    {error}
+              <div className="space-y-6">
+                <div className="space-y-1">
+                  <h2 className="font-cormorant text-3xl font-light text-ivory">
+                    {itemType === "FOUND"
+                      ? "Prove Ownership"
+                      : "Prove Possession"}
+                  </h2>
+                  <p className="font-outfit text-[11px] text-gold/60 uppercase tracking-widest font-medium">
+                    {itemType === "FOUND"
+                      ? "Verification Question"
+                      : "Handover Proof"}
                   </p>
-                )}
-
-                <div style={{ display: "flex", gap: "12px", marginTop: "8px" }}>
-                  <button
-                    onClick={() => {
-                      setShowModal(false);
-                      setAnswer("");
-                      setError(null);
-                    }}
-                    style={{
-                      flex: 1,
-                      fontFamily: "var(--font-outfit)",
-                      fontSize: "12px",
-                      fontWeight: 400,
-                      letterSpacing: "2px",
-                      textTransform: "uppercase",
-                      padding: "12px",
-                      borderRadius: "2px",
-                      background: "transparent",
-                      color: "#7A7A8C",
-                      border: "1px solid rgba(196,163,90,0.2)",
-                      cursor: "pointer",
-                    }}
-                  >
-                    إلغاء
-                  </button>
-                  <button
-                    onClick={handleSubmitAnswer}
-                    disabled={isLoading}
-                    style={{
-                      flex: 1,
-                      fontFamily: "var(--font-outfit)",
-                      fontSize: "12px",
-                      fontWeight: 500,
-                      letterSpacing: "2px",
-                      textTransform: "uppercase",
-                      padding: "12px",
-                      borderRadius: "2px",
-                      background: "#C4A35A",
-                      color: "#080810",
-                      border: "none",
-                      cursor: "pointer",
-                      opacity: isLoading ? 0.6 : 1,
-                    }}
-                  >
-                    {isLoading ? "جارٍ التحقق..." : "تحقق"}
-                  </button>
                 </div>
-              </>
+
+                <div className="bg-obsidian border border-gold/15 rounded-xl p-5 relative">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-gold/50" />
+                  <p className="font-outfit text-sm text-ivory leading-relaxed">
+                    {secretQuestion}
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={answer}
+                      onChange={(e) => setAnswer(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && handleSubmitAnswer()}
+                      placeholder="Type your answer here..."
+                      className="w-full bg-obsidian border border-gold/20 rounded-lg px-4 py-3 text-sm text-ivory placeholder:text-slate/40 outline-none focus:border-gold/50 focus:ring-1 focus:ring-gold/20 transition-all font-outfit"
+                    />
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gold/20">
+                      <i className="fa-solid fa-pen-nib text-[10px]" />
+                    </div>
+                  </div>
+
+                  {error && (
+                    <p className="font-outfit text-xs text-red-400 animate-pulse">
+                      {error}
+                    </p>
+                  )}
+
+                  <div className="flex gap-3 pt-2">
+                    <button
+                      onClick={() => {
+                        setShowModal(false);
+                        setAnswer("");
+                        setError(null);
+                      }}
+                      className="flex-1 font-outfit text-[11px] font-bold tracking-[2px] uppercase py-3 rounded-full border border-gold/20 text-slate hover:bg-gold/5 transition-all"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleSubmitAnswer}
+                      disabled={isLoading}
+                      className="flex-1 font-outfit text-[11px] font-bold tracking-[2px] uppercase py-3 rounded-full bg-gold text-void hover:bg-ivory transition-all shadow-lg shadow-gold/20 disabled:opacity-50"
+                    >
+                      {isLoading ? "Verifying..." : "Confirm Answer"}
+                    </button>
+                  </div>
+                </div>
+              </div>
             )}
           </div>
         </div>

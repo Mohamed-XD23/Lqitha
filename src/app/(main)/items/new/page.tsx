@@ -11,10 +11,11 @@ import { useForm, Controller } from "react-hook-form";
 import ImageUploader from "@/components/ui/ImageUploader";
 import { toast } from "sonner";
 // مكوّن شريط التقدم
+// مكوّن شريط التقدم
 function StepIndicator({ current, total }: { current: number; total: number }) {
-  const steps = ["معلومات الغرض", "المكان والتواصل", "سؤال التحقق", "المراجعة"];
+  const steps = ["Item Info", "Location & Contact", "Verification", "Review"];
   return (
-    <div className="mb-8 flex items-center justify-between">
+    <div className="mb-10 flex items-center justify-between">
       {steps.map((label, index) => {
         const stepNum = index + 1;
         const isCompleted = stepNum < current;
@@ -23,20 +24,30 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
           <div key={label} className="flex flex-1 items-center">
             <div className="flex flex-col items-center">
               <div
-                className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold transition-colors
-                ${isCompleted ? "bg-black text-white" : isCurrent ? "border-2 border-black text-black" : "border-2 border-gray-300 text-gray-400"}`}
+                className={`flex h-10 w-10 items-center justify-center rounded-full text-[13px] font-medium transition-all duration-300 font-outfit
+                ${
+                  isCompleted
+                    ? "bg-gold text-void shadow-[0_0_15px_rgba(196,163,90,0.3)]"
+                    : isCurrent
+                      ? "bg-void border-2 border-gold text-gold ring-4 ring-gold/10"
+                      : "bg-void border-2 border-gold/20 text-slate"
+                }`}
               >
-                {isCompleted ? "✓" : stepNum}
+                {isCompleted ? <i className="fa-solid fa-check"></i> : stepNum}
               </div>
               <span
-                className={`mt-1 text-xs ${isCurrent ? "font-semibold text-black" : "text-gray-400"}`}
+                className={`mt-2 text-[10px] uppercase tracking-wider font-outfit font-medium transition-colors ${
+                  isCurrent ? "text-gold" : "text-slate"
+                }`}
               >
                 {label}
               </span>
             </div>
             {index < steps.length - 1 && (
               <div
-                className={`mx-2 mb-4 h-px flex-1 ${isCompleted ? "bg-black" : "bg-gray-300"}`}
+                className={`mx-2 mb-6 h-[1px] flex-1 transition-all duration-500 ${
+                  isCompleted ? "bg-gold shadow-[0_0_10px_rgba(196,163,90,0.2)]" : "bg-gold/15"
+                }`}
               />
             )}
           </div>
@@ -103,349 +114,377 @@ export default function NewItemPage() {
       setIsSubmitting(false);
       return;
     }
-    toast.success("تم نشر البلاغ بنجاح ✓");
+    toast.success("Report published successfully ✓");
     router.push(`/items/${result.itemId}`);
   }
 
   return (
-    <div className="mx-auto max-w-xl px-4 py-10">
-      <h1 className="mb-2 text-2xl font-bold">نشر بلاغ جديد</h1>
-      <p className="mb-8 text-sm text-gray-500">
-        أدخل تفاصيل الغرض لمساعدة الآخرين في إيجاده
-      </p>
+    <div className="bg-obsidian min-h-screen">
+      <div className="mx-auto max-w-xl px-4 py-16">
+        <div className="text-center mb-12">
+          <span className="font-outfit text-[10px] font-medium tracking-[4px] uppercase text-gold">
+            New Listing
+          </span>
+          <h1 className="font-cormorant text-4xl font-light text-ivory leading-none mt-2">
+            Post a New Report
+          </h1>
+          <p className="mt-4 text-sm text-slate font-outfit max-w-xs mx-auto">
+            Enter item details to help others find and recover it
+          </p>
+        </div>
 
-      <StepIndicator current={step} total={4} />
+        <StepIndicator current={step} total={4} />
 
-      {/* ===== STEP 1 ===== */}
-      {step === 1 && (
-        <div className="flex flex-col gap-5">
-          <div>
-            <label className="mb-2 block text-sm font-semibold">
-              نوع البلاغ
-            </label>
-            <div className="grid grid-cols-2 gap-3">
-              {(["LOST", "FOUND"] as const).map((t) => (
-                <label
-                  key={t}
-                  className={`flex cursor-pointer flex-col items-center rounded-xl border-2 p-4 transition-colors
-                  ${watchedType === t ? "border-black bg-black text-white" : "border-gray-200 hover:border-gray-400"}`}
-                >
-                  <input
-                    type="radio"
-                    value={t}
-                    {...register("type")}
-                    className="hidden"
-                  />
-                  <span className="text-2xl">
-                    {t === "LOST" ? (
-                      <i className="fa-solid fa-magnifying-glass" />
-                    ) : (
-                      <i className="fa-solid fa-box" />
-                    )}
-                  </span>
-                  <span className="mt-1 font-semibold">
-                    {t === "LOST" ? "مفقود" : "موجود"}
-                  </span>
-                  <span className="mt-1 text-xs opacity-70">
-                    {t === "LOST" ? "أبحث عن غرضي" : "وجدت غرضاً"}
+        <div className="bg-void border-2 border-gold/18 rounded-2xl p-8 shadow-2xl relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+          
+          {/* ===== STEP 1 ===== */}
+          {step === 1 && (
+            <div className="flex flex-col gap-6">
+              <div>
+                <label className="mb-3 block text-[11px] font-medium tracking-widest uppercase text-slate font-outfit">
+                Report Type
+                </label>
+                <div className="grid grid-cols-2 gap-4">
+                  {(["LOST", "FOUND"] as const).map((t) => (
+                    <label
+                      key={t}
+                      className={`flex cursor-pointer flex-col items-center rounded-xl border-2 p-5 transition-all duration-300 relative group
+                      ${
+                        watchedType === t
+                          ? "border-gold bg-gold/5 shadow-[0_0_20px_rgba(196,163,90,0.1)]"
+                          : "border-gold/10 hover:border-gold/30 bg-transparent"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        value={t}
+                        {...register("type")}
+                        className="hidden"
+                      />
+                      <span className={`text-2xl transition-transform duration-300 group-hover:scale-110 ${watchedType === t ? "text-gold" : "text-slate"}`}>
+                        {t === "LOST" ? (
+                          <i className="fa-solid fa-magnifying-glass" />
+                        ) : (
+                          <i className="fa-solid fa-box" />
+                        )}
+                      </span>
+                      <span className={`mt-2 font-medium font-outfit text-sm ${watchedType === t ? "text-ivory" : "text-slate"}`}>
+                        {t === "LOST" ? "Lost" : "Found"}
+                      </span>
+                      <span className="mt-1 text-[10px] opacity-60 text-slate">
+                        {t === "LOST" ? "Searching for item" : "Found an item"}
+                      </span>
+                      {watchedType === t && (
+                        <div className="absolute top-2 right-2 text-[10px] text-gold animate-pulse">
+                          <i className="fa-solid fa-circle-check" />
+                        </div>
+                      )}
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[11px] font-medium tracking-widest uppercase text-slate font-outfit">Title</label>
+                <input
+                  {...register("title")}
+                  placeholder="e.g., Toyota car key"
+                  className="w-full bg-obsidian border border-gold/20 rounded-lg px-4 py-3 text-sm text-ivory placeholder:text-slate/50 outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all font-outfit"
+                />
+                {errors.title && (
+                  <p className="mt-1 text-[10px] text-red-400 font-outfit">
+                    {errors.title.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[11px] font-medium tracking-widest uppercase text-slate font-outfit">Category</label>
+                <div className="relative">
+                  <select
+                    {...register("category")}
+                    className="w-full bg-obsidian border border-gold/20 rounded-lg px-4 py-3 text-sm text-ivory outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all appearance-none font-outfit"
+                  >
+                    {[
+                      ["PHONE", "Phone"],
+                      ["KEYS", "Keys"],
+                      ["WALLET", "Wallet"],
+                      ["DOCUMENTS", "Documents"],
+                      ["ELECTRONICS", "Electronics"],
+                      ["OTHER", "Other"],
+                    ].map(([v, l]) => (
+                      <option key={v} value={v} className="bg-void">
+                        {l}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-gold/50">
+                    <i className="fa-solid fa-chevron-down text-[10px]" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[11px] font-medium tracking-widest uppercase text-slate font-outfit">Description</label>
+                <textarea
+                  {...register("description")}
+                  rows={4}
+                  placeholder="Describe the item in detail to help us match the report..."
+                  className="w-full bg-obsidian border border-gold/20 rounded-lg px-4 py-3 text-sm text-ivory placeholder:text-slate/50 outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all font-outfit resize-none"
+                />
+                {errors.description && (
+                  <p className="mt-1 text-[10px] text-red-400 font-outfit">
+                    {errors.description.message}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ===== STEP 2 ===== */}
+          {step === 2 && (
+            <div className="flex flex-col gap-6">
+              <div className="space-y-2">
+                <label className="block text-[11px] font-medium tracking-widest uppercase text-slate font-outfit">City/Location</label>
+                <input
+                  {...register("location")}
+                  placeholder="e.g., Algiers, Center"
+                  className="w-full bg-obsidian border border-gold/20 rounded-lg px-4 py-3 text-sm text-ivory placeholder:text-slate/50 outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all font-outfit"
+                />
+                {errors.location && (
+                  <p className="mt-1 text-[10px] text-red-400 font-outfit">
+                    {errors.location.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[11px] font-medium tracking-widest uppercase text-slate font-outfit">
+                  Date and Time
+                </label>
+                <input
+                  {...register("date")}
+                  type="datetime-local"
+                  max={new Date().toISOString().slice(0, 16)}
+                  className="w-full bg-obsidian border border-gold/20 rounded-lg px-4 py-3 text-sm text-ivory outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all font-outfit [color-scheme:dark]"
+                />
+                {errors.date && (
+                  <p className="mt-1 text-[10px] text-red-400 font-outfit">{errors.date.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[11px] font-medium tracking-widest uppercase text-slate font-outfit">
+                  Phone Number
+                  <span className="ml-2 text-[9px] lowercase text-gold/60 font-medium">
+                    (Private until ownership is verified)
                   </span>
                 </label>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="mb-1 block text-sm font-semibold">العنوان</label>
-            <input
-              {...register("title")}
-              placeholder="مثال: مفتاح سيارة تويوتا"
-              className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black"
-            />
-            {errors.title && (
-              <p className="mt-1 text-xs text-red-500">
-                {errors.title.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label className="mb-1 block text-sm font-semibold">الفئة</label>
-            <select
-              {...register("category")}
-              className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black"
-            >
-              {[
-                ["PHONE", "هاتف"],
-                ["KEYS", "مفاتيح"],
-                ["WALLET", "محفظة"],
-                ["DOCUMENTS", "وثائق"],
-                ["ELECTRONICS", "إلكترونيات"],
-                ["OTHER", "أخرى"],
-              ].map(([v, l]) => (
-                <option key={v} value={v}>
-                  {l}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="mb-1 block text-sm font-semibold">الوصف</label>
-            <textarea
-              {...register("description")}
-              rows={3}
-              placeholder="صف الغرض بالتفصيل..."
-              className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black"
-            />
-            {errors.description && (
-              <p className="mt-1 text-xs text-red-500">
-                {errors.description.message}
-              </p>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* ===== STEP 2 ===== */}
-      {step === 2 && (
-        <div className="flex flex-col gap-5">
-          <div>
-            <label className="mb-1 block text-sm font-semibold">المدينة</label>
-            <input
-              {...register("location")}
-              placeholder="مثال: الجزائر العاصمة"
-              className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black"
-            />
-            {errors.location && (
-              <p className="mt-1 text-xs text-red-500">
-                {errors.location.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label className="mb-1 block text-sm font-semibold">
-              التاريخ والوقت
-            </label>
-            <input
-              {...register("date")}
-              type="datetime-local"
-              // max يمنع اختيار أي وقت بعد اللحظة الحالية من واجهة المستخدم
-              max={new Date().toISOString().slice(0, 16)}
-              className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black"
-            />
-            {errors.date && (
-              <p className="mt-1 text-xs text-red-500">{errors.date.message}</p>
-            )}
-          </div>
-
-          <div>
-            <label className="mb-1 block text-sm font-semibold">
-              رقم الهاتف
-              <span className="mr-2 text-xs font-normal text-gray-400">
-                (لن يظهر للآخرين حتى يحدث تطابق)
-              </span>
-            </label>
-            <input
-              {...register("phone")}
-              placeholder="05XXXXXXXX"
-              type="tel"
-              className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black"
-            />
-            {errors.phone && (
-              <p className="mt-1 text-xs text-red-500">
-                {errors.phone.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label className="mb-1 block text-sm font-semibold">
-              Item Image
-              <span className="mr-2 text-xs font-normal text-gray-400">
-                (اختياري)
-              </span>
-            </label>
-            <Controller
-              name="imageUrl"
-              control={form.control}
-              render={({ field }) => (
-                <ImageUploader
-                  endpoint="itemImage"
-                  value={field.value ?? null}
-                  onChange={field.onChange} // عند رفع صورة → يُحدّث RHF تلقائياً
+                <input
+                  {...register("phone")}
+                  placeholder="0XXXXXXXXX"
+                  type="tel"
+                  className="w-full bg-obsidian border border-gold/20 rounded-lg px-4 py-3 text-sm text-ivory placeholder:text-slate/50 outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all font-outfit"
                 />
+                {errors.phone && (
+                  <p className="mt-1 text-[10px] text-red-400 font-outfit">
+                    {errors.phone.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[11px] font-medium tracking-widest uppercase text-slate font-outfit">
+                  Item Image
+                  <span className="ml-2 text-[9px] lowercase text-gold/60 font-medium font-outfit">
+                    (OPTIONAL)
+                  </span>
+                </label>
+                <div className="rounded-xl overflow-hidden border-2 border-dashed border-gold/15 bg-obsidian/40 hover:border-gold/30 transition-all">
+                  <Controller
+                    name="imageUrl"
+                    control={form.control}
+                    render={({ field }) => (
+                      <ImageUploader
+                        endpoint="itemImage"
+                        value={field.value ?? null}
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ===== STEP 3 ===== */}
+          {step === 3 && (
+            <div className="flex flex-col gap-6">
+              <div className="bg-obsidian border border-gold/20 rounded-xl p-5 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-1 h-full bg-gold" />
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center border border-gold/20">
+                    <i className="fa-solid fa-shield-halved text-gold text-sm" />
+                  </div>
+                  <div className="space-y-2">
+                    <p className="font-outfit text-[13px] font-medium text-ivory">Secure Verification</p>
+                    <p className="text-[11px] text-slate leading-relaxed font-outfit">
+                      {watchedType === "FOUND" 
+                        ? "Set a question that only the true owner knows the answer to. They must answer it before contacting you."
+                        : "Set a question that proves the person answering actually has your lost item."}
+                    </p>
+                    <p className="text-[10px] text-gold/70 font-outfit italic">
+                      {watchedType === "FOUND"
+                        ? 'e.g., "What color is the wallet inside?" or "What is in the small pocket?"'
+                        : 'e.g., "What is the unique mark on the key?" or "What was inside the bag?"'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[11px] font-medium tracking-widest uppercase text-slate font-outfit">
+                  Secret Question
+                </label>
+                <input
+                  {...register("secretQuestion")}
+                  placeholder={
+                    watchedType === "FOUND"
+                      ? "e.g., What is the unique mark?"
+                      : "e.g., What was inside the item?"
+                  }
+                  className="w-full bg-obsidian border border-gold/20 rounded-lg px-4 py-3 text-sm text-ivory placeholder:text-slate/50 outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all font-outfit"
+                />
+                {errors.secretQuestion && (
+                  <p className="mt-1 text-[10px] text-red-400 font-outfit">
+                    {errors.secretQuestion.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[11px] font-medium tracking-widest uppercase text-slate font-outfit">
+                  Secret Answer
+                </label>
+                <div className="relative">
+                  <input
+                    {...register("secretAnswer")}
+                    type={showAnswer ? "text" : "password"}
+                    placeholder="Correct answer used to verify claimants"
+                    className="w-full bg-obsidian border border-gold/20 rounded-lg px-10 py-3 text-sm text-ivory placeholder:text-slate/50 outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all font-outfit"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowAnswer(!showAnswer)}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-slate hover:text-gold transition-colors"
+                  >
+                    {showAnswer ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gold/30">
+                    <i className="fa-solid fa-lock text-[10px]" />
+                  </div>
+                </div>
+                {errors.secretAnswer && (
+                  <p className="mt-1 text-[10px] text-red-400 font-outfit">
+                    {errors.secretAnswer.message}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ===== STEP 4 — REVIEW ===== */}
+          {step === 4 && (
+            <div className="flex flex-col gap-4">
+              <div className="grid grid-cols-1 gap-3">
+                {[
+                  {
+                    label: "Report Type",
+                    icon: watchedValues.type === "LOST" ? "fa-magnifying-glass" : "fa-box",
+                    value: watchedValues.type === "LOST" ? "Lost" : "Found",
+                  },
+                  { label: "Title", icon: "fa-heading", value: watchedValues.title },
+                  { label: "Category", icon: "fa-tag", value: watchedValues.category },
+                  { label: "Location", icon: "fa-location-dot", value: watchedValues.location },
+                  { label: "Date", icon: "fa-calendar-days", value: formatDate(watchedValues.date) },
+                  { label: "Phone", icon: "fa-phone", value: watchedValues.phone },
+                  ...(watchedValues.secretQuestion
+                    ? [{ label: "Verification Question", icon: "fa-shield-halved", value: watchedValues.secretQuestion }]
+                    : []),
+                ].map(({ label, icon, value }) => (
+                  <div
+                    key={label}
+                    className="flex justify-between items-center rounded-xl bg-obsidian/40 border border-gold/10 px-5 py-3 hover:border-gold/25 transition-all group"
+                  >
+                    <div className="flex items-center gap-3">
+                      <i className={`fa-solid ${icon} text-[10px] text-gold/60 group-hover:text-gold transition-colors`} />
+                      <span className="font-outfit text-[11px] uppercase tracking-wider text-slate">{label}</span>
+                    </div>
+                    <span className="text-[13px] font-medium text-ivory">{value}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-gold/5 border border-gold/20 rounded-lg px-4 py-3 flex gap-3 items-center">
+                <i className="fa-solid fa-circle-info text-gold text-sm" />
+                <p className="text-[10px] text-slate font-outfit leading-normal">
+                  Your phone number will not be visible to others until the ownership of the item is successfully verified.
+                </p>
+              </div>
+
+              {watchedValues.imageUrl && (
+                <div className="overflow-hidden rounded-xl border-2 border-gold/20 shadow-lg">
+                  <img
+                    src={watchedValues.imageUrl}
+                    alt="preview"
+                    className="h-48 w-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-700"
+                  />
+                </div>
               )}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* ===== STEP 3 ===== */}
-      {step === 3 && (
-        <div className="flex flex-col gap-5">
-          <div
-            className={`rounded-xl border p-4 text-sm ${
-              watchedType === "FOUND"
-                ? "border-amber-200 bg-amber-50 text-amber-800"
-                : "border-blue-200 bg-blue-50 text-blue-800"
-            }`}
-          >
-            {watchedType === "FOUND" ? (
-              <>
-                <i className="fa-solid fa-key" /> <strong>أنت وجدت الغرض</strong> — ضع سؤالاً لا يعرف إجابته
-                إلا المالك الحقيقي.
-                <br />
-                <span className="text-xs opacity-75 mt-1 block">
-                  {
-                    'مثال: "ما لون المحفظة من الداخل؟" أو "ماذا يوجد داخل الحقيبة؟"'
-                  }
-                </span>
-              </>
-            ) : (
-              <>
-                <i className="fa-solid fa-key" /> <strong>أنت فقدت الغرض</strong> — ضع سؤالاً يثبت أن من يجيب
-                عليه فعلاً يحمل غرضك.
-                <br />
-                <span className="text-xs opacity-75 mt-1 block">
-                  {
-                    'مثال: "ما هي العلامة المميزة على المفتاح؟" أو "ما الذي كان في جيب الحقيبة الأمامية؟"'
-                  }
-                </span>
-              </>
-            )}
-          </div>
-
-          <div>
-            <label className="mb-1 block text-sm font-semibold">
-              السؤال السري
-            </label>
-            <input
-              {...register("secretQuestion")}
-              placeholder={
-                watchedType === "FOUND"
-                  ? "مثال: ما لون المحفظة من الداخل؟"
-                  : "مثال: ما هي العلامة المميزة على الغرض؟"
-              }
-              className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black"
-            />
-            {errors.secretQuestion && (
-              <p className="mt-1 text-xs text-red-500">
-                {errors.secretQuestion.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label className="mb-1 block text-sm font-semibold">
-              الإجابة السرية
-            </label>
-            {/* نضع الحقل والزر في div واحد لوضع الزر بداخل الحقل */}
-            <div className="relative">
-              <input
-                {...register("secretAnswer")}
-                type={showAnswer ? "text" : "password"}
-                placeholder="الإجابة التي يعرفها صاحب الغرض فقط"
-                className="w-full rounded-lg border px-3 py-2 pl-10 text-sm outline-none focus:ring-2 focus:ring-black"
-              />
-              <button
-                type="button"
-                onClick={() => setShowAnswer(!showAnswer)}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
-              >
-                {showAnswer ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
-            {errors.secretAnswer && (
-              <p className="mt-1 text-xs text-red-500">
-                {errors.secretAnswer.message}
-              </p>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* ===== STEP 4 — REVIEW ===== */}
-      {step === 4 && (
-        <div className="flex flex-col gap-4">
-          {[
-            {
-              label: "نوع البلاغ",
-              value:
-                watchedValues.type === "LOST" ? (
-                  <>
-                    <i className="fa-solid fa-magnifying-glass" /> مفقود
-                  </>
-                ) : (
-                  <>
-                    <i className="fa-solid fa-box" /> موجود
-                  </>
-                ),
-            },
-            { label: "العنوان", value: watchedValues.title },
-            { label: "الفئة", value: watchedValues.category },
-            { label: "الوصف", value: watchedValues.description },
-            { label: "المدينة", value: watchedValues.location },
-            { label: "التاريخ والوقت", value: formatDate(watchedValues.date) },
-            { label: "رقم الهاتف", value: watchedValues.phone }, // ← أغلقنا الـ object هنا
-            ...(watchedValues.secretQuestion // ← نعرض السؤال لكلا النوعين إذا كان موجوداً
-              ? [{ label: "السؤال السري", value: watchedValues.secretQuestion }]
-              : []),
-          ].map(({ label, value }) => (
-            <div
-              key={label}
-              className="flex justify-between rounded-lg border px-4 py-3 text-sm"
-            >
-              <span className="font-semibold text-gray-600">{label}</span>
-              <span className="text-gray-800">{value}</span>
-            </div>
-          ))}
-
-          {/* ملاحظة خاصة برقم الهاتف — تظهر خارج الـ map */}
-          <div className="flex items-start gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-xs text-blue-700">
-            <span>ℹ️</span>
-            <span>
-              رقم هاتفك لن يظهر للآخرين حتى يتم التحقق من ملكية الغرض بنجاح.
-            </span>
-          </div>
-          {watchedValues.imageUrl && (
-            <div className="overflow-hidden rounded-xl border">
-              <img
-                src={watchedValues.imageUrl}
-                alt="preview"
-                className="h-40 w-full object-cover"
-              />
             </div>
           )}
         </div>
-      )}
 
-      {/* ===== Navigation Buttons ===== */}
-      <div className="mt-8 flex gap-3">
-        {step > 1 && (
-          <button
-            onClick={() => setStep((s) => s - 1)}
-            className="flex-1 rounded-lg border py-2.5 text-sm font-medium hover:bg-gray-50"
-          >
-            ← رجوع
-          </button>
-        )}
-        {step < 4 ? (
-          <button
-            onClick={handleNext}
-            className="flex-1 rounded-lg bg-black py-2.5 text-sm font-medium text-white hover:bg-gray-800"
-          >
-            التالي →
-          </button>
-        ) : (
-          <button
-            onClick={handleSubmit}
-            disabled={isSubmitting}
-            className="flex-1 rounded-lg bg-black py-2.5 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50"
-          >
-            {isSubmitting ? "جاري النشر..." : "نشر البلاغ ✓"}
-          </button>
-        )}
+        {/* ===== Navigation Buttons ===== */}
+        <div className="mt-10 flex gap-4">
+          {step > 1 && (
+            <button
+              onClick={() => setStep((s) => s - 1)}
+              className="px-8 py-3.5 rounded-full border border-gold/20 text-gold font-outfit text-[11px] uppercase tracking-widest font-bold hover:bg-gold/5 transition-all flex items-center gap-2 group"
+            >
+              <i className="fa-solid fa-arrow-right text-[10px] transition-transform group-hover:translate-x-1" />
+              Back
+            </button>
+          )}
+          {step < 4 ? (
+            <button
+              onClick={handleNext}
+              className="flex-1 bg-gold px-8 py-3.5 rounded-full text-void font-outfit text-[11px] uppercase tracking-widest font-bold hover:bg-ivory transition-all shadow-lg shadow-gold/20 flex items-center justify-center gap-2 group"
+            >
+              Next
+              <i className="fa-solid fa-arrow-left text-[10px] transition-transform group-hover:-translate-x-1" />
+            </button>
+          ) : (
+            <button
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+              className="flex-1 bg-gold px-8 py-3.5 rounded-full text-void font-outfit text-[11px] uppercase tracking-widest font-bold hover:bg-ivory transition-all shadow-lg shadow-gold/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {isSubmitting ? (
+                <>
+                  <i className="fa-solid fa-spinner fa-spin" />
+                  Publishing...
+                </>
+              ) : (
+                <>
+                  Publish Report
+                  <i className="fa-solid fa-paper-plane text-[10px]" />
+                </>
+              )}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

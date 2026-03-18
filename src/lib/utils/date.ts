@@ -7,3 +7,11 @@ export function formatDate(date: Date | string): string {
     minute: "2-digit",
   }).format(new Date(date));
 }
+
+export function formatDateOnly(date: Date | string): string {
+  return new Intl.DateTimeFormat("fr-DZ", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(new Date(date));
+}

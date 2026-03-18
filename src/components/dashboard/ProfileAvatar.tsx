@@ -18,7 +18,12 @@ export default function ProfileAvatar({ name, image }: Props) {
   function handleChange(url: string) {
     startTransition(async () => {
       await updateProfileImage(url);
-      toast.success("تم تحديث الصورة ✓");
+      toast.success(
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <i className="fa-solid fa-check" style={{ fontSize: "16px" }} />
+          <span>Photo updated</span>
+        </div>,
+      );
       setCurrentImage(url);
       setEditing(false);
     });
@@ -40,7 +45,7 @@ export default function ProfileAvatar({ name, image }: Props) {
             marginTop: "8px",
           }}
         >
-          إلغاء
+          Cancel
         </button>
       </div>
     );
@@ -57,8 +62,8 @@ export default function ProfileAvatar({ name, image }: Props) {
           src={currentImage}
           alt={name}
           style={{
-            width: "80px",
-            height: "80px",
+            width: "120px",
+            height: "120px",
             borderRadius: "50%",
             objectFit: "cover",
             border: "2px solid rgba(196,163,90,0.3)",
@@ -67,8 +72,8 @@ export default function ProfileAvatar({ name, image }: Props) {
       ) : (
         <div
           style={{
-            width: "80px",
-            height: "80px",
+            width: "120px",
+            height: "120px",
             borderRadius: "50%",
             background: "rgba(196,163,90,0.1)",
             border: "2px solid rgba(196,163,90,0.3)",
@@ -76,7 +81,7 @@ export default function ProfileAvatar({ name, image }: Props) {
             alignItems: "center",
             justifyContent: "center",
             fontFamily: "var(--font-cormorant), serif",
-            fontSize: "28px",
+            fontSize: "52px",
             fontWeight: 400,
             color: "#C4A35A",
           }}

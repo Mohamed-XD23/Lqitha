@@ -21,46 +21,38 @@ export default function Pagination({
     router.push(`${pathname}?${params.toString()}`);
   }
 
-  const btnStyle = {
-    fontFamily: "var(--font-outfit)",
-    fontSize: "11px",
-    fontWeight: 400,
-    letterSpacing: "2px",
-    textTransform: "uppercase" as const,
-    padding: "10px 24px",
-    borderRadius: "2px",
-    cursor: "pointer",
-    background: "transparent",
-    color: "#C4A35A",
-    border: "1px solid rgba(196,163,90,0.3)",
-    transition: "all 0.2s",
-  };
+  const btnClass =
+    "font-outfit text-[11px] font-normal tracking-[2px] uppercase px-6 py-2.5 rounded-md cursor-pointer bg-transparent text-gold border-2 border-gold/30 transition-all duration-200 hover:scale-105 disabled:opacity-30 disabled:scale-100 disabled:cursor-not-allowed";
 
   return (
     <div className="mt-10 flex items-center justify-center gap-4">
       <button
         onClick={() => goToPage(currentPage - 1)}
         disabled={currentPage === 1}
-        style={{ ...btnStyle, opacity: currentPage === 1 ? 0.3 : 1 }}
+        className={btnClass}
       >
-        ← السابق
+        <div className="flex items-center gap-2">
+          <i className="fa-solid fa-angles-left"></i>
+          Previous
+        </div>
       </button>
-      <span
-        style={{
-          fontFamily: "var(--font-outfit)",
-          fontSize: "11px",
-          letterSpacing: "2px",
-          color: "#7A7A8C",
-        }}
-      >
-        {currentPage} / {totalPages}
-      </span>
+      <div className="font-outfit text-[11px] tracking-[2px] text-slate">
+        <span className="text-slate flex items-center gap-2">
+          Page
+          <span>
+            {currentPage} / {totalPages}
+          </span>
+        </span>
+      </div>
       <button
         onClick={() => goToPage(currentPage + 1)}
         disabled={currentPage === totalPages}
-        style={{ ...btnStyle, opacity: currentPage === totalPages ? 0.3 : 1 }}
+        className={btnClass}
       >
-        التالي →
+        <div className="flex items-center gap-2">
+          Next
+          <i className="fa-solid fa-angles-right"></i>
+        </div>
       </button>
     </div>
   );
