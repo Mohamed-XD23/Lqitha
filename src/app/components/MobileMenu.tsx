@@ -1,49 +1,74 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { createPortal } from "react-dom";
 
 export default function MobileMenu({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
-  const [prevPathname, setPrevPathname] = useState(pathname);
 
-  if (pathname !== prevPathname) {
-    setPrevPathname(pathname);
+  // Ensure portal only renders on client
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Close menu on route change
+  useEffect(() => {
     setIsOpen(false);
-  }
+  }, [pathname]);
+
+  // Lock body scroll when menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  const menuOverlay = (
+    <div
+      className="fixed inset-0 bg-[#080810]/95 backdrop-blur-xl z-[100] flex flex-col items-center justify-start py-20 px-6 overflow-y-auto"
+      onClick={() => setIsOpen(false)}
+    >
+      {/* Close button */}
+      <button
+        className="absolute top-8 right-8 text-gold text-4xl p-2 hover:scale-110 transition-transform"
+        onClick={() => setIsOpen(false)}
+        aria-label="Close menu"
+      >
+        <i className="fa-solid fa-xmark"></i>
+      </button>
+
+      {/* Content */}
+      <div
+        className="w-full max-w-sm"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {children}
+      </div>
+    </div>
+  );
 
   return (
     <div className="md:hidden flex items-center">
-      <button 
-        onClick={() => setIsOpen(true)} 
-        className="text-[#C4A35A] text-xl p-2"
+      {/* Open button */}
+      <button
+        onClick={() => setIsOpen(true)}
+        className="text-gold text-2xl p-2 hover:opacity-80 transition-opacity"
         aria-label="Open menu"
       >
         <i className="fa-solid fa-bars"></i>
       </button>
 
-      {isOpen && (
-        <div 
-          className="fixed inset-0 bg-[#080810] z-40 flex flex-col items-center justify-center gap-8" 
-          onClick={() => setIsOpen(false)}
-        >
-          <button 
-            className="absolute top-6 right-6 text-[#C4A35A] text-3xl p-2"
-            onClick={() => setIsOpen(false)}
-            aria-label="Close menu"
-          >
-            <i className="fa-solid fa-xmark"></i>
-          </button>
-          
-          <div 
-            className="flex flex-col items-center gap-8" 
-            onClick={(e) => e.stopPropagation()}
-          >
-            {children}
-          </div>
-        </div>
-      )}
+      {/* Portal */}
+      {mounted && isOpen && createPortal(menuOverlay, document.body)}
     </div>
   );
 }

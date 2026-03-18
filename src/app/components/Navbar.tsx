@@ -54,19 +54,14 @@ export default async function Navbar() {
           )}
 
           {session?.user ? (
-            <div className="flex items-center gap-6 border-l border-gold/10 pl-6 ml-2">
-              <div className="flex items-center gap-3 group cursor-pointer">
-                <div className="flex justify-center items-center rounded-full w-8 h-8 bg-gold/10 border border-gold/20 text-gold group-hover:bg-gold group-hover:text-void transition-all">
-                  <i className="fa-solid fa-user text-[10px]"></i>
-                </div>
-                <span className="text-[12px] font-outfit text-slate group-hover:text-ivory">{session?.user?.name}</span>
-              </div>
+            <div className="flex items-center gap-4">
               <form action={handleSignOut}>
                 <button
                   type="submit"
-                  className="font-outfit text-[10px] font-medium tracking-[2px] uppercase text-slate border border-gold/20 px-5 py-2 rounded-full hover:border-gold hover:text-gold transition-all"
+                  className="flex items-center gap-2 cursor-pointer font-outfit text-[10px] font-medium tracking-[2px] uppercase text-slate border border-gold/20 px-5 py-2 rounded-full hover:border-gold hover:text-gold transition-all"
                 >
                   Sign Out
+                  <i className="fa-solid fa-right-from-bracket text-ivory text-xl"></i>
                 </button>
               </form>
             </div>
@@ -113,25 +108,15 @@ export default async function Navbar() {
                   Post Item
                 </Link>
                 
-                <div className="w-full h-px bg-gold/10 my-4" />
-
-                <div className="flex flex-col items-center gap-4">
-                  <div className="flex items-center gap-3 text-ivory">
-                    <div className="flex justify-center items-center rounded-full w-10 h-10 bg-gold/10 border border-gold/20 text-gold">
-                      <i className="fa-solid fa-user text-sm"></i>
-                    </div>
-                    <span className="text-lg font-outfit">{session.user.name}</span>
-                  </div>
-                  
-                  <form action={handleSignOut}>
-                    <button
-                      type="submit"
-                      className="font-outfit text-sm font-light tracking-[3px] uppercase text-slate border border-gold/20 px-8 py-3 rounded-full"
-                    >
-                      Sign Out
-                    </button>
-                  </form>
-                </div>
+                <form action={handleSignOut}>
+                  <button
+                    type="submit"
+                    className="flex items-center gap-2 cursor-pointer font-outfit text-sm font-light tracking-[3px] uppercase text-slate border border-gold/20 px-8 py-3 rounded-full"
+                  >
+                    Sign out
+                    <i className="fa-solid fa-right-from-bracket text-ivory text-xl"></i>
+                  </button>
+                </form>
               </>
             )}
 
