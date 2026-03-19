@@ -57,7 +57,6 @@ model ClaimRequest {
   claimantId String
   claimant  User          @relation(fields: [claimantId], references: [id])
   attempts   ClaimAttempt[]
-  messages  Message[]
   createdAt DateTime      @default(now())
 
   @@unique([itemId, claimantId])
@@ -69,15 +68,6 @@ model ClaimAttempt {
   isCorrect Boolean      //نتيجة bcrypt.compare()
   claimId   String
   claim     ClaimRequest @relation(fields: [claimId], references: [id])
-  createdAt DateTime     @default(now())
-}
-
-model Message {
-  id        String       @id @default(cuid())
-  content   String
-  claimId   String
-  claim     ClaimRequest @relation(fields: [claimId], references: [id])
-  senderId  String
   createdAt DateTime     @default(now())
 }
 
