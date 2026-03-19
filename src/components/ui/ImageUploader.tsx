@@ -1,7 +1,9 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { ImageIcon, X, Loader2 } from "lucide-react";
+import { ImageIcon} from "lucide-react";
+import ImageUploadLoader from "./ImageUploadLoader";
+import Image from "next/image";
 
 interface Props {
   value?: string;
@@ -39,17 +41,18 @@ export default function ImageUploader({ value, onChange }: Props) {
     <div className="space-y-2">
       {value ? (
         <div className="relative w-full h-48 rounded-lg overflow-hidden border border-border">
-          <img
+          <Image
             src={value}
             alt="Preview"
+            fill
             className="w-full h-full object-cover"
           />
           <button
             type="button"
             onClick={() => onChange("")}
-            className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1"
+            className="absolute top-2 right-2 text-white rounded-full p-1"
           >
-            <X className="w-4 h-4" />
+            <i className="fa-solid fa-trash-can text-xl text-red-500/80 px-1 py-1" />
           </button>
         </div>
       ) : (
@@ -63,7 +66,7 @@ export default function ImageUploader({ value, onChange }: Props) {
         >
           {loading ? (
             <>
-              <Loader2 className="w-8 h-8 text-muted-foreground animate-spin" />
+              <ImageUploadLoader />
               <p className="text-sm text-muted-foreground">Uploading...</p>
             </>
           ) : (

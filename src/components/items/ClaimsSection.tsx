@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { respondToClaim } from "@/actions/item.actions";
 import ChatButton from "@/components/chat/ChatButton";
+import ButtonLoader from "@/components/ui/ButtonLoader";
 import { toast } from "sonner";
 
 interface Claimant {
@@ -98,16 +99,28 @@ export default function ClaimsSection({
                 <button
                   onClick={() => handleRespond(claim.id, "ACCEPTED")}
                   disabled={isPending}
-                  className="font-outfit text-[10px] font-bold tracking-widest uppercase px-5 py-2 rounded-full bg-gold text-void hover:bg-ivory transition-all shadow-md shadow-gold/10 disabled:opacity-50"
+                  className="font-outfit text-[10px] font-bold tracking-widest uppercase px-5 py-2 rounded-full bg-gold text-void hover:bg-ivory transition-all shadow-md shadow-gold/10 disabled:opacity-50 flex items-center justify-center min-h-[36px]"
                 >
-                  {loadingId === claim.id ? "..." : "Accept"}
+                  {loadingId === claim.id ? (
+                    <div className="scale-[1] origin-center">
+                      <ButtonLoader />
+                    </div>
+                  ) : (
+                    "Accept"
+                  )}
                 </button>
                 <button
                   onClick={() => handleRespond(claim.id, "REJECTED")}
                   disabled={isPending}
-                  className="font-outfit text-[10px] font-medium tracking-widest uppercase px-5 py-2 rounded-full bg-transparent text-red-400 border border-red-400/20 hover:bg-red-400/5 transition-all disabled:opacity-50"
+                  className="font-outfit text-[10px] font-medium tracking-widest uppercase px-5 py-2 rounded-full bg-transparent text-red-400 border border-red-400/20 hover:bg-red-400/5 transition-all disabled:opacity-50 flex items-center justify-center min-h-[36px]"
                 >
-                  {loadingId === claim.id ? "..." : "Reject"}
+                  {loadingId === claim.id ? (
+                    <div className="scale-[1] origin-center">
+                      <ButtonLoader />
+                    </div>
+                  ) : (
+                    "Reject"
+                  )}
                 </button>
               </div>
             ) : (

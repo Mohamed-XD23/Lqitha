@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils/date";
 import ChatButton from "@/components/chat/ChatButton";
+import ButtonLoader from "@/components/ui/ButtonLoader";
 import { useChatContext } from "@/context/ChatContext";
 
 interface Listing {
@@ -158,9 +159,11 @@ function MessagesTab({
               {formatDate(claim.createdAt)}
             </p>
           </div>
-          <span className="font-outfit bg-gold/10 border border-gold/20 text-[12px] tracking-widest uppercase text-gold px-2.5 py-1 rounded-lg flex items-center gap-1.5">
+          <span className="font-outfit bg-gold/10 border border-gold/20 text-[12px] tracking-widest uppercase text-gold px-2.5 py-1 rounded-lg flex items-center justify-center gap-1.5 min-w-[50px] min-h-[32px]">
             {isPending ? (
-              <i className="fa-solid fa-spinner fa-spin"></i>
+              <div className="scale-[1] origin-center">
+                <ButtonLoader />
+              </div>
             ) : (
               <>
                 View

@@ -4,11 +4,13 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import ButtonLoader from "@/components/ui/ButtonLoader";
 
 export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -109,9 +111,15 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="font-outfit text-[11px] font-bold tracking-[2px] uppercase py-4 rounded-full bg-gold text-void hover:bg-ivory transition-all shadow-lg shadow-gold/20 disabled:opacity-50 mt-2"
+              className="font-outfit text-[11px] font-bold tracking-[2px] uppercase py-4 rounded-full bg-gold text-void hover:bg-ivory transition-all shadow-lg shadow-gold/20 disabled:opacity-50 mt-2 flex items-center justify-center min-h-[56px]"
             >
-              {loading ? "Signing In..." : "Sign In"}
+              {loading ? (
+                <div className="scale-[1] origin-center">
+                  <ButtonLoader />
+                </div>
+              ) : (
+                "Sign In"
+              )}
             </button>
           </form>
 
@@ -124,11 +132,23 @@ export default function LoginPage() {
 
           {/* Google */}
           <button
-            onClick={() => signIn("google", { callbackUrl: "/" })}
-            className="w-full flex items-center justify-center gap-3 font-outfit text-[10px] font-medium tracking-[2px] uppercase py-3.5 rounded-full bg-transparent text-ivory border border-gold/20 hover:bg-gold/5 transition-all"
+            onClick={() => {
+              setGoogleLoading(true);
+              signIn("google", { callbackUrl: "/" });
+            }}
+            disabled={googleLoading}
+            className="w-full flex items-center justify-center gap-3 font-outfit text-[10px] font-medium tracking-[2px] uppercase py-3.5 rounded-full bg-transparent text-ivory border border-gold/20 hover:bg-gold/5 transition-all disabled:opacity-50 min-h-[48px]"
           >
-            <i className="fa-brands fa-google text-gold" />
-            Continue with Google
+            {googleLoading ? (
+              <div className="scale-[1] origin-center">
+                <ButtonLoader />
+              </div>
+            ) : (
+              <>
+                <i className="fa-brands fa-google text-gold" />
+                Continue with Google
+              </>
+            )}
           </button>
 
           <p className="font-outfit text-sm text-slate text-center mt-8">

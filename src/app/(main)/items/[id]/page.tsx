@@ -5,6 +5,7 @@ import { formatDate } from "@/lib/utils/date";
 import ClaimButton from "@/components/items/ClaimButton";
 import ClaimsSection from "@/components/items/ClaimsSection";
 import Link from "next/link";
+import Image from "next/image";
 
 interface ItemPageProps {
   params: Promise<{ id: string }>;
@@ -52,13 +53,14 @@ export default async function ItemPage({ params }: ItemPageProps) {
           <div className="relative group">
             <div className="aspect-square overflow-hidden rounded-xl bg-void border-2 border-gold/18 shadow-2xl relative z-10">
               {item.imageUrl ? (
-                <img
+                <Image
                   src={item.imageUrl}
                   alt={item.title}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               ) : (
-                <div className="flex h-full items-center justify-center text-6xl text-gold/20 bg-gradient-to-br from-void to-obsidian">
+                <div className="flex h-full items-center justify-center text-6xl text-gold/20 bg-linear-to-br from-void to-obsidian">
                   {item.type === "LOST" ? (
                     <i className="fa-solid fa-magnifying-glass" />
                   ) : (
@@ -68,7 +70,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
               )}
             </div>
             {/* Decorative background element */}
-            <div className="absolute -inset-2 bg-gradient-to-r from-gold/20 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-1" />
+            <div className="absolute -inset-2 bg-linear-to-r from-gold/20 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-1" />
           </div>
 
           {/* Content Section */}
@@ -112,7 +114,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
 
             {/* Publisher Profile */}
             <div className="flex items-center gap-4 bg-void border border-gold/15 rounded-xl px-6 py-5 shadow-lg group hover:border-gold/30 transition-all">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold/10 border border-gold/30 text-gold font-bold flex-shrink-0 transition-transform group-hover:scale-110">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold/10 border border-gold/30 text-gold font-bold shrink-0 transition-transform group-hover:scale-110">
                 {item.user.name?.[0]?.toUpperCase()}
               </div>
               <div className="flex-1">

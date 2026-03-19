@@ -9,6 +9,7 @@ import { formatDate } from "@/lib/utils/date";
 import { Eye, EyeOff } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import ImageUploader from "@/components/ui/ImageUploader";
+import ButtonLoader from "@/components/ui/ButtonLoader";
 import { toast } from "sonner";
 // مكوّن شريط التقدم
 // مكوّن شريط التقدم
@@ -468,13 +469,12 @@ export default function NewItemPage() {
             <button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="flex-1 bg-gold px-8 py-3.5 rounded-full text-void font-outfit text-[11px] uppercase tracking-widest font-bold hover:bg-ivory transition-all shadow-lg shadow-gold/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="flex-1 bg-gold px-8 py-3.5 rounded-full text-void font-outfit text-[11px] uppercase tracking-widest font-bold hover:bg-ivory transition-all shadow-lg shadow-gold/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-h-[50px]"
             >
               {isSubmitting ? (
-                <>
-                  <i className="fa-solid fa-spinner fa-spin" />
-                  Publishing...
-                </>
+                <div className="scale-[1] origin-center">
+                  <ButtonLoader />
+                </div>
               ) : (
                 <>
                   Publish Report

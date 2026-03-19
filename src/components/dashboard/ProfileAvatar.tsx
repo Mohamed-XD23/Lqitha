@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import ImageUploader from "@/components/ui/ImageUploader";
 import { updateProfileImage } from "@/actions/dashboard.actions";
 import { toast } from "sonner";
+import Image from "next/image";
 
 interface Props {
   name: string;
@@ -13,7 +14,7 @@ interface Props {
 export default function ProfileAvatar({ name, image }: Props) {
   const [currentImage, setCurrentImage] = useState(image);
   const [editing, setEditing] = useState(false);
-  const [isPending, startTransition] = useTransition();
+  const [,startTransition] = useTransition();
 
   function handleChange(url: string) {
     startTransition(async () => {
@@ -35,17 +36,12 @@ export default function ProfileAvatar({ name, image }: Props) {
         <ImageUploader value={currentImage ?? ""} onChange={handleChange} />
         <button
           onClick={() => setEditing(false)}
-          style={{
-            fontFamily: "var(--font-outfit)",
-            fontSize: "11px",
-            color: "#7A7A8C",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            marginTop: "8px",
-          }}
+          className="font-outfit text-md text-slate bg-slate/10 border border-slate/20 rounded-md px-3 py-1 mt-2"
         >
-          Cancel
+          <div className="flex items-center gap-2">
+            <span>Cancel</span>
+            <i className="fa-solid fa-xmark text-md text-slate" />
+          </div>
         </button>
       </div>
     );
@@ -58,16 +54,12 @@ export default function ProfileAvatar({ name, image }: Props) {
       className="group"
     >
       {currentImage ? (
-        <img
+        <Image
           src={currentImage}
           alt={name}
-          style={{
-            width: "120px",
-            height: "120px",
-            borderRadius: "50%",
-            objectFit: "cover",
-            border: "2px solid rgba(196,163,90,0.3)",
-          }}
+          width={120}
+          height={120}
+          className="rounded-full object-cover border-2 border-gold/30"
         />
       ) : (
         <div

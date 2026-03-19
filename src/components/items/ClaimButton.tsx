@@ -4,6 +4,7 @@ import { useState } from "react";
 import { submitClaim } from "@/actions/item.actions";
 import Link from "next/link";
 import { toast } from "sonner";
+import ButtonLoader from "@/components/ui/ButtonLoader";
 
 interface ClaimButtonProps {
   itemId: string;
@@ -165,9 +166,15 @@ export default function ClaimButton({
                     <button
                       onClick={handleSubmitAnswer}
                       disabled={isLoading}
-                      className="flex-1 font-outfit text-[11px] font-bold tracking-[2px] uppercase py-3 rounded-full bg-gold text-void hover:bg-ivory transition-all shadow-lg shadow-gold/20 disabled:opacity-50"
+                      className="flex-1 font-outfit text-[11px] font-bold tracking-[2px] uppercase py-3 rounded-full bg-gold text-void hover:bg-ivory transition-all shadow-lg shadow-gold/20 disabled:opacity-50 flex items-center justify-center min-h-[44px]"
                     >
-                      {isLoading ? "Verifying..." : "Confirm Answer"}
+                      {isLoading ? (
+                        <div className="scale-[1] origin-center">
+                          <ButtonLoader />
+                        </div>
+                      ) : (
+                        "Confirm Answer"
+                      )}
                     </button>
                   </div>
                 </div>
