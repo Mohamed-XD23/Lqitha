@@ -1,5 +1,5 @@
 import { getItems } from "@/actions/item.actions";
-import { ItemType } from "@/generated/prisma";
+import { ItemType } from "@prisma/client";
 import ItemCard from "@/components/items/ItemCard";
 import FilterBar from "@/components/items/FilterBar";
 import Pagination from "@/components/items/Pagination";
