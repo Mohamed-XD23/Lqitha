@@ -22,7 +22,8 @@ export const itemSchema = z
       .min(1, "Date is required")
       .refine(
         (val) => {
-          // التحقق من أن التاريخ والوقت ليسا في المستقبل
+          // datetime-local input sends "YYYY-MM-DDTHH:mm" (no timezone)
+          // new Date() parses this as local time, so direct comparison is correct
           return new Date(val) <= new Date();
         },
         { message: "Date cannot be in the future" },
