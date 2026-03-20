@@ -148,6 +148,8 @@ export async function recalculateTrustScore(userId: string) {
     where: { id: userId },
     data: { trustScore: Math.max(0, score) },
   });
+
+  revalidatePath("/dashboard");
 }
 
 export async function updateProfileImage(imageUrl: string) {

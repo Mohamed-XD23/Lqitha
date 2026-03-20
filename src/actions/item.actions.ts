@@ -58,6 +58,7 @@ export async function createItem(data: unknown) {
     },
   });
 
+  await recalculateTrustScore(session.user.id);
   return { success: true, itemId: item.id };
 }
 
