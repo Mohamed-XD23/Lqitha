@@ -109,7 +109,11 @@ export default function NewItemPage() {
 
   async function handleSubmit() {
     setIsSubmitting(true);
-    const result = await createItem(getValues());
+    const values = getValues();
+    // Convert local datetime to UTC ISO string before sending to server
+    // so the server (running in UTC) compares correctly
+    values.date = new Date(values.date).toISOString();
+    const result = await createItem(values);
     if (result.error) {
       toast.error(result.error);
       setIsSubmitting(false);
