@@ -52,8 +52,8 @@ export default function ClaimsSection({
 
   if (claims.length === 0) {
     return (
-      <div className="mt-10 border border-dashed border-[#C4A35A]/20 rounded-lg py-12 text-center bg-[#13131F]/20">
-        <p className="font-outfit text-xs text-[#7A7A8C] tracking-widest uppercase opacity-60">
+      <div className="mt-10 border border-dashed border-gold/20 rounded-lg py-12 text-center bg-void/20">
+        <p className="font-outfit text-xs text-slate tracking-widest uppercase opacity-60">
           No claims yet
         </p>
       </div>
@@ -63,10 +63,10 @@ export default function ClaimsSection({
   return (
     <div className="mt-12">
       <div className="flex items-center gap-4 mb-6">
-        <h2 className="font-cormorant text-2xl font-light text-[#F2EFE8]">
+        <h2 className="font-cormorant text-2xl font-light text-ivory">
           Incoming Claims
         </h2>
-        <span className="font-outfit text-[10px] font-bold tracking-[2px] uppercase px-3 py-1 rounded-full bg-[#C4A35A]/10 text-[#C4A35A] border border-[#C4A35A]/25">
+        <span className="font-outfit text-[10px] font-bold tracking-xs uppercase px-3 py-1 rounded-full bg-gold/10 text-gold border border-gold/25">
           {pendingClaims.length} Pending
         </span>
       </div>
@@ -75,21 +75,24 @@ export default function ClaimsSection({
         {claims.map((claim) => (
           <div
             key={claim.id}
-            className="flex items-center justify-between px-6 py-4 bg-[#13131F] border border-[#C4A35A]/15 rounded-xl hover:border-[#C4A35A]/30 transition-all shadow-lg group"
+            className="flex items-center justify-between px-6 py-4 bg-void border border-gold/15 rounded-xl hover:border-gold/30 transition-all shadow-lg group"
           >
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-[#C4A35A]/10 border border-[#C4A35A]/25 flex items-center justify-center font-outfit text-sm font-medium text-[#C4A35A] shrink-0 transition-transform group-hover:scale-105">
+              <div className="w-10 h-10 rounded-full bg-gold/10 border border-gold/25 flex items-center justify-center font-outfit text-sm font-medium text-gold shrink-0 transition-transform group-hover:scale-105">
                 {claim.claimant.name?.[0]?.toUpperCase() ?? "?"}
               </div>
               <div>
-                <p className="font-outfit text-sm font-medium text-[#F2EFE8] transition-colors group-hover:text-[#C4A35A]">
+                <p className="font-outfit text-sm font-medium text-ivory transition-colors group-hover:text-gold">
                   {claim.claimant.name}
                 </p>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <p className="font-outfit text-[11px] text-[#7A7A8C]">
-                    <i className="fa-solid fa-star text-[#C4A35A] mr-1" /> {claim.claimant.trustScore}
+                  <p className="font-outfit text-[11px] text-slate">
+                    <i className="fa-solid fa-star text-gold mr-1" />{" "}
+                    {claim.claimant.trustScore}
                   </p>
-                  <span className="font-outfit text-[10px] text-emerald-400 font-bold uppercase tracking-wider">· Provided correct answer ✅</span>
+                  <span className="font-outfit text-[10px] text-emerald-400 font-bold uppercase tracking-wider">
+                    · Provided correct answer ✅
+                  </span>
                 </div>
               </div>
             </div>
@@ -99,7 +102,7 @@ export default function ClaimsSection({
                 <button
                   onClick={() => handleRespond(claim.id, "ACCEPTED")}
                   disabled={isPending}
-                  className="font-outfit text-[10px] font-bold tracking-[2px] uppercase px-5 py-2 rounded-full bg-[#C4A35A] text-[#080810] hover:bg-[#F2EFE8] transition-all shadow-md shadow-[#C4A35A]/10 disabled:opacity-50 flex items-center justify-center min-h-[36px]"
+                  className="font-outfit text-[10px] font-bold tracking-xs uppercase px-5 py-2 rounded-full bg-gold text-obsidian hover:bg-ivory transition-all shadow-md shadow-gold/10 disabled:opacity-50 flex items-center justify-center min-h-[36px]"
                 >
                   {loadingId === claim.id ? (
                     <div className="scale-[0.8] origin-center">
@@ -112,7 +115,7 @@ export default function ClaimsSection({
                 <button
                   onClick={() => handleRespond(claim.id, "REJECTED")}
                   disabled={isPending}
-                  className="font-outfit text-[10px] font-bold tracking-[2px] uppercase px-5 py-2 rounded-full bg-transparent text-red-400 border border-red-400/20 hover:bg-red-400/5 transition-all disabled:opacity-50 flex items-center justify-center min-h-[36px]"
+                  className="font-outfit text-[10px] font-bold tracking-xs uppercase px-5 py-2 rounded-full bg-transparent text-red-400 border border-red-400/20 hover:bg-red-400/5 transition-all disabled:opacity-50 flex items-center justify-center min-h-[36px]"
                 >
                   {loadingId === claim.id ? (
                     <div className="scale-[0.8] origin-center">
@@ -126,7 +129,7 @@ export default function ClaimsSection({
             ) : (
               <div className="flex items-center gap-3">
                 <span
-                  className={`font-outfit text-[10px] font-bold tracking-[2px] uppercase px-4 py-1.5 rounded-full border ${
+                  className={`font-outfit text-[10px] font-bold tracking-xs uppercase px-4 py-1.5 rounded-full border ${
                     claim.status === "ACCEPTED"
                       ? "bg-emerald-500/5 text-emerald-400 border-emerald-500/20"
                       : "bg-red-500/5 text-red-400 border-red-500/20"

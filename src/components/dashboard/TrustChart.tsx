@@ -16,9 +16,9 @@ interface Props {
 
 export default function TrustChart({ data }: Props) {
   return (
-    <div className="bg-[#13131F] border border-[#C4A35A]/18 rounded-[4px] p-7 h-full shadow-xl">
-      <p className="font-outfit text-[9px] font-semibold tracking-[3px] uppercase text-[#7A7A8C] mb-8 flex items-center gap-2">
-        <i className="fa-solid fa-chart-line text-[#C4A35A]/60 text-xs"></i>
+    <div className="bg-void border border-gold/18 rounded-sm p-7 h-full shadow-xl">
+      <p className="font-outfit text-[9px] font-semibold tracking-[3px] uppercase text-slate mb-8 flex items-center gap-2">
+        <i className="fa-solid fa-chart-line text-gold/60 text-xs"></i>
         Trust History
       </p>
       <ResponsiveContainer width="100%" height={200}>
@@ -29,7 +29,11 @@ export default function TrustChart({ data }: Props) {
               <stop offset="95%" stopColor="#C4A35A" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(196,163,90,0.05)" vertical={false} />
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="rgba(196,163,90,0.05)"
+            vertical={false}
+          />
           <XAxis
             dataKey="month"
             tick={{

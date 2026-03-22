@@ -20,13 +20,13 @@ export default function ChatSidebar() {
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between bg-[#C4A35A] border-b px-4 py-3">
-          <h3 className="font-semibold text-xl text-[#13131F]">Chat</h3>
+        <div className="flex items-center justify-between bg-gold border-b px-4 py-3">
+          <h3 className="font-semibold text-xl text-void">Chat</h3>
           <button
             onClick={closeChat}
-            className="rounded-full px-1.5 py-2 hover:bg-[#F2EFE8]/60 flex items-center justify-center"
+            className="rounded-full px-1.5 py-2 hover:bg-ivory/60 flex items-center justify-center"
           >
-            <i className="fa-solid fa-xmark text-[#13131F] text-xl"></i>
+            <i className="fa-solid fa-xmark text-void text-xl"></i>
           </button>
         </div>
 

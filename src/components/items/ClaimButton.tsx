@@ -33,7 +33,7 @@ export default function ClaimButton({
     return (
       <Link
         href="/login"
-        className="block text-center font-outfit text-sm font-bold tracking-[3px] uppercase py-4 rounded-full bg-[#C4A35A] text-[#080810] hover:bg-[#F2EFE8] transition-all duration-300 shadow-lg shadow-[#C4A35A]/20"
+        className="block text-center font-outfit text-sm font-bold tracking-[3px] uppercase py-4 rounded-full bg-gold text-obsidian hover:bg-ivory transition-all duration-300 shadow-lg shadow-gold/20"
       >
         Sign in to claim this item
       </Link>
@@ -73,25 +73,25 @@ export default function ClaimButton({
         onClick={() =>
           secretQuestion ? setShowModal(true) : submitClaim(itemId, "")
         }
-        className="w-full font-outfit text-sm font-bold tracking-[3px] uppercase py-4 rounded-full bg-[#C4A35A] text-[#080810] hover:bg-[#F2EFE8] transition-all duration-300 shadow-lg shadow-[#C4A35A]/20 cursor-pointer"
+        className="w-full font-outfit text-sm font-bold tracking-[3px] uppercase py-4 rounded-full bg-gold text-obsidian hover:bg-ivory transition-all duration-300 shadow-lg shadow-gold/20 cursor-pointer"
       >
         {itemType === "FOUND" ? "I am the owner" : "I found this item"}
       </button>
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
-          <div className="w-full max-w-md bg-[#13131F] border border-[#C4A35A]/20 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#C4A35A]/50 to-transparent" />
-            
+          <div className="w-full max-w-md bg-void border border-gold/20 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-gold/50 to-transparent" />
+
             {result ? (
               <div className="text-center py-4">
                 <div className="text-5xl mb-6 animate-bounce">
                   {result.isCorrect ? "✨" : "🚫"}
                 </div>
-                <h2 className="font-cormorant text-3xl font-light text-[#F2EFE8] mb-3">
+                <h2 className="font-cormorant text-3xl font-light text-ivory mb-3">
                   {result.isCorrect ? "Correct Answer!" : "Incorrect Answer"}
                 </h2>
-                <p className="font-outfit text-sm text-[#7A7A8C] mb-8 leading-relaxed max-w-[280px] mx-auto">
+                <p className="font-outfit text-sm text-slate mb-8 leading-relaxed max-w-[280px] mx-auto">
                   {result.isCorrect
                     ? "Your request has been sent successfully. The owner will contact you soon."
                     : result.status === "REJECTED"
@@ -104,7 +104,7 @@ export default function ClaimButton({
                     setResult(null);
                     setAnswer("");
                   }}
-                  className="w-full font-outfit text-[11px] font-bold tracking-[2px] uppercase py-3 rounded-full bg-[#C4A35A] text-[#080810] hover:bg-[#F2EFE8] transition-all"
+                  className="w-full font-outfit text-[11px] font-bold tracking-xs uppercase py-3 rounded-full bg-gold text-obsidian hover:bg-ivory transition-all"
                 >
                   Close
                 </button>
@@ -137,7 +137,9 @@ export default function ClaimButton({
                       type="text"
                       value={answer}
                       onChange={(e) => setAnswer(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && handleSubmitAnswer()}
+                      onKeyDown={(e) =>
+                        e.key === "Enter" && handleSubmitAnswer()
+                      }
                       placeholder="Type your answer here..."
                       className="w-full bg-obsidian border border-gold/20 rounded-lg px-4 py-3 text-sm text-ivory placeholder:text-slate/40 outline-none focus:border-gold/50 focus:ring-1 focus:ring-gold/20 transition-all font-outfit"
                     />
@@ -159,14 +161,14 @@ export default function ClaimButton({
                         setAnswer("");
                         setError(null);
                       }}
-                      className="flex-1 font-outfit text-[11px] font-bold tracking-[2px] uppercase py-3 rounded-full border border-gold/20 text-slate hover:bg-gold/5 transition-all"
+                      className="flex-1 font-outfit text-[11px] font-bold tracking-xs uppercase py-3 rounded-full border border-gold/20 text-slate hover:bg-gold/5 transition-all"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={handleSubmitAnswer}
                       disabled={isLoading}
-                      className="flex-1 font-outfit text-[11px] font-bold tracking-[2px] uppercase py-3 rounded-full bg-gold text-void hover:bg-ivory transition-all shadow-lg shadow-gold/20 disabled:opacity-50 flex items-center justify-center min-h-[44px]"
+                      className="flex-1 font-outfit text-[11px] font-bold tracking-xs uppercase py-3 rounded-full bg-gold text-void hover:bg-ivory transition-all shadow-lg shadow-gold/20 disabled:opacity-50 flex items-center justify-center min-h-[44px]"
                     >
                       {isLoading ? (
                         <div className="scale-[1] origin-center">

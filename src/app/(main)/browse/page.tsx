@@ -23,21 +23,23 @@ export default async function BrowsePage({ searchParams }: BrowsePageProps) {
   });
 
   return (
-    <div className="bg-[#080810] min-h-screen">
+    <div className="bg-obsidian min-h-screen">
       <div className="mx-auto max-w-6xl px-6 py-20">
         {/* Header */}
         <div className="mb-14 relative">
           <div className="flex items-center gap-3 mb-4">
-             <div className="h-px w-8 bg-[#C4A35A]/40"></div>
-             <span className="font-outfit text-[11px] font-semibold tracking-[4px] uppercase text-[#C4A35A]">
-               Discovery
-             </span>
+            <div className="h-px w-8 bg-gold/40"></div>
+            <span className="font-outfit text-[11px] font-semibold tracking-sm uppercase text-gold">
+              Discovery
+            </span>
           </div>
-          <h1 className="font-cormorant text-[56px] font-light text-[#F2EFE8] leading-tight mt-2">
+          <h1 className="font-cormorant text-[56px] font-light text-ivory leading-tight mt-2">
             Browse Items
           </h1>
-          <p className="font-outfit text-sm text-[#7A7A8C] mt-4 tracking-[1px] font-light max-w-lg">
-            Find what you lost or return what you found. Currently tracking <span className="text-[#C4A35A] font-medium">{totalCount} items</span> globally.
+          <p className="font-outfit text-sm text-slate mt-4 tracking-px font-light max-w-lg">
+            Find what you lost or return what you found. Currently tracking{" "}
+            <span className="text-gold font-medium">{totalCount} items</span>{" "}
+            globally.
           </p>
         </div>
 
@@ -48,14 +50,14 @@ export default async function BrowsePage({ searchParams }: BrowsePageProps) {
 
         {/* Listings Grid */}
         {items.length === 0 ? (
-          <div className="mt-32 text-center py-20 border border-dashed border-[#C4A35A]/10 rounded-[4px]">
-             <i className="fa-solid fa-box-open text-4xl text-[#C4A35A]/20 mb-6"></i>
-             <h2 className="font-cormorant text-3xl font-light text-[#F2EFE8]/70">
-                No matches found
-             </h2>
-             <p className="font-outfit text-xs text-[#7A7A8C] mt-3 tracking-[2px] uppercase">
-                Try refining your search parameters
-             </p>
+          <div className="mt-32 text-center py-20 border border-dashed border-gold/10 rounded-sm">
+            <i className="fa-solid fa-box-open text-4xl text-gold/20 mb-6"></i>
+            <h2 className="font-cormorant text-3xl font-light text-ivory/70">
+              No matches found
+            </h2>
+            <p className="font-outfit text-xs text-slate mt-3 tracking-xs uppercase">
+              Try refining your search parameters
+            </p>
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

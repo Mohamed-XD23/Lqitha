@@ -40,7 +40,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="bg-[#080810] min-h-screen flex items-center justify-center p-6">
+    <div className="bg-obsidian min-h-screen flex items-center justify-center p-6">
       <div className="w-full max-w-[420px]">
         {/* Logo */}
         <div className="text-center mb-10">
@@ -55,50 +55,50 @@ export default function RegisterPage() {
                 fill="#7A7A8C"
               />
             </svg>
-            <span className="font-cormorant text-3xl font-light tracking-[4px] text-[#F2EFE8]">
+            <span className="font-cormorant text-3xl font-light tracking-sm text-ivory">
               LQITHA
             </span>
           </div>
-          <p className="font-outfit text-[10px] tracking-[3px] uppercase text-[#7A7A8C]">
+          <p className="font-outfit text-[10px] tracking-[3px] uppercase text-slate">
             Lost · Found · Verified
           </p>
         </div>
 
         {/* Card */}
-        <div className="bg-[#13131F] border border-[#C4A35A]/18 rounded-[4px] p-10 relative overflow-hidden">
-          <h1 className="font-cormorant text-3xl font-light text-[#F2EFE8] mb-8 text-center">
+        <div className="bg-void border border-gold/18 rounded-sm p-10 relative overflow-hidden">
+          <h1 className="font-cormorant text-3xl font-light text-ivory mb-8 text-center">
             Create Account
           </h1>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="space-y-2">
-              <label className="font-outfit text-[10px] font-medium tracking-[2px] uppercase text-[#7A7A8C] block">
+              <label className="font-outfit text-[10px] font-medium tracking-xs uppercase text-slate block">
                 Full Name
               </label>
               <input
                 name="name"
                 type="text"
                 required
-                className="w-full bg-[#0F0F1A] border border-[#C4A35A]/18 rounded-[2px] px-4 py-3 font-outfit text-sm text-[#F2EFE8] outline-none focus:border-[#C4A35A]/50 transition-all placeholder:text-[#7A7A8C]/30"
+                className="w-full bg-[#0F0F1A] border border-gold/18 rounded-xs px-4 py-3 font-outfit text-sm text-ivory outline-none focus:border-gold/50 transition-all placeholder:text-slate/30"
                 placeholder="John Doe"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="font-outfit text-[10px] font-medium tracking-[2px] uppercase text-[#7A7A8C] block">
+              <label className="font-outfit text-[10px] font-medium tracking-xs uppercase text-slate block">
                 Email Address
               </label>
               <input
                 name="email"
                 type="email"
                 required
-                className="w-full bg-[#0F0F1A] border border-[#C4A35A]/18 rounded-[2px] px-4 py-3 font-outfit text-sm text-[#F2EFE8] outline-none focus:border-[#C4A35A]/50 transition-all placeholder:text-[#7A7A8C]/30"
+                className="w-full bg-[#0F0F1A] border border-gold/18 rounded-xs px-4 py-3 font-outfit text-sm text-ivory outline-none focus:border-gold/50 transition-all placeholder:text-slate/30"
                 placeholder="email@example.com"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="font-outfit text-[10px] font-medium tracking-[2px] uppercase text-[#7A7A8C] block">
+              <label className="font-outfit text-[10px] font-medium tracking-xs uppercase text-slate block">
                 Password
               </label>
               <div className="relative">
@@ -107,13 +107,13 @@ export default function RegisterPage() {
                   type={showPassword ? "text" : "password"}
                   required
                   minLength={8}
-                  className="w-full bg-[#0F0F1A] border border-[#C4A35A]/18 rounded-[2px] px-4 py-3 font-outfit text-sm text-[#F2EFE8] outline-none focus:border-[#C4A35A]/50 transition-all pr-12"
+                  className="w-full bg-[#0F0F1A] border border-gold/18 rounded-xs px-4 py-3 font-outfit text-sm text-ivory outline-none focus:border-gold/50 transition-all pr-12"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-[#7A7A8C] hover:text-[#C4A35A] transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-slate hover:text-gold transition-colors"
                 >
                   <i
                     className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
@@ -123,7 +123,7 @@ export default function RegisterPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="font-outfit text-[10px] font-medium tracking-[2px] uppercase text-[#7A7A8C] block">
+              <label className="font-outfit text-[10px] font-medium tracking-xs uppercase text-slate block">
                 Confirm Password
               </label>
               <div className="relative">
@@ -131,13 +131,13 @@ export default function RegisterPage() {
                   name="confirmPassword"
                   type={showConfirm ? "text" : "password"}
                   required
-                  className={`w-full bg-[#0F0F1A] border rounded-[2px] px-4 py-3 font-outfit text-sm text-[#F2EFE8] outline-none focus:border-[#C4A35A]/50 transition-all pr-12 ${passwordError ? "border-red-400/50" : "border-[#C4A35A]/18"}`}
+                  className={`w-full bg-[#0F0F1A] border rounded-xs px-4 py-3 font-outfit text-sm text-ivory outline-none focus:border-gold/50 transition-all pr-12 ${passwordError ? "border-red-400/50" : "border-gold/18"}`}
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirm(!showConfirm)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-[#7A7A8C] hover:text-[#C4A35A] transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-slate hover:text-gold transition-colors"
                 >
                   <i
                     className={`fa-solid ${showConfirm ? "fa-eye-slash" : "fa-eye"}`}
@@ -153,7 +153,7 @@ export default function RegisterPage() {
             </div>
 
             {error && (
-              <p className="font-outfit text-xs text-[#D48080] py-3 px-4 bg-[#D48080]/5 border border-[#D48080]/20 rounded-[2px]">
+              <p className="font-outfit text-xs text-[#D48080] py-3 px-4 bg-[#D48080]/5 border border-[#D48080]/20 rounded-xs">
                 <i className="fa-solid fa-circle-exclamation mr-2" />
                 {error}
               </p>
@@ -203,7 +203,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="font-outfit text-[11px] font-medium tracking-[2px] uppercase py-4 rounded-[2px] bg-[#C4A35A] text-[#080810] hover:bg-[#F2EFE8] transition-all disabled:opacity-50 mt-2 flex items-center justify-center min-h-[56px]"
+              className="font-outfit text-[11px] font-medium tracking-xs uppercase py-4 rounded-xs bg-gold text-obsidian hover:bg-ivory transition-all disabled:opacity-50 mt-2 flex items-center justify-center min-h-[56px]"
             >
               {loading ? (
                 <div className="scale-[1] origin-center">
@@ -217,11 +217,11 @@ export default function RegisterPage() {
 
           {/* Divider */}
           <div className="flex items-center gap-4 my-8">
-            <div className="flex-1 h-px bg-[#C4A35A]/10" />
-            <span className="font-outfit text-[9px] tracking-[2px] uppercase text-[#7A7A8C]/60">
+            <div className="flex-1 h-px bg-gold/10" />
+            <span className="font-outfit text-[9px] tracking-xs uppercase text-slate/60">
               OR
             </span>
-            <div className="flex-1 h-px bg-[#C4A35A]/10" />
+            <div className="flex-1 h-px bg-gold/10" />
           </div>
 
           {/* Google */}
@@ -231,7 +231,7 @@ export default function RegisterPage() {
               signIn("google", { callbackUrl: "/" });
             }}
             disabled={googleLoading}
-            className="w-full flex items-center justify-center gap-3 font-outfit text-[10px] font-medium tracking-[2px] uppercase py-3.5 rounded-[2px] bg-transparent text-[#F2EFE8] border border-[#C4A35A]/20 hover:bg-[#C4A35A]/5 transition-all disabled:opacity-50 min-h-[48px]"
+            className="w-full flex items-center justify-center gap-3 font-outfit text-[10px] font-medium tracking-xs uppercase py-3.5 rounded-xs bg-transparent text-ivory border border-gold/20 hover:bg-gold/5 transition-all disabled:opacity-50 min-h-[48px]"
           >
             {googleLoading ? (
               <div className="scale-[1] origin-center">
@@ -239,17 +239,17 @@ export default function RegisterPage() {
               </div>
             ) : (
               <>
-                <i className="fa-brands fa-google text-[#C4A35A]" />
+                <i className="fa-brands fa-google text-gold" />
                 Continue with Google
               </>
             )}
           </button>
 
-          <p className="font-outfit text-sm text-[#7A7A8C] text-center mt-8">
+          <p className="font-outfit text-sm text-slate text-center mt-8">
             Already have an account?{" "}
             <Link
               href="/login"
-              className="text-[#C4A35A] hover:text-[#F2EFE8] transition-colors font-medium"
+              className="text-gold hover:text-ivory transition-colors font-medium"
             >
               Sign In
             </Link>

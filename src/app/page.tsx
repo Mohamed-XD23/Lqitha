@@ -22,7 +22,7 @@ export default function Home() {
           <header className="mb-12">
             <div className="flex items-center justify-center gap-3 mb-6">
               <div className="h-px w-8 bg-gold opacity-60"></div>
-              <span className="text-[9px] font-semibold tracking-[4px] uppercase text-gold">
+              <span className="text-[9px] font-semibold tracking-sm uppercase text-gold">
                 Lost · Found · Verified
               </span>
             </div>
@@ -31,7 +31,7 @@ export default function Home() {
               Lqi<em className="text-gold italic">tha</em>
             </h1>
 
-            <p className="text-[11px] font-light tracking-[4px] uppercase text-slate">
+            <p className="text-[11px] font-light tracking-sm uppercase text-slate">
               Your Lost Items Deserve to Come Home
             </p>
           </header>
@@ -46,13 +46,13 @@ export default function Home() {
             <div className="flex flex-wrap justify-center gap-4">
               <Link
                 href="/browse"
-                className="bg-gold hover:bg-gold-light text-obsidian px-10 py-4 text-[11px] font-medium tracking-[2px] uppercase transition-all duration-300 rounded-[2px]"
+                className="bg-gold hover:bg-gold-light text-obsidian px-10 py-4 text-[11px] font-medium tracking-xs uppercase transition-all duration-300 rounded-xs"
               >
                 Get Started
               </Link>
               <button
                 onClick={() => scrollToSection(problemSectionRef)}
-                className="border border-gold/20 hover:border-gold/40 hover:bg-gold/5 text-gold px-10 py-4 text-[11px] font-medium tracking-[2px] uppercase transition-all duration-300 rounded-[2px]"
+                className="border border-gold/20 hover:border-gold/40 hover:bg-gold/5 text-gold px-10 py-4 text-[11px] font-medium tracking-xs uppercase transition-all duration-300 rounded-xs"
               >
                 Learn More
               </button>
@@ -200,7 +200,7 @@ export default function Home() {
             </div>
 
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-gold/10 to-transparent rounded-xl blur-2xl"></div>
+              <div className="absolute inset-0 bg-linear-to-r from-gold/10 to-transparent rounded-xl blur-2xl"></div>
               <div className="relative bg-void border border-gold/20 rounded-xl p-8 space-y-4">
                 <div className="text-center mb-6">
                   <div className="text-5xl text-gold mb-2">
@@ -253,7 +253,7 @@ export default function Home() {
           <div className="hidden md:block">
             <div className="relative">
               {/* Background gradient line */}
-              <div className="absolute top-24 left-0 right-0 h-1 bg-gradient-to-r from-gold/20 via-gold/40 to-gold/20 rounded-full"></div>
+              <div className="absolute top-24 left-0 right-0 h-1 bg-linear-to-r from-gold/20 via-gold/40 to-gold/20 rounded-full"></div>
               <div className="grid grid-cols-3 gap-8 relative z-10">
                 {[
                   {
@@ -282,7 +282,7 @@ export default function Home() {
                     {/* Step circle with gradient background */}
                     <div className="relative mb-8">
                       <div
-                        className={`absolute inset-0 bg-gradient-to-br ${step.color} rounded-full blur-xl opacity-30`}
+                        className={`absolute inset-0 bg-linear-to-br ${step.color} rounded-full blur-xl opacity-30`}
                       ></div>
                       <div className="relative w-20 h-20 rounded-full bg-obsidian border-2 border-gold/40 flex items-center justify-center group hover:border-gold hover:shadow-lg hover:shadow-gold/30 transition-all duration-300 cursor-pointer">
                         <div className="text-3xl text-gold">
@@ -295,7 +295,8 @@ export default function Home() {
                     <div className="flex flex-col items-center w-full bg-obsidian border border-gold/10 rounded-xl p-6 hover:border-gold/30 transition-all duration-300 group">
                       <div className="flex items-center gap-2 font-cormorant text-xl text-ivory mb-3 text-center group-hover:text-gold transition-colors">
                         <p className="font-outfit text-gold text-xl font-light">
-                          {step.num} . <span className="text-ivory">{step.title}</span>
+                          {step.num} .{" "}
+                          <span className="text-ivory">{step.title}</span>
                         </p>
                       </div>
                       <p className="text-slate text-sm font-light leading-relaxed text-center">
@@ -333,7 +334,7 @@ export default function Home() {
               <div key={step.num} className="relative">
                 {/* Vertical connector line */}
                 {idx !== arr.length - 1 && (
-                  <div className="absolute left-10 top-20 w-1 h-12 bg-gradient-to-b from-gold/40 to-gold/10"></div>
+                  <div className="absolute left-10 top-20 w-1 h-12 bg-linear-to-b from-gold/40 to-gold/10"></div>
                 )}
 
                 <div className="flex gap-6">
@@ -349,7 +350,8 @@ export default function Home() {
                   {/* Content */}
                   <div className="flex-1 pt-2 bg-obsidian border border-gold/10 rounded-xl p-6 hover:border-gold/30 transition-all">
                     <div className="font-outfit text-gold text-lg">
-                      {step.num} . <span className="text-ivory">{step.title}</span>
+                      {step.num} .{" "}
+                      <span className="text-ivory">{step.title}</span>
                     </div>
                     <p className="text-slate text-sm font-light leading-relaxed">
                       {step.desc}
@@ -398,7 +400,7 @@ export default function Home() {
                 key={feature.num}
                 className="group p-8 bg-void border border-gold/5 hover:border-gold/20 transition-all duration-500 relative"
               >
-                <div className="absolute top-0 left-0 w-[2px] h-0 group-hover:h-full bg-linear-to-b from-gold to-transparent transition-all duration-500"></div>
+                <div className="absolute top-0 left-0 w-xs h-0 group-hover:h-full bg-linear-to-b from-gold to-transparent transition-all duration-500"></div>
                 <div className="font-outfit italic text-gold text-sm mb-4">
                   {feature.num}
                 </div>
@@ -532,10 +534,10 @@ export default function Home() {
       </section>
 
       {/* ===== CALL TO ACTION SECTION ===== */}
-      <section className="py-24 px-6 border-t border-gold/10 bg-gradient-to-b from-void/50 to-obsidian">
+      <section className="py-24 px-6 border-t border-gold/10 bg-linear-to-b from-void/50 to-obsidian">
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-8">
-            <span className="text-[9px] font-semibold tracking-[4px] uppercase text-gold">
+            <span className="text-[9px] font-semibold tracking-sm uppercase text-gold">
               Ready to Get Started?
             </span>
           </div>
@@ -553,13 +555,13 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/browse"
-              className="bg-gold hover:bg-gold-light text-obsidian px-12 py-4 text-[11px] font-medium tracking-[2px] uppercase transition-all duration-300 rounded-[2px] shadow-lg shadow-gold/20"
+              className="bg-gold hover:bg-gold-light text-obsidian px-12 py-4 text-[11px] font-medium tracking-xs uppercase transition-all duration-300 rounded-xs shadow-lg shadow-gold/20"
             >
               Browse Items Now
             </Link>
             <Link
               href="/register"
-              className="border-2 border-gold hover:bg-gold/10 text-gold px-12 py-4 text-[11px] font-medium tracking-[2px] uppercase transition-all duration-300 rounded-[2px]"
+              className="border-2 border-gold hover:bg-gold/10 text-gold px-12 py-4 text-[11px] font-medium tracking-xs uppercase transition-all duration-300 rounded-xs"
             >
               Create Account
             </Link>

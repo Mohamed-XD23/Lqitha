@@ -20,14 +20,14 @@ export default async function DashboardPage() {
   if (!user) redirect("/login");
 
   return (
-    <div className="bg-[#080810] min-h-screen">
+    <div className="bg-obsidian min-h-screen">
       <div className="mx-auto max-w-6xl px-6 py-12">
         {/* Header */}
         <div className="mb-10">
-          <span className="font-outfit text-[10px] font-bold tracking-[4px] uppercase text-[#C4A35A]">
+          <span className="font-outfit text-[10px] font-bold tracking-sm uppercase text-gold">
             Dashboard
           </span>
-          <h1 className="font-cormorant text-4xl font-light text-[#F2EFE8] leading-none mt-2">
+          <h1 className="font-cormorant text-4xl font-light text-ivory leading-none mt-2">
             Hello {user.name?.split(" ")[0]}
           </h1>
         </div>
