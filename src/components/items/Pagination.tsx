@@ -22,37 +22,34 @@ export default function Pagination({
   }
 
   const btnClass =
-    "font-outfit text-[11px] font-normal tracking-[2px] uppercase px-6 py-2.5 rounded-md cursor-pointer bg-transparent text-gold border-2 border-gold/30 transition-all duration-200 hover:scale-105 disabled:opacity-30 disabled:scale-100 disabled:cursor-not-allowed";
+    "font-outfit text-xs font-semibold tracking-[3px] uppercase px-8 py-3.5 rounded-[2px] cursor-pointer bg-transparent text-[#C4A35A] border border-[#C4A35A]/30 transition-all duration-300 hover:bg-[#C4A35A]/10 hover:border-[#C4A35A] disabled:opacity-20 disabled:cursor-not-allowed flex items-center gap-3";
 
   return (
-    <div className="mt-10 flex items-center justify-center gap-4">
+    <div className="mt-20 flex items-center justify-center gap-10">
       <button
         onClick={() => goToPage(currentPage - 1)}
         disabled={currentPage === 1}
         className={btnClass}
       >
-        <div className="flex items-center gap-2">
-          <i className="fa-solid fa-angles-left"></i>
-          Previous
-        </div>
+        <i className="fa-solid fa-arrow-left text-[10px]"></i>
+        Prev
       </button>
-      <div className="font-outfit text-[11px] tracking-[2px] text-slate">
-        <span className="text-slate flex items-center gap-2">
-          Page
-          <span>
-            {currentPage} / {totalPages}
-          </span>
+
+      <div className="font-outfit text-[10px] font-bold tracking-[4px] text-[#7A7A8C] uppercase">
+        <span className="flex items-center gap-4">
+          <span className="text-[#F2EFE8]">{currentPage}</span>
+          <span className="opacity-30">/</span>
+          <span>{totalPages}</span>
         </span>
       </div>
+
       <button
         onClick={() => goToPage(currentPage + 1)}
         disabled={currentPage === totalPages}
         className={btnClass}
       >
-        <div className="flex items-center gap-2">
-          Next
-          <i className="fa-solid fa-angles-right"></i>
-        </div>
+        Next
+        <i className="fa-solid fa-arrow-right text-[10px]"></i>
       </button>
     </div>
   );

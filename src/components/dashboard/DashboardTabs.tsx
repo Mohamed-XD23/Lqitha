@@ -42,7 +42,7 @@ function StatusBadge({
     { className: string; label: React.ReactNode }
   > = {
     ACTIVE: {
-      className: "bg-blue-500/10 text-blue-400 border-blue-500/40",
+      className: "bg-[#0A84FF]/10 text-[#0A84FF] border-[#0A84FF]/20",
       label: (
         <span className="flex items-center gap-1.5">
           <i className="fa-solid fa-circle text-[6px] opacity-70"></i>
@@ -50,9 +50,8 @@ function StatusBadge({
         </span>
       ),
     },
-
     RESOLVED: {
-      className: "bg-emerald-500/10 text-emerald-400 border-emerald-500/40",
+      className: "bg-[#30D158]/10 text-[#30D158] border-[#30D158]/20",
       label: (
         <span className="flex items-center gap-1.5">
           <i className="fa-solid fa-check"></i>
@@ -60,40 +59,37 @@ function StatusBadge({
         </span>
       ),
     },
-
     ACCEPTED: {
-      className: "bg-emerald-500/15 text-emerald-400 border-emerald-500/60",
+      className: "bg-[#30D158]/10 text-[#30D158] border-[#30D158]/40",
       label: (
         <span className="flex items-center gap-1.5">
-          <i className="fa-solid fa-thumbs-up"></i>
+          <i className="fa-solid fa-circle-check"></i>
           Accepted
         </span>
       ),
     },
-
     REJECTED: {
-      className: "bg-red-500/10 text-red-400 border-red-500/40",
+      className: "bg-[#FF453A]/10 text-[#FF453A] border-[#FF453A]/20",
       label: (
         <span className="flex items-center gap-1.5">
           <i className="fa-solid fa-xmark"></i>
-          {rejectedBy === "owner" ? "Rejected by owner" : "Rejected"}
+          {rejectedBy === "owner" ? "Rejected by Owner" : "Rejected"}
         </span>
       ),
     },
-
     PENDING: {
-      className: "bg-slate/10 text-slate border-slate/40",
+      className: "bg-[#7A7A8C]/10 text-[#7A7A8C] border-[#7A7A8C]/20",
       label: (
         <span className="flex items-center gap-1.5">
-          <i className="fa-solid fa-hourglass-half text-[10px]"></i>
-          Pending Review
+          <i className="fa-solid fa-hourglass-half text-[9px]"></i>
+          Pending
         </span>
       ),
     },
   };
-  const s = map[status];
+  const s = map[status] || map.PENDING;
   return (
-    <span className={`font-outfit text-[10px] font-medium tracking-wide px-3 py-1 rounded-full border whitespace-nowrap ${s.className}`}>
+    <span className={`font-outfit text-[9px] font-medium tracking-[2px] uppercase px-3 py-1 rounded-[2px] border whitespace-nowrap ${s.className}`}>
       {s.label}
     </span>
   );
@@ -116,8 +112,8 @@ function MessagesTab({
 
   if (acceptedClaims.length === 0) {
     return (
-      <p className="font-outfit text-xs text-slate text-center py-10">
-        No messages yet
+      <p className="font-outfit text-xs text-[#7A7A8C] text-center py-16 opacity-50">
+        No active messages
       </p>
     );
   }
@@ -146,28 +142,27 @@ function MessagesTab({
                 });
             });
           }}
-          className={`flex items-center gap-3.5 px-6 py-4 border-b border-gold/10 bg-transparent cursor-pointer w-full text-right transition-opacity ${isPending ? "opacity-70 cursor-not-allowed" : "opacity-100"}`}
+          className={`flex items-center gap-4 px-6 py-5 border-b border-[#C4A35A]/10 bg-transparent cursor-pointer w-full text-left transition-all hover:bg-[#C4A35A]/5 ${isPending ? "opacity-50 cursor-not-allowed" : "opacity-100"}`}
         >
-          <div className="w-10 h-10 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center flex-shrink-0">
-            <i className="fa-solid fa-message text-gold text-sm" />
+          <div className="w-10 h-10 rounded-[2px] bg-[#C4A35A]/10 border border-[#C4A35A]/20 flex items-center justify-center flex-shrink-0 group">
+            <i className="fa-solid fa-message text-[#C4A35A] text-sm" />
           </div>
           <div className="flex-1">
-            <p className="font-outfit text-[15px] font-medium text-ivory">
+            <p className="font-outfit text-sm font-medium text-[#F2EFE8]">
               {claim.item.title}
             </p>
-            <p className="font-outfit text-[11px] text-slate mt-0.5">
-              {formatDate(claim.createdAt)}
+            <p className="font-outfit text-[10px] text-[#7A7A8C] tracking-wider uppercase mt-1">
+              Connected · {formatDate(claim.createdAt)}
             </p>
           </div>
-          <span className="font-outfit bg-gold/10 border border-gold/20 text-[12px] tracking-widest uppercase text-gold px-2.5 py-1 rounded-lg flex items-center justify-center gap-1.5 min-w-[50px] min-h-[32px]">
+          <span className="font-outfit bg-[#C4A35A] text-[#080810] text-[10px] font-semibold tracking-[2px] uppercase px-4 py-2 rounded-[2px] flex items-center justify-center gap-2 min-w-[80px] hover:bg-[#F2EFE8] transition-colors">
             {isPending ? (
-              <div className="scale-[1] origin-center">
+              <div className="scale-[0.8] origin-center">
                 <ButtonLoader />
               </div>
             ) : (
               <>
-                View
-                <i className="fa-solid fa-eye text-xs"></i>
+                Open Chat
               </>
             )}
           </span>
@@ -199,22 +194,22 @@ export default function DashboardTabs({
   ];
 
   return (
-    <div className="bg-void border border-gold/18 rounded-sm overflow-hidden">
+    <div className="bg-[#13131F] border border-[#C4A35A]/18 rounded-[4px] overflow-hidden shadow-2xl">
       {/* Tab Headers */}
-      <div className="bg-black flex border-b border-gold/15">
+      <div className="bg-[#080810]/50 flex border-b border-[#C4A35A]/15 px-2">
         {tabs.map((tab) => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`flex items-center justify-center gap-2 flex-1 py-4.5 font-outfit text-[11px] font-medium tracking-[2px] uppercase cursor-pointer bg-transparent border-none border-b-2 transition-all duration-200 ${
+            className={`flex items-center justify-center gap-3 px-6 py-5 font-outfit text-[10px] font-medium tracking-[3px] uppercase cursor-pointer bg-transparent border-none border-b-2 transition-all duration-300 relative ${
               activeTab === tab.key
-                ? "border-gold text-gold"
-                : "border-gold/20 text-slate hover:text-gold/60"
+                ? "border-[#C4A35A] text-[#F2EFE8]"
+                : "border-transparent text-[#7A7A8C] hover:text-[#C4A35A]/70"
             }`}
           >
             {tab.label}
             {tab.count > 0 && (
-              <span className="bg-gold/10 text-gold border border-gold/20 px-2 py-0.5 rounded-full text-[12px]">
+              <span className={`px-1.5 py-0.5 rounded-[1px] text-[9px] font-bold ${activeTab === tab.key ? "bg-[#C4A35A] text-[#080810]" : "bg-[#C4A35A]/10 text-[#C4A35A] border border-[#C4A35A]/20"}`}>
                 {tab.count}
               </span>
             )}
@@ -222,110 +217,125 @@ export default function DashboardTabs({
         ))}
       </div>
 
-      {/* My Listings */}
-      {activeTab === "listings" && (
-        <div className="flex flex-col">
-          {listings.length === 0 ? (
-            <p className="font-outfit text-xs text-slate text-center py-10"> No listings yet</p>
-          ) : (
-            listings.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center justify-between px-6 py-4 border-b border-gold/10 last:border-0"
-              >
-                <div className="flex items-center gap-3">
-                  <span className={`w-2 h-2 rounded-full flex-shrink-0 ${item.status === "ACTIVE" ? "bg-blue-400" : "bg-emerald-400"}`} />
-                  <div className="flex flex-col gap-1">
-                    <p className="font-outfit text-[15px] font-medium text-ivory">
-                      {item.title}
-                    </p>
-                    <div className="flex items-center gap-1.5 flex-wrap font-outfit text-[11px] text-slate mt-0.5">
-                      {formatDate(item.createdAt)} ·{" "}
-                      <div className="flex items-center gap-1">
-                        <i className={`fa-solid ${item.type === "LOST" ? "fa-magnifying-glass" : "fa-box"} text-[10px]`} />{" "}
-                        {item.type === "LOST" ? "Lost" : "Found"}
+      {/* Content Area */}
+      <div className="min-h-[300px]">
+        {/* My Listings */}
+        {activeTab === "listings" && (
+          <div className="flex flex-col">
+            {listings.length === 0 ? (
+              <div className="flex flex-col items-center justify-center flex-1 py-16 opacity-50">
+                 <i className="fa-solid fa-box-open text-3xl text-[#C4A35A]/20 mb-4" />
+                 <p className="font-outfit text-xs text-[#7A7A8C]">No listings published yet</p>
+              </div>
+            ) : (
+              listings.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center justify-between px-6 py-5 border-b border-[#C4A35A]/10 last:border-0 hover:bg-[#C4A35A]/5 transition-colors"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${item.status === "ACTIVE" ? "bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.5)]" : "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]"}`} />
+                    <div className="flex flex-col gap-1.5">
+                      <p className="font-outfit text-sm font-medium text-[#F2EFE8]">
+                        {item.title}
+                      </p>
+                      <div className="flex items-center gap-3 flex-wrap font-outfit text-[10px] text-[#7A7A8C] tracking-widest uppercase">
+                        <span>{formatDate(item.createdAt)}</span>
+                        <span className="w-1 h-1 rounded-full bg-[#7A7A8C]/30" />
+                        <div className="flex items-center gap-1.5">
+                          <i className={`fa-solid ${item.type === "LOST" ? "fa-magnifying-glass" : "fa-box"} text-[9px] text-[#C4A35A]/60`} />{" "}
+                          {item.type === "LOST" ? "Lost" : "Found"}
+                        </div>
+                        <span className="w-1 h-1 rounded-full bg-[#7A7A8C]/30" />
+                        <span className="text-[#C4A35A]/80">{item._count.claims} Claims</span>
                       </div>
-                      · {item._count.claims} claims
                     </div>
                   </div>
+                  <div className="flex items-center gap-4">
+                    <StatusBadge status={item.status} />
+                    <Link
+                      href={`/items/${item.id}`}
+                      className="font-outfit bg-transparent border border-[#C4A35A]/20 text-[10px] tracking-[2px] uppercase text-[#F2EFE8] px-4 py-2 rounded-[2px] flex items-center gap-2 hover:bg-[#C4A35A]/10 hover:border-[#C4A35A]/40 transition-all"
+                    >
+                      Manage
+                      <i className="fa-solid fa-arrow-right text-[9px]"></i>
+                    </Link>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <StatusBadge status={item.status} />
-                  <Link
-                    href={`/items/${item.id}`}
-                    className="font-outfit bg-gold/10 border border-gold/20 text-[12px] tracking-widest uppercase text-gold px-2.5 py-1 rounded-lg flex items-center gap-1.5 hover:bg-gold/20 transition-colors"
-                  >
-                    View
-                    <i className="fa-solid fa-eye text-xs"></i>
-                  </Link>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-      )}
+              ))
+            )}
+          </div>
+        )}
 
-      {/* My Claims */}
-      {activeTab === "claims" && (
-        <div className="flex flex-col">
-          {claims.length === 0 ? (
-            <p className="font-outfit text-xs text-slate text-center py-10">No claims yet</p>
-          ) : (
-            claims.map((claim) => (
-              <div
-                key={claim.id}
-                className="flex items-center justify-between px-6 py-4 border-b border-gold/10 last:border-0"
-              >
-                <div>
-                  <p className="font-outfit text-[15px] font-medium text-ivory">
-                    {claim.item.title}
-                  </p>
-                  <div className="flex items-center gap-1.5 flex-wrap font-outfit text-[11px] text-slate mt-0.5">
-                    {formatDate(claim.createdAt)} ·{" "}
-                    <div className="flex items-center gap-1">
-                      <i className={`fa-solid ${claim.item.type === "LOST" ? "fa-magnifying-glass" : "fa-box"} text-[10px]`} />{" "}
-                      {claim.item.type === "LOST" ? "Lost" : "Found"}
+        {/* My Claims */}
+        {activeTab === "claims" && (
+          <div className="flex flex-col">
+            {claims.length === 0 ? (
+               <div className="flex flex-col items-center justify-center flex-1 py-16 opacity-50">
+                  <i className="fa-solid fa-file-invoice text-3xl text-[#C4A35A]/20 mb-4" />
+                  <p className="font-outfit text-xs text-[#7A7A8C]">No claims submitted yet</p>
+               </div>
+            ) : (
+              claims.map((claim) => (
+                <div
+                  key={claim.id}
+                  className="flex items-center justify-between px-6 py-5 border-b border-[#C4A35A]/10 last:border-0 hover:bg-[#C4A35A]/5 transition-colors"
+                >
+                  <div className="flex flex-col gap-1.5">
+                    <p className="font-outfit text-sm font-medium text-[#F2EFE8]">
+                      {claim.item.title}
+                    </p>
+                    <div className="flex items-center gap-3 flex-wrap font-outfit text-[10px] text-[#7A7A8C] tracking-widest uppercase">
+                      <span>{formatDate(claim.createdAt)}</span>
+                      <span className="w-1 h-1 rounded-full bg-[#7A7A8C]/30" />
+                      <div className="flex items-center gap-1.5">
+                        <i className={`fa-solid ${claim.item.type === "LOST" ? "fa-magnifying-glass" : "fa-box"} text-[9px] text-[#C4A35A]/60`} />{" "}
+                        {claim.item.type === "LOST" ? "Lost" : "Found"}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <StatusBadge
-                    status={claim.status}
-                    rejectedBy={claim.rejectedBy}
-                  />
-                  <Link
-                    href={`/items/${claim.item.id}`}
-                    className="font-outfit bg-gold/10 border border-gold/20 text-[12px] tracking-widest uppercase text-gold px-2.5 py-1 rounded-lg flex items-center gap-1.5 hover:bg-gold/20 transition-colors"
-                  >
-                    View
-                    <i className="fa-solid fa-eye text-xs"></i>
-                  </Link>
-                  {claim.status === "ACCEPTED" && (
-                    <ChatButton
-                      claimId={claim.id}
-                      ownerId={claim.item.userId}
-                      claimantId={currentUserId}
-                      currentUserId={currentUserId}
-                      currentUserName={currentUserName}
-                      currentUserImage={currentUserImage}
+                  <div className="flex items-center gap-6">
+                    <StatusBadge
+                      status={claim.status}
+                      rejectedBy={claim.rejectedBy}
                     />
-                  )}
+                    <div className="flex items-center gap-2">
+                      <Link
+                        href={`/items/${claim.item.id}`}
+                        className="font-outfit bg-transparent border border-[#C4A35A]/20 text-[10px] tracking-[2px] uppercase text-[#F2EFE8] px-4 py-2 rounded-[2px] flex items-center gap-2 hover:bg-[#C4A35A]/10 transition-all"
+                      >
+                        View
+                      </Link>
+                      {claim.status === "ACCEPTED" && (
+                        <ChatButton
+                          claimId={claim.id}
+                          ownerId={claim.item.userId}
+                          claimantId={currentUserId}
+                          currentUserId={currentUserId}
+                          currentUserName={currentUserName}
+                          currentUserImage={currentUserImage}
+                        />
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))
-          )}
-        </div>
-      )}
+              ))
+            )}
+          </div>
+        )}
 
-      {/* Messages */}
-      {activeTab === "messages" && (
-        <MessagesTab
-          claims={claims}
-          currentUserId={currentUserId}
-          currentUserName={currentUserName}
-          currentUserImage={currentUserImage}
-        />
-      )}
+        {/* Messages */}
+        {activeTab === "messages" && (
+          <div>
+            <MessagesTab
+              claims={claims}
+              currentUserId={currentUserId}
+              currentUserName={currentUserName}
+              currentUserImage={currentUserImage}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

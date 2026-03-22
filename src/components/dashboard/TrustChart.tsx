@@ -16,47 +16,51 @@ interface Props {
 
 export default function TrustChart({ data }: Props) {
   return (
-    <div className="bg-void border-2 border-gold/18 rounded-xl p-7 h-full">
-      <p className="font-outfit text-[9px] font-medium tracking-[3px] uppercase text-slate mb-5">
+    <div className="bg-[#13131F] border border-[#C4A35A]/18 rounded-[4px] p-7 h-full shadow-xl">
+      <p className="font-outfit text-[9px] font-semibold tracking-[3px] uppercase text-[#7A7A8C] mb-8 flex items-center gap-2">
+        <i className="fa-solid fa-chart-line text-[#C4A35A]/60 text-xs"></i>
         Trust History
-        <i className="fa-solid fa-chart-simple ml-2 text-xs"></i>
       </p>
       <ResponsiveContainer width="100%" height={200}>
         <AreaChart data={data}>
           <defs>
             <linearGradient id="trustGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="var(--color-gold)" stopOpacity={0.25} />
-              <stop offset="95%" stopColor="var(--color-gold)" stopOpacity={0} />
+              <stop offset="5%" stopColor="#C4A35A" stopOpacity={0.2} />
+              <stop offset="95%" stopColor="#C4A35A" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(122,122,140,0.35)" />
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(196,163,90,0.05)" vertical={false} />
           <XAxis
             dataKey="month"
             tick={{
               fontSize: 10,
-              fill: "var(--color-slate)",
+              fill: "#7A7A8C",
               fontFamily: "var(--font-outfit)",
             }}
             axisLine={false}
             tickLine={false}
+            dy={10}
           />
           <YAxis hide />
           <Tooltip
             contentStyle={{
-              background: "var(--color-void)",
+              background: "#13131F",
               border: "1px solid rgba(196,163,90,0.2)",
               borderRadius: "2px",
-              fontSize: "12px",
+              fontSize: "11px",
               fontFamily: "var(--font-outfit)",
-              color: "var(--color-ivory)",
+              color: "#F2EFE8",
+              boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.3)",
             }}
+            itemStyle={{ color: "#C4A35A" }}
           />
           <Area
             type="monotone"
             dataKey="score"
-            stroke="var(--color-gold)"
-            strokeWidth={1.5}
+            stroke="#C4A35A"
+            strokeWidth={2}
             fill="url(#trustGradient)"
+            animationDuration={1500}
           />
         </AreaChart>
       </ResponsiveContainer>
