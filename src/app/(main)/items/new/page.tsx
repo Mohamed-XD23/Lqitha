@@ -142,7 +142,7 @@ export default function NewItemPage() {
           </p>
         </div>
 
-        <StepIndicator current={step} total={4} />
+        <StepIndicator current={step} />
 
         <div className="bg-[#13131F] border border-[#C4A35A]/15 rounded-[4px] p-10 shadow-2xl relative overflow-hidden group">
           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#C4A35A]/30 to-transparent" />
