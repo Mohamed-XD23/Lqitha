@@ -400,7 +400,7 @@ export default function Home() {
                 key={feature.num}
                 className="group p-8 bg-void border border-gold/5 hover:border-gold/20 transition-all duration-500 relative"
               >
-                <div className="absolute top-0 left-0 w-xs h-0 group-hover:h-full bg-linear-to-b from-gold to-transparent transition-all duration-500"></div>
+                <div className="absolute top-0 left-0 w-[3px] h-0 group-hover:h-full bg-linear-to-b from-gold to-transparent transition-all duration-500"></div>
                 <div className="font-outfit italic text-gold text-sm mb-4">
                   {feature.num}
                 </div>

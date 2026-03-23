@@ -91,7 +91,7 @@ function ResetForm() {
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="space-y-3">
               <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-outfit px-1">
-                New Passphrase
+                New Password
               </label>
               <div className="relative group/input">
                 <input
@@ -99,8 +99,8 @@ function ResetForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  minLength={6}
-                  placeholder="At least 6 characters"
+                  minLength={8}
+                  placeholder="At least 8 characters"
                   className="w-full bg-obsidian border border-gold/20 rounded-xs pl-5 pr-14 py-4 text-sm text-ivory placeholder:text-slate/20 outline-none focus:border-gold/60 transition-all font-outfit"
                 />
                 <button
@@ -115,7 +115,7 @@ function ResetForm() {
 
             <div className="space-y-3">
               <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-outfit px-1">
-                Confirm Passphrase
+                Confirm Password
               </label>
               <div className="relative group/input">
                 <input
@@ -123,7 +123,7 @@ function ResetForm() {
                   value={confirm}
                   onChange={(e) => setConfirm(e.target.value)}
                   required
-                  placeholder="Repeat new passphrase"
+                  placeholder="Repeat new password"
                   className={`w-full bg-obsidian border rounded-xs pl-5 pr-14 py-4 text-sm text-ivory placeholder:text-slate/20 outline-none transition-all font-outfit ${
                     error?.includes("match")
                       ? "border-red-500/40 focus:border-red-500/60"
