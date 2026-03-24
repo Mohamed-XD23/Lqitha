@@ -1,3 +1,4 @@
+import React from "react";
 import type { Metadata } from "next";
 import { Fraunces, Outfit, Cairo } from "next/font/google";
 import { ChatProvider } from "@/context/ChatContext";
@@ -37,19 +38,53 @@ export default async function RootLayout({
 }) {
   const locale = await getLocale();
   const dir = locale === "ar" ? "rtl" : "ltr";
+  
+  const fontDisplay = locale === "ar" ? "var(--font-cairo)" : "var(--font-fraunces)";
+  const fontInterface = locale === "ar" ? "var(--font-cairo)" : "var(--font-outfit)";
 
   return (
     <html dir={dir} lang={locale}>
       <body
         className={`${outfit.variable} ${fraunces.variable} ${cairo.variable} flex min-h-screen flex-col`}
-        style={{ fontFamily: "var(--font-interface), sans-serif" }}
+        style={{ 
+          fontFamily: `${fontInterface}, sans-serif`,
+          "--font-display": fontDisplay,
+          "--font-interface": fontInterface,
+          "--font-display-dynamic": fontDisplay,
+          "--font-interface-dynamic": fontInterface
+        } as React.CSSProperties}
       >
         <ChatProvider>
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
           <ChatSidebar />
-          <Toaster position="bottom-right" richColors />
+          <Toaster
+            position="bottom-right"
+            closeButton
+            visibleToasts={4}
+            gap={12}
+            offset={20}
+            toastOptions={{
+              duration: 4000,
+              unstyled: true,
+              classNames: {
+                toast: "app-toast",
+                title: "app-toast__title",
+                description: "app-toast__description",
+                icon: "app-toast__icon",
+                content: "app-toast__content",
+                success: "app-toast--success",
+                error: "app-toast--error",
+                info: "app-toast--info",
+                warning: "app-toast--warning",
+                loading: "app-toast--loading",
+                closeButton: "app-toast__close",
+                actionButton: "app-toast__action",
+                cancelButton: "app-toast__cancel",
+              },
+            }}
+          />
         </ChatProvider>
       </body>
     </html>

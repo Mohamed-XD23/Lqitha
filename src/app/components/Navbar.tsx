@@ -1,5 +1,6 @@
 import Link from "next/link";
 import NextImage from "next/image";
+import type { Session } from "next-auth";
 import { auth } from "@/lib/auth";
 import db from "@/lib/db";
 import MobileMenu from "./MobileMenu";
@@ -11,19 +12,57 @@ import { handleSignOut } from "@/actions/auth.actions";
 import { LogOut, LayoutDashboard, Settings } from "lucide-react";
 
 export default async function Navbar() {
-  const session = await auth();
-  const locale = await getLocale();
-  const dict = await getDictionary();
+  const fallbackDict = {
+    nav: {
+      browse: "Browse",
+      reportItem: "Post Item",
+      dashboard: "Dashboard",
+      settings: "Settings",
+      signOut: "Sign Out",
+      signIn: "Sign In",
+      register: "Register",
+      language: "Language",
+    },
+  };
+
+  let session: Session | null = null;
+  let locale: "en" | "ar" = "en";
+  let dict = fallbackDict;
+
+  try {
+    session = await auth();
+  } catch (error) {
+    console.error("Navbar auth() failed:", error);
+  }
+
+  try {
+    locale = await getLocale();
+  } catch (error) {
+    console.error("Navbar getLocale() failed:", error);
+  }
+
+  try {
+    dict = await getDictionary();
+  } catch (error) {
+    console.error("Navbar getDictionary() failed:", error);
+  }
 
   // Fetch fresh user data if session exists to avoid stale JWT data
   const dbUser = session?.user?.id 
-    ? await db.user.findUnique({ 
+    ? await db.user.findUnique({
         where: { id: session.user.id },
-        select: { name: true, image: true, email: true }
-      }) 
+        select: { name: true, image: true, email: true, emailVerified: true },
+      }).catch((error) => {
+        console.error("Navbar user lookup failed:", error);
+        return null;
+      })
     : null;
 
   const user = dbUser || (session?.user ? { ...session.user } : null);
+  const canUseSecureActions = session?.user ? (dbUser ? Boolean(dbUser.emailVerified) : true) : false;
+  const showEmailVerificationAlert = Boolean(session?.user && dbUser && !dbUser.emailVerified);
+  const verifyActionLabel = "Verify Email First";
+  const verifyAlertMessage = "Please verify your email. We sent a verification link to your inbox.";
 
 
   return (
@@ -31,7 +70,7 @@ export default async function Navbar() {
       <div className="mx-auto flex max-w-6xl items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 relative z-50 group">
-          <div className="transition-transform duration-700 group-hover:rotate-12">
+          <div className="transition-transform duration-700 group-hover:rotate-12 rtl:group-hover:-rotate-12">
             <svg
               width="28"
               height="40"
@@ -49,7 +88,10 @@ export default async function Navbar() {
               />
             </svg>
           </div>
-          <span className="font-display text-2xl font-light tracking-[5px] text-ivory group-hover:text-gold transition-colors">
+          <span
+            className="text-2xl font-light tracking-[4px] text-ivory group-hover:text-gold transition-colors"
+            style={{ fontFamily: "var(--font-fraunces), serif" }}
+          >
             LQITHA
           </span>
         </Link>
@@ -58,20 +100,24 @@ export default async function Navbar() {
         <nav className="hidden md:flex items-center gap-12">
           <Link
             href="/browse"
-            className="font-interface text-[11px] font-medium tracking-[3px] uppercase text-slate hover:text-gold transition-all"
+            className="font-interface text-[11px] rtl:text-sm font-medium tracking-[3px] uppercase text-slate hover:text-gold transition-all"
           >
             {dict.nav.browse}
           </Link>
 
           {session?.user && (
-            <>
+            canUseSecureActions ? (
               <Link
                 href="/items/new"
-                className="font-interface text-[10px] font-bold tracking-[3px] uppercase bg-gold text-obsidian px-8 py-3 rounded-xs hover:bg-ivory transition-all shadow-xl shadow-gold/10"
+                className="font-interface text-[10px] rtl:text-xs font-bold tracking-[3px] uppercase bg-gold text-obsidian px-8 py-3 rounded-xs hover:bg-ivory transition-all shadow-xl shadow-gold/10"
               >
                 {dict.nav.reportItem}
               </Link>
-            </>
+            ) : (
+              <span className="font-interface text-[10px] rtl:text-xs font-bold tracking-[3px] uppercase border border-gold/25 text-gold/70 px-8 py-3 rounded-xs cursor-not-allowed">
+                {verifyActionLabel}
+              </span>
+            )
           )}
 
           {session?.user && (
@@ -147,12 +193,18 @@ export default async function Navbar() {
                   </div>
                 </div>
 
-                <Link
-                  href="/items/new"
-                  className="font-interface text-xs font-bold tracking-sm uppercase bg-gold text-obsidian px-12 py-5 rounded-xs shadow-2xl shadow-gold/20"
-                >
-                  {dict.nav.reportItem}
-                </Link>
+                {canUseSecureActions ? (
+                  <Link
+                    href="/items/new"
+                    className="font-interface text-xs font-bold tracking-sm uppercase bg-gold text-obsidian px-12 py-5 rounded-xs shadow-2xl shadow-gold/20"
+                  >
+                    {dict.nav.reportItem}
+                  </Link>
+                ) : (
+                  <span className="font-interface text-xs font-bold tracking-sm uppercase border border-gold/25 text-gold/70 px-12 py-5 rounded-xs cursor-not-allowed">
+                    {verifyActionLabel}
+                  </span>
+                )}
 
                 <div className="flex items-center gap-6 mt-4">
                   <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-gold/5 bg-gold/5 min-w-[100px]">
@@ -197,6 +249,13 @@ export default async function Navbar() {
           </div>
         </MobileMenu>
       </div>
+      {showEmailVerificationAlert && (
+        <div className="mx-auto mt-3 max-w-6xl rounded-xs border border-amber-400/25 bg-amber-400/10 px-4 py-2.5">
+          <p className="font-interface text-[11px] font-medium tracking-wide text-amber-100">
+            {verifyAlertMessage}
+          </p>
+        </div>
+      )}
     </header>
   );
 }

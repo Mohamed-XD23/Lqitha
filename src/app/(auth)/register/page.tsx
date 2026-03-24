@@ -7,6 +7,7 @@ import Link from "next/link";
 import { registerUser } from "@/actions/auth.actions";
 import ButtonLoader from "@/components/ui/ButtonLoader";
 import { Eye, EyeOff, AlertCircle } from "lucide-react";
+import { toast } from "sonner";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -37,6 +38,7 @@ export default function RegisterPage() {
       setLoading(false);
       return;
     }
+    toast.success("Account created. Please verify your email from the link we sent.");
     router.push("/login");
   }
 
@@ -181,7 +183,7 @@ export default function RegisterPage() {
               <label
                 htmlFor="terms"
                 style={{
-                  fontFamily: "var(--font-outfit)",
+                  fontFamily: "var(--font-interface)",
                   fontSize: "11px",
                   color: "#7A7A8C",
                   lineHeight: 1.6,

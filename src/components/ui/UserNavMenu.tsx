@@ -24,6 +24,7 @@ interface UserNavMenuProps {
 export default function UserNavMenu({ user, dict }: UserNavMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -37,13 +38,44 @@ export default function UserNavMenu({ user, dict }: UserNavMenuProps) {
     };
   }, []);
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const positionPanel = () => {
+      if (!panelRef.current) return;
+      const viewportPadding = 8;
+      // Always measure from the unshifted base state to avoid drift on repeated scroll updates.
+      panelRef.current.style.transform = "translateX(-50%)";
+      const rect = panelRef.current.getBoundingClientRect();
+
+      let shift = 0;
+      if (rect.left < viewportPadding) {
+        shift = viewportPadding - rect.left;
+      } else if (rect.right > window.innerWidth - viewportPadding) {
+        shift = window.innerWidth - viewportPadding - rect.right;
+      }
+
+      panelRef.current.style.transform = `translateX(calc(-50% + ${shift}px))`;
+    };
+
+    const rafId = window.requestAnimationFrame(positionPanel);
+    window.addEventListener("resize", positionPanel);
+    window.addEventListener("scroll", positionPanel, true);
+
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", positionPanel);
+      window.removeEventListener("scroll", positionPanel, true);
+    };
+  }, [isOpen]);
+
   const initials = user.name ? user.name.charAt(0).toUpperCase() : "";
 
   return (
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 focus:outline-none group"
+        className="relative flex items-center gap-2 focus:outline-none group"
         aria-label="User menu"
       >
         <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-gold/20 group-hover:border-gold/50 transition-all flex items-center justify-center bg-gold/10">
@@ -61,10 +93,20 @@ export default function UserNavMenu({ user, dict }: UserNavMenuProps) {
             </span>
           )}
         </div>
+        <span
+          aria-hidden="true"
+          className={`pointer-events-none absolute -bottom-1 left-1/2 h-1 w-8 -translate-x-1/2 rounded-full bg-gold/35 transition-opacity ${
+            isOpen ? "opacity-100" : "opacity-0"
+          }`}
+        />
       </button>
 
       {isOpen && (
-        <div className="absolute ltr:right-0 rtl:left-0 mt-3 w-64 bg-obsidian border border-gold/15 rounded-sm shadow-2xl z-50 overflow-hidden transform ltr:origin-top-right rtl:origin-top-left">
+        <div
+          ref={panelRef}
+          className="absolute left-1/2 mt-3 w-64 max-w-[calc(100vw-1rem)] bg-obsidian border border-gold/15 rounded-sm shadow-2xl z-50 overflow-visible origin-top"
+          style={{ transform: "translateX(-50%)" }}
+        >
           <div className="p-4 border-b border-gold/10 bg-void/50 text-left ltr:text-left rtl:text-right">
             <p className="font-interface text-sm font-semibold text-ivory truncate">{user.name}</p>
             <p className="font-interface text-[10px] text-slate truncate uppercase tracking-widest mt-0.5">{user.email}</p>

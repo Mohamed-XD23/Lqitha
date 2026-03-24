@@ -52,7 +52,7 @@ export default function ChatButton({
         color: "#080810",
         fontSize: "15px",
         fontWeight: 500,
-        fontFamily: "var(--font-outfit)",
+        fontFamily: "var(--font-interface)",
       }}
     >
       <MessageSquare className="w-3 h-3" />

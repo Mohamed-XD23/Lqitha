@@ -26,7 +26,7 @@ export default function LanguageSwitcher({ currentLocale }: { currentLocale: "en
       title={currentLocale === "en" ? "تبديل إلى العربية" : "Switch to English"}
     >
       <Globe className="w-4 h-4" />
-      <span className="font-outfit text-xs font-medium uppercase tracking-widest mt-px">
+      <span className="font-interface text-xs font-medium uppercase tracking-widest mt-px">
         {currentLocale === "en" ? "AR" : "EN"}
       </span>
     </button>

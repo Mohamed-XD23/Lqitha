@@ -19,10 +19,123 @@
     "language": "Language"
   },
   "home": {
-    "heroTitle": "Lost Something? Found Something?",
-    "heroSubtitle": "The most secure and transparent way to reunite people with their lost belongings.",
-    "reportLost": "Report Lost Item",
-    "reportFound": "Report Found Item"
+    "hero": {
+      "badge": "Lost · Found · Verified",
+      "titlePrefix": "Lqi",
+      "titleSuffix": "tha",
+      "tagline": "Your Lost Items Deserve to Come Home",
+      "description": "A secure digital platform for lost & found item management with ownership verification. Built for young adults who demand clarity, trust, and precision in every interaction.",
+      "getStarted": "Get Started",
+      "learnMore": "Learn More"
+    },
+    "problem": {
+      "sectionNum": "01",
+      "sectionTitle": "The Problem",
+      "lost": {
+        "title": "Lost & Confused",
+        "desc": "Losing valuable items is stressful. You don't know where to look or who to trust with your belongings."
+      },
+      "noVerification": {
+        "title": "No Verification",
+        "desc": "How do you know the person claiming your item is really the owner? Traditional methods lack security."
+      },
+      "noConnection": {
+        "title": "No Connection",
+        "desc": "Lost and found items scattered across social media and bulletin boards. No centralized, trustworthy place."
+      }
+    },
+    "solution": {
+      "sectionNum": "02",
+      "sectionTitle": "Our Solution",
+      "centralized": {
+        "title": "Centralized Platform",
+        "desc": "One secure place for all lost and found items in your community."
+      },
+      "verification": {
+        "title": "Verified Ownership",
+        "desc": "Secret questions ensure only the real owner can claim items."
+      },
+      "trust": {
+        "title": "Trust Score System",
+        "desc": "Build your reputation through successful claims and verified transactions."
+      },
+      "communication": {
+        "title": "Secure Communication",
+        "desc": "Direct messaging between owners and claimants for coordination."
+      },
+      "secureInfo": {
+        "title": "Secure & Verified",
+        "items": [
+          "Encrypted communications",
+          "Secure verification process",
+          "Privacy-first design",
+          "Transparent trust metrics"
+        ]
+      }
+    },
+    "howItWorks": {
+      "sectionNum": "03",
+      "sectionTitle": "How It Works",
+      "steps": [
+        {
+          "title": "Report",
+          "desc": "Post your lost or found item with details, photos, and a secret question."
+        },
+        {
+          "title": "Verify",
+          "desc": "Claimants answer your secret question. Only the real owner will know the answer."
+        },
+        {
+          "title": "Reunite",
+          "desc": "Accept the verified claim and coordinate item return. Build your trust score."
+        }
+      ]
+    },
+    "features": {
+      "sectionNum": "04",
+      "sectionTitle": "Core Features",
+      "items": [
+        {
+          "title": "Report Lost Items",
+          "desc": "Quickly report any misplaced valuable with precise details, location data, and photos."
+        },
+        {
+          "title": "Verify Ownership",
+          "desc": "Our secure verification system ensures items are only returned to their rightful owners."
+        },
+        {
+          "title": "Claim Discovery",
+          "desc": "Seamlessly browse found items and initiate secure claim requests within seconds."
+        }
+      ]
+    },
+    "trustSystem": {
+      "sectionNum": "05",
+      "sectionTitle": "Trust Score System",
+      "title": "Build Your Reputation",
+      "description": "Your trust score reflects your reliability and integrity on Lqitha. It grows with every successful claim and verified transaction.",
+      "points": {
+        "claim": "+10 points",
+        "claim_desc": "When your claim is accepted by the owner",
+        "resolved": "+15 points",
+        "resolved_desc": "When you return a found item to its owner",
+        "perks": "Exclusive",
+        "perks_desc": "Unlock badges, priority visibility, and community recognition"
+      },
+      "levels": {
+        "title": "Trust Score Levels",
+        "verified": "Verified",
+        "trusted": "Trusted",
+        "new": "New Member"
+      }
+    },
+    "cta": {
+      "badge": "Ready to Get Started?",
+      "title": "Find Your Lost Items Today",
+      "description": "Join thousands of users who have successfully recovered their belongings through Lqitha. Whether you're looking for something you lost or want to help others find theirs, we're here to help.",
+      "browse": "Browse Items Now",
+      "register": "Create Account"
+    }
   },
   "dashboard": {
     "title": "Dashboard",

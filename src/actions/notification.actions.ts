@@ -3,7 +3,7 @@
 import prisma from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
-import { pusherServer } from "@/lib/pusher";
+import { pusherServer } from "@/lib/pusher.server";
 import { NotificationType } from "@prisma/client";
 
 export async function getNotifications() {

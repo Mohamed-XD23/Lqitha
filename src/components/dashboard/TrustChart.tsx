@@ -18,7 +18,7 @@ interface Props {
 export default function TrustChart({ data }: Props) {
   return (
     <div className="bg-void border border-gold/18 rounded-sm p-7 h-full shadow-xl">
-      <p className="font-outfit text-[9px] font-semibold tracking-[3px] uppercase text-slate mb-8 flex items-center gap-2">
+      <p className="font-interface text-[9px] font-semibold tracking-[3px] uppercase text-slate mb-8 flex items-center gap-2">
         <LineChart className="w-3.5 h-3.5 text-gold/60" strokeWidth={2} />
         Trust History
       </p>
@@ -40,7 +40,7 @@ export default function TrustChart({ data }: Props) {
             tick={{
               fontSize: 10,
               fill: "#7A7A8C",
-              fontFamily: "var(--font-outfit)",
+              fontFamily: "var(--font-interface)",
             }}
             axisLine={false}
             tickLine={false}
@@ -53,7 +53,7 @@ export default function TrustChart({ data }: Props) {
               border: "1px solid rgba(196,163,90,0.2)",
               borderRadius: "2px",
               fontSize: "11px",
-              fontFamily: "var(--font-outfit)",
+              fontFamily: "var(--font-interface)",
               color: "#F2EFE8",
               boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.3)",
             }}

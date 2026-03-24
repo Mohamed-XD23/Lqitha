@@ -42,7 +42,7 @@ export default function ClaimButton({
   } | null>(null);
   const [currentStatus, setCurrentStatus] = useState<ClaimStatus | null>(claimStatus);
 
-  // ── Not logged in ──
+  // Not logged in
   if (!isLoggedIn) {
     return (
       <Link
@@ -54,7 +54,7 @@ export default function ClaimButton({
     );
   }
 
-  // ── Already ACCEPTED ──
+  // Already ACCEPTED
   if (currentStatus?.status === "ACCEPTED") {
     return (
       <div style={{ background: "rgba(100,200,130,0.08)", border: "1px solid rgba(100,200,130,0.25)", borderRadius: "999px", padding: "16px", textAlign: "center" }}>
@@ -69,7 +69,7 @@ export default function ClaimButton({
     );
   }
 
-  // ── REJECTED by system (exhausted) ──
+  // REJECTED by system (exhausted)
   if (currentStatus?.status === "REJECTED" && currentStatus.rejectedBy === "system") {
     return (
       <div style={{ background: "rgba(200,100,100,0.08)", border: "1px solid rgba(200,100,100,0.25)", borderRadius: "999px", padding: "16px", textAlign: "center" }}>
@@ -84,7 +84,7 @@ export default function ClaimButton({
     );
   }
 
-  // ── REJECTED by owner ──
+  // REJECTED by owner
   if (currentStatus?.status === "REJECTED" && currentStatus.rejectedBy === "owner") {
     return (
       <div style={{ background: "rgba(200,100,100,0.08)", border: "1px solid rgba(200,100,100,0.25)", borderRadius: "999px", padding: "16px", textAlign: "center" }}>
@@ -99,7 +99,7 @@ export default function ClaimButton({
     );
   }
 
-  // ── PENDING + isVerified (awaiting owner) ──
+  // PENDING + isVerified (awaiting owner)
   if (currentStatus?.status === "PENDING" && currentStatus.isVerified) {
     return (
       <div style={{ background: "rgba(196,163,90,0.08)", border: "1px solid rgba(196,163,90,0.25)", borderRadius: "999px", padding: "16px", textAlign: "center" }}>
@@ -114,7 +114,7 @@ export default function ClaimButton({
     );
   }
 
-  // ── PENDING + wrong answer + attempts left ──
+  // PENDING + wrong answer + attempts left
   const attemptsLeft = currentStatus?.attemptsLeft ?? currentStatus?.maxAttempts ?? 3;
   const hasExistingClaim = !!currentStatus;
 
@@ -123,30 +123,60 @@ export default function ClaimButton({
     setIsLoading(true);
     setError(null);
     const response = await submitClaim(itemId, answer);
-    if (response.error) {
+    if ("error" in response && response.error) {
       toast.error(response.error);
       setError(response.error);
       setIsLoading(false);
       return;
     }
+    if (!("success" in response) || !response.success) {
+      setIsLoading(false);
+      return;
+    }
     if (response.isCorrect) {
-      toast.success("Correct answer! Your claim has been sent ✓");
+      toast.success("Correct answer! Your claim has been sent.");
     } else if (response.status === "REJECTED") {
-      toast.error("You have exhausted all attempts ✕");
+      toast.error("You have exhausted all attempts.");
     }
     setResult({
-      isCorrect: response.isCorrect!,
-      status: response.status!,
-      attemptsLeft: response.attemptsLeft!,
+      isCorrect: response.isCorrect,
+      status: response.status,
+      attemptsLeft: response.attemptsLeft,
     });
     // Update local status
     setCurrentStatus({
       status: response.status as "PENDING" | "ACCEPTED" | "REJECTED",
-      isVerified: response.isCorrect!,
+      isVerified: response.isCorrect,
       rejectedBy: response.status === "REJECTED" ? "system" : null,
       attemptsUsed: (currentStatus?.attemptsUsed ?? 0) + 1,
       maxAttempts: currentStatus?.maxAttempts ?? 3,
-      attemptsLeft: response.attemptsLeft!,
+      attemptsLeft: response.attemptsLeft,
+    });
+    setIsLoading(false);
+  }
+
+  async function handleQuickClaim() {
+    setIsLoading(true);
+    setError(null);
+    const response = await submitClaim(itemId, "");
+    if ("error" in response && response.error) {
+      toast.error(response.error);
+      setError(response.error);
+      setIsLoading(false);
+      return;
+    }
+    if (!("success" in response) || !response.success) {
+      setIsLoading(false);
+      return;
+    }
+    toast.success("Your claim has been sent successfully.");
+    setCurrentStatus({
+      status: response.status as "PENDING" | "ACCEPTED" | "REJECTED",
+      isVerified: response.isCorrect,
+      rejectedBy: response.status === "REJECTED" ? "system" : null,
+      attemptsUsed: (currentStatus?.attemptsUsed ?? 0) + 1,
+      maxAttempts: currentStatus?.maxAttempts ?? 3,
+      attemptsLeft: response.attemptsLeft,
     });
     setIsLoading(false);
   }
@@ -155,8 +185,9 @@ export default function ClaimButton({
     <>
       <div className="space-y-2">
         <button
-          onClick={() => secretQuestion ? setShowModal(true) : submitClaim(itemId, "")}
-          className="w-full font-interface text-sm font-bold tracking-[3px] uppercase py-4 rounded-full bg-gold text-obsidian hover:bg-ivory transition-all duration-300 shadow-lg shadow-gold/20 cursor-pointer"
+          onClick={() => secretQuestion ? setShowModal(true) : void handleQuickClaim()}
+          disabled={isLoading}
+          className="w-full font-interface text-sm font-bold tracking-[3px] uppercase py-4 rounded-full bg-gold text-obsidian hover:bg-ivory transition-all duration-300 shadow-lg shadow-gold/20 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {itemType === "FOUND" ? "I am the owner" : "I found this item"}
         </button>
@@ -178,7 +209,7 @@ export default function ClaimButton({
             {result ? (
               <div className="text-center py-4">
                 <div className="text-5xl mb-6">
-                  {result.isCorrect ? "✨" : "🚫"}
+                  {result.isCorrect ? "OK" : "NO"}
                 </div>
                 <span className="font-display text-gold text-lg font-light tracking-widest uppercase">
                   {result.isCorrect ? "Correct Answer!" : "Incorrect Answer"}
@@ -192,7 +223,7 @@ export default function ClaimButton({
                 </p>
                 <button
                   onClick={() => { setShowModal(false); setResult(null); setAnswer(""); }}
-                  className="w-full font-outfit text-[11px] font-bold tracking-xs uppercase py-3 rounded-full bg-gold text-obsidian hover:bg-ivory transition-all"
+                  className="w-full font-interface text-[11px] font-bold tracking-xs uppercase py-3 rounded-full bg-gold text-obsidian hover:bg-ivory transition-all"
                 >
                   Close
                 </button>
@@ -261,3 +292,5 @@ export default function ClaimButton({
     </>
   );
 }
+
+

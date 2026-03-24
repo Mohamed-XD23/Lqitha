@@ -43,7 +43,7 @@ function StepIndicator({ current }: { current: number }) {
           <div key={label} className="flex flex-1 items-center">
             <div className="flex flex-col items-center">
               <div
-                className={`flex h-11 w-11 items-center justify-center rounded-px text-[12px] font-bold transition-all duration-500 font-outfit tracking-tighter
+                className={`flex h-11 w-11 items-center justify-center rounded-px text-[12px] font-bold transition-all duration-500 font-interface tracking-tighter
                 ${
                   isCompleted
                     ? "bg-gold text-obsidian"
@@ -59,7 +59,7 @@ function StepIndicator({ current }: { current: number }) {
                 )}
               </div>
               <span
-                className={`mt-3 text-md uppercase tracking-[3px] font-outfit font-bold transition-colors ${
+                className={`mt-3 text-md uppercase tracking-[3px] font-interface font-bold transition-colors ${
                   isCurrent ? "text-gold" : "text-slate/40"
                 }`}
               >
@@ -151,7 +151,7 @@ export default function NewItemPage() {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-3 mb-4">
             <div className="h-px w-6 bg-gold/40"></div>
-            <span className="font-outfit text-[10px] font-bold tracking-sm uppercase text-gold">
+            <span className="font-interface text-[10px] font-bold tracking-sm uppercase text-gold">
               Registry
             </span>
             <div className="h-px w-6 bg-gold/40"></div>
@@ -159,7 +159,7 @@ export default function NewItemPage() {
           <h1 className="font-display text-5xl font-light text-ivory leading-tight mt-2">
             Create Report
           </h1>
-          <p className="mt-6 text-xs text-slate font-outfit tracking-[1.5px] max-w-xs mx-auto uppercase">
+          <p className="mt-6 text-xs text-slate font-interface tracking-[1.5px] max-w-xs mx-auto uppercase">
             Help us bridge the gap between lost and found
           </p>
         </div>
@@ -173,7 +173,7 @@ export default function NewItemPage() {
           {step === 1 && (
             <div className="flex flex-col gap-8">
               <div>
-                <label className="mb-4 block text-[10px] font-bold tracking-[3px] uppercase text-slate font-outfit">
+                <label className="mb-4 block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
                   Nature of Report
                 </label>
                 <div className="grid grid-cols-2 gap-4">
@@ -203,7 +203,7 @@ export default function NewItemPage() {
                         )}
                       </span>
                       <span
-                        className={`mt-3 font-semibold font-outfit text-[11px] tracking-xs uppercase ${watchedType === t ? "text-ivory" : "text-slate"}`}
+                        className={`mt-3 font-semibold font-interface text-[11px] tracking-xs uppercase ${watchedType === t ? "text-ivory" : "text-slate"}`}
                       >
                         {t === "LOST" ? "Lost" : "Found"}
                       </span>
@@ -218,29 +218,29 @@ export default function NewItemPage() {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-outfit">
+                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
                   Identification Title
                 </label>
                 <input
                   {...register("title")}
                   placeholder="e.g., Black Leather Wallet"
-                  className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-outfit shadow-sm"
+                  className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-interface shadow-sm"
                 />
                 {errors.title && (
-                  <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-outfit">
+                  <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-interface">
                     {errors.title.message}
                   </p>
                 )}
               </div>
 
               <div className="space-y-3">
-                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-outfit">
+                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
                   Category
                 </label>
                 <div className="relative">
                   <select
                     {...register("category")}
-                    className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory outline-none focus:border-gold/50 transition-all appearance-none font-outfit shadow-sm"
+                    className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory outline-none focus:border-gold/50 transition-all appearance-none font-interface shadow-sm"
                   >
                     {[
                       ["PHONE", "Phone"],
@@ -262,17 +262,17 @@ export default function NewItemPage() {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-outfit">
+                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
                   Detailed Description
                 </label>
                 <textarea
                   {...register("description")}
                   rows={4}
                   placeholder="Include defining features, marks, or brands..."
-                  className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-outfit resize-none shadow-sm"
+                  className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-interface resize-none shadow-sm"
                 />
                 {errors.description && (
-                  <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-outfit">
+                  <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-interface">
                     {errors.description.message}
                   </p>
                 )}
@@ -284,23 +284,23 @@ export default function NewItemPage() {
           {step === 2 && (
             <div className="flex flex-col gap-8">
               <div className="space-y-3">
-                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-outfit">
+                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
                   Physical Location
                 </label>
                 <input
                   {...register("location")}
                   placeholder="e.g., Algiers Center, Metro Station"
-                  className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-outfit shadow-sm"
+                  className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-interface shadow-sm"
                 />
                 {errors.location && (
-                  <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-outfit">
+                  <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-interface">
                     {errors.location.message}
                   </p>
                 )}
               </div>
 
               <div className="space-y-3">
-                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-outfit">
+                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
                   Occurrence Date & Time
                 </label>
                 <input
@@ -315,17 +315,17 @@ export default function NewItemPage() {
                     const min = String(now.getMinutes()).padStart(2, "0");
                     return `${y}-${m}-${d}T${h}:${min}`;
                   })()}
-                  className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory outline-none focus:border-gold/50 transition-all font-outfit scheme-dark shadow-sm"
+                  className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory outline-none focus:border-gold/50 transition-all font-interface scheme-dark shadow-sm"
                 />
                 {errors.date && (
-                  <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-outfit">
+                  <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-interface">
                     {errors.date.message}
                   </p>
                 )}
               </div>
 
               <div className="space-y-3">
-                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-outfit">
+                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
                   Contact Line
                   <span className="ml-3 text-md tracking-px lowercase text-gold/60 font-medium">
                     (Securely encrypted)
@@ -344,17 +344,17 @@ export default function NewItemPage() {
                   maxLength={10}
                   minLength={10}
                   inputMode="numeric"
-                  className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-outfit shadow-sm"
+                  className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-interface shadow-sm"
                 />
                 {errors.phone && (
-                  <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-outfit">
+                  <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-interface">
                     {errors.phone.message}
                   </p>
                 )}
               </div>
 
               <div className="space-y-3">
-                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-outfit">
+                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
                   Visual Documentation
                   <span className="ml-3 text-md tracking-px lowercase text-gold/40 font-medium">
                     (Recommended)
@@ -386,19 +386,19 @@ export default function NewItemPage() {
                     <ShieldHalf className="w-4 h-4 text-gold" strokeWidth={2} />
                   </div>
                   <div className="space-y-3">
-                    <p className="font-outfit text-sm font-semibold text-ivory tracking-tight">
+                    <p className="font-interface text-sm font-semibold text-ivory tracking-tight">
                       Security Protocol
                     </p>
-                    <p className="text-[12px] text-slate leading-relaxed font-outfit font-light">
+                    <p className="text-[12px] text-slate leading-relaxed font-interface font-light">
                       {watchedType === "FOUND"
                         ? "Define a specific verification question. The claimant must answer this correctly before contact is permitted."
                         : "Define a question that helps others identify if they have found your specific item."}
                     </p>
                     <div className="pt-2">
-                      <p className="text-[9px] text-gold/70 font-outfit font-bold uppercase tracking-xs">
+                      <p className="text-[9px] text-gold/70 font-interface font-bold uppercase tracking-xs">
                         Example
                       </p>
-                      <p className="text-[11px] text-slate/60 font-outfit italic mt-1">
+                      <p className="text-[11px] text-slate/60 font-interface italic mt-1">
                         {watchedType === "FOUND"
                           ? '"What is the sticker on the back?" or "What is the unique scuff mark?"'
                           : '"What color is the charm attached?" or "What was the lock combination?"'}
@@ -409,23 +409,23 @@ export default function NewItemPage() {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-outfit">
+                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
                   Verification Question
                 </label>
                 <input
                   {...register("secretQuestion")}
                   placeholder="e.g., What is the unique mark on the back?"
-                  className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-outfit shadow-sm"
+                  className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-interface shadow-sm"
                 />
                 {errors.secretQuestion && (
-                  <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-outfit">
+                  <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-interface">
                     {errors.secretQuestion.message}
                   </p>
                 )}
               </div>
 
               <div className="space-y-3">
-                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-outfit">
+                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
                   Verification Answer
                 </label>
                 <div className="relative">
@@ -433,7 +433,7 @@ export default function NewItemPage() {
                     {...register("secretAnswer")}
                     type={showAnswer ? "text" : "password"}
                     placeholder="Correct answer for matching"
-                    className="w-full bg-obsidian border border-gold/15 rounded-xs pl-5 pr-12 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-outfit shadow-sm"
+                    className="w-full bg-obsidian border border-gold/15 rounded-xs pl-5 pr-12 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-interface shadow-sm"
                   />
                   <button
                     type="button"
@@ -444,7 +444,7 @@ export default function NewItemPage() {
                   </button>
                 </div>
                 {errors.secretAnswer && (
-                  <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-outfit">
+                  <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-interface">
                     {errors.secretAnswer.message}
                   </p>
                 )}
@@ -547,11 +547,11 @@ export default function NewItemPage() {
                   >
                     <div className="flex items-center gap-4">
                       {icon}
-                      <span className="font-outfit text-[9px] uppercase tracking-[3px] text-slate font-bold">
+                      <span className="font-interface text-[9px] uppercase tracking-[3px] text-slate font-bold">
                         {label}
                       </span>
                     </div>
-                    <span className="text-[13px] font-medium text-ivory font-outfit">
+                    <span className="text-[13px] font-medium text-ivory font-interface">
                       {value}
                     </span>
                   </div>
@@ -560,7 +560,7 @@ export default function NewItemPage() {
 
               <div className="bg-gold/5 border border-gold/20 rounded-xs px-6 py-4 flex gap-4 items-center">
                 <Info className="w-4 h-4 text-gold shrink-0" strokeWidth={2} />
-                <p className="text-[10px] text-slate font-outfit leading-relaxed uppercase tracking-px">
+                <p className="text-[10px] text-slate font-interface leading-relaxed uppercase tracking-px">
                   Note: Contact information remains encrypted until verification
                   is complete.
                 </p>
@@ -585,7 +585,7 @@ export default function NewItemPage() {
           {step > 1 && (
             <button
               onClick={() => setStep((s) => s - 1)}
-              className="px-10 py-5 rounded-xs border border-gold/30 text-gold font-outfit text-[10px] font-bold uppercase tracking-sm hover:bg-gold/5 hover:border-gold transition-all flex items-center justify-center gap-3 group min-w-[140px]"
+              className="px-10 py-5 rounded-xs border border-gold/30 text-gold font-interface text-[10px] font-bold uppercase tracking-sm hover:bg-gold/5 hover:border-gold transition-all flex items-center justify-center gap-3 group min-w-[140px]"
             >
               <ArrowLeft
                 className="w-3 h-3 transition-transform group-hover:-translate-x-1"
@@ -597,7 +597,7 @@ export default function NewItemPage() {
           {step < 4 ? (
             <button
               onClick={handleNext}
-              className="flex-1 bg-gold px-10 py-5 rounded-xs text-obsidian font-outfit text-[10px] font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-2xl shadow-gold/10 flex items-center justify-center gap-3 group"
+              className="flex-1 bg-gold px-10 py-5 rounded-xs text-obsidian font-interface text-[10px] font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-2xl shadow-gold/10 flex items-center justify-center gap-3 group"
             >
               Proceed
               <ArrowRight
@@ -609,7 +609,7 @@ export default function NewItemPage() {
             <button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="flex-1 bg-gold px-10 py-5 rounded-xs text-obsidian font-outfit text-[10px] font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-2xl shadow-gold/10 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 min-h-[60px]"
+              className="flex-1 bg-gold px-10 py-5 rounded-xs text-obsidian font-interface text-[10px] font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-2xl shadow-gold/10 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 min-h-[60px]"
             >
               {isSubmitting ? (
                 <div className="scale-[1.2] origin-center">

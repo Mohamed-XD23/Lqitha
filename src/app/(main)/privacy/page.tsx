@@ -5,7 +5,7 @@ export default function PrivacyPage() {
         <div style={{ marginBottom: "40px" }}>
           <span
             style={{
-              fontFamily: "var(--font-outfit)",
+              fontFamily: "var(--font-interface)",
               fontSize: "10px",
               fontWeight: 500,
               letterSpacing: "4px",
@@ -28,7 +28,7 @@ export default function PrivacyPage() {
           </h1>
           <p
             style={{
-              fontFamily: "var(--font-outfit)",
+              fontFamily: "var(--font-interface)",
               fontSize: "12px",
               color: "#7A7A8C",
               marginTop: "8px",
@@ -111,7 +111,7 @@ export default function PrivacyPage() {
             </h2>
             <p
               style={{
-                fontFamily: "var(--font-outfit)",
+                fontFamily: "var(--font-interface)",
                 fontSize: "14px",
                 color: "#B0B0C0",
                 lineHeight: 1.8,

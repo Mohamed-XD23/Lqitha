@@ -4,7 +4,8 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import db from "@/lib/db";
 import { randomUUID } from "crypto";
-import { sendPasswordResetEmail, sendVerificationEmail } from "@/lib/email";
+import { sendPasswordResetEmail } from "@/lib/email";
+import { sendVerificationEmailIfNeeded } from "@/lib/email-verification";
 import { checkRateLimit, resetRateLimit } from "@/lib/rate-limit";
 
 const registerSchema = z.object({
@@ -41,11 +42,7 @@ export async function registerUser(formData: FormData) {
     data: { name, email, password: hashedPassword },
   });
 
-  const token = randomUUID();
-  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
-
-  await db.emailVerificationToken.create({ data: { email, token, expiresAt } });
-  await sendVerificationEmail(email, token);
+  await sendVerificationEmailIfNeeded(email);
 
   return { success: true };
 }
@@ -65,7 +62,7 @@ export async function verifyEmail(token: string) {
     data: { emailVerified: new Date() },
   });
 
-  await db.emailVerificationToken.delete({ where: { token } });
+  await db.emailVerificationToken.deleteMany({ where: { email: record.email } });
 
   return { success: true };
 }

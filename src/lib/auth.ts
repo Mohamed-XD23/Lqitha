@@ -6,6 +6,7 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import db from "@/lib/db";
+import { sendVerificationEmailIfNeeded } from "@/lib/email-verification";
 
 const loginSchema = z.object({
   email: z.string().email().transform((val) => val.toLowerCase().trim()),
@@ -31,6 +32,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         const isValid = await bcrypt.compare(password, user.password);
         if (!isValid) return null;
+        if (!user.emailVerified) {
+          try {
+            await sendVerificationEmailIfNeeded(user.email);
+          } catch (error) {
+            console.error("Failed to send verification email on login:", error);
+          }
+        }
 
         return {
           id: user.id,

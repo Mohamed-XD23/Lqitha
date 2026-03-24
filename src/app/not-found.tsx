@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="bg-obsidian min-h-screen text-ivory font-outfit selection:bg-gold/30 flex flex-col items-center justify-center p-6">
+    <div className="bg-obsidian min-h-screen text-ivory font-interface selection:bg-gold/30 flex flex-col items-center justify-center p-6">
       <div className="max-w-xl w-full text-center relative">
         {/* Decorative elements */}
         <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-40 h-40 bg-gold/5 rounded-full blur-[80px]" />
@@ -22,7 +22,7 @@ export default function NotFound() {
             404
           </h1>
 
-          <p className="font-outfit text-xs font-medium tracking-[6px] uppercase text-slate mb-12">
+          <p className="font-interface text-xs font-medium tracking-[6px] uppercase text-slate mb-12">
             This Item Appears to Be Lost
           </p>
 

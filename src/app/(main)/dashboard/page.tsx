@@ -24,7 +24,7 @@ export default async function DashboardPage() {
       <div className="mx-auto max-w-6xl px-6 py-12">
         {/* Header */}
         <div className="mb-10">
-          <span className="font-outfit text-[10px] font-bold tracking-sm uppercase text-gold">
+          <span className="font-interface text-[10px] font-bold tracking-sm uppercase text-gold">
             Dashboard
           </span>
           <h1 className="font-display text-4xl font-light text-ivory leading-none mt-2">
