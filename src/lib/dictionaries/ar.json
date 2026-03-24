@@ -1,0 +1,42 @@
+{
+  "common": {
+    "loading": "جاري التحميل...",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "submit": "إرسال"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "browse": "تصفح",
+    "dashboard": "لوحة القيادة",
+    "reportItem": "إضافة منشور",
+    "settings": "الإعدادات",
+    "signOut": "تسجيل الخروج",
+    "signIn": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "language": "اللغة"
+  },
+  "home": {
+    "heroTitle": "فقدت شيئاً؟ أو وجدت شيئاً؟",
+    "heroSubtitle": "الطريقة الأكثر أمانًا وشفافية لجمع الأشخاص بممتلكاتهم المفقودة.",
+    "reportLost": "الإبلاغ عن مفقودات",
+    "reportFound": "الإبلاغ عن معثورات"
+  },
+  "dashboard": {
+    "title": "لوحة القيادة",
+    "hello": "مرحباً",
+    "trustScore": "درجة الموثوقية",
+    "myListings": "منشوراتي",
+    "myClaims": "طلباتي",
+    "messages": "الرسائل"
+  },
+  "settings": {
+    "title": "إعدادات الحساب",
+    "profileInfo": "معلومات الملف الشخصي",
+    "updatePassword": "تحديث كلمة المرور",
+    "deleteAccount": "حذف الحساب",
+    "saveChanges": "حفظ التغييرات"
+  }
+}

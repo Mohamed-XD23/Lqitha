@@ -27,7 +27,7 @@ export default async function DashboardPage() {
           <span className="font-outfit text-[10px] font-bold tracking-sm uppercase text-gold">
             Dashboard
           </span>
-          <h1 className="font-cormorant text-4xl font-light text-ivory leading-none mt-2">
+          <h1 className="font-display text-4xl font-light text-ivory leading-none mt-2">
             Hello {user.name?.split(" ")[0]}
           </h1>
         </div>
@@ -50,8 +50,8 @@ export default async function DashboardPage() {
           listings={user.items}
           claims={user.claims}
           currentUserId={session.user.id!}
-          currentUserName={session.user.name ?? "User"}
-          currentUserImage={session.user.image}
+          currentUserName={user.name ?? "User"}
+          currentUserImage={user.image}
         />
       </div>
     </div>

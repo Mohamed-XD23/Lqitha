@@ -118,3 +118,9 @@ export async function resetPassword(token: string, newPassword: string) {
 
   return { success: true };
 }
+
+// ── SESSION ───────────────────────────────────────────────────────────────────
+export async function handleSignOut() {
+  const { signOut } = await import("@/lib/auth");
+  await signOut({ redirectTo: "/" });
+}

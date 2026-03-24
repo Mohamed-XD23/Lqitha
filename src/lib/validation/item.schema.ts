@@ -27,7 +27,7 @@ export const itemSchema = z
         { message: "Date cannot be in the future" },
       ),
     imageUrl: z.string().optional(),
-    phone: z.string().min(9, "Invalid phone number"),
+    phone: z.string().regex(/^\d+$/, "Phone number can only contain digits").length(10, "Phone number must be exactly 10 digits"),
 
     // Step 3 — مطلوب فقط عند FOUND
     secretQuestion: z.string().optional(),

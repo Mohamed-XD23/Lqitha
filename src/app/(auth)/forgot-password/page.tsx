@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { forgotPassword } from "@/actions/auth.actions";
+import { Send, ArrowLeft, AtSign, Shield } from "lucide-react";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -34,15 +35,15 @@ export default function ForgotPasswordPage() {
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-3 mb-6">
             <div className="h-px w-6 bg-gold/30"></div>
-            <span className="font-outfit text-[10px] font-bold tracking-sm uppercase text-gold">
+            <span className="font-interface text-[10px] font-bold tracking-sm uppercase text-gold">
               Secure Access
             </span>
             <div className="h-px w-6 bg-gold/30"></div>
           </div>
-          <h1 className="font-cormorant text-5xl font-light text-ivory leading-tight">
+          <h1 className="font-display text-5xl font-light text-ivory leading-tight">
             Lqitha
           </h1>
-          <p className="mt-4 text-[10px] text-slate font-outfit tracking-[3px] uppercase opacity-60">
+          <p className="mt-4 text-[10px] text-slate font-interface tracking-[3px] uppercase opacity-60">
             Lost · Found · Verified
           </p>
         </div>
@@ -53,38 +54,38 @@ export default function ForgotPasswordPage() {
           {sent ? (
             <div className="text-center py-4">
               <div className="w-16 h-16 rounded-full bg-gold/5 border border-gold/20 flex items-center justify-center mx-auto mb-8 transition-transform duration-700 group-hover:scale-110">
-                <i className="fa-solid fa-paper-plane text-2xl text-gold" />
+                <Send className="w-6 h-6 text-gold" strokeWidth={1.5} />
               </div>
-              <h2 className="font-cormorant text-3xl font-light text-ivory mb-4">
+              <h2 className="font-display text-3xl font-light text-ivory mb-4">
                 Transmission Success
               </h2>
-              <p className="font-outfit text-sm text-slate leading-relaxed mb-10">
+              <p className="font-interface text-sm text-slate leading-relaxed mb-10">
                 If an account exists for{" "}
                 <span className="text-ivory font-medium">{email}</span>, a
                 secure recovery link has been dispatched.
               </p>
               <Link
                 href="/login"
-                className="inline-flex items-center gap-2 font-outfit text-[11px] font-bold tracking-xs uppercase text-gold hover:text-ivory transition-colors"
+                className="inline-flex items-center gap-2 font-interface text-[11px] font-bold tracking-xs uppercase text-gold hover:text-ivory transition-colors"
               >
-                <i className="fa-solid fa-arrow-left text-[9px]" />
+                <ArrowLeft className="w-3 h-3" strokeWidth={2.5} />
                 Return to Login
               </Link>
             </div>
           ) : (
             <>
               <div className="mb-10">
-                <h2 className="font-cormorant text-3xl font-light text-ivory">
+                <h2 className="font-display text-3xl font-light text-ivory">
                   Recovery
                 </h2>
-                <p className="font-outfit text-[11px] text-slate mt-2 tracking-widest uppercase opacity-60">
+                <p className="font-interface text-[11px] text-slate mt-2 tracking-widest uppercase opacity-60">
                   Password Reset Protocol
                 </p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="space-y-3">
-                  <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-outfit">
+                  <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
                     Registered Email
                   </label>
                   <div className="relative group/input">
@@ -94,17 +95,17 @@ export default function ForgotPasswordPage() {
                       onChange={(e) => setEmail(e.target.value)}
                       required
                       placeholder="e.g., identity@domain.com"
-                      className="w-full bg-obsidian border border-gold/20 rounded-xs px-5 py-4 text-sm text-ivory placeholder:text-slate/20 outline-none focus:border-gold/60 transition-all font-outfit"
+                      className="w-full bg-obsidian border border-gold/20 rounded-xs px-5 py-4 text-sm text-ivory placeholder:text-slate/20 outline-none focus:border-gold/60 transition-all font-interface"
                     />
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-20 group-focus-within/input:opacity-60 transition-opacity">
-                      <i className="fa-solid fa-at text-gold text-xs" />
+                      <AtSign className="w-3.5 h-3.5 text-gold/40" strokeWidth={2} />
                     </div>
                   </div>
                 </div>
 
                 {error && (
                   <div className="bg-red-500/5 border border-red-500/20 rounded-xs px-4 py-3">
-                    <p className="text-[11px] font-outfit text-red-400 leading-relaxed italic">
+                    <p className="text-[11px] font-interface text-red-400 leading-relaxed italic">
                       {error}
                     </p>
                   </div>
@@ -113,14 +114,14 @@ export default function ForgotPasswordPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-gold py-5 rounded-xs text-obsidian font-outfit text-[11px] font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-xl shadow-gold/5 disabled:opacity-50 disabled:cursor-not-allowed group/btn"
+                  className="w-full bg-gold py-5 rounded-xs text-obsidian font-interface text-[11px] font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-xl shadow-gold/5 disabled:opacity-50 disabled:cursor-not-allowed group/btn"
                 >
                   {loading ? (
                     "Processing..."
                   ) : (
                     <span className="flex items-center justify-center gap-3">
                       Initialize Recovery
-                      <i className="fa-solid fa-shield-halved text-[10px] group-hover:rotate-12 transition-transform" />
+                      <Shield className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform" strokeWidth={2.5} />
                     </span>
                   )}
                 </button>
@@ -129,7 +130,7 @@ export default function ForgotPasswordPage() {
               <div className="mt-10 pt-10 border-t border-gold/5 text-center">
                 <Link
                   href="/login"
-                  className="font-outfit text-[10px] font-bold tracking-xs uppercase text-slate hover:text-gold transition-colors"
+                  className="font-interface text-[10px] font-bold tracking-xs uppercase text-slate hover:text-gold transition-colors"
                 >
                   Remembered? <span className="ml-2 text-gold">Sign In</span>
                 </Link>

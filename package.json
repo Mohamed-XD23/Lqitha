@@ -23,6 +23,8 @@
     "next": "^16.2.0",
     "next-auth": "^5.0.0-beta.30",
     "nodemailer": "^7.0.13",
+    "pusher": "^5.3.3",
+    "pusher-js": "^8.4.3",
     "radix-ui": "^1.4.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",

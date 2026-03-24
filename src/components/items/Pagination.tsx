@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 interface PaginationProps {
   currentPage: number;
@@ -31,7 +32,7 @@ export default function Pagination({
         disabled={currentPage === 1}
         className={btnClass}
       >
-        <i className="fa-solid fa-arrow-left text-[10px]"></i>
+        <ArrowLeft className="w-3 h-3" strokeWidth={2.5} />
         Prev
       </button>
 
@@ -49,7 +50,7 @@ export default function Pagination({
         className={btnClass}
       >
         Next
-        <i className="fa-solid fa-arrow-right text-[10px]"></i>
+        <ArrowRight className="w-3 h-3" strokeWidth={2.5} />
       </button>
     </div>
   );

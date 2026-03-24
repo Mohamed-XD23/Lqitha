@@ -1,0 +1,42 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "submit": "Submit"
+  },
+  "nav": {
+    "home": "Home",
+    "browse": "Browse",
+    "dashboard": "Dashboard",
+    "reportItem": "Post Item",
+    "settings": "Settings",
+    "signOut": "Sign Out",
+    "signIn": "Sign In",
+    "register": "Register",
+    "language": "Language"
+  },
+  "home": {
+    "heroTitle": "Lost Something? Found Something?",
+    "heroSubtitle": "The most secure and transparent way to reunite people with their lost belongings.",
+    "reportLost": "Report Lost Item",
+    "reportFound": "Report Found Item"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "hello": "Hello",
+    "trustScore": "Trust Score",
+    "myListings": "My Listings",
+    "myClaims": "My Claims",
+    "messages": "Messages"
+  },
+  "settings": {
+    "title": "Account Preferences",
+    "profileInfo": "Profile Information",
+    "updatePassword": "Update Password",
+    "deleteAccount": "Delete Account",
+    "saveChanges": "Save Changes"
+  }
+}

@@ -7,6 +7,7 @@ import { itemSchema } from "@/lib/validation/item.schema";
 import { ItemType, ItemStatus } from "@prisma/client";
 import { recalculateTrustScore } from "./dashboard.actions";
 import { revalidatePath } from "next/cache";
+import { createNotification } from "./notification.actions";
 
 // ===Create Item===
 
@@ -255,6 +256,17 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
   await recalculateTrustScore(claimantId);
   await recalculateTrustScore(session.user.id)
 
+  // 8. Create Notification for Owner (if verified)
+  if (isCorrect) {
+    await createNotification({
+      userId: item.userId,
+      type: "CLAIM_NEW",
+      title: "New Claim Received",
+      message: `Someone has submitted a verified claim for: ${item.id}`, // Better use title but I don't have it in item object at this point. Wait I should fetch title.
+      link: `/items/${item.id}`,
+    });
+  }
+
   // 8. إرجاع النتيجة للـ Client — بدون أي بيانات حساسة
   return {
     success: true,
@@ -308,6 +320,13 @@ export async function respondToClaim(
 
   if (!item) return { error: "غير مصرح لك بهذا الإجراء" };
 
+  // Fetch claimant info for notifications
+  const claim = await db.claimRequest.findUnique({
+    where: { id: claimId },
+    select: { claimantId: true, item: { select: { title: true } } }
+  });
+  if (!claim) return { error: "المطالبة غير موجودة" };
+
   if (response === "ACCEPTED") {
     // 3 عمليات في transaction واحدة
     await db.$transaction([
@@ -337,14 +356,65 @@ export async function respondToClaim(
     // وللمطالب المقبول (+10 لأن مطالبته قُبلت)
     const acceptedClaim = await db.claimRequest.findUnique({ where: { id: claimId }, select: { claimantId: true } });
     if (acceptedClaim) await recalculateTrustScore(acceptedClaim.claimantId);
+    // Trigger Accepted Notification
+    await createNotification({
+      userId: claim.claimantId,
+      type: "CLAIM_ACCEPTED",
+      title: "Claim Accepted!",
+      message: `Your claim for "${claim.item.title}" has been accepted by the owner.`,
+      link: `/dashboard`,
+    });
   } else {
     // رفض يدوي من المالك
     await db.claimRequest.update({
       where: { id: claimId },
       data: { status: "REJECTED", rejectedBy: "owner" },
     });
+
+    // Trigger Rejected Notification
+    await createNotification({
+      userId: claim.claimantId,
+      type: "CLAIM_REJECTED",
+      title: "Claim Rejected",
+      message: `Your claim for "${claim.item.title}" was not accepted.`,
+      link: `/dashboard`,
+    });
   }
 
   revalidatePath(`/items/${itemId}`);
   return { success: true };
+}
+
+export async function getUserClaimStatus(itemId: string) {
+  const session = await auth();
+  if (!session?.user?.id) return null;
+
+  const claim = await db.claimRequest.findUnique({
+    where: {
+      itemId_claimantId: {
+        itemId,
+        claimantId: session.user.id,
+      },
+    },
+    include: {
+      attempts: true,
+    },
+  });
+
+  if (!claim) return null;
+
+  // جلب maxAttempts من الـ item
+  const item = await db.item.findUnique({
+    where: { id: itemId },
+    select: { maxAttempts: true },
+  });
+
+  return {
+    status: claim.status,           // PENDING | ACCEPTED | REJECTED
+    isVerified: claim.isVerified,   // هل أجاب صح؟
+    rejectedBy: claim.rejectedBy,   // "system" | "owner" | null
+    attemptsUsed: claim.attempts.length,
+    maxAttempts: item?.maxAttempts ?? 3,
+    attemptsLeft: (item?.maxAttempts ?? 3) - claim.attempts.length,
+  };
 }

@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useCallback } from "react";
+import { Search } from "lucide-react";
 
 const CATEGORIES = [
   { value: "", label: "All" },
@@ -43,7 +44,7 @@ export default function FilterBar() {
     <div className="flex flex-col gap-8">
       {/* Search */}
       <div className="relative group">
-        <i className="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate/40 group-focus-within:text-gold/60 transition-colors"></i>
+        <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate/40 group-focus-within:text-gold/60 transition-colors" />
         <input
           type="text"
           placeholder="Search items..."

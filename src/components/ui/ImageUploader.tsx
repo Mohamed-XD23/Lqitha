@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { ImageIcon} from "lucide-react";
+import { ImageIcon, Trash2 } from "lucide-react";
 import ImageUploadLoader from "./ImageUploadLoader";
 import Image from "next/image";
 
@@ -39,7 +39,7 @@ export default function ImageUploader({ value, onChange }: Props) {
 
   return (
     <div className="space-y-2">
-      {value ? (
+      {value && typeof value === "string" && value.length > 0 ? (
         <div className="relative w-full h-48 rounded-lg overflow-hidden border border-border">
           <Image
             src={value}
@@ -52,7 +52,7 @@ export default function ImageUploader({ value, onChange }: Props) {
             onClick={() => onChange("")}
             className="absolute top-2 right-2 text-white rounded-full p-1"
           >
-            <i className="fa-solid fa-trash-can text-xl text-red-500/80 px-1 py-1" />
+            <Trash2 className="w-5 h-5 text-red-500/80" strokeWidth={1.5} />
           </button>
         </div>
       ) : (

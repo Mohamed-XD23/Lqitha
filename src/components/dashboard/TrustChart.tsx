@@ -9,6 +9,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { LineChart } from "lucide-react";
 
 interface Props {
   data: { month: string; score: number }[];
@@ -18,7 +19,7 @@ export default function TrustChart({ data }: Props) {
   return (
     <div className="bg-void border border-gold/18 rounded-sm p-7 h-full shadow-xl">
       <p className="font-outfit text-[9px] font-semibold tracking-[3px] uppercase text-slate mb-8 flex items-center gap-2">
-        <i className="fa-solid fa-chart-line text-gold/60 text-xs"></i>
+        <LineChart className="w-3.5 h-3.5 text-gold/60" strokeWidth={2} />
         Trust History
       </p>
       <ResponsiveContainer width="100%" height={200}>

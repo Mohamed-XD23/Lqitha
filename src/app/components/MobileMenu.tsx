@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { createPortal } from "react-dom";
+import { X, Menu } from "lucide-react";
 
 export default function MobileMenu({
   children,
@@ -39,28 +40,31 @@ export default function MobileMenu({
   }, [isOpen]);
 
   const menuOverlay = (
-    <div
-      className="fixed inset-0 bg-obsidian/98 backdrop-blur-3xl z-[100] flex flex-col items-center justify-start py-20 px-6 overflow-y-auto"
-      onClick={() => setIsOpen(false)}
-    >
-      {/* Decorative center glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gold/5 rounded-full blur-[100px] pointer-events-none" />
+    <div onClick={() => setIsOpen(false)}>
+      {/* Overlay */}
+      <div className="fixed inset-0 bg-obsidian/40 backdrop-blur-md z-100 transition-opacity animate-in fade-in duration-300" />
 
-      {/* Close button */}
-      <button
-        className="absolute top-8 right-8 text-gold text-4xl p-2 hover:scale-110 active:scale-95 transition-all duration-300"
-        onClick={() => setIsOpen(false)}
-        aria-label="Close menu"
-      >
-        <i className="fa-solid fa-xmark"></i>
-      </button>
-
-      {/* Content */}
+      {/* Menu Content */}
       <div
-        className="w-full max-w-sm relative z-10"
+        className="fixed top-0 bottom-0 ltr:right-0 rtl:left-0 w-[400px] max-w-[90vw] bg-obsidian border-l border-gold/15 z-100 shadow-2xl overflow-y-auto animate-in ltr:slide-in-from-right rtl:slide-in-from-left duration-500 ease-out"
         onClick={(e) => e.stopPropagation()}
       >
-        {children}
+        {/* Decorative center glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gold/5 rounded-full blur-[100px] pointer-events-none" />
+
+        {/* Close button */}
+        <button
+          className="absolute top-8 ltr:right-8 rtl:left-8 text-gold text-4xl p-2 hover:scale-110 active:scale-95 transition-all duration-300"
+          onClick={() => setIsOpen(false)}
+          aria-label="Close menu"
+        >
+          <X className="w-9 h-9" strokeWidth={2} />
+        </button>
+
+        {/* Content */}
+        <div className="w-full relative z-10 p-6 pt-20">
+          {children}
+        </div>
       </div>
     </div>
   );
@@ -73,7 +77,7 @@ export default function MobileMenu({
         className="text-gold text-2xl p-2 hover:opacity-70 active:scale-90 transition-all"
         aria-label="Open menu"
       >
-        <i className="fa-solid fa-bars"></i>
+        <Menu className="w-7 h-7" strokeWidth={2.5} />
       </button>
 
       {/* Portal */}

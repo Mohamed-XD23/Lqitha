@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { formatDate } from "@/lib/utils/date";
+import { Search, Package, MapPin } from "lucide-react";
 
 type Item = Awaited<
   ReturnType<typeof import("@/actions/item.actions").getItems>
@@ -35,9 +36,9 @@ export default function ItemCard({ item }: ItemCardProps) {
         ) : (
           <div className="flex h-full items-center justify-center bg-obsidian text-slate text-4xl opacity-50">
             {item.type === "LOST" ? (
-              <i className="fa-solid fa-magnifying-glass" />
+              <Search className="w-8 h-8" strokeWidth={1.5} />
             ) : (
-              <i className="fa-solid fa-box" />
+              <Package className="w-8 h-8" strokeWidth={1.5} />
             )}
           </div>
         )}
@@ -47,7 +48,7 @@ export default function ItemCard({ item }: ItemCardProps) {
       <div className="flex flex-col gap-3 p-5">
         <div className="flex items-center justify-between">
           <span
-            className={`font-outfit text-[9px] font-medium tracking-xs uppercase px-2.5 py-1 rounded-xs border ${
+            className={`font-interface text-[9px] font-medium tracking-xs uppercase px-2.5 py-1 rounded-xs border ${
               item.type === "LOST"
                 ? "bg-red-500/10 text-red-400 border-red-500/20"
                 : "bg-green-500/10 text-green-400 border-green-500/20"
@@ -55,23 +56,23 @@ export default function ItemCard({ item }: ItemCardProps) {
           >
             {item.type === "LOST" ? "LOST" : "FOUND"}
           </span>
-          <span className="font-outfit text-[10px] text-slate tracking-widest">
+          <span className="font-interface text-[10px] text-slate tracking-widest">
             {CATEGORY_LABELS[item.category] ?? item.category}
           </span>
         </div>
 
-        <h3 className="font-cormorant text-2xl font-light text-ivory leading-tight group-hover:text-gold transition-colors">
+        <h3 className="font-display text-2xl font-light text-ivory leading-tight group-hover:text-gold transition-colors">
           {item.title}
         </h3>
 
         <div className="flex items-center justify-between border-t border-gold/10 pt-4 mt-1">
           <div className="flex items-center gap-1.5 text-slate">
-            <i className="fa-solid fa-location-dot text-[10px] text-gold/60" />
-            <span className="font-outfit text-[11px] tracking-wide uppercase">
+            <MapPin className="w-3 h-3 text-ivory/60" strokeWidth={2} />
+            <span className="font-interface text-[11px] tracking-wide uppercase">
               {item.location}
             </span>
           </div>
-          <span className="font-outfit text-[11px] text-slate opacity-70">
+          <span className="font-interface text-[11px] text-slate opacity-70">
             {formatDate(item.date)}
           </span>
         </div>

@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Outfit } from "next/font/google";
+import { Fraunces, Outfit, Cairo } from "next/font/google";
 import { ChatProvider } from "@/context/ChatContext";
 import ChatSidebar from "@/components/chat/ChatSidebar";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { getLocale } from "@/lib/dictionary";
 import { Toaster } from "sonner";
 import "./globals.css";
 
-const cormorant = Cormorant_Garamond({
+const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["300", "400"],
-  variable: "--font-cormorant",
+  weight: ["300", "400", "600"],
+  variable: "--font-fraunces",
 });
 
 const outfit = Outfit({
@@ -18,30 +19,30 @@ const outfit = Outfit({
   variable: "--font-outfit",
 });
 
+const cairo = Cairo({
+  subsets: ["arabic", "latin"],
+  weight: ["300", "400", "600", "700"],
+  variable: "--font-cairo",
+});
+
 export const metadata: Metadata = {
   title: "Lqitha",
   description: "Lost & Found Platform",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
+  const dir = locale === "ar" ? "rtl" : "ltr";
+
   return (
-    <html dir="ltr" lang="en">
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-          integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
-          crossOrigin="anonymous"
-          referrerPolicy="no-referrer"
-        />
-      </head>
+    <html dir={dir} lang={locale}>
       <body
-        className={`${outfit.variable} ${cormorant.variable} flex min-h-screen flex-col`}
-        style={{ fontFamily: "var(--font-outfit), sans-serif" }}
+        className={`${outfit.variable} ${fraunces.variable} ${cairo.variable} flex min-h-screen flex-col`}
+        style={{ fontFamily: "var(--font-interface), sans-serif" }}
       >
         <ChatProvider>
           <Navbar />

@@ -1,14 +1,30 @@
 import Link from "next/link";
-import { auth, signOut } from "@/lib/auth";
+import NextImage from "next/image";
+import { auth } from "@/lib/auth";
+import db from "@/lib/db";
 import MobileMenu from "./MobileMenu";
+import NotificationBell from "@/components/ui/NotificationBell";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
+import UserNavMenu from "@/components/ui/UserNavMenu";
+import { getLocale, getDictionary } from "@/lib/dictionary";
+import { handleSignOut } from "@/actions/auth.actions";
+import { LogOut, LayoutDashboard, Settings } from "lucide-react";
 
 export default async function Navbar() {
   const session = await auth();
+  const locale = await getLocale();
+  const dict = await getDictionary();
 
-  const handleSignOut = async () => {
-    "use server";
-    await signOut({ redirectTo: "/" });
-  };
+  // Fetch fresh user data if session exists to avoid stale JWT data
+  const dbUser = session?.user?.id 
+    ? await db.user.findUnique({ 
+        where: { id: session.user.id },
+        select: { name: true, image: true, email: true }
+      }) 
+    : null;
+
+  const user = dbUser || (session?.user ? { ...session.user } : null);
+
 
   return (
     <header className="bg-obsidian/90 border-b border-gold/15 px-6 py-4 sticky top-0 z-50 backdrop-blur-xl">
@@ -33,7 +49,7 @@ export default async function Navbar() {
               />
             </svg>
           </div>
-          <span className="font-cormorant text-2xl font-light tracking-[5px] text-ivory group-hover:text-gold transition-colors">
+          <span className="font-display text-2xl font-light tracking-[5px] text-ivory group-hover:text-gold transition-colors">
             LQITHA
           </span>
         </Link>
@@ -42,53 +58,43 @@ export default async function Navbar() {
         <nav className="hidden md:flex items-center gap-12">
           <Link
             href="/browse"
-            className="font-outfit text-[11px] font-medium tracking-[3px] uppercase text-slate hover:text-gold transition-all"
+            className="font-interface text-[11px] font-medium tracking-[3px] uppercase text-slate hover:text-gold transition-all"
           >
-            Browse
+            {dict.nav.browse}
           </Link>
 
           {session?.user && (
             <>
               <Link
-                href="/dashboard"
-                className="font-outfit text-[11px] font-medium tracking-[3px] uppercase text-slate hover:text-gold transition-all"
-              >
-                Dashboard
-              </Link>
-              <Link
                 href="/items/new"
-                className="font-outfit text-[10px] font-bold tracking-[3px] uppercase bg-gold text-obsidian px-8 py-3 rounded-xs hover:bg-ivory transition-all shadow-xl shadow-gold/10"
+                className="font-interface text-[10px] font-bold tracking-[3px] uppercase bg-gold text-obsidian px-8 py-3 rounded-xs hover:bg-ivory transition-all shadow-xl shadow-gold/10"
               >
-                Post Item
+                {dict.nav.reportItem}
               </Link>
             </>
           )}
 
-          {session?.user ? (
+          {session?.user && (
             <div className="flex items-center gap-6">
-              <form action={handleSignOut}>
-                <button
-                  type="submit"
-                  className="flex items-center gap-2 cursor-pointer font-outfit text-[10px] font-medium tracking-[3px] uppercase text-slate border border-gold/20 px-6 py-2.5 rounded-xs hover:border-gold hover:text-gold transition-all"
-                >
-                  Sign Out
-                  <i className="fa-solid fa-right-from-bracket text-ivory/70 text-base ml-1"></i>
-                </button>
-              </form>
+              <LanguageSwitcher currentLocale={locale} />
+              <NotificationBell userId={session.user.id!} />
+              <UserNavMenu user={user ?? session.user} dict={dict} />
             </div>
-          ) : (
+          )}
+          {!session?.user && (
             <div className="flex items-center gap-8">
+              <LanguageSwitcher currentLocale={locale} />
               <Link
                 href="/login"
-                className="font-outfit text-[11px] font-medium tracking-[3px] uppercase text-slate hover:text-gold transition-all"
+                className="font-interface text-[11px] font-medium tracking-[3px] uppercase text-slate hover:text-gold transition-all"
               >
-                Sign In
+                {dict.nav.signIn}
               </Link>
               <Link
                 href="/register"
-                className="font-outfit text-[10px] font-bold tracking-[3px] uppercase bg-gold text-obsidian px-8 py-3 rounded-xs hover:bg-ivory transition-all shadow-xl shadow-gold/10"
+                className="font-interface text-[10px] font-bold tracking-[3px] uppercase bg-gold text-obsidian px-8 py-3 rounded-xs hover:bg-ivory transition-all shadow-xl shadow-gold/10"
               >
-                Register
+                {dict.nav.register}
               </Link>
             </div>
           )}
@@ -99,33 +105,73 @@ export default async function Navbar() {
           <div className="flex flex-col items-center gap-10 py-10">
             <Link
               href="/browse"
-              className="font-cormorant text-2xl font-light tracking-sm uppercase text-ivory hover:text-gold transition-all"
+              className="font-display text-2xl font-light tracking-sm uppercase text-ivory hover:text-gold transition-all"
             >
-              Browse
+              {dict.nav.browse}
             </Link>
 
             {session?.user && (
               <>
-                <Link
-                  href="/dashboard"
-                  className="font-cormorant text-2xl font-light tracking-sm uppercase text-ivory hover:text-gold transition-all"
-                >
-                  Dashboard
-                </Link>
+                <div className="w-full max-w-[280px] mb-4 p-4 rounded-sm border border-gold/10 bg-void/30 flex flex-col items-center gap-3">
+                  <div className="flex items-center gap-3 w-full">
+                    <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-gold/20 shrink-0">
+                      {user?.image ? (
+                        <NextImage src={user.image} alt="User" width={48} height={48} />
+                      ) : (
+                        <div className="w-full h-full bg-gold/10 flex items-center justify-center text-gold font-display text-2xl">
+                          {user?.name?.charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-interface text-sm font-semibold text-ivory truncate">{user?.name}</p>
+                      <p className="font-interface text-[10px] text-slate truncate uppercase tracking-widest mt-0.5">{user?.email}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-3 w-full mt-2">
+                    <Link
+                      href="/dashboard"
+                      className="flex items-center justify-center gap-2 py-3 rounded-xs border border-gold/10 text-slate hover:text-gold hover:bg-gold/5 transition-all"
+                    >
+                      <LayoutDashboard className="w-4 h-4" />
+                      <span className="font-interface text-[10px] uppercase tracking-widest">{dict.nav.dashboard}</span>
+                    </Link>
+                    <Link
+                      href="/settings"
+                      className="flex items-center justify-center gap-2 py-3 rounded-xs border border-gold/10 text-slate hover:text-gold hover:bg-gold/5 transition-all"
+                    >
+                      <Settings className="w-4 h-4" />
+                      <span className="font-interface text-[10px] uppercase tracking-widest">{dict.nav.settings}</span>
+                    </Link>
+                  </div>
+                </div>
+
                 <Link
                   href="/items/new"
-                  className="font-outfit text-xs font-bold tracking-sm uppercase bg-gold text-obsidian px-12 py-5 rounded-xs shadow-2xl shadow-gold/20"
+                  className="font-interface text-xs font-bold tracking-sm uppercase bg-gold text-obsidian px-12 py-5 rounded-xs shadow-2xl shadow-gold/20"
                 >
-                  Post Item
+                  {dict.nav.reportItem}
                 </Link>
+
+                <div className="flex items-center gap-6 mt-4">
+                  <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-gold/5 bg-gold/5 min-w-[100px]">
+                    <span className="text-[10px] text-slate uppercase tracking-widest">{dict.nav.language}</span>
+                    <LanguageSwitcher currentLocale={locale} />
+                  </div>
+                  <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-gold/5 bg-gold/5 min-w-[100px]">
+                    <span className="text-[10px] text-slate uppercase tracking-widest">Alerts</span>
+                    <NotificationBell userId={session.user.id!} />
+                  </div>
+                </div>
 
                 <form action={handleSignOut}>
                   <button
                     type="submit"
-                    className="flex items-center gap-2 cursor-pointer font-outfit text-xs font-medium tracking-sm uppercase text-slate border border-gold/30 px-10 py-4 rounded-xs transition-all"
+                    className="flex items-center gap-2 cursor-pointer font-interface text-xs font-medium tracking-sm uppercase text-red-400 border border-red-500/20 px-10 py-4 rounded-xs transition-all mt-4"
                   >
-                    Sign out
-                    <i className="fa-solid fa-right-from-bracket text-ivory/60 text-lg ml-2"></i>
+                    {dict.nav.signOut}
+                    <LogOut className="w-5 h-5 ml-2" strokeWidth={2.5} />
                   </button>
                 </form>
               </>
@@ -133,17 +179,18 @@ export default async function Navbar() {
 
             {!session?.user && (
               <div className="flex flex-col items-center gap-10">
+                <LanguageSwitcher currentLocale={locale} />
                 <Link
                   href="/login"
-                  className="font-cormorant text-2xl font-light tracking-sm uppercase text-ivory hover:text-gold transition-all"
+                  className="font-display text-2xl font-light tracking-sm uppercase text-ivory hover:text-gold transition-all"
                 >
-                  Sign In
+                  {dict.nav.signIn}
                 </Link>
                 <Link
                   href="/register"
-                  className="font-outfit text-xs font-bold tracking-sm uppercase bg-gold text-obsidian px-12 py-5 rounded-xs shadow-2xl shadow-gold/20"
+                  className="font-interface text-xs font-bold tracking-sm uppercase bg-gold text-obsidian px-12 py-5 rounded-xs shadow-2xl shadow-gold/20"
                 >
-                  Register
+                  {dict.nav.register}
                 </Link>
               </div>
             )}

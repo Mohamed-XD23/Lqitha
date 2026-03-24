@@ -3,6 +3,7 @@ import { ItemType } from "@prisma/client";
 import ItemCard from "@/components/items/ItemCard";
 import FilterBar from "@/components/items/FilterBar";
 import Pagination from "@/components/items/Pagination";
+import { PackageOpen } from "lucide-react";
 
 interface BrowsePageProps {
   searchParams: Promise<{
@@ -29,14 +30,14 @@ export default async function BrowsePage({ searchParams }: BrowsePageProps) {
         <div className="mb-14 relative">
           <div className="flex items-center gap-3 mb-4">
             <div className="h-px w-8 bg-gold/40"></div>
-            <span className="font-outfit text-[11px] font-semibold tracking-sm uppercase text-gold">
+            <span className="font-interface text-[11px] font-semibold tracking-sm uppercase text-gold">
               Discovery
             </span>
           </div>
-          <h1 className="font-cormorant text-[56px] font-light text-ivory leading-tight mt-2">
+          <h1 className="font-display text-[56px] font-light text-ivory leading-tight mt-2">
             Browse Items
           </h1>
-          <p className="font-outfit text-sm text-slate mt-4 tracking-px font-light max-w-lg">
+          <p className="font-interface text-sm text-slate mt-4 tracking-px font-light max-w-lg">
             Find what you lost or return what you found. Currently tracking{" "}
             <span className="text-gold font-medium">{totalCount} items</span>{" "}
             globally.
@@ -51,11 +52,11 @@ export default async function BrowsePage({ searchParams }: BrowsePageProps) {
         {/* Listings Grid */}
         {items.length === 0 ? (
           <div className="mt-32 text-center py-20 border border-dashed border-gold/10 rounded-sm">
-            <i className="fa-solid fa-box-open text-4xl text-gold/20 mb-6"></i>
-            <h2 className="font-cormorant text-3xl font-light text-ivory/70">
+            <PackageOpen className="w-12 h-12 text-gold/20 mx-auto mb-6" strokeWidth={1} />
+            <h2 className="font-display text-3xl font-light text-ivory/70">
               No matches found
             </h2>
-            <p className="font-outfit text-xs text-slate mt-3 tracking-xs uppercase">
+            <p className="font-interface text-xs text-slate mt-3 tracking-xs uppercase">
               Try refining your search parameters
             </p>
           </div>

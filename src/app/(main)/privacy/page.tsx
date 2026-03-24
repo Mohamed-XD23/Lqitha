@@ -17,7 +17,7 @@ export default function PrivacyPage() {
           </span>
           <h1
             style={{
-              fontFamily: "var(--font-cormorant), serif",
+              fontFamily: "var(--font-display), serif",
               fontSize: "48px",
               fontWeight: 300,
               color: "#F2EFE8",
@@ -100,7 +100,7 @@ export default function PrivacyPage() {
           >
             <h2
               style={{
-                fontFamily: "var(--font-cormorant), serif",
+                fontFamily: "var(--font-display), serif",
                 fontSize: "22px",
                 fontWeight: 400,
                 color: "#C4A35A",

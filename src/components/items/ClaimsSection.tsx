@@ -5,6 +5,7 @@ import { respondToClaim } from "@/actions/item.actions";
 import ChatButton from "@/components/chat/ChatButton";
 import ButtonLoader from "@/components/ui/ButtonLoader";
 import { toast } from "sonner";
+import { Star } from "lucide-react";
 
 interface Claimant {
   id: string;
@@ -63,7 +64,7 @@ export default function ClaimsSection({
   return (
     <div className="mt-12">
       <div className="flex items-center gap-4 mb-6">
-        <h2 className="font-cormorant text-2xl font-light text-ivory">
+        <h2 className="font-fraunces text-2xl font-light text-ivory">
           Incoming Claims
         </h2>
         <span className="font-outfit text-[10px] font-bold tracking-xs uppercase px-3 py-1 rounded-full bg-gold/10 text-gold border border-gold/25">
@@ -87,7 +88,10 @@ export default function ClaimsSection({
                 </p>
                 <div className="flex items-center gap-2 mt-0.5">
                   <p className="font-outfit text-[11px] text-slate">
-                    <i className="fa-solid fa-star text-gold mr-1" />{" "}
+                    <Star
+                      className="w-3 h-3 text-gold mr-1 fill-gold"
+                      strokeWidth={0}
+                    />{" "}
                     {claim.claimant.trustScore}
                   </p>
                   <span className="font-outfit text-[10px] text-emerald-400 font-bold uppercase tracking-wider">

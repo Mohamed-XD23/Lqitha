@@ -2,6 +2,18 @@
 
 import React, { useRef } from "react";
 import Link from "next/link";
+import {
+  HelpCircle,
+  Lock,
+  UserX,
+  Check,
+  ShieldCheck,
+  Star,
+  StarHalf,
+  PenTool,
+  CheckCircle,
+  Handshake,
+} from "lucide-react";
 
 export default function Home() {
   const problemSectionRef = useRef<HTMLDivElement>(null);
@@ -27,7 +39,7 @@ export default function Home() {
               </span>
             </div>
 
-            <h1 className="font-cormorant text-[clamp(64px,12vw,120px)] font-light leading-[0.9] tracking-[-0.03em] mb-4">
+            <h1 className="font-display text-[clamp(64px,12vw,120px)] font-light leading-[0.9] tracking-[-0.03em] mb-4">
               Lqi<em className="text-gold italic">tha</em>
             </h1>
 
@@ -78,22 +90,22 @@ export default function Home() {
           <div className="flex flex-col items-center jus md:flex-row gap-8">
             <div className="space-y-4">
               <div className="text-4xl text-gold/40">
-                <i className="fa-solid fa-circle-question"></i>
+                <HelpCircle className="w-9 h-9" strokeWidth={1.5} />
               </div>
-              <h3 className="font-cormorant text-2xl text-ivory">
+              <h3 className="font-display text-2xl text-ivory">
                 Lost & Confused
               </h3>
               <p className="text-slate text-sm leading-relaxed font-light">
-                Losing valuable items is stressful. You don't know where to look
-                or who to trust with your belongings.
+                Losing valuable items is stressful. You don&apos;t know where to
+                look or who to trust with your belongings.
               </p>
             </div>
 
             <div className="space-y-4">
               <div className="text-4xl text-gold/40">
-                <i className="fa-solid fa-lock"></i>
+                <Lock className="w-9 h-9" strokeWidth={1.5} />
               </div>
-              <h3 className="font-cormorant text-2xl text-ivory">
+              <h3 className="font-display text-2xl text-ivory">
                 No Verification
               </h3>
               <p className="text-slate text-sm leading-relaxed font-light">
@@ -104,9 +116,9 @@ export default function Home() {
 
             <div className="space-y-4">
               <div className="text-4xl text-gold/40">
-                <i className="fa-solid fa-users-slash"></i>
+                <UserX className="w-9 h-9" strokeWidth={1.5} />
               </div>
-              <h3 className="font-cormorant text-2xl text-ivory">
+              <h3 className="font-display text-2xl text-ivory">
                 No Connection
               </h3>
               <p className="text-slate text-sm leading-relaxed font-light">
@@ -132,13 +144,13 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <div className="flex gap-4">
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   <div className="flex items-center justify-center h-10 w-10 rounded-full bg-gold/20 text-gold">
-                    <i className="fa-solid fa-check text-sm"></i>
+                    <Check className="w-4 h-4" strokeWidth={3} />
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-cormorant text-xl text-ivory mb-2">
+                  <h4 className="font-display text-xl text-ivory mb-2">
                     Centralized Platform
                   </h4>
                   <p className="text-slate text-sm font-light">
@@ -149,13 +161,13 @@ export default function Home() {
               </div>
 
               <div className="flex gap-4">
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   <div className="flex items-center justify-center h-10 w-10 rounded-full bg-gold/20 text-gold">
-                    <i className="fa-solid fa-check text-sm"></i>
+                    <Check className="w-4 h-4" strokeWidth={3} />
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-cormorant text-xl text-ivory mb-2">
+                  <h4 className="font-display text-xl text-ivory mb-2">
                     Verified Ownership
                   </h4>
                   <p className="text-slate text-sm font-light">
@@ -165,13 +177,13 @@ export default function Home() {
               </div>
 
               <div className="flex gap-4">
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   <div className="flex items-center justify-center h-10 w-10 rounded-full bg-gold/20 text-gold">
-                    <i className="fa-solid fa-check text-sm"></i>
+                    <Check className="w-4 h-4" strokeWidth={3} />
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-cormorant text-xl text-ivory mb-2">
+                  <h4 className="font-display text-xl text-ivory mb-2">
                     Trust Score System
                   </h4>
                   <p className="text-slate text-sm font-light">
@@ -182,13 +194,13 @@ export default function Home() {
               </div>
 
               <div className="flex gap-4">
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   <div className="flex items-center justify-center h-10 w-10 rounded-full bg-gold/20 text-gold">
-                    <i className="fa-solid fa-check text-sm"></i>
+                    <Check className="w-4 h-4" strokeWidth={3} />
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-cormorant text-xl text-ivory mb-2">
+                  <h4 className="font-display text-xl text-ivory mb-2">
                     Secure Communication
                   </h4>
                   <p className="text-slate text-sm font-light">
@@ -204,7 +216,7 @@ export default function Home() {
               <div className="relative bg-void border border-gold/20 rounded-xl p-8 space-y-4">
                 <div className="text-center mb-6">
                   <div className="text-5xl text-gold mb-2">
-                    <i className="fa-solid fa-shield-check"></i>
+                    <ShieldCheck className="w-12 h-12" strokeWidth={1.5} />
                   </div>
                   <p className="text-slate text-xs tracking-widest uppercase">
                     Secure & Verified
@@ -260,24 +272,24 @@ export default function Home() {
                     num: "1",
                     title: "Report",
                     desc: "Post your lost or found item with details, photos, and a secret question.",
-                    icon: "fa-pen-to-square",
+                    icon: <PenTool className="w-8 h-8" strokeWidth={1.5} />,
                     color: "from-gold to-gold/60",
                   },
                   {
                     num: "2",
                     title: "Verify",
                     desc: "Claimants answer your secret question. Only the real owner will know the answer.",
-                    icon: "fa-check-circle",
+                    icon: <CheckCircle className="w-8 h-8" strokeWidth={1.5} />,
                     color: "from-gold/60 to-gold/20",
                   },
                   {
                     num: "3",
                     title: "Reunite",
                     desc: "Accept the verified claim and coordinate item return. Build your trust score.",
-                    icon: "fa-handshake",
+                    icon: <Handshake className="w-8 h-8" strokeWidth={1.5} />,
                     color: "from-gold/40 to-gold/10",
                   },
-                ].map((step, idx) => (
+                ].map((step) => (
                   <div key={step.num} className="flex flex-col items-center">
                     {/* Step circle with gradient background */}
                     <div className="relative mb-8">
@@ -285,15 +297,15 @@ export default function Home() {
                         className={`absolute inset-0 bg-linear-to-br ${step.color} rounded-full blur-xl opacity-30`}
                       ></div>
                       <div className="relative w-20 h-20 rounded-full bg-obsidian border-2 border-gold/40 flex items-center justify-center group hover:border-gold hover:shadow-lg hover:shadow-gold/30 transition-all duration-300 cursor-pointer">
-                        <div className="text-3xl text-gold">
-                          <i className={`fa-solid ${step.icon}`}></i>
+                        <div className="text-3xl text-gold flex items-center justify-center w-full h-full">
+                          {step.icon}
                         </div>
                       </div>
                     </div>
 
                     {/* Content card */}
                     <div className="flex flex-col items-center w-full bg-obsidian border border-gold/10 rounded-xl p-6 hover:border-gold/30 transition-all duration-300 group">
-                      <div className="flex items-center gap-2 font-cormorant text-xl text-ivory mb-3 text-center group-hover:text-gold transition-colors">
+                      <div className="flex items-center gap-2 font-display text-xl text-ivory mb-3 text-center group-hover:text-gold transition-colors">
                         <p className="font-outfit text-gold text-xl font-light">
                           {step.num} .{" "}
                           <span className="text-ivory">{step.title}</span>
@@ -316,19 +328,19 @@ export default function Home() {
                 num: "1",
                 title: "Report",
                 desc: "Post your lost or found item with details, photos, and a secret question.",
-                icon: "fa-pen-to-square",
+                icon: <PenTool className="w-8 h-8" strokeWidth={1.5} />,
               },
               {
                 num: "2",
                 title: "Verify",
                 desc: "Claimants answer your secret question. Only the real owner will know the answer.",
-                icon: "fa-check-circle",
+                icon: <CheckCircle className="w-8 h-8" strokeWidth={1.5} />,
               },
               {
                 num: "3",
                 title: "Reunite",
                 desc: "Accept the verified claim and coordinate item return. Build your trust score.",
-                icon: "fa-handshake",
+                icon: <Handshake className="w-8 h-8" strokeWidth={1.5} />,
               },
             ].map((step, idx, arr) => (
               <div key={step.num} className="relative">
@@ -339,10 +351,10 @@ export default function Home() {
 
                 <div className="flex gap-6">
                   {/* Circle */}
-                  <div className="flex-shrink-0">
-                    <div className="w-20 h-20 rounded-full bg-obsidian border-2 border-gold/40 flex items-center justify-center hover:border-gold hover:shadow-lg hover:shadow-gold/30 transition-all">
-                      <div className="text-center text-2xl text-gold mb-1">
-                        <i className={`fa-solid ${step.icon}`}></i>
+                  <div className="shrink-0">
+                    <div className="w-12 h-12 rounded-full border border-gold/20 bg-gold/5 flex items-center justify-center shrink-0">
+                      <div className="text-center text-2xl text-gold mb-1 flex items-center justify-center">
+                        {step.icon}
                       </div>
                     </div>
                   </div>
@@ -404,7 +416,7 @@ export default function Home() {
                 <div className="font-outfit italic text-gold text-sm mb-4">
                   {feature.num}
                 </div>
-                <h3 className="font-cormorant text-2xl mb-4 text-ivory">
+                <h3 className="font-display text-2xl mb-4 text-ivory">
                   {feature.title}
                 </h3>
                 <p className="text-slate text-sm leading-relaxed font-light">
@@ -430,7 +442,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
               <div>
-                <h3 className="font-cormorant text-2xl text-ivory mb-3">
+                <h3 className="font-display text-2xl text-ivory mb-3">
                   Build Your Reputation
                 </h3>
                 <p className="text-slate text-sm leading-relaxed font-light">
@@ -497,7 +509,11 @@ export default function Home() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-4 p-4 bg-obsidian rounded-lg border border-green-500/20">
                     <div className="text-2xl text-green-400">
-                      <i className="fa-solid fa-star"></i>
+                      <Star
+                        className="w-6 h-6"
+                        fill="currentColor"
+                        strokeWidth={1}
+                      />
                     </div>
                     <div>
                       <p className="text-ivory text-sm font-medium">Verified</p>
@@ -507,7 +523,11 @@ export default function Home() {
 
                   <div className="flex items-center gap-4 p-4 bg-obsidian rounded-lg border border-gold/30">
                     <div className="text-2xl text-gold">
-                      <i className="fa-solid fa-star-half-stroke"></i>
+                      <StarHalf
+                        className="w-6 h-6"
+                        fill="currentColor"
+                        strokeWidth={1}
+                      />
                     </div>
                     <div>
                       <p className="text-ivory text-sm font-medium">Trusted</p>
@@ -517,7 +537,11 @@ export default function Home() {
 
                   <div className="flex items-center gap-4 p-4 bg-obsidian rounded-lg border border-red-500/20">
                     <div className="text-2xl text-red-400">
-                      <i className="fa-solid fa-star"></i>
+                      <Star
+                        className="w-6 h-6"
+                        fill="currentColor"
+                        strokeWidth={1}
+                      />
                     </div>
                     <div>
                       <p className="text-ivory text-sm font-medium">
@@ -542,14 +566,15 @@ export default function Home() {
             </span>
           </div>
 
-          <h2 className="font-cormorant text-[clamp(48px,8vw,72px)] font-light leading-tight mb-6 text-ivory">
+          <h2 className="font-display text-[clamp(48px,8vw,72px)] font-light leading-tight mb-6 text-ivory">
             Find Your Lost Items Today
           </h2>
 
           <p className="text-slate text-lg leading-relaxed mb-12 max-w-2xl mx-auto font-light">
             Join thousands of users who have successfully recovered their
-            belongings through Lqitha. Whether you're looking for something you
-            lost or want to help others find theirs, we're here to help.
+            belongings through Lqitha. Whether you&apos;re looking for something
+            you lost or want to help others find theirs, we&apos;re here to
+            help.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

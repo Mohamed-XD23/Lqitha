@@ -24,6 +24,7 @@ model User {
   claims        ClaimRequest[]
   accounts      Account[]
   sessions      Session[]
+  notifications Notification[]
   createdAt     DateTime       @default(now())
 }
 
@@ -126,4 +127,24 @@ enum ClaimStatus {
   PENDING
   ACCEPTED
   REJECTED
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType
+  title     String
+  message   String
+  isRead    Boolean          @default(false)
+  link      String?          // Optional link to redirect
+  createdAt DateTime         @default(now())
+}
+
+enum NotificationType {
+  CLAIM_NEW
+  CLAIM_ACCEPTED
+  CLAIM_REJECTED
+  NEW_MESSAGE
+  SYSTEM
 }

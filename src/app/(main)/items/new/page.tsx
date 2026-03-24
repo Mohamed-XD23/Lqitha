@@ -6,7 +6,25 @@ import { useRouter } from "next/navigation";
 import { itemSchema, type ItemFormData } from "@/lib/validation/item.schema";
 import { createItem } from "@/actions/item.actions";
 import { formatDate } from "@/lib/utils/date";
-import { Eye, EyeOff } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Check,
+  Search,
+  Package,
+  CheckCircle2,
+  ChevronDown,
+  ShieldHalf,
+  Info,
+  ArrowLeft,
+  ArrowRight,
+  Send,
+  Heading,
+  Tag,
+  MapPin,
+  CalendarDays,
+  Phone,
+} from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import ImageUploader from "@/components/ui/ImageUploader";
 import ButtonLoader from "@/components/ui/ButtonLoader";
@@ -35,7 +53,7 @@ function StepIndicator({ current }: { current: number }) {
                 }`}
               >
                 {isCompleted ? (
-                  <i className="fa-solid fa-check text-[10px]"></i>
+                  <Check className="w-2.5 h-2.5" strokeWidth={4} />
                 ) : (
                   `0${stepNum}`
                 )}
@@ -138,7 +156,7 @@ export default function NewItemPage() {
             </span>
             <div className="h-px w-6 bg-gold/40"></div>
           </div>
-          <h1 className="font-cormorant text-5xl font-light text-ivory leading-tight mt-2">
+          <h1 className="font-display text-5xl font-light text-ivory leading-tight mt-2">
             Create Report
           </h1>
           <p className="mt-6 text-xs text-slate font-outfit tracking-[1.5px] max-w-xs mx-auto uppercase">
@@ -179,9 +197,9 @@ export default function NewItemPage() {
                         className={`text-2xl transition-all duration-500 group-hover:scale-110 ${watchedType === t ? "text-gold" : "text-slate/40"}`}
                       >
                         {t === "LOST" ? (
-                          <i className="fa-solid fa-magnifying-glass" />
+                          <Search className="w-6 h-6" strokeWidth={2} />
                         ) : (
-                          <i className="fa-solid fa-box" />
+                          <Package className="w-6 h-6" strokeWidth={2} />
                         )}
                       </span>
                       <span
@@ -191,7 +209,7 @@ export default function NewItemPage() {
                       </span>
                       {watchedType === t && (
                         <div className="absolute top-2 right-2 text-md text-gold">
-                          <i className="fa-solid fa-circle-check" />
+                          <CheckCircle2 className="w-4 h-4" strokeWidth={2.5} />
                         </div>
                       )}
                     </label>
@@ -238,7 +256,7 @@ export default function NewItemPage() {
                     ))}
                   </select>
                   <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-gold/40">
-                    <i className="fa-solid fa-chevron-down text-[10px]" />
+                    <ChevronDown className="w-3 h-3" strokeWidth={3} />
                   </div>
                 </div>
               </div>
@@ -315,8 +333,17 @@ export default function NewItemPage() {
                 </label>
                 <input
                   {...register("phone")}
+                  onInput={(e) => {
+                    e.currentTarget.value = e.currentTarget.value.replace(
+                      /\D/g,
+                      "",
+                    );
+                  }}
                   placeholder="0XXXXXXXXX"
                   type="tel"
+                  maxLength={10}
+                  minLength={10}
+                  inputMode="numeric"
                   className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-outfit shadow-sm"
                 />
                 {errors.phone && (
@@ -353,10 +380,10 @@ export default function NewItemPage() {
           {step === 3 && (
             <div className="flex flex-col gap-8">
               <div className="bg-obsidian border border-gold/15 rounded-xs p-6 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-xs h-full bg-gold" />
+                <div className="absolute top-0 left-0 w-[2px] h-full bg-gold" />
                 <div className="flex gap-5">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-px bg-gold/10 flex items-center justify-center border border-gold/20">
-                    <i className="fa-solid fa-shield-halved text-gold text-sm" />
+                  <div className="shrink-0 w-10 h-10 rounded-px bg-gold/10 flex items-center justify-center border border-gold/20">
+                    <ShieldHalf className="w-4 h-4 text-gold" strokeWidth={2} />
                   </div>
                   <div className="space-y-3">
                     <p className="font-outfit text-sm font-semibold text-ivory tracking-tight">
@@ -433,9 +460,17 @@ export default function NewItemPage() {
                   {
                     label: "Report Nature",
                     icon:
-                      watchedValues.type === "LOST"
-                        ? "fa-magnifying-glass"
-                        : "fa-box",
+                      watchedValues.type === "LOST" ? (
+                        <Search
+                          className="w-3.5 h-3.5 text-gold/40 group-hover:text-gold transition-colors"
+                          strokeWidth={2.5}
+                        />
+                      ) : (
+                        <Package
+                          className="w-3.5 h-3.5 text-gold/40 group-hover:text-gold transition-colors"
+                          strokeWidth={2.5}
+                        />
+                      ),
                     value:
                       watchedValues.type === "LOST"
                         ? "Lost Report"
@@ -443,34 +478,64 @@ export default function NewItemPage() {
                   },
                   {
                     label: "Identification",
-                    icon: "fa-heading",
+                    icon: (
+                      <Heading
+                        className="w-3.5 h-3.5 text-gold/40 group-hover:text-gold transition-colors"
+                        strokeWidth={2.5}
+                      />
+                    ),
                     value: watchedValues.title,
                   },
                   {
                     label: "Category",
-                    icon: "fa-tag",
+                    icon: (
+                      <Tag
+                        className="w-3.5 h-3.5 text-gold/40 group-hover:text-gold transition-colors"
+                        strokeWidth={2.5}
+                      />
+                    ),
                     value: watchedValues.category,
                   },
                   {
                     label: "Location",
-                    icon: "fa-location-dot",
+                    icon: (
+                      <MapPin
+                        className="w-3.5 h-3.5 text-gold/40 group-hover:text-gold transition-colors"
+                        strokeWidth={2.5}
+                      />
+                    ),
                     value: watchedValues.location,
                   },
                   {
                     label: "Timestamp",
-                    icon: "fa-calendar-days",
+                    icon: (
+                      <CalendarDays
+                        className="w-3.5 h-3.5 text-gold/40 group-hover:text-gold transition-colors"
+                        strokeWidth={2.5}
+                      />
+                    ),
                     value: formatDate(watchedValues.date),
                   },
                   {
                     label: "Contact Line",
-                    icon: "fa-phone",
+                    icon: (
+                      <Phone
+                        className="w-3.5 h-3.5 text-gold/40 group-hover:text-gold transition-colors"
+                        strokeWidth={2.5}
+                      />
+                    ),
                     value: watchedValues.phone,
                   },
                   ...(watchedValues.secretQuestion
                     ? [
                         {
                           label: "Security Challenge",
-                          icon: "fa-shield-halved",
+                          icon: (
+                            <ShieldHalf
+                              className="w-3.5 h-3.5 text-gold/40 group-hover:text-gold transition-colors"
+                              strokeWidth={2.5}
+                            />
+                          ),
                           value: watchedValues.secretQuestion,
                         },
                       ]
@@ -481,9 +546,7 @@ export default function NewItemPage() {
                     className="flex justify-between items-center rounded-xs bg-obsidian/40 border border-gold/10 px-6 py-4 hover:border-gold/30 transition-all group"
                   >
                     <div className="flex items-center gap-4">
-                      <i
-                        className={`fa-solid ${icon} text-[10px] text-gold/40 group-hover:text-gold transition-colors`}
-                      />
+                      {icon}
                       <span className="font-outfit text-[9px] uppercase tracking-[3px] text-slate font-bold">
                         {label}
                       </span>
@@ -496,7 +559,7 @@ export default function NewItemPage() {
               </div>
 
               <div className="bg-gold/5 border border-gold/20 rounded-xs px-6 py-4 flex gap-4 items-center">
-                <i className="fa-solid fa-circle-info text-gold text-sm" />
+                <Info className="w-4 h-4 text-gold shrink-0" strokeWidth={2} />
                 <p className="text-[10px] text-slate font-outfit leading-relaxed uppercase tracking-px">
                   Note: Contact information remains encrypted until verification
                   is complete.
@@ -524,7 +587,10 @@ export default function NewItemPage() {
               onClick={() => setStep((s) => s - 1)}
               className="px-10 py-5 rounded-xs border border-gold/30 text-gold font-outfit text-[10px] font-bold uppercase tracking-sm hover:bg-gold/5 hover:border-gold transition-all flex items-center justify-center gap-3 group min-w-[140px]"
             >
-              <i className="fa-solid fa-arrow-left text-[9px] transition-transform group-hover:-translate-x-1" />
+              <ArrowLeft
+                className="w-3 h-3 transition-transform group-hover:-translate-x-1"
+                strokeWidth={2.5}
+              />
               Back
             </button>
           )}
@@ -534,7 +600,10 @@ export default function NewItemPage() {
               className="flex-1 bg-gold px-10 py-5 rounded-xs text-obsidian font-outfit text-[10px] font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-2xl shadow-gold/10 flex items-center justify-center gap-3 group"
             >
               Proceed
-              <i className="fa-solid fa-arrow-right text-[9px] transition-transform group-hover:translate-x-1" />
+              <ArrowRight
+                className="w-3 h-3 transition-transform group-hover:translate-x-1"
+                strokeWidth={2.5}
+              />
             </button>
           ) : (
             <button
@@ -549,7 +618,7 @@ export default function NewItemPage() {
               ) : (
                 <>
                   Authenticate & Publish
-                  <i className="fa-solid fa-paper-plane text-[9px]" />
+                  <Send className="w-3 h-3" strokeWidth={2.5} />
                 </>
               )}
             </button>

@@ -18,7 +18,7 @@ export default function NotFound() {
             <div className="h-px w-10 bg-gold/30"></div>
           </div>
 
-          <h1 className="font-cormorant text-[120px] md:text-[180px] font-light leading-none tracking-tight text-ivory/90 mb-4 select-none">
+          <h1 className="font-display text-[120px] md:text-[180px] font-light leading-none tracking-tight text-ivory/90 mb-4 select-none">
             404
           </h1>
 

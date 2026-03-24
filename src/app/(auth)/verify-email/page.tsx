@@ -1,5 +1,6 @@
 import { verifyEmail } from "@/actions/auth.actions";
 import Link from "next/link";
+import { CheckCircle, ShieldAlert, LogIn, RotateCcw } from "lucide-react";
 
 export default async function VerifyEmailPage({
   searchParams,
@@ -47,12 +48,12 @@ function VerifyResult({
         <div className="mb-14">
           <div className="inline-flex items-center gap-3 mb-4">
             <div className="h-px w-6 bg-gold/30"></div>
-            <span className="font-outfit text-[10px] font-bold tracking-sm uppercase text-gold">
+            <span className="font-interface text-[10px] font-bold tracking-sm uppercase text-gold">
               Registry Protocol
             </span>
             <div className="h-px w-6 bg-gold/30"></div>
           </div>
-          <h1 className="font-cormorant text-5xl font-light text-ivory leading-tight">
+          <h1 className="font-display text-5xl font-light text-ivory leading-tight">
             Lqitha
           </h1>
         </div>
@@ -68,39 +69,41 @@ function VerifyResult({
                   : "bg-red-500/5 border-red-500/20"
               }`}
             >
-              <i
-                className={`fa-solid ${success ? "fa-badge-check" : "fa-shield-xmark"} text-4xl ${
-                  success ? "text-[#30D158]" : "text-red-400"
-                }`}
-              />
+              {success ? (
+                <CheckCircle className="w-10 h-10 text-[#30D158]" />
+              ) : (
+                <ShieldAlert className="w-10 h-10 text-red-400" />
+              )}
             </div>
 
-            <h2 className="font-cormorant text-4xl font-light text-ivory leading-tight">
+            <h2 className="font-display text-4xl font-light text-ivory leading-tight">
               {success ? "Identity Confirmed" : "Access Denied"}
             </h2>
-            <p className="font-outfit text-[11px] text-slate mt-2 tracking-widest uppercase opacity-60">
+            <p className="font-interface text-[11px] text-slate mt-2 tracking-widest uppercase opacity-60">
               {success ? "Protocol Successful" : "Security Interception"}
             </p>
           </div>
 
-          <p className="font-outfit text-sm text-slate leading-relaxed mb-12">
+          <p className="font-interface text-sm text-slate leading-relaxed mb-12">
             {message}
           </p>
 
           <Link
             href={success ? "/login" : "/register"}
-            className="block w-full bg-gold py-5 rounded-xs text-obsidian font-outfit text-[11px] font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-xl shadow-gold/5 group/btn"
+            className="block w-full bg-gold py-5 rounded-xs text-obsidian font-interface text-[11px] font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-xl shadow-gold/5 group/btn"
           >
             <span className="flex items-center justify-center gap-3">
               {success ? "Enter Workspace" : "Re-Initiate Protocol"}
-              <i
-                className={`fa-solid ${success ? "fa-arrow-right-to-bracket" : "fa-rotate-left"} text-[10px] group-hover:translate-x-1 transition-transform`}
-              />
+              {success ? (
+                <LogIn className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              ) : (
+                <RotateCcw className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+              )}
             </span>
           </Link>
         </div>
 
-        <p className="mt-12 text-[9px] text-slate font-outfit tracking-[3px] uppercase opacity-30">
+        <p className="mt-12 text-[9px] text-slate font-interface tracking-[3px] uppercase opacity-30">
           Secure End-to-End Verification
         </p>
       </div>

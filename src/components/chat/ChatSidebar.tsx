@@ -2,6 +2,7 @@
 
 import { useChatContext } from "@/context/ChatContext";
 import ChatWindow from "./ChatWindow";
+import { X } from "lucide-react";
 
 export default function ChatSidebar() {
   const { isOpen, chatMeta, closeChat } = useChatContext();
@@ -26,7 +27,7 @@ export default function ChatSidebar() {
             onClick={closeChat}
             className="rounded-full px-1.5 py-2 hover:bg-ivory/60 flex items-center justify-center"
           >
-            <i className="fa-solid fa-xmark text-void text-xl"></i>
+            <X className="w-5 h-5 text-void" strokeWidth={2.5} />
           </button>
         </div>
 

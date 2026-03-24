@@ -4,7 +4,7 @@ import { useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { resetPassword } from "@/actions/auth.actions";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, AlertTriangle, ShieldCheck, Key } from "lucide-react";
 import ButtonLoader from "@/components/ui/ButtonLoader";
 
 function ResetForm() {
@@ -41,18 +41,18 @@ function ResetForm() {
     return (
       <div className="bg-void border border-red-500/20 rounded-sm p-12 text-center shadow-2xl">
         <div className="w-16 h-16 rounded-full bg-red-500/5 flex items-center justify-center mx-auto mb-8 border border-red-500/20">
-          <i className="fa-solid fa-triangle-exclamation text-2xl text-red-400" />
+          <AlertTriangle className="w-6 h-6 text-red-400" />
         </div>
-        <h2 className="font-cormorant text-2xl text-ivory mb-4">
+        <h2 className="font-display text-2xl text-ivory mb-4">
           Invalid Access Token
         </h2>
-        <p className="font-outfit text-[12px] text-slate mb-8 leading-relaxed">
+        <p className="font-interface text-[12px] text-slate mb-8 leading-relaxed">
           This secure recovery link has expired or is mathematically incorrect.
           Please request a new transmission.
         </p>
         <Link
           href="/forgot-password"
-          className="font-outfit text-[11px] font-bold tracking-[3px] uppercase text-gold hover:text-ivory transition-colors"
+          className="font-interface text-[11px] font-bold tracking-[3px] uppercase text-gold hover:text-ivory transition-colors"
         >
           Request Renewal
         </Link>
@@ -67,12 +67,12 @@ function ResetForm() {
       {success ? (
         <div className="text-center py-6">
           <div className="w-20 h-20 rounded-full bg-[#30D158]/5 border border-[#30D158]/20 flex items-center justify-center mx-auto mb-10 transition-transform duration-1000 group-hover:scale-105">
-            <i className="fa-solid fa-shield-check text-4xl text-[#30D158] animate-pulse" />
+            <ShieldCheck className="w-10 h-10 text-[#30D158] animate-pulse" />
           </div>
-          <h2 className="font-cormorant text-4xl font-light text-ivory mb-4">
+          <h2 className="font-display text-4xl font-light text-ivory mb-4">
             Identity Verified
           </h2>
-          <p className="font-outfit text-sm text-slate leading-relaxed">
+          <p className="font-interface text-sm text-slate leading-relaxed">
             Password synchronized. Redirecting to the secure gateway in 3
             seconds...
           </p>
@@ -80,17 +80,17 @@ function ResetForm() {
       ) : (
         <>
           <div className="mb-12">
-            <h2 className="font-cormorant text-4xl font-light text-ivory">
+            <h2 className="font-display text-4xl font-light text-ivory">
               Final Step
             </h2>
-            <p className="font-outfit text-[11px] text-slate mt-2 tracking-widest uppercase opacity-60">
+            <p className="font-interface text-[11px] text-slate mt-2 tracking-widest uppercase opacity-60">
               Establish New Credentials
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="space-y-3">
-              <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-outfit px-1">
+              <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface px-1">
                 New Password
               </label>
               <div className="relative group/input">
@@ -101,7 +101,7 @@ function ResetForm() {
                   required
                   minLength={8}
                   placeholder="At least 8 characters"
-                  className="w-full bg-obsidian border border-gold/20 rounded-xs pl-5 pr-14 py-4 text-sm text-ivory placeholder:text-slate/20 outline-none focus:border-gold/60 transition-all font-outfit"
+                  className="w-full bg-obsidian border border-gold/20 rounded-xs pl-5 pr-14 py-4 text-sm text-ivory placeholder:text-slate/20 outline-none focus:border-gold/60 transition-all font-interface"
                 />
                 <button
                   type="button"
@@ -114,7 +114,7 @@ function ResetForm() {
             </div>
 
             <div className="space-y-3">
-              <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-outfit px-1">
+              <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface px-1">
                 Confirm Password
               </label>
               <div className="relative group/input">
@@ -124,7 +124,7 @@ function ResetForm() {
                   onChange={(e) => setConfirm(e.target.value)}
                   required
                   placeholder="Repeat new password"
-                  className={`w-full bg-obsidian border rounded-xs pl-5 pr-14 py-4 text-sm text-ivory placeholder:text-slate/20 outline-none transition-all font-outfit ${
+                  className={`w-full bg-obsidian border rounded-xs pl-5 pr-14 py-4 text-sm text-ivory placeholder:text-slate/20 outline-none transition-all font-interface ${
                     error?.includes("match")
                       ? "border-red-500/40 focus:border-red-500/60"
                       : "border-gold/20 focus:border-gold/60"
@@ -142,7 +142,7 @@ function ResetForm() {
 
             {error && (
               <div className="bg-red-500/5 border border-red-500/20 rounded-xs px-5 py-4">
-                <p className="text-[12px] font-outfit text-red-300 leading-relaxed italic uppercase tracking-px">
+                <p className="text-[12px] font-interface text-red-300 leading-relaxed italic uppercase tracking-px">
                   {error}
                 </p>
               </div>
@@ -151,7 +151,7 @@ function ResetForm() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gold py-5 rounded-xs text-obsidian font-outfit text-[11px] font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-xl shadow-gold/5 disabled:opacity-50 disabled:cursor-not-allowed min-h-[58px]"
+              className="w-full bg-gold py-5 rounded-xs text-obsidian font-interface text-[11px] font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-xl shadow-gold/5 disabled:opacity-50 disabled:cursor-not-allowed min-h-[58px]"
             >
               {loading ? (
                 <div className="scale-[1.2] origin-center">
@@ -160,7 +160,7 @@ function ResetForm() {
               ) : (
                 <span className="flex items-center justify-center gap-3">
                   Commit Changes
-                  <i className="fa-solid fa-key-skeleton text-[10px]" />
+                  <Key className="w-3.5 h-3.5" strokeWidth={2.5} />
                 </span>
               )}
             </button>
@@ -181,12 +181,12 @@ export default function ResetPasswordPage() {
         <div className="text-center mb-14">
           <div className="inline-flex items-center gap-4 mb-6">
             <div className="h-px w-8 bg-gold/30"></div>
-            <span className="font-outfit text-[10px] font-bold tracking-[5px] uppercase text-gold">
+            <span className="font-interface text-[10px] font-bold tracking-[5px] uppercase text-gold">
               Security Matrix
             </span>
             <div className="h-px w-8 bg-gold/30"></div>
           </div>
-          <h1 className="font-cormorant text-5xl font-light text-ivory leading-tight">
+          <h1 className="font-display text-5xl font-light text-ivory leading-tight">
             Lqitha
           </h1>
         </div>
@@ -195,7 +195,7 @@ export default function ResetPasswordPage() {
           fallback={
             <div className="text-center py-20 flex flex-col items-center gap-4">
               <div className="w-12 h-12 border-2 border-gold/20 border-t-gold rounded-full animate-spin" />
-              <p className="font-outfit text-[10px] uppercase tracking-[3px] text-slate">
+              <p className="font-interface text-[10px] uppercase tracking-[3px] text-slate">
                 Secure Boot...
               </p>
             </div>
