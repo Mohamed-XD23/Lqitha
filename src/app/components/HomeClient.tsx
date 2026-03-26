@@ -14,75 +14,13 @@ import {
   CheckCircle,
   Handshake,
 } from "lucide-react";
+import type { Dictionary } from "@/lib/dictionary.types";
 
-interface HomeDictionary {
-  home: {
-    hero: {
-      badge: string;
-      titlePrefix: string;
-      titleSuffix: string;
-      tagline: string;
-      description: string;
-      getStarted: string;
-      learnMore: string;
-    };
-    problem: {
-      sectionNum: string;
-      sectionTitle: string;
-      lost: { title: string; desc: string };
-      noVerification: { title: string; desc: string };
-      noConnection: { title: string; desc: string };
-    };
-    solution: {
-      sectionNum: string;
-      sectionTitle: string;
-      centralized: { title: string; desc: string };
-      verification: { title: string; desc: string };
-      trust: { title: string; desc: string };
-      communication: { title: string; desc: string };
-      secureInfo: { title: string; items: string[] };
-    };
-    howItWorks: {
-      sectionNum: string;
-      sectionTitle: string;
-      steps: Array<{ title: string; desc: string }>;
-    };
-    features: {
-      sectionNum: string;
-      sectionTitle: string;
-      items: Array<{ title: string; desc: string }>;
-    };
-    trustSystem: {
-      sectionNum: string;
-      sectionTitle: string;
-      title: string;
-      description: string;
-      points: {
-        claim: string;
-        claim_desc: string;
-        resolved: string;
-        resolved_desc: string;
-        perks: string;
-        perks_desc: string;
-      };
-      levels: {
-        title: string;
-        verified: string;
-        trusted: string;
-        new: string;
-      };
-    };
-    cta: {
-      badge: string;
-      title: string;
-      description: string;
-      browse: string;
-      register: string;
-    };
-  };
+interface Props {
+  dict: Dictionary;
 }
 
-export default function Home({ dict }: { dict: HomeDictionary }) {
+export default function Home({ dict }: Props) {
   const problemSectionRef = useRef<HTMLDivElement>(null);
 
   const scrollToSection = (ref: React.RefObject<HTMLDivElement | null>) => {

@@ -11,8 +11,13 @@ export default function LanguageSwitcher({ currentLocale }: { currentLocale: "en
 
   const toggleLanguage = () => {
     const newLocale = currentLocale === "en" ? "ar" : "en";
+    const newDir = newLocale === "ar" ? "rtl" : "ltr";
+
     startTransition(async () => {
       await setLocale(newLocale);
+      document.documentElement.lang = newLocale;
+      document.documentElement.dir = newDir;
+      document.body.setAttribute("dir", newDir);
       router.refresh();
     });
   };

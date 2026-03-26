@@ -1,4 +1,6 @@
 import { verifyEmail } from "@/actions/auth.actions";
+import { getDictionary } from "@/lib/dictionary";
+import type { Dictionary } from "@/lib/dictionary.types";
 import Link from "next/link";
 import { CheckCircle, ShieldAlert, LogIn, RotateCcw } from "lucide-react";
 
@@ -7,14 +9,13 @@ export default async function VerifyEmailPage({
 }: {
   searchParams: Promise<{ token?: string }>;
 }) {
+  const dict = await getDictionary();
+  const t = dict.auth;
   const { token } = await searchParams;
 
   if (!token) {
     return (
-      <VerifyResult
-        success={false}
-        message="The security token is missing or malformed."
-      />
+      <VerifyResult success={false} message={t.invalidTokenDesc} dict={dict} />
     );
   }
 
@@ -23,10 +24,8 @@ export default async function VerifyEmailPage({
   return (
     <VerifyResult
       success={!!result.success}
-      message={
-        result.error ??
-        "Authentication complete. Your identity is now confirmed."
-      }
+      message={result.error ?? t.identityConfirmed}
+      dict={dict}
     />
   );
 }
@@ -34,10 +33,14 @@ export default async function VerifyEmailPage({
 function VerifyResult({
   success,
   message,
+  dict,
 }: {
   success: boolean;
   message: string;
+  dict: Dictionary;
 }) {
+  const t = dict.auth;
+
   return (
     <div className="bg-obsidian min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
       {/* Decorative center glow */}
@@ -48,13 +51,13 @@ function VerifyResult({
         <div className="mb-14">
           <div className="inline-flex items-center gap-3 mb-4">
             <div className="h-px w-6 bg-gold/30"></div>
-            <span className="font-interface text-[10px] font-bold tracking-sm uppercase text-gold">
-              Registry Protocol
+            <span className="font-interface text-xs font-bold tracking-sm uppercase text-gold">
+              {dict.home.hero.badge}
             </span>
             <div className="h-px w-6 bg-gold/30"></div>
           </div>
-          <h1 className="font-display text-5xl font-light text-ivory leading-tight">
-            Lqitha
+          <h1 className="font-fraunces text-5xl font-light text-ivory leading-tight">
+            LQITHA
           </h1>
         </div>
 
@@ -77,10 +80,10 @@ function VerifyResult({
             </div>
 
             <h2 className="font-display text-4xl font-light text-ivory leading-tight">
-              {success ? "Identity Confirmed" : "Access Denied"}
+              {success ? t.identityConfirmed : t.accessDenied}
             </h2>
-            <p className="font-interface text-[11px] text-slate mt-2 tracking-widest uppercase opacity-60">
-              {success ? "Protocol Successful" : "Security Interception"}
+            <p className="font-interface text-xs text-slate mt-2 tracking-widest uppercase opacity-60">
+              {success ? t.protocolSuccess : t.securityInterception}
             </p>
           </div>
 
@@ -90,10 +93,10 @@ function VerifyResult({
 
           <Link
             href={success ? "/login" : "/register"}
-            className="block w-full bg-gold py-5 rounded-xs text-obsidian font-interface text-[11px] font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-xl shadow-gold/5 group/btn"
+            className="block w-full bg-gold py-5 rounded-xs text-obsidian font-interface text-xs font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-xl shadow-gold/5 group/btn"
           >
             <span className="flex items-center justify-center gap-3">
-              {success ? "Enter Workspace" : "Re-Initiate Protocol"}
+              {success ? t.enterWorkspace : t.reInitiate}
               {success ? (
                 <LogIn className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               ) : (
@@ -104,7 +107,7 @@ function VerifyResult({
         </div>
 
         <p className="mt-12 text-[9px] text-slate font-interface tracking-[3px] uppercase opacity-30">
-          Secure End-to-End Verification
+          {dict.home.hero.badge}
         </p>
       </div>
     </div>

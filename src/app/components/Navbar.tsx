@@ -63,13 +63,16 @@ export default async function Navbar() {
   const showEmailVerificationAlert = Boolean(session?.user && dbUser && !dbUser.emailVerified);
   const verifyActionLabel = "Verify Email First";
   const verifyAlertMessage = "Please verify your email. We sent a verification link to your inbox.";
+  const dir = locale === "ar" ? "rtl" : "ltr";
 
 
   return (
-    <header className="bg-obsidian/90 border-b border-gold/15 px-6 py-4 sticky top-0 z-50 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-6xl items-center justify-between">
+    <header
+      className="bg-obsidian/90 border-b border-gold/15 px-6 py-4 sticky top-0 z-50 backdrop-blur-xl"
+    >
+      <div className="mx-auto flex max-w-6xl items-center justify-between rtl:flex-row-reverse">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 relative z-50 group">
+        <Link href="/" className="flex items-center gap-3 relative z-50 group rtl:flex-row-reverse">
           <div className="transition-transform duration-700 group-hover:rotate-12 rtl:group-hover:-rotate-12">
             <svg
               width="28"
@@ -97,7 +100,7 @@ export default async function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-12">
+        <nav className="hidden md:flex items-center gap-12 rtl:flex-row-reverse">
           <Link
             href="/browse"
             className="font-interface text-[11px] rtl:text-sm font-medium tracking-[3px] uppercase text-slate hover:text-gold transition-all"
@@ -121,14 +124,14 @@ export default async function Navbar() {
           )}
 
           {session?.user && (
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-6 rtl:flex-row-reverse">
               <LanguageSwitcher currentLocale={locale} />
               <NotificationBell userId={session.user.id!} />
               <UserNavMenu user={user ?? session.user} dict={dict} />
             </div>
           )}
           {!session?.user && (
-            <div className="flex items-center gap-8">
+            <div className="flex items-center gap-8 rtl:flex-row-reverse">
               <LanguageSwitcher currentLocale={locale} />
               <Link
                 href="/login"
@@ -147,8 +150,8 @@ export default async function Navbar() {
         </nav>
 
         {/* Mobile Nav */}
-        <MobileMenu>
-          <div className="flex flex-col items-center gap-10 py-10">
+        <MobileMenu dir={dir}>
+          <div className="flex flex-col items-center gap-10 py-10" dir={dir}>
             <Link
               href="/browse"
               className="font-display text-2xl font-light tracking-sm uppercase text-ivory hover:text-gold transition-all"
@@ -159,7 +162,7 @@ export default async function Navbar() {
             {session?.user && (
               <>
                 <div className="w-full max-w-[280px] mb-4 p-4 rounded-sm border border-gold/10 bg-void/30 flex flex-col items-center gap-3">
-                  <div className="flex items-center gap-3 w-full">
+                  <div className="flex items-center gap-3 w-full rtl:flex-row-reverse">
                     <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-gold/20 shrink-0">
                       {user?.image ? (
                         <NextImage src={user.image} alt="User" width={48} height={48} />
@@ -169,7 +172,7 @@ export default async function Navbar() {
                         </div>
                       )}
                     </div>
-                    <div className="flex-1 min-w-0">
+                    <div className="flex-1 min-w-0 rtl:text-right">
                       <p className="font-interface text-sm font-semibold text-ivory truncate">{user?.name}</p>
                       <p className="font-interface text-[10px] text-slate truncate uppercase tracking-widest mt-0.5">{user?.email}</p>
                     </div>
@@ -206,7 +209,7 @@ export default async function Navbar() {
                   </span>
                 )}
 
-                <div className="flex items-center gap-6 mt-4">
+                <div className="flex items-center gap-6 mt-4 rtl:flex-row-reverse">
                   <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-gold/5 bg-gold/5 min-w-[100px]">
                     <span className="text-[10px] text-slate uppercase tracking-widest">{dict.nav.language}</span>
                     <LanguageSwitcher currentLocale={locale} />
@@ -220,10 +223,10 @@ export default async function Navbar() {
                 <form action={handleSignOut}>
                   <button
                     type="submit"
-                    className="flex items-center gap-2 cursor-pointer font-interface text-xs font-medium tracking-sm uppercase text-red-400 border border-red-500/20 px-10 py-4 rounded-xs transition-all mt-4"
+                    className="flex items-center gap-2 cursor-pointer font-interface text-xs font-medium tracking-sm uppercase text-red-400 border border-red-500/20 px-10 py-4 rounded-xs transition-all mt-4 rtl:flex-row-reverse"
                   >
                     {dict.nav.signOut}
-                    <LogOut className="w-5 h-5 ml-2" strokeWidth={2.5} />
+                    <LogOut className="w-5 h-5 ltr:ml-2 rtl:mr-2" strokeWidth={2.5} />
                   </button>
                 </form>
               </>

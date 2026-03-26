@@ -6,8 +6,10 @@ import { X, Menu } from "lucide-react";
 
 export default function MobileMenu({
   children,
+  dir = "ltr",
 }: {
   children: React.ReactNode;
+  dir?: "ltr" | "rtl";
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const isMenuOpen = isOpen;
@@ -53,7 +55,8 @@ export default function MobileMenu({
 
       {/* Menu Content */}
       <div
-        className="fixed inset-y-0 ltr:right-0 rtl:left-0 w-[400px] max-w-[90vw] bg-obsidian border-l border-gold/15 z-[110] shadow-2xl overflow-y-auto overflow-x-hidden animate-in ltr:slide-in-from-right rtl:slide-in-from-left duration-500 ease-out"
+        dir={dir}
+        className="fixed inset-y-0 right-0 w-[400px] max-w-[90vw] bg-obsidian z-[110] shadow-2xl overflow-y-auto overflow-x-hidden animate-in duration-500 ease-out border-l border-gold/15 slide-in-from-right"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -64,7 +67,7 @@ export default function MobileMenu({
         {/* Close button */}
         <button
           type="button"
-          className="absolute z-20 top-8 ltr:right-8 rtl:left-8 text-gold text-4xl p-2 hover:scale-110 active:scale-95 transition-all duration-300"
+          className="absolute z-20 top-8 right-8 text-gold text-4xl p-2 hover:scale-110 active:scale-95 transition-all duration-300"
           onClick={closeMenu}
           aria-label="Close menu"
         >

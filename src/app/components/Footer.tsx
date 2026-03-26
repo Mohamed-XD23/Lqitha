@@ -1,11 +1,44 @@
 import Link from "next/link";
+import { getDictionary, getLocale } from "@/lib/dictionary";
 
-export default function Footer() {
+export default async function Footer() {
+  const fallbackDict = {
+    nav: {
+      browse: "Browse",
+      reportItem: "Post Item",
+      dashboard: "Dashboard",
+    },
+    home: {
+      hero: {
+        badge: "Lost · Found · Verified",
+      },
+    },
+  };
+
+  let locale: "en" | "ar" = "en";
+  let dict = fallbackDict;
+
+  try {
+    locale = await getLocale();
+  } catch (error) {
+    console.error("Footer getLocale() failed:", error);
+  }
+
+  try {
+    dict = await getDictionary();
+  } catch (error) {
+    console.error("Footer getDictionary() failed:", error);
+  }
+
+  const dir = locale === "ar" ? "rtl" : "ltr";
+
   return (
-    <footer className="bg-obsidian border-t border-gold/15 px-6 py-12">
-      <div className="mx-auto max-w-6xl flex flex-col md:flex-row items-center justify-between gap-8">
-        {/* Logo */}
-        <div className="flex items-center gap-3">
+    <footer
+      dir={dir}
+      className="bg-obsidian border-t border-gold/15 px-6 py-12"
+    >
+      <div className="mx-auto max-w-6xl flex flex-col items-center justify-between gap-8 text-center md:flex-row rtl:md:flex-row-reverse">
+        <div className="flex items-center gap-3 rtl:flex-row-reverse">
           <svg
             width="20"
             height="28"
@@ -27,12 +60,13 @@ export default function Footer() {
           </span>
         </div>
 
-        {/* Links */}
-        <nav className="flex items-center gap-8">
+        <nav className="flex flex-wrap items-center justify-center gap-8 rtl:flex-row-reverse">
           {[
-            { href: "/browse", label: "Browse" },
-            { href: "/items/new", label: "Post Item" },
-            { href: "/dashboard", label: "Dashboard" },
+            { href: "/browse", label: dict.nav.browse },
+            { href: "/items/new", label: dict.nav.reportItem },
+            { href: "/dashboard", label: dict.nav.dashboard },
+            { href: "/terms", label: dict.auth.termsService },
+            { href: "/privacy", label: dict.auth.privacyPolicy },
           ].map((link) => (
             <Link
               key={link.href}
@@ -44,9 +78,8 @@ export default function Footer() {
           ))}
         </nav>
 
-        {/* Copyright */}
         <p className="font-interface text-[10px] tracking-xs uppercase text-slate/60">
-          © {new Date().getFullYear()} Lqitha — Lost · Found · Verified
+          © {new Date().getFullYear()} Lqitha · {dict.home.hero.badge}
         </p>
       </div>
     </footer>
