@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { getDictionary, getLocale } from "@/lib/dictionary";
-import { auth } from "@/lib/auth";
+import { getDictionary } from "@/lib/dictionary";
 
 export default async function Footer() {
   const fallbackDict = {
@@ -20,22 +19,13 @@ export default async function Footer() {
     },
   };
 
-  let locale: "en" | "ar" = "en";
   let dict = fallbackDict;
-
-  try {
-    locale = await getLocale();
-  } catch (error) {
-    console.error("Footer getLocale() failed:", error);
-  }
 
   try {
     dict = await getDictionary();
   } catch (error) {
     console.error("Footer getDictionary() failed:", error);
   }
-
-  const dir = locale === "ar" ? "rtl" : "ltr";
 
   return (
     <footer
