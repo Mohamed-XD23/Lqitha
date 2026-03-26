@@ -1,9 +1,7 @@
 import { getItems } from "@/actions/item.actions";
 import { ItemType } from "@prisma/client";
-import ItemCard from "@/components/items/ItemCard";
-import FilterBar from "@/components/items/FilterBar";
-import Pagination from "@/components/items/Pagination";
-import { PackageOpen } from "lucide-react";
+import { getDictionary } from "@/lib/dictionary";
+import BrowseClient from "./BrowseClient";
 
 interface BrowsePageProps {
   searchParams: Promise<{
@@ -16,6 +14,7 @@ interface BrowsePageProps {
 
 export default async function BrowsePage({ searchParams }: BrowsePageProps) {
   const params = await searchParams;
+  const dict = await getDictionary();
   const { items, totalPages, currentPage, totalCount } = await getItems({
     type: params.type as ItemType | undefined,
     category: params.category,
@@ -26,53 +25,13 @@ export default async function BrowsePage({ searchParams }: BrowsePageProps) {
   return (
     <div className="bg-obsidian min-h-screen">
       <div className="mx-auto max-w-6xl px-6 py-20">
-        {/* Header */}
-        <div className="mb-14 relative">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-8 bg-gold/40"></div>
-            <span className="font-interface text-[11px] font-semibold tracking-sm uppercase text-gold">
-              Discovery
-            </span>
-          </div>
-          <h1 className="font-display text-[56px] font-light text-ivory leading-tight mt-2">
-            Browse Items
-          </h1>
-          <p className="font-interface text-sm text-slate mt-4 tracking-px font-light max-w-lg">
-            Find what you lost or return what you found. Currently tracking{" "}
-            <span className="text-gold font-medium">{totalCount} items</span>{" "}
-            globally.
-          </p>
-        </div>
-
-        {/* Filter Area */}
-        <div className="mb-12">
-          <FilterBar />
-        </div>
-
-        {/* Listings Grid */}
-        {items.length === 0 ? (
-          <div className="mt-32 text-center py-20 border border-dashed border-gold/10 rounded-sm">
-            <PackageOpen className="w-12 h-12 text-gold/20 mx-auto mb-6" strokeWidth={1} />
-            <h2 className="font-display text-3xl font-light text-ivory/70">
-              No matches found
-            </h2>
-            <p className="font-interface text-xs text-slate mt-3 tracking-xs uppercase">
-              Try refining your search parameters
-            </p>
-          </div>
-        ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((item) => (
-              <ItemCard key={item.id} item={item} />
-            ))}
-          </div>
-        )}
-
-        {totalPages > 1 && (
-          <div className="mt-16">
-            <Pagination currentPage={currentPage} totalPages={totalPages} />
-          </div>
-        )}
+        <BrowseClient
+          dict={dict}
+          items={items}
+          totalPages={totalPages}
+          currentPage={currentPage}
+          totalCount={totalCount}
+        />
       </div>
     </div>
   );

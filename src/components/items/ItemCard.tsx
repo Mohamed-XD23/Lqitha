@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { formatDate } from "@/lib/utils/date";
 import { Search, Package, MapPin } from "lucide-react";
+import type { Dictionary } from "@/lib/dictionary.types";
 
 type Item = Awaited<
   ReturnType<typeof import("@/actions/item.actions").getItems>
@@ -8,18 +9,12 @@ type Item = Awaited<
 
 interface ItemCardProps {
   item: Item;
+  dict: Dictionary;
 }
 
-const CATEGORY_LABELS: Record<string, string> = {
-  PHONE: "Phone",
-  KEYS: "Keys",
-  WALLET: "Wallet",
-  DOCUMENTS: "Documents",
-  ELECTRONICS: "Electronics",
-  OTHER: "Other",
-};
+export default function ItemCard({ item, dict }: ItemCardProps) {
+  const t = dict.browse;
 
-export default function ItemCard({ item }: ItemCardProps) {
   return (
     <Link
       href={`/items/${item.id}`}
@@ -54,10 +49,10 @@ export default function ItemCard({ item }: ItemCardProps) {
                 : "bg-green-500/10 text-green-400 border-green-500/20"
             }`}
           >
-            {item.type === "LOST" ? "LOST" : "FOUND"}
+            {item.type === "LOST" ? t.lost : t.found}
           </span>
-          <span className="font-interface text-[10px] text-slate tracking-widest">
-            {CATEGORY_LABELS[item.category] ?? item.category}
+          <span className="font-interface text-xs text-slate tracking-widest">
+            {t.categories[item.category as keyof typeof t.categories] ?? item.category}
           </span>
         </div>
 

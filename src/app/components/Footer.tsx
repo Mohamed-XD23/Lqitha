@@ -60,7 +60,7 @@ export default async function Footer() {
               fill="var(--color-slate)"
             />
           </svg>
-          <span className="font-display text-lg font-light tracking-sm text-ivory">
+          <span className="font-fraunces text-lg font-light tracking-sm text-ivory">
             LQITHA
           </span>
         </div>
@@ -76,15 +76,15 @@ export default async function Footer() {
             <Link
               key={link.href}
               href={link.href}
-              className="font-interface text-[10px] font-medium tracking-xs uppercase text-slate hover:text-gold transition-colors"
+              className="font-interface text-xs font-medium tracking-xs uppercase text-slate hover:text-gold transition-colors"
             >
               {link.label}
             </Link>
           ))}
         </nav>
 
-        <p className="font-interface text-[10px] tracking-xs uppercase text-slate/60">
-          © {new Date().getFullYear()} Lqitha · {dict.home.hero.badge}
+        <p className="font-interface text-xs tracking-xs uppercase text-slate/60">
+          © {new Date().getFullYear()} <span className="font-fraunces">LQITHA</span> · {dict.home.hero.badge}
         </p>
       </div>
     </footer>

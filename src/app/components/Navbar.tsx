@@ -112,12 +112,12 @@ export default async function Navbar() {
             canUseSecureActions ? (
               <Link
                 href="/items/new"
-                className="font-interface text-[10px] rtl:text-xs font-bold tracking-[3px] uppercase bg-gold text-obsidian px-8 py-3 rounded-xs hover:bg-ivory transition-all shadow-xl shadow-gold/10"
+                className="font-interface text-xs font-bold tracking-[3px] uppercase bg-gold text-obsidian px-8 py-3 rounded-xs hover:bg-ivory transition-all shadow-xl shadow-gold/10"
               >
                 {dict.nav.reportItem}
               </Link>
             ) : (
-              <span className="font-interface text-[10px] rtl:text-xs font-bold tracking-[3px] uppercase border border-gold/25 text-gold/70 px-8 py-3 rounded-xs cursor-not-allowed">
+              <span className="font-interface text-xs font-bold tracking-[3px] uppercase border border-gold/25 text-gold/70 px-8 py-3 rounded-xs cursor-not-allowed">
                 {verifyActionLabel}
               </span>
             )
@@ -141,7 +141,7 @@ export default async function Navbar() {
               </Link>
               <Link
                 href="/register"
-                className="font-interface text-[10px] font-bold tracking-[3px] uppercase bg-gold text-obsidian px-8 py-3 rounded-xs hover:bg-ivory transition-all shadow-xl shadow-gold/10"
+                className="font-interface text-xs font-bold tracking-[3px] uppercase bg-gold text-obsidian px-8 py-3 rounded-xs hover:bg-ivory transition-all shadow-xl shadow-gold/10"
               >
                 {dict.nav.register}
               </Link>
@@ -174,7 +174,7 @@ export default async function Navbar() {
                     </div>
                     <div className="flex-1 min-w-0 rtl:text-right">
                       <p className="font-interface text-sm font-semibold text-ivory truncate">{user?.name}</p>
-                      <p className="font-interface text-[10px] text-slate truncate uppercase tracking-widest mt-0.5">{user?.email}</p>
+                      <p className="font-interface text-xs text-slate truncate uppercase tracking-widest mt-0.5">{user?.email}</p>
                     </div>
                   </div>
                   
@@ -184,14 +184,14 @@ export default async function Navbar() {
                       className="flex items-center justify-center gap-2 py-3 rounded-xs border border-gold/10 text-slate hover:text-gold hover:bg-gold/5 transition-all"
                     >
                       <LayoutDashboard className="w-4 h-4" />
-                      <span className="font-interface text-[10px] uppercase tracking-widest">{dict.nav.dashboard}</span>
+                      <span className="font-interface text-xs uppercase tracking-widest">{dict.nav.dashboard}</span>
                     </Link>
                     <Link
                       href="/settings"
                       className="flex items-center justify-center gap-2 py-3 rounded-xs border border-gold/10 text-slate hover:text-gold hover:bg-gold/5 transition-all"
                     >
                       <Settings className="w-4 h-4" />
-                      <span className="font-interface text-[10px] uppercase tracking-widest">{dict.nav.settings}</span>
+                      <span className="font-interface text-xs uppercase tracking-widest">{dict.nav.settings}</span>
                     </Link>
                   </div>
                 </div>
@@ -211,11 +211,11 @@ export default async function Navbar() {
 
                 <div className="flex items-center gap-6 mt-4 rtl:flex-row-reverse">
                   <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-gold/5 bg-gold/5 min-w-[100px]">
-                    <span className="text-[10px] text-slate uppercase tracking-widest">{dict.nav.language}</span>
+                    <span className="text-xs text-slate uppercase tracking-widest">{dict.nav.language}</span>
                     <LanguageSwitcher currentLocale={locale} />
                   </div>
                   <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-gold/5 bg-gold/5 min-w-[100px]">
-                    <span className="text-[10px] text-slate uppercase tracking-widest">Alerts</span>
+                    <span className="text-xs text-slate uppercase tracking-widest">Alerts</span>
                     <NotificationBell userId={session.user.id!} />
                   </div>
                 </div>
