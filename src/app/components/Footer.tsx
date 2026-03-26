@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getDictionary, getLocale } from "@/lib/dictionary";
+import { auth } from "@/lib/auth";
 
 export default async function Footer() {
   const fallbackDict = {
@@ -12,6 +13,10 @@ export default async function Footer() {
       hero: {
         badge: "Lost · Found · Verified",
       },
+    },
+    auth: {
+      termsService: "Terms of Service",
+      privacyPolicy: "Privacy Policy",
     },
   };
 
