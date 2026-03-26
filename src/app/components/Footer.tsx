@@ -39,7 +39,6 @@ export default async function Footer() {
 
   return (
     <footer
-      dir={dir}
       className="bg-obsidian border-t border-gold/15 px-6 py-12"
     >
       <div className="mx-auto max-w-6xl flex flex-col items-center justify-between gap-8 text-center md:flex-row rtl:md:flex-row-reverse">
