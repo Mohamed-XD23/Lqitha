@@ -135,27 +135,7 @@ export default function SupportClient({ dict }: Props) {
                   </div>
                 </a>
 
-                <a
-                  href="https://github.com/Mohamed-XD23/Lqitha"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-start gap-3 p-4 bg-void border border-gold/15 rounded-sm hover:border-gold/30 transition-colors group"
-                >
-                  <div className="w-9 h-9 rounded-sm bg-gold/10 border border-gold/20 flex items-center justify-center shrink-0">
-                    <Github className="w-4 h-4 text-gold" />
-                  </div>
-                  <div>
-                    <p className="font-outfit text-xs font-medium text-ivory">
-                      {t.githubLabel}
-                    </p>
-                    <p className="font-outfit text-[10px] text-slate mt-0.5">
-                      GitHub
-                    </p>
-                    <p className="font-outfit text-[10px] text-gold/60 mt-1">
-                      {t.githubDesc}
-                    </p>
-                  </div>
-                </a>
+                
               </div>
             </div>
           </div>
