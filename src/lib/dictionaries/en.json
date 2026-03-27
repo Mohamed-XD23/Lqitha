@@ -320,5 +320,63 @@
       "ELECTRONICS": "Electronics",
       "OTHER": "Other"
     }
+  },
+  "support": {
+    "badge": "Help Center",
+    "title": "Support & Feedback",
+    "subtitle": "We're here to help. Reach out with any questions, bug reports, or suggestions.",
+    "faqTitle": "Frequently Asked Questions",
+    "faqSubtitle": "Quick answers to common questions",
+    "contactTitle": "Contact Us",
+    "contactSubtitle": "Send us a message and we'll get back to you within 24 hours.",
+    "feedbackTitle": "Share Feedback",
+    "feedbackSubtitle": "Help us improve Lqitha with your suggestions.",
+    "nameLabel": "Full Name",
+    "emailLabel": "Email Address",
+    "typeLabel": "Message Type",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Describe your issue or suggestion in detail...",
+    "submitButton": "Send Message",
+    "successTitle": "Message Sent!",
+    "successDesc": "Thank you for reaching out. We'll respond to your email within 24 hours.",
+    "sendAnother": "Send Another Message",
+    "types": {
+      "bug": "Bug Report",
+      "feature": "Feature Request",
+      "question": "General Question",
+      "feedback": "Feedback",
+      "other": "Other"
+    },
+    "faq": [
+      {
+        "q": "How does ownership verification work?",
+        "a": "When posting an item, you set a secret question only the real owner would know. Claimants must answer correctly (up to 3 attempts). This ensures items are returned to their rightful owners."
+      },
+      {
+        "q": "What happens after my claim is accepted?",
+        "a": "Once accepted, a private chat channel opens between you and the item owner to coordinate the return. Both parties' trust scores are updated upon successful completion."
+      },
+      {
+        "q": "How is my phone number kept private?",
+        "a": "Your phone number is never shown publicly. It only becomes visible after a claim has been accepted and ownership verified."
+      },
+      {
+        "q": "What is the Trust Score?",
+        "a": "The Trust Score reflects your reliability on the platform. It increases when you post items (+5), get a claim accepted (+10), or resolve an item (+15). Failed system-rejected claims reduce it by 10 points."
+      },
+      {
+        "q": "Can I delete my account?",
+        "a": "Yes. Go to Settings → Danger Zone and type DELETE to confirm. All your data will be permanently removed from our servers."
+      },
+      {
+        "q": "What if I forgot my password?",
+        "a": "Click 'Forgot password?' on the login page. We'll send a reset link to your registered email, valid for 1 hour."
+      }
+    ],
+    "contactEmail": "lqitha.platform@gmail.com",
+    "contactEmailLabel": "Email Support",
+    "responseTime": "Response within 24h",
+    "githubLabel": "GitHub Repository",
+    "githubDesc": "Report bugs or contribute"
   }
 }

@@ -13,10 +13,15 @@ export default async function Footer() {
         badge: "Lost · Found · Verified",
       },
     },
-    auth: {
-      termsService: "Terms of Service",
-      privacyPolicy: "Privacy Policy",
+    privacy: {
+      title: "Privacy Policy",
     },
+    terms:{
+      title: "Terms of Service",
+    },
+    support: {
+      title: "Support",
+    }
   };
 
   let dict = fallbackDict;
@@ -59,8 +64,9 @@ export default async function Footer() {
             { href: "/browse", label: dict.nav.browse },
             { href: "/items/new", label: dict.nav.reportItem },
             { href: "/dashboard", label: dict.nav.dashboard },
-            { href: "/terms", label: dict.auth.termsService },
-            { href: "/privacy", label: dict.auth.privacyPolicy },
+            { href: "/terms", label: dict.terms.title },
+            { href: "/privacy", label: dict.privacy.title },
+            { href: "/support", label: dict.support.title },
           ].map((link) => (
             <Link
               key={link.href}
