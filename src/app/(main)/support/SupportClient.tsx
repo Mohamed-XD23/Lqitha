@@ -57,8 +57,14 @@ export default function SupportClient({ dict }: Props) {
     setError(null);
 
     try {
-      // Send via mailto or API route
-      await new Promise((res) => setTimeout(res, 1200)); // simulate
+      const res = await fetch("/api/support", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) {
+        throw new Error("Failed to send support request.");
+      }
       setSent(true);
     } catch {
       setError("Something went wrong. Please try again.");
