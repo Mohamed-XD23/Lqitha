@@ -29,6 +29,8 @@ import { useForm, Controller } from "react-hook-form";
 import ImageUploader from "@/components/ui/ImageUploader";
 import ButtonLoader from "@/components/ui/ButtonLoader";
 import { toast } from "sonner";
+import Image from "next/image";
+
 // مكوّن شريط التقدم
 // مكوّن شريط التقدم
 function StepIndicator({ current }: { current: number }) {
@@ -109,7 +111,6 @@ export default function NewItemPage() {
     watch,
     trigger,
     getValues,
-    control,
     formState: { errors },
   } = form;
   const watchedType = watch("type");
@@ -130,20 +131,22 @@ export default function NewItemPage() {
   }
 
   async function handleSubmit() {
-    setIsSubmitting(true);
-    const values = getValues();
-    // Convert local datetime to UTC ISO string before sending to server
-    // so the server (running in UTC) compares correctly
-    values.date = new Date(values.date).toISOString();
-    const result = await createItem(values);
-    if (result.error) {
-      toast.error(result.error);
-      setIsSubmitting(false);
-      return;
-    }
-    toast.success("Report published successfully ✓");
-    router.push(`/items/${result.itemId}`);
+  setIsSubmitting(true);
+
+  const values = getValues();
+  values.date = new Date(values.date).toISOString();
+
+  const result = await createItem(values);
+
+  if ("error" in result) {
+    toast.error(result.error);
+    setIsSubmitting(false);
+    return;
   }
+
+  toast.success("Report published successfully ✓");
+  router.push(`/items/${result.itemId}`);
+}
 
   return (
     <div className="bg-obsidian min-h-screen">
@@ -380,7 +383,7 @@ export default function NewItemPage() {
           {step === 3 && (
             <div className="flex flex-col gap-8">
               <div className="bg-obsidian border border-gold/15 rounded-xs p-6 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-[2px] h-full bg-gold" />
+                <div className="absolute top-0 left-0 w-0.5 h-full bg-gold" />
                 <div className="flex gap-5">
                   <div className="shrink-0 w-10 h-10 rounded-px bg-gold/10 flex items-center justify-center border border-gold/20">
                     <ShieldHalf className="w-4 h-4 text-gold" strokeWidth={2} />
@@ -569,7 +572,7 @@ export default function NewItemPage() {
               {watchedValues.imageUrl && (
                 <div className="overflow-hidden rounded-sm border border-gold/20 shadow-2xl relative">
                   <div className="absolute inset-0 bg-linear-to-t from-obsidian/60 to-transparent pointer-events-none" />
-                  <img
+                  <Image
                     src={watchedValues.imageUrl}
                     alt="preview"
                     className="h-56 w-full object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-1000"

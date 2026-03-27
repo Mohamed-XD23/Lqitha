@@ -10,6 +10,7 @@ import { User, Lock, Trash2, Loader2, Save } from "lucide-react";
 import { toast } from "sonner";
 import ImageUploader from "@/components/ui/ImageUploader";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function SettingsForm({
   user,
@@ -118,10 +119,12 @@ export default function SettingsForm({
             <div className="flex items-start gap-6">
               <div className="w-24 h-24 shrink-0 rounded-full bg-obsidian border border-gold/20 overflow-hidden flex items-center justify-center">
                 {image && typeof image === "string" ? (
-                  <img
+                  <Image
                     src={image}
                     alt="Profile"
-                    className="w-full h-full object-cover"
+                    className="object-cover"
+                    width={96}
+                    height={96}
                   />
                 ) : (
                   <User className="w-8 h-8 text-gold/30" />
@@ -278,8 +281,7 @@ export default function SettingsForm({
         <div className="space-y-6 max-w-md">
           <p className="text-sm text-slate font-interface leading-relaxed">
             Once your account is deleted, all of its resources and data will be
-            permanently deleted. Before deleting your account, please download
-            any data or information that you wish to retain.
+            permanently deleted.
           </p>
 
           <div className="space-y-2">
