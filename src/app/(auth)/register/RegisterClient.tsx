@@ -88,7 +88,7 @@ export default function RegisterClient({ dict }: Props) {
                 type="text"
                 required
                 className="w-full bg-[#0F0F1A] border border-gold/18 rounded-xs px-4 py-3 font-interface text-sm text-ivory outline-none focus:border-gold/50 transition-all placeholder:text-slate/30"
-                placeholder="John Doe"
+                placeholder="Your name"
               />
             </div>
 

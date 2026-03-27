@@ -61,9 +61,6 @@ export default async function Footer() {
 
         <nav className="flex flex-wrap items-center justify-center gap-8 rtl:flex-row-reverse">
           {[
-            { href: "/browse", label: dict.nav.browse },
-            { href: "/items/new", label: dict.nav.reportItem },
-            { href: "/dashboard", label: dict.nav.dashboard },
             { href: "/terms", label: dict.terms.title },
             { href: "/privacy", label: dict.privacy.title },
             { href: "/support", label: dict.support.title },

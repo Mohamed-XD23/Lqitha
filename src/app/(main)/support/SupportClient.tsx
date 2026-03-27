@@ -6,7 +6,6 @@ import {
   ChevronUp,
   Send,
   Mail,
-  Github,
   CheckCircle,
 } from "lucide-react";
 import ButtonLoader from "@/components/ui/ButtonLoader";
@@ -78,7 +77,7 @@ export default function SupportClient({ dict }: Props) {
       <div className="mx-auto max-w-5xl px-6 py-16">
         {/* Header */}
         <div className="mb-14">
-          <span className="font-outfit text-[10px] font-medium tracking-[4px] uppercase text-gold">
+          <span className="font-outfit text-xs font-medium tracking-[4px] uppercase text-gold">
             {t.badge}
           </span>
           <h1 className="font-cormorant text-5xl font-light text-ivory mt-2 mb-3">
@@ -126,10 +125,10 @@ export default function SupportClient({ dict }: Props) {
                     <p className="font-outfit text-xs font-medium text-ivory">
                       {t.contactEmailLabel}
                     </p>
-                    <p className="font-outfit text-[10px] text-slate mt-0.5">
+                    <p className="font-outfit text-sm text-slate mt-0.5">
                       {t.contactEmail}
                     </p>
-                    <p className="font-outfit text-[10px] text-gold/60 mt-1">
+                    <p className="font-outfit text-xs text-gold/60 mt-1">
                       {t.responseTime}
                     </p>
                   </div>
@@ -156,7 +155,7 @@ export default function SupportClient({ dict }: Props) {
                   </p>
                   <button
                     onClick={() => setSent(false)}
-                    className="font-outfit text-[10px] font-medium tracking-[3px] uppercase text-gold border border-gold/25 px-6 py-2.5 rounded-xs hover:bg-gold/5 transition-colors"
+                    className="font-outfit text-xs font-medium tracking-[3px] uppercase text-gold border border-gold/25 px-6 py-2.5 rounded-xs hover:bg-gold/5 transition-colors"
                   >
                     {t.sendAnother}
                   </button>
@@ -167,7 +166,7 @@ export default function SupportClient({ dict }: Props) {
                     <h2 className="font-cormorant text-xl font-400 text-ivory">
                       {t.feedbackTitle}
                     </h2>
-                    <p className="font-outfit text-[11px] text-slate mt-1">
+                    <p className="font-outfit text-xs text-slate mt-1">
                       {t.feedbackSubtitle}
                     </p>
                   </div>
@@ -183,7 +182,7 @@ export default function SupportClient({ dict }: Props) {
                           setForm({ ...form, name: e.target.value })
                         }
                         className={inputClass}
-                        placeholder="John Doe"
+                        placeholder="Your name"
                       />
                     </div>
 
@@ -214,7 +213,11 @@ export default function SupportClient({ dict }: Props) {
                           <option
                             key={k}
                             value={k}
-                            style={{ background: "#13131F" }}
+                            style={{ background: "#13131F",
+                              color: "#f2efe8",
+                              fontSize: "1rem",
+                              gap: "0.75rem",
+                             }}
                           >
                             {v as string}
                           </option>
@@ -245,14 +248,14 @@ export default function SupportClient({ dict }: Props) {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full font-outfit text-[11px] font-medium tracking-[3px] uppercase py-3.5 rounded-xs bg-gold text-obsidian hover:bg-ivory transition-all disabled:opacity-50 flex items-center justify-center gap-2 min-h-12"
+                      className="w-full font-outfit text-sm font-medium tracking-[3px] uppercase py-3.5 rounded-xs bg-gold text-obsidian hover:bg-ivory transition-all disabled:opacity-50 flex items-center justify-center gap-2 min-h-12"
                     >
                       {loading ? (
                         <ButtonLoader />
                       ) : (
                         <>
-                          <Send className="w-3.5 h-3.5" />
                           {t.submitButton}
+                          <Send className="w-3.5 h-3.5" />
                         </>
                       )}
                     </button>
