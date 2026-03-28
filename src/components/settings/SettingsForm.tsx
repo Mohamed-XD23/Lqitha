@@ -163,7 +163,7 @@ export default function SettingsForm({
               value={user.email}
               className="w-full bg-obsidian/50 border border-gold/10 rounded-xs px-4 py-3 text-slate font-interface text-sm cursor-not-allowed"
             />
-            <p className="text-[10px] text-slate/50 font-interface">
+            <p className="text-xs text-slate/50 font-interface">
               Email address cannot be changed.
             </p>
           </div>

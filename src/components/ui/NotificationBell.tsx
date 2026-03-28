@@ -342,7 +342,7 @@ export default function NotificationBell({ userId }: { userId: string }) {
           }`}
         />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-red-500 rounded-full border border-obsidian flex items-center justify-center text-[10px] font-bold text-white font-interface ltr:right-[-4px] rtl:left-[-4px]">
+          <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-red-500 rounded-full border border-obsidian flex items-center justify-center text-xs font-bold text-white font-interface ltr:right-[-4px] rtl:left-[-4px]">
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
@@ -398,7 +398,7 @@ export default function NotificationBell({ userId }: { userId: string }) {
                       <p className="text-xs text-slate mt-1 line-clamp-2 leading-relaxed">
                         {notif.message}
                       </p>
-                      <p className="text-[10px] text-slate/60 mt-2 uppercase tracking-widest font-interface">
+                      <p className="text-xs text-slate/60 mt-2 uppercase tracking-widest font-interface">
                         {formatDate(notif.createdAt)}
                       </p>
                     </div>

@@ -154,7 +154,7 @@ export default function NewItemPage() {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-3 mb-4">
             <div className="h-px w-6 bg-gold/40"></div>
-            <span className="font-interface text-[10px] font-bold tracking-sm uppercase text-gold">
+            <span className="font-interface text-xs font-bold tracking-sm uppercase text-gold">
               Registry
             </span>
             <div className="h-px w-6 bg-gold/40"></div>
@@ -176,7 +176,7 @@ export default function NewItemPage() {
           {step === 1 && (
             <div className="flex flex-col gap-8">
               <div>
-                <label className="mb-4 block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="mb-4 block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
                   Nature of Report
                 </label>
                 <div className="grid grid-cols-2 gap-4">
@@ -221,7 +221,7 @@ export default function NewItemPage() {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
                   Identification Title
                 </label>
                 <input
@@ -237,7 +237,7 @@ export default function NewItemPage() {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
                   Category
                 </label>
                 <div className="relative">
@@ -265,7 +265,7 @@ export default function NewItemPage() {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
                   Detailed Description
                 </label>
                 <textarea
@@ -287,7 +287,7 @@ export default function NewItemPage() {
           {step === 2 && (
             <div className="flex flex-col gap-8">
               <div className="space-y-3">
-                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
                   Physical Location
                 </label>
                 <input
@@ -303,7 +303,7 @@ export default function NewItemPage() {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
                   Occurrence Date & Time
                 </label>
                 <input
@@ -328,7 +328,7 @@ export default function NewItemPage() {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
                   Contact Line
                   <span className="ml-3 text-md tracking-px lowercase text-gold/60 font-medium">
                     (Securely encrypted)
@@ -357,7 +357,7 @@ export default function NewItemPage() {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
                   Visual Documentation
                   <span className="ml-3 text-md tracking-px lowercase text-gold/40 font-medium">
                     (Recommended)
@@ -412,7 +412,7 @@ export default function NewItemPage() {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
                   Verification Question
                 </label>
                 <input
@@ -428,7 +428,7 @@ export default function NewItemPage() {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
                   Verification Answer
                 </label>
                 <div className="relative">
@@ -563,7 +563,7 @@ export default function NewItemPage() {
 
               <div className="bg-gold/5 border border-gold/20 rounded-xs px-6 py-4 flex gap-4 items-center">
                 <Info className="w-4 h-4 text-gold shrink-0" strokeWidth={2} />
-                <p className="text-[10px] text-slate font-interface leading-relaxed uppercase tracking-px">
+                <p className="text-xs text-slate font-interface leading-relaxed uppercase tracking-px">
                   Note: Contact information remains encrypted until verification
                   is complete.
                 </p>
@@ -588,7 +588,7 @@ export default function NewItemPage() {
           {step > 1 && (
             <button
               onClick={() => setStep((s) => s - 1)}
-              className="px-10 py-5 rounded-xs border border-gold/30 text-gold font-interface text-[10px] font-bold uppercase tracking-sm hover:bg-gold/5 hover:border-gold transition-all flex items-center justify-center gap-3 group min-w-[140px]"
+              className="px-10 py-5 rounded-xs border border-gold/30 text-gold font-interface text-xs font-bold uppercase tracking-sm hover:bg-gold/5 hover:border-gold transition-all flex items-center justify-center gap-3 group min-w-[140px]"
             >
               <ArrowLeft
                 className="w-3 h-3 transition-transform group-hover:-translate-x-1"
@@ -600,7 +600,7 @@ export default function NewItemPage() {
           {step < 4 ? (
             <button
               onClick={handleNext}
-              className="flex-1 bg-gold px-10 py-5 rounded-xs text-obsidian font-interface text-[10px] font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-2xl shadow-gold/10 flex items-center justify-center gap-3 group"
+              className="flex-1 bg-gold px-10 py-5 rounded-xs text-obsidian font-interface text-xs font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-2xl shadow-gold/10 flex items-center justify-center gap-3 group"
             >
               Proceed
               <ArrowRight
@@ -612,7 +612,7 @@ export default function NewItemPage() {
             <button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="flex-1 bg-gold px-10 py-5 rounded-xs text-obsidian font-interface text-[10px] font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-2xl shadow-gold/10 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 min-h-[60px]"
+              className="flex-1 bg-gold px-10 py-5 rounded-xs text-obsidian font-interface text-xs font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-2xl shadow-gold/10 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 min-h-[60px]"
             >
               {isSubmitting ? (
                 <div className="scale-[1.2] origin-center">

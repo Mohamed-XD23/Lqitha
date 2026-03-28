@@ -76,7 +76,7 @@ export default function SupportClient({ dict }: Props) {
   const inputClass =
     "w-full bg-obsidian border border-gold/18 rounded-xs px-4 py-3 font-outfit text-sm text-ivory outline-none focus:border-gold/50 transition-all placeholder:text-slate/30";
   const labelClass =
-    "font-outfit text-[10px] font-medium tracking-[3px] uppercase text-slate block mb-2";
+    "font-outfit text-xs font-medium tracking-[3px] uppercase text-slate block mb-2";
 
   return (
     <div style={{ background: "#080810", minHeight: "100vh" }}>

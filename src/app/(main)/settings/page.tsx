@@ -24,7 +24,7 @@ export default async function SettingsPage() {
       <div className="mx-auto max-w-4xl px-6 py-12">
         {/* Header */}
         <div className="mb-10">
-          <span className="font-interface text-[10px] font-bold tracking-[3px] uppercase text-gold">
+          <span className="font-interface text-xs font-bold tracking-[3px] uppercase text-gold">
             Account Preferences
           </span>
           <h1 className="font-display text-4xl font-light text-ivory leading-none mt-2">

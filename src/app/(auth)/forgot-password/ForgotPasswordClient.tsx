@@ -39,7 +39,7 @@ export default function ForgotPasswordClient({ dict }: Props) {
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-3 mb-6">
             <div className="h-px w-6 bg-gold/30"></div>
-            <span className="font-interface text-[10px] font-bold tracking-sm uppercase text-gold">
+            <span className="font-interface text-xs font-bold tracking-sm uppercase text-gold">
               {dict.home.hero.badge}
             </span>
             <div className="h-px w-6 bg-gold/30"></div>
@@ -86,7 +86,7 @@ export default function ForgotPasswordClient({ dict }: Props) {
 
               <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="space-y-3">
-                  <label className="block text-[10px] font-bold tracking-[3px] uppercase text-slate font-interface">
+                  <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
                     {t.registeredEmail}
                   </label>
                   <div className="relative group/input">
@@ -131,7 +131,7 @@ export default function ForgotPasswordClient({ dict }: Props) {
               <div className="mt-10 pt-10 border-t border-gold/5 text-center">
                 <Link
                   href="/login"
-                  className="font-interface text-[10px] font-bold tracking-xs uppercase text-slate hover:text-gold transition-colors"
+                  className="font-interface text-xs font-bold tracking-xs uppercase text-slate hover:text-gold transition-colors"
                 >
                   {t.returnToLogin}
                 </Link>

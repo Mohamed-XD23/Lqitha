@@ -10,17 +10,22 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { LineChart } from "lucide-react";
+import type { Dictionary } from "@/lib/dictionary.types";
 
 interface Props {
   data: { month: string; score: number }[];
+  dict: Dictionary;
 }
 
-export default function TrustChart({ data }: Props) {
+export default function TrustChart({ data, dict }: Props) {
+
+const t = dict.trustChart;
+
   return (
     <div className="bg-void border border-gold/18 rounded-sm p-7 h-full shadow-xl">
       <p className="font-interface text-[9px] font-semibold tracking-[3px] uppercase text-slate mb-8 flex items-center gap-2">
         <LineChart className="w-3.5 h-3.5 text-gold/60" strokeWidth={2} />
-        Trust History
+        {t.title}
       </p>
       <ResponsiveContainer width="100%" height={200}>
         <AreaChart data={data}>

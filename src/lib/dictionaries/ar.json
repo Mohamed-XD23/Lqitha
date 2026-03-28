@@ -5,7 +5,12 @@
     "cancel": "إلغاء",
     "delete": "حذف",
     "edit": "تعديل",
-    "submit": "إرسال"
+    "submit": "إرسال",
+    "error": "حدث خطأ ما",
+    "backToDashboard": "العودة إلى لوحة التحكم",
+    "noResults": "لم يتم العثور على نتائج",
+    "seeMore": "عرض المزيد",
+    "seeLess": "إظهار أقل"
   },
   "nav": {
     "home": "الرئيسية",
@@ -141,9 +146,43 @@
     "title": "لوحة القيادة",
     "hello": "مرحباً",
     "trustScore": "درجة الموثوقية",
-    "myListings": "منشوراتي",
-    "myClaims": "طلباتي",
-    "messages": "الرسائل"
+    "noListings": "لا توجد منشورات بعد",
+    "noClaims": "لا توجد طلبات بعد",
+    "noMessages": "لا توجد محادثات بعد",
+    "memberSince": "عضو منذ",
+    "trustHistory": "سجل الموثوقية",
+    "openChat": "فتح المحادثة",
+    "view": "عرض",
+    "active": "نشط",
+    "resolved": "محلول",
+    "accepted": "مقبول ✓",
+    "rejected": "مرفوض",
+    "pending": "قيد الانتظار",
+    "rejectedByOwner": "مرفوض من المالك",
+    "lost": "مفقود",
+    "found": "موجود",
+    "claims": "مطالبة",
+    "openArrow": "فتح"
+  },
+  "item": {
+    "lost": "مفقود",
+    "found": "موجود",
+    "manageReport": "إدارة هذا المنشور",
+    "resolvedMessage": "تم حل هذا المنشور بنجاح",
+    "recoveryRequests": "طلبات الاسترداد",
+    "requests": "طلبات",
+    "category": "الفئة",
+    "location": "الموقع",
+    "date": "التاريخ",
+    "trustScore": "درجة الموثوقية",
+    "categories": {
+      "PHONE": "هاتف",
+      "KEYS": "مفاتيح",
+      "WALLET": "محفظة",
+      "DOCUMENTS": "وثائق",
+      "ELECTRONICS": "إلكترونيات",
+      "OTHER": "أخرى"
+    }
   },
   "settings": {
     "title": "إعدادات الحساب",
@@ -378,5 +417,84 @@
     "responseTime": "رد خلال 24 ساعة",
     "githubLabel": "مستودع GitHub",
     "githubDesc": "الإبلاغ عن أخطاء أو المساهمة"
+  },
+  "profileCard": {
+    "title": "ملفك الشخصي",
+    "memberSince": "عضو منذ",
+    "trustScore": "درجة الثقة",
+    "items": {
+      "listed": "عناصر مدرجة",
+      "recovered": "عناصر تم استردادها",
+      "claimed": "عناصر يتم المطالبة بها"
+    },
+    "viewProfile": "عرض الملف الكامل",
+    "editProfile": "تعديل الملف"
+  },
+  "trustChart": {
+    "title": "سجل درجة الثقة"
+  },
+  "dashboardTabs": {
+    "items": "العناصر",
+    "claims": "الدعاوى",
+    "myListings": "منشوراتي",
+    "myClaims": "مطالباتي",
+    "recoveryRequests": "طلبات الاسترجاع على عناصرك",
+    "claimsOnOthers": "دعاواك على عناصر أخرى",
+    "types": {
+      "LOST": "مفقود",
+      "FOUND": " موجود"
+    },
+    "empty": {
+      "noItems": "لم تقم بإدراج أي عناصر حتى الآن",
+      "startListing": "هل أنت مستعد للإبلاغ عن عنصر مفقود أو موجود؟",
+      "noRequests": "لا توجد طلبات استرجاع حتى الآن",
+      "noClaims": "لم تقم بالمطالبة بأي عناصر حتى الآن"
+    },
+    "messages": {
+      "title": "محادثاتك",
+      "empty": "لا توجد محادثات حتى الآن.",
+      "status": "متصل"
+    },
+    "actions": {
+      "view": "عرض",
+      "manage": "إدارة",
+      "viewDetails": "عرض التفاصيل",
+      "openChat": "فتح المحادثة"
+    },
+    "status": {
+      "active": "نشط",
+      "resolved": "تم الحل",
+      "pending": "قيد الانتظار",
+      "accepted": "مقبول ",
+      "rejectedByOwner": "مرفوض من المالك",
+      "rejected": "مرفوض"
+    }
+  },
+  "Toast": {
+    "success": "نجاح",
+    "error": "خطأ",
+    "info": "معلومات",
+    "photoupdate": "تم تحديث صورة الملف الشخصي",
+    "profileupdate": "تم تحديث الملف الشخصي",
+    "passwordupdate": "تم تحديث كلمة المرور",
+    "accountdelete": "تم حذف الحساب",
+    "claimaccepted": "تم قبول المطالبة",
+    "claimrejected": "تم رفض المطالبة",
+    "claimsubmitted": "تم إرسال المطالبة",
+    "claimerror": "حدث خطأ عند إرسال المطالبة",
+    "reportsubmitted": "تم إرسال التقرير",
+    "reporterror": "حدث خطأ عند إرسال التقرير"
+  },
+  "Profile": {
+    "edit": "تعديل الملف الشخصي",
+    "name": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "save": "حفظ التغييرات",
+    "cancel": "إلغاء",
+    "Toast": {
+      "photoupdate": "تم تحديث صورة الملف الشخصي",
+      "profileupdate": "تم تحديث الملف الشخصي"
+    }
   }
 }

@@ -185,7 +185,7 @@ export default function ResetPasswordClient({ dict }: Props) {
         <div className="text-center mb-14">
           <div className="inline-flex items-center gap-4 mb-6">
             <div className="h-px w-8 bg-gold/30"></div>
-            <span className="font-interface text-[10px] font-bold tracking-[5px] uppercase text-gold">
+            <span className="font-interface text-xs font-bold tracking-[5px] uppercase text-gold">
               {dict.auth.recoveryProtocol}
             </span>
             <div className="h-px w-8 bg-gold/30"></div>
@@ -199,7 +199,7 @@ export default function ResetPasswordClient({ dict }: Props) {
           fallback={
             <div className="text-center py-20 flex flex-col items-center gap-4">
               <div className="w-12 h-12 border-2 border-gold/20 border-t-gold rounded-full animate-spin" />
-              <p className="font-interface text-[10px] uppercase tracking-[3px] text-slate">
+              <p className="font-interface text-xs uppercase tracking-[3px] text-slate">
                 {dict.common.loading}
               </p>
             </div>

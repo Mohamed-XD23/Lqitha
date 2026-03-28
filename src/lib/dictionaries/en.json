@@ -5,7 +5,12 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit",
-    "submit": "Submit"
+    "submit": "Submit",
+    "error": "Something went wrong",
+    "backToDashboard": "Back to Dashboard",
+    "noResults": "No results found",
+    "seeMore": "See More",
+    "seeLess": "See Less"
   },
   "nav": {
     "home": "Home",
@@ -141,9 +146,43 @@
     "title": "Dashboard",
     "hello": "Hello",
     "trustScore": "Trust Score",
-    "myListings": "My Listings",
-    "myClaims": "My Claims",
-    "messages": "Messages"
+    "noListings": "No listings yet",
+    "noClaims": "No claims yet",
+    "noMessages": "No conversations yet",
+    "memberSince": "Member since",
+    "trustHistory": "Trust History",
+    "openChat": "Open Chat",
+    "view": "View",
+    "active": "Active",
+    "resolved": "Resolved",
+    "accepted": "Accepted",
+    "rejected": "Rejected",
+    "pending": "Pending",
+    "rejectedByOwner": "Rejected by owner",
+    "lost": "Lost",
+    "found": "Found",
+    "claims": "claims",
+    "openArrow": "Open"
+  },
+  "item": {
+    "lost": "Lost",
+    "found": "Found",
+    "manageReport": "Manage this Report",
+    "resolvedMessage": "This report has been successfully resolved",
+    "recoveryRequests": "Recovery Requests",
+    "requests": "Requests",
+    "category": "Category",
+    "location": "Location",
+    "date": "Date",
+    "trustScore": "Trust Score",
+    "categories": {
+      "PHONE": "Phone",
+      "KEYS": "Keys",
+      "WALLET": "Wallet",
+      "DOCUMENTS": "Documents",
+      "ELECTRONICS": "Electronics",
+      "OTHER": "Other"
+    }
   },
   "settings": {
     "title": "Account Preferences",
@@ -378,5 +417,83 @@
     "responseTime": "Response within 24h",
     "githubLabel": "GitHub Repository",
     "githubDesc": "Report bugs or contribute"
+  },
+  "profileCard": {
+    "memberSince": "Member since",
+    "trustScore": "Trust Score",
+    "items": {
+      "listed": "Items Listed",
+      "recovered": "Items Recovered",
+      "claimed": "Items Claimed"
+    },
+    "viewProfile": "View Full Profile",
+    "editProfile": "Edit Profile"
+  },
+  "trustChart": {
+    "title": "Trust Score History"
+  },
+  "dashboardTabs": {
+    "items": "Items",
+    "claims": "Claims",
+    "myListings": "My Listings",
+    "myClaims": "My Claims",
+    "recoveryRequests": "Recovery Requests on Your Items",
+    "claimsOnOthers": "Your Claims on Other Items",
+    "types": {
+      "LOST": "Lost",
+      "FOUND": "Found"
+    },
+    "empty": {
+      "noItems": "No items listed yet",
+      "startListing": "Ready to report a lost or found item?",
+      "noRequests": "No recovery requests yet",
+      "noClaims": "You haven't claimed any items yet"
+    },
+    "messages": {
+      "title": "Messages",
+      "empty": "No conversations yet.",
+      "status": "Connected"
+    },
+    "actions": {
+      "view": "View",
+      "manage": "Manage",
+      "viewDetails": "View Details",
+      "openChat": "Open Chat"
+    },
+    "status": {
+      "active": "Active",
+      "resolved": "Resolved",
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "rejectedByOwner": "Rejected by Owner",
+      "rejected": "Rejected"
+    }
+  },
+  "Toast": {
+    "success": "Success",
+    "error": "Error",
+    "info": "Info",
+    "photoupdate": "Profile picture updated",
+    "profileupdate": "Profile updated",
+    "passwordupdate": "Password updated",
+    "accountdelete": "Account deleted",
+    "claimaccepted": "Claim accepted",
+    "claimrejected": "Claim rejected",
+    "claimsubmitted": "Claim submitted",
+    "claimerror": "Error submitting claim",
+    "reportsubmitted": "Report submitted",
+    "reporterror": "Error submitting report"
+  },
+  "Profile": {
+    "edit": "Edit Profile",
+    "name": "Full Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "Toast": {
+      "photoupdate": "Profile picture updated",
+      "profileupdate": "Profile updated"
+    }
   }
 }

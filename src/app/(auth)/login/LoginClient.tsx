@@ -41,7 +41,7 @@ export default function LoginClient({ dict }: Props) {
 
   return (
     <div className="bg-obsidian min-h-screen flex items-center justify-center p-6">
-      <div className="w-full max-w-[420px]">
+      <div className="w-full max-w-105">
         {/* Logo */}
         <div className="text-center mb-10">
           <div className="flex items-center justify-center gap-3 mb-2">
@@ -51,7 +51,7 @@ export default function LoginClient({ dict }: Props) {
             </svg>
             <span className="font-fraunces text-3xl font-light tracking-sm text-ivory">LQITHA</span>
           </div>
-          <p className="font-interface text-[10px] rtl:text-xs tracking-[3px] ltr:uppercase text-slate">
+          <p className="font-interface text-xs rtl:text-xs tracking-[3px] ltr:uppercase text-slate">
             {dict.home.hero.badge}
           </p>
         </div>
@@ -93,7 +93,7 @@ export default function LoginClient({ dict }: Props) {
             </div>
 
             <button type="submit" disabled={loading}
-              className="font-interface text-sm font-medium tracking-widest uppercase py-4 rounded-xs bg-gold text-obsidian hover:bg-ivory transition-all disabled:opacity-50 mt-2 flex items-center justify-center min-h-[56px]">
+              className="font-interface text-sm font-medium tracking-widest uppercase py-4 rounded-xs bg-gold text-obsidian hover:bg-ivory transition-all disabled:opacity-50 mt-2 flex items-center justify-center min-h-14">
               {loading ? <ButtonLoader /> : t.signIn}
             </button>
           </form>

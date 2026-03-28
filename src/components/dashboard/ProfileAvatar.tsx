@@ -6,13 +6,16 @@ import { updateProfileImage } from "@/actions/dashboard.actions";
 import { toast } from "sonner";
 import Image from "next/image";
 import { Check, X, Camera } from "lucide-react";
+import { Dictionary } from "@/lib/dictionary.types";
 
 interface Props {
   name: string;
   image: string | null;
+  dict: Dictionary
 }
 
-export default function ProfileAvatar({ name, image }: Props) {
+export default function ProfileAvatar({ name, image, dict }: Props) {
+  const t = dict.Profile;
   const [currentImage, setCurrentImage] = useState(image);
   const [editing, setEditing] = useState(false);
   const [,startTransition] = useTransition();
@@ -23,7 +26,7 @@ export default function ProfileAvatar({ name, image }: Props) {
       toast.success(
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <Check className="w-4 h-4" strokeWidth={2.5} />
-          <span>Photo updated</span>
+          <span>{t.Toast.photoupdate}</span>
         </div>,
       );
       setCurrentImage(url);
@@ -40,7 +43,7 @@ export default function ProfileAvatar({ name, image }: Props) {
           className="font-interface text-md text-slate bg-slate/10 border border-slate/20 rounded-md px-3 py-1 mt-2"
         >
           <div className="flex items-center gap-2">
-            <span>Cancel</span>
+            <span>{t.cancel}</span>
             <X className="w-4 h-4 text-slate" strokeWidth={2} />
           </div>
         </button>

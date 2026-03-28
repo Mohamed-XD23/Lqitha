@@ -109,7 +109,7 @@ export default function UserNavMenu({ user, dict }: UserNavMenuProps) {
         >
           <div className="p-4 border-b border-gold/10 bg-void/50 text-left ltr:text-left rtl:text-right">
             <p className="font-interface text-sm font-semibold text-ivory truncate">{user.name}</p>
-            <p className="font-interface text-[10px] text-slate truncate uppercase tracking-widest mt-0.5">{user.email}</p>
+            <p className="font-interface text-xs text-slate truncate uppercase tracking-widest mt-0.5">{user.email}</p>
           </div>
 
           <div className="p-2">

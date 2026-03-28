@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import type { Dictionary } from "@/lib/dictionary.types";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils/date";
 import ChatButton from "@/components/chat/ChatButton";
@@ -29,22 +30,26 @@ interface Props {
   currentUserId: string;
   currentUserName: string;
   currentUserImage?: string | null;
+  dict: Dictionary;
 }
 
 function StatusBadge({
   status,
   rejectedBy,
+  dict,
 }: {
   status: string;
   rejectedBy?: string | null;
+  dict: Dictionary;
 }) {
+  const t = dict.dashboardTabs.status;
   const map: Record<string, { className: string; label: React.ReactNode }> = {
     ACTIVE: {
       className: "bg-[#0A84FF]/10 text-[#0A84FF] border-[#0A84FF]/20",
       label: (
         <span className="flex items-center gap-1.5">
           <Circle className="w-1.5 h-1.5 opacity-70 fill-current" strokeWidth={2.5} />
-          Active
+          {t.active}
         </span>
       ),
     },
@@ -53,7 +58,7 @@ function StatusBadge({
       label: (
         <span className="flex items-center gap-1.5">
           <Check className="w-3 h-3" strokeWidth={3} />
-          Resolved
+          {t.resolved}
         </span>
       ),
     },
@@ -62,7 +67,7 @@ function StatusBadge({
       label: (
         <span className="flex items-center gap-1.5">
           <CheckCircle2 className="w-3 h-3" strokeWidth={2.5} />
-          Accepted
+          {t.accepted}
         </span>
       ),
     },
@@ -71,7 +76,7 @@ function StatusBadge({
       label: (
         <span className="flex items-center gap-1.5">
           <X className="w-3 h-3" strokeWidth={3} />
-          {rejectedBy === "owner" ? "Rejected by Owner" : "Rejected"}
+          {rejectedBy === "owner" ? t.rejectedByOwner : t.rejected}
         </span>
       ),
     },
@@ -80,7 +85,7 @@ function StatusBadge({
       label: (
         <span className="flex items-center gap-1.5">
           <Hourglass className="w-2.5 h-2.5" strokeWidth={2.5} />
-          Pending
+          {t.pending}
         </span>
       ),
     },
@@ -100,12 +105,15 @@ function MessagesTab({
   currentUserId,
   currentUserName,
   currentUserImage,
+  dict,
 }: {
   claims: Claim[];
   currentUserId: string;
   currentUserName: string;
   currentUserImage?: string | null;
+  dict: Dictionary;
 }) {
+  const t = dict.dashboardTabs
   const { openChat } = useChatContext();
   const [isPending, startTransition] = useTransition();
   const acceptedClaims = claims.filter((c) => c.status === "ACCEPTED");
@@ -113,7 +121,7 @@ function MessagesTab({
   if (acceptedClaims.length === 0) {
     return (
       <p className="font-interface text-xs text-slate text-center py-16 opacity-50">
-        No active messages
+        {t.messages.empty}
       </p>
     );
   }
@@ -151,17 +159,17 @@ function MessagesTab({
             <p className="font-interface text-sm font-medium text-ivory">
               {claim.item.title}
             </p>
-            <p className="font-interface text-[10px] text-slate tracking-wider uppercase mt-1">
-              Connected · {formatDate(claim.createdAt)}
+            <p className="font-interface text-xs text-slate tracking-wider uppercase mt-1">
+              {t.messages.status} · {formatDate(claim.createdAt)}
             </p>
           </div>
-          <span className="font-interface bg-gold text-obsidian text-[10px] font-semibold tracking-xs uppercase px-4 py-2 rounded-xs flex items-center justify-center gap-2 min-w-[80px] hover:bg-ivory transition-colors">
+          <span className="font-interface bg-gold text-obsidian text-xs font-semibold tracking-xs uppercase px-4 py-2 rounded-xs flex items-center justify-center gap-2 min-w-20 hover:bg-ivory transition-colors">
             {isPending ? (
               <div className="scale-[0.8] origin-center">
                 <ButtonLoader />
               </div>
             ) : (
-              <>Open Chat</>
+              <>{t.actions.openChat}</>
             )}
           </span>
         </button>
@@ -176,17 +184,19 @@ export default function DashboardTabs({
   currentUserId,
   currentUserName,
   currentUserImage,
+  dict,
 }: Props) {
+  const t = dict.dashboardTabs;
   const [activeTab, setActiveTab] = useState<
     "listings" | "claims" | "messages"
   >("listings");
 
   const tabs = [
-    { key: "listings" as const, label: "My Listings", count: listings.length },
-    { key: "claims" as const, label: "My Claims", count: claims.length },
+    { key: "listings" as const, label: t.myListings, count: listings.length },
+    { key: "claims" as const, label: t.myClaims, count: claims.length },
     {
       key: "messages" as const,
-      label: "Messages",
+      label: t.messages.title,
       count: claims.filter((c) => c.status === "ACCEPTED").length,
     },
   ];
@@ -199,7 +209,7 @@ export default function DashboardTabs({
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`flex items-center justify-center gap-3 px-6 py-5 font-interface text-[10px] font-medium tracking-[3px] uppercase cursor-pointer bg-transparent border-none border-b-2 transition-all duration-300 relative ${
+            className={`flex items-center justify-center gap-3 px-6 py-5 font-interface text-xs font-medium tracking-[3px] uppercase cursor-pointer bg-transparent border-none border-b-2 transition-all duration-300 relative ${
               activeTab === tab.key
                 ? "border-gold text-ivory"
                 : "border-transparent text-slate hover:text-gold/70"
@@ -208,7 +218,7 @@ export default function DashboardTabs({
             {tab.label}
             {tab.count > 0 && (
               <span
-                className={`px-1.5 py-0.5 rounded-px text-[9px] font-bold ${activeTab === tab.key ? "bg-gold text-obsidian" : "bg-gold/10 text-gold border border-gold/20"}`}
+                className={`flex items-center justify-center px-2 py-1 rounded-sm text-xs font-bold ${activeTab === tab.key ? "bg-gold text-obsidian" : "bg-gold/10 text-gold border border-gold/20"}`}
               >
                 {tab.count}
               </span>
@@ -218,7 +228,7 @@ export default function DashboardTabs({
       </div>
 
       {/* Content Area */}
-      <div className="min-h-[300px]">
+      <div className="min-h-75">
         {/* My Listings */}
         {activeTab === "listings" && (
           <div className="flex flex-col">
@@ -226,7 +236,7 @@ export default function DashboardTabs({
               <div className="flex flex-col items-center justify-center flex-1 py-16 opacity-50">
                 <PackageOpen className="w-8 h-8 text-gold/20 mb-4" strokeWidth={1.5} />
                 <p className="font-interface text-xs text-slate">
-                  No listings published yet
+                  {t.empty.noItems}
                 </p>
               </div>
             ) : (
@@ -243,27 +253,27 @@ export default function DashboardTabs({
                       <p className="font-interface text-sm font-medium text-ivory">
                         {item.title}
                       </p>
-                      <div className="flex items-center gap-3 flex-wrap font-interface text-[10px] text-slate tracking-widest uppercase">
+                      <div className="flex items-center gap-3 flex-wrap font-interface text-xs text-slate tracking-widest uppercase">
                         <span>{formatDate(item.createdAt)}</span>
                         <span className="w-1 h-1 rounded-full bg-slate/30" />
                         <div className="flex items-center gap-1.5">
                           {item.type === "LOST" ? <Search className="w-2.5 h-2.5 text-slate/60" strokeWidth={2.5} /> : <Package className="w-2.5 h-2.5 text-slate/60" strokeWidth={2.5} />}
-                          {item.type === "LOST" ? "Lost" : "Found"}
+                          {item.type === "LOST" ? t.types.LOST : t.types.FOUND}
                         </div>
                         <span className="w-1 h-1 rounded-full bg-slate/30" />
                         <span className="text-gold/80">
-                          {item._count.claims} Claims
+                          {item._count.claims} {t.claims}
                         </span>
                       </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
-                    <StatusBadge status={item.status} />
+                    <StatusBadge status={item.status} dict={dict} />
                     <Link
                       href={`/items/${item.id}`}
-                      className="font-interface bg-transparent border border-gold/20 text-[10px] tracking-xs uppercase text-ivory px-4 py-2 rounded-xs flex items-center gap-2 hover:bg-gold/10 hover:border-gold/40 transition-all"
+                      className="font-interface bg-transparent border border-gold/20 text-xs tracking-xs uppercase text-ivory px-4 py-2 rounded-xs flex items-center gap-2 hover:bg-gold/10 hover:border-gold/40 transition-all"
                     >
-                      Manage
+                      {t.actions.manage}
                       <ArrowRight className="w-2.5 h-2.5" strokeWidth={2.5} />
                     </Link>
                   </div>
@@ -280,7 +290,7 @@ export default function DashboardTabs({
               <div className="flex flex-col items-center justify-center flex-1 py-16 opacity-50">
                 <FileText className="w-8 h-8 text-gold/20 mb-4" strokeWidth={1.5} />
                 <p className="font-interface text-xs text-slate">
-                  No claims submitted yet
+                  {t.empty.noClaims}
                 </p>
               </div>
             ) : (
@@ -293,7 +303,7 @@ export default function DashboardTabs({
                     <p className="font-interface text-sm font-medium text-ivory">
                       {claim.item.title}
                     </p>
-                    <div className="flex items-center gap-3 flex-wrap font-interface text-[10px] text-slate tracking-widest uppercase">
+                    <div className="flex items-center gap-3 flex-wrap font-interface text-xs text-slate tracking-widest uppercase">
                       <span>{formatDate(claim.createdAt)}</span>
                       <span className="w-1 h-1 rounded-full bg-slate/30" />
                       <div className="flex items-center gap-1.5">
@@ -306,13 +316,14 @@ export default function DashboardTabs({
                     <StatusBadge
                       status={claim.status}
                       rejectedBy={claim.rejectedBy}
+                      dict={dict}
                     />
                     <div className="flex items-center gap-2">
                       <Link
                         href={`/items/${claim.item.id}`}
-                        className="font-interface bg-transparent border border-gold/20 text-[10px] tracking-xs uppercase text-ivory px-4 py-2 rounded-xs flex items-center gap-2 hover:bg-gold/10 transition-all"
+                        className="font-interface bg-transparent border border-gold/20 text-xs tracking-xs uppercase text-ivory px-4 py-2 rounded-xs flex items-center gap-2 hover:bg-gold/10 transition-all"
                       >
-                        View
+                        {t.actions.view}
                       </Link>
                       {claim.status === "ACCEPTED" && (
                         <ChatButton
@@ -340,6 +351,7 @@ export default function DashboardTabs({
               currentUserId={currentUserId}
               currentUserName={currentUserName}
               currentUserImage={currentUserImage}
+              dict={dict}
             />
           </div>
         )}

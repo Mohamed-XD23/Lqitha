@@ -67,7 +67,7 @@ export default function ClaimsSection({
         <h2 className="font-display text-2xl font-light text-ivory">
           Incoming Claims
         </h2>
-        <span className="font-interface text-[10px] font-bold tracking-xs uppercase px-3 py-1 rounded-full bg-gold/10 text-gold border border-gold/25">
+        <span className="font-interface text-xs font-bold tracking-xs uppercase px-3 py-1 rounded-full bg-gold/10 text-gold border border-gold/25">
           {pendingClaims.length} Pending
         </span>
       </div>
@@ -94,7 +94,7 @@ export default function ClaimsSection({
                     />{" "}
                     {claim.claimant.trustScore}
                   </p>
-                  <span className="font-interface text-[10px] text-emerald-400 font-bold uppercase tracking-wider">
+                  <span className="font-interface text-xs text-emerald-400 font-bold uppercase tracking-wider">
                     · Provided correct answer ✅
                   </span>
                 </div>
@@ -106,7 +106,7 @@ export default function ClaimsSection({
                 <button
                   onClick={() => handleRespond(claim.id, "ACCEPTED")}
                   disabled={isPending}
-                  className="font-interface text-[10px] font-bold tracking-xs uppercase px-5 py-2 rounded-full bg-gold text-obsidian hover:bg-ivory transition-all shadow-md shadow-gold/10 disabled:opacity-50 flex items-center justify-center min-h-[36px]"
+                  className="font-interface text-xs font-bold tracking-xs uppercase px-5 py-2 rounded-full bg-gold text-obsidian hover:bg-ivory transition-all shadow-md shadow-gold/10 disabled:opacity-50 flex items-center justify-center min-h-[36px]"
                 >
                   {loadingId === claim.id ? (
                     <div className="scale-[0.8] origin-center">
@@ -119,7 +119,7 @@ export default function ClaimsSection({
                 <button
                   onClick={() => handleRespond(claim.id, "REJECTED")}
                   disabled={isPending}
-                  className="font-interface text-[10px] font-bold tracking-xs uppercase px-5 py-2 rounded-full bg-transparent text-red-400 border border-red-400/20 hover:bg-red-400/5 transition-all disabled:opacity-50 flex items-center justify-center min-h-[36px]"
+                  className="font-interface text-xs font-bold tracking-xs uppercase px-5 py-2 rounded-full bg-transparent text-red-400 border border-red-400/20 hover:bg-red-400/5 transition-all disabled:opacity-50 flex items-center justify-center min-h-[36px]"
                 >
                   {loadingId === claim.id ? (
                     <div className="scale-[0.8] origin-center">
@@ -133,7 +133,7 @@ export default function ClaimsSection({
             ) : (
               <div className="flex items-center gap-3">
                 <span
-                  className={`font-interface text-[10px] font-bold tracking-xs uppercase px-4 py-1.5 rounded-full border ${
+                  className={`font-interface text-xs font-bold tracking-xs uppercase px-4 py-1.5 rounded-full border ${
                     claim.status === "ACCEPTED"
                       ? "bg-emerald-500/5 text-emerald-400 border-emerald-500/20"
                       : "bg-red-500/5 text-red-400 border-red-500/20"
