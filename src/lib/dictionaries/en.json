@@ -182,6 +182,53 @@
       "DOCUMENTS": "Documents",
       "ELECTRONICS": "Electronics",
       "OTHER": "Other"
+    },
+    "new": {
+      "registry": "Register New Item",
+      "createreport": "Create Report",
+      "description": "Help us bridge the gap between lost and found",
+      "naturereport": "Nature of Report",
+      "steps": {
+        "nature": "Nature",
+        "details": "Details",
+        "security": "Security",
+        "review": "Review"
+      },
+      "fields": {
+        "title": "Title",
+        "titlePlaceholder": "A brief identifier for your item (e.g., 'Black Wallet with Silver Zipper')",
+        "category": "Category",
+        "description": "Description",
+        "descriptionPlaceholder": "Provide a detailed description of the item, including any unique features or markings that can help identify it.",
+        "location": "Location",
+        "locationPlaceholder": "Where was the item lost or found? Be as specific as possible.",
+        "date": "Date and Time",
+        "phone": "Phone Number",
+        "noVisible": "(Not Visible to Public)",
+        "image": "Image",
+        "secretQuestion": "Secret Question",
+        "secretAnswer": "Secret Answer"
+      },
+      "securityProtocol": {
+        "title": "Security Protocol",
+        "description": "To ensure your item is returned to the rightful owner, we use a secret question system. Only the person who knows the correct answer can claim the item.",
+        "questionPlaceholder": "Define a question that helps others identify if they have found your specific item.",
+        "verificationPlaceholder": "Define a specific verification question. The claimant must answer this correctly before contact is permitted.",
+        "answerPlaceholder": "The answer to your secret question",
+        "example": "Example",
+        "questionExample":"'What color is the charm attached?' or 'What was the lock combination?'",
+        "verificationExample":"'What is the sticker on the back?' or 'What is the unique scuff mark?'",
+        "secretQuestionPlaceholder": "e.g., What is the unique mark on the back?",
+        "secretAnswerPlaceholder": "Correct answer for matching"
+      },
+      "requiredfields": "Required fields",
+      "requiredFieldsDescription": "All fields marked with {asterisk} must be completed. You cannot proceed to the next step without filling all required fields.",
+      "note": "Note: Contact information remains encrypted until verification is complete.",
+      "navigation": {
+        "next": "Next",
+        "back": "Back",
+        "publish": "Publish"
+      }
     }
   },
   "settings": {
@@ -473,6 +520,8 @@
     "success": "Success",
     "error": "Error",
     "info": "Info",
+    "successreport": "Report created successfully",
+    "errorreport": "Error creating report",
     "photoupdate": "Profile picture updated",
     "profileupdate": "Profile updated",
     "passwordupdate": "Password updated",

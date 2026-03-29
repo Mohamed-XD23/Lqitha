@@ -34,6 +34,10 @@ export default function ImageUploader({ value, onChange }: Props) {
       console.error("Upload failed:", err);
     } finally {
       setLoading(false);
+      //IMPORTANT: Reset file input so selecting the same file again triggers onChange
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
     }
   }
 
