@@ -35,7 +35,7 @@ export default function LoginClient({ dict }: Props) {
       setLoading(false);
       return;
     }
-    router.push("/");
+    router.push("/browse");
     router.refresh();
   }
 
