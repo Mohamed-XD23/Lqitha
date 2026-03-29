@@ -31,8 +31,6 @@ import ButtonLoader from "@/components/ui/ButtonLoader";
 import { toast } from "sonner";
 import Image from "next/image";
 import type { Dictionary } from "@/lib/dictionary.types";
-import { ur } from "zod/v4/locales";
-import { url } from "inspector";
 
 // مكوّن شريط التقدم
 // مكوّن شريط التقدم
@@ -93,6 +91,8 @@ function StepIndicator({
 }
 
 export default function NewItemPage({ dict }: { dict: Dictionary }) {
+  "use no memo";
+  
   const t = dict.item;
   const tToast = dict.Toast;
   const [step, setStep] = useState(1);
