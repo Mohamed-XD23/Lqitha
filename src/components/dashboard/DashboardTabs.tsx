@@ -333,6 +333,7 @@ export default function DashboardTabs({
                           currentUserId={currentUserId}
                           currentUserName={currentUserName}
                           currentUserImage={currentUserImage}
+                          dict={dict}
                         />
                       )}
                     </div>
