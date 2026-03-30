@@ -4,6 +4,7 @@ import { useTransition } from "react";
 import { MessageSquare } from "lucide-react";
 import { createChatChannel } from "@/actions/chat.actions";
 import { useChatContext } from "@/context/ChatContext";
+import { Dictionary } from "@/lib/dictionary.types";
 
 interface Props {
   claimId: string;
@@ -12,6 +13,7 @@ interface Props {
   currentUserId: string;
   currentUserName: string;
   currentUserImage?: string | null;
+  dict: Dictionary;
 }
 
 export default function ChatButton({
@@ -21,7 +23,9 @@ export default function ChatButton({
   currentUserId,
   currentUserName,
   currentUserImage,
+  dict,
 }: Props) {
+  const t = dict.chat;
   const { openChat } = useChatContext();
   const [isPending, startTransition] = useTransition();
 
@@ -43,20 +47,10 @@ export default function ChatButton({
     <button
       onClick={handleOpen}
       disabled={isPending}
-      className="flex items-center justify-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors disabled:opacity-50"
-      style={{
-        background: "#F2EFE8",
-        cursor: isPending ? "not-allowed" : "pointer",
-        textAlign: "right",
-        opacity: isPending ? 0.7 : 1,
-        color: "#080810",
-        fontSize: "15px",
-        fontWeight: 500,
-        fontFamily: "var(--font-interface)",
-      }}
+      className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium font-interface bg-gold text-obsidian hover:bg-ivory transition-colors disabled:opacity-50"
     >
       <MessageSquare className="w-3 h-3" />
-      {isPending ? "..." : "Chat"}
+      {isPending ? "..." : t.chatbtn}
     </button>
   );
 }

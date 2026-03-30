@@ -544,5 +544,18 @@
       "photoupdate": "Profile picture updated",
       "profileupdate": "Profile updated"
     }
+  },
+  "claim": {
+    "accept" : "Accept",
+    "reject" : "Reject",
+    "noClaims": "No claims yet",
+    "incoming": "Incoming Claims",
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "rejected": "Rejected",
+    "providedAnswer": "Provided correct answer "
+  },
+  "chat" : {
+    "chatbtn": "Message"
   }
 }

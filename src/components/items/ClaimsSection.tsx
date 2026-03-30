@@ -6,6 +6,8 @@ import ChatButton from "@/components/chat/ChatButton";
 import ButtonLoader from "@/components/ui/ButtonLoader";
 import { toast } from "sonner";
 import { Star } from "lucide-react";
+import { Dictionary } from "@/lib/dictionary.types";
+import { Check } from 'lucide-react';
 
 interface Claimant {
   id: string;
@@ -26,6 +28,7 @@ interface Props {
   currentUserId: string;
   currentUserName: string;
   currentUserImage?: string | null;
+  dict: Dictionary
 }
 
 export default function ClaimsSection({
@@ -35,7 +38,9 @@ export default function ClaimsSection({
   currentUserId,
   currentUserName,
   currentUserImage,
+  dict,
 }: Props) {
+  const t = dict.claim;
   const [isPending, startTransition] = useTransition();
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const pendingClaims = claims.filter((c) => c.status === "PENDING");
@@ -55,7 +60,7 @@ export default function ClaimsSection({
     return (
       <div className="mt-10 border border-dashed border-gold/20 rounded-lg py-12 text-center bg-void/20">
         <p className="font-interface text-xs text-slate tracking-widest uppercase opacity-60">
-          No claims yet
+          {t.noClaims}
         </p>
       </div>
     );
@@ -65,10 +70,10 @@ export default function ClaimsSection({
     <div className="mt-12">
       <div className="flex items-center gap-4 mb-6">
         <h2 className="font-display text-2xl font-light text-ivory">
-          Incoming Claims
+          {t.incoming}
         </h2>
         <span className="font-interface text-xs font-bold tracking-xs uppercase px-3 py-1 rounded-full bg-gold/10 text-gold border border-gold/25">
-          {pendingClaims.length} Pending
+          {pendingClaims.length} {t.pending}
         </span>
       </div>
 
@@ -86,16 +91,19 @@ export default function ClaimsSection({
                 <p className="font-interface text-sm font-medium text-ivory transition-colors group-hover:text-gold">
                   {claim.claimant.name}
                 </p>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <p className="font-interface text-[11px] text-slate">
+                <div className="flex items-center  gap-2 mt-0.5">
+                  <p className="flex items-center gap-0.5 font-interface text-xs text-slate">
                     <Star
-                      className="w-3 h-3 text-gold mr-1 fill-gold"
+                      className="w-4 h-4 text-gold fill-gold"
                       strokeWidth={0}
                     />{" "}
                     {claim.claimant.trustScore}
                   </p>
-                  <span className="font-interface text-xs text-emerald-400 font-bold uppercase tracking-wider">
-                    · Provided correct answer ✅
+                  <span className=" flex items-center gap-1 font-interface text-xs text-emerald-400 font-bold uppercase tracking-wider">
+                    {t.providedAnswer} 
+                    <Check 
+                    className="w-6 h-6"
+                    />
                   </span>
                 </div>
               </div>
@@ -113,7 +121,7 @@ export default function ClaimsSection({
                       <ButtonLoader />
                     </div>
                   ) : (
-                    "Accept"
+                    t.accept
                   )}
                 </button>
                 <button
@@ -126,7 +134,7 @@ export default function ClaimsSection({
                       <ButtonLoader />
                     </div>
                   ) : (
-                    "Reject"
+                    t.reject
                   )}
                 </button>
               </div>
@@ -139,7 +147,7 @@ export default function ClaimsSection({
                       : "bg-red-500/5 text-red-400 border-red-500/20"
                   }`}
                 >
-                  {claim.status === "ACCEPTED" ? "Accepted ✓" : "Rejected ✕"}
+                  {claim.status === "ACCEPTED" ? t.accepted : t.rejected}
                 </span>
                 {claim.status === "ACCEPTED" && (
                   <ChatButton
@@ -149,6 +157,7 @@ export default function ClaimsSection({
                     currentUserId={currentUserId}
                     currentUserName={currentUserName}
                     currentUserImage={currentUserImage}
+                    dict={dict}
                   />
                 )}
               </div>

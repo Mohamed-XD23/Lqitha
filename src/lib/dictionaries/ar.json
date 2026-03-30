@@ -545,5 +545,18 @@
       "photoupdate": "تم تحديث صورة الملف الشخصي",
       "profileupdate": "تم تحديث الملف الشخصي"
     }
+  },
+  "claim": {
+    "accept" : "قبول",
+    "reject" : "رفض",
+    "noClaims": "لا توجد مطالبات حتى الآن",
+    "incoming": "الدعاوى الواردة",
+    "pending": "قيد الانتظار",
+    "accepted": "مقبول",
+    "rejected": "مرفوض",
+    "providedAnswer": "قدم إجابة صحيحة"
+  },
+  "chat": {
+    "chatbtn": "الدردشة"
   }
 }

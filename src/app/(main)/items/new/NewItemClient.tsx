@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { itemSchema, type ItemFormData } from "@/lib/validation/item.schema";
@@ -92,7 +93,7 @@ function StepIndicator({
 
 export default function NewItemPage({ dict }: { dict: Dictionary }) {
   "use no memo";
-  
+
   const t = dict.item;
   const tToast = dict.Toast;
   const [step, setStep] = useState(1);
@@ -120,7 +121,6 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
 
   const {
     register,
-    watch,
     trigger,
     getValues,
     formState: { errors },
@@ -129,8 +129,8 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
     { value: "LOST", label: t.lost },
     { value: "FOUND", label: t.found },
   ] as const;
-  const watchedType = watch("type");
-  const watchedValues = watch();
+  const watchedValues = useWatch({ control: form.control });
+  const watchedType = watchedValues.type;
 
   // التحقق من صحة حقول الخطوة الحالية قبل الانتقال
   async function handleNext() {
@@ -583,7 +583,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                         strokeWidth={2.5}
                       />
                     ),
-                    value: formatDate(watchedValues.date),
+                    value: formatDate(watchedValues.date || ""),
                   },
                   {
                     label: t.new.fields.phone,
@@ -656,14 +656,13 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
           {step > 1 && (
             <button
               onClick={() => setStep((s) => s - 1)}
-              className="px-10 py-5 rounded-xs border border-gold/30 text-gold font-interface text-xs font-bold uppercase tracking-sm hover:bg-gold/5 hover:border-gold transition-all flex items-center justify-center gap-3 group min-w-[140px]"
+              className="px-10 py-5 rounded-xs border border-gold/30 text-gold font-interface text-xs font-bold uppercase tracking-sm hover:bg-gold/5 hover:border-gold transition-all flex items-center justify-center gap-3 group min-w-35"
             >
               {t.new.navigation.back}
               <ArrowLeft
                 className="w-3 h-3 transition-transform group-hover:-translate-x-1"
                 strokeWidth={2.5}
               />
-              
             </button>
           )}
           {step < 4 ? (
@@ -681,7 +680,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
             <button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="flex-1 bg-gold px-10 py-5 rounded-xs text-obsidian font-interface text-xs font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-2xl shadow-gold/10 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 min-h-[60px]"
+              className="flex-1 bg-gold px-10 py-5 rounded-xs text-obsidian font-interface text-xs font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-2xl shadow-gold/10 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 min-h-15"
             >
               {isSubmitting ? (
                 <div className="scale-[1.2] origin-center">
