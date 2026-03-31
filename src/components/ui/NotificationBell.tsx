@@ -6,6 +6,7 @@ import { getNotifications, markAsRead, markAllAsRead } from "@/actions/notificat
 import { formatDate } from "@/lib/utils/date";
 import { useRouter } from "next/navigation";
 import { pusherClient } from "@/lib/pusher.client";
+import type { Dictionary } from "@/lib/dictionary.types";
 
 // Since we cannot use Prisma types reliably on frontend if it exports node modules,
 // we define local types based on Prisma schema:
@@ -19,7 +20,8 @@ interface Notification {
   createdAt: Date;
 }
 
-export default function NotificationBell({ userId }: { userId: string }) {
+export default function NotificationBell({ userId, dict }: { userId: string; dict: Dictionary }) {
+  const t = dict.ui;
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -332,7 +334,7 @@ export default function NotificationBell({ userId }: { userId: string }) {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="relative p-2 text-slate hover:text-gold transition-colors"
-        aria-label="Notifications"
+        aria-label={t.notifications}
       >
         <Bell className="w-5 h-5" strokeWidth={2} />
         <span
@@ -342,7 +344,7 @@ export default function NotificationBell({ userId }: { userId: string }) {
           }`}
         />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-red-500 rounded-full border border-obsidian flex items-center justify-center text-xs font-bold text-white font-interface ltr:right-[-4px] rtl:left-[-4px]">
+          <span className="absolute -top-1 -right-1 min-w-4.5 h-4.5 px-1 bg-red-500 rounded-full border border-obsidian flex items-center justify-center text-xs font-bold text-white font-interface ltr:-right-1 rtl:-left-1">
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
@@ -355,7 +357,7 @@ export default function NotificationBell({ userId }: { userId: string }) {
           style={{ transform: "translateX(-50%)" }}
         >
           <div className="p-4 border-b border-gold/10 flex justify-between items-center bg-void/50">
-            <h3 className="font-interface text-sm font-semibold text-ivory tracking-widest uppercase">Notifications</h3>
+            <h3 className="font-interface text-sm font-semibold text-ivory tracking-widest uppercase">{t.notifications}</h3>
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllRead}

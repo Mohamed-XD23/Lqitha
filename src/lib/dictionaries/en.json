@@ -232,11 +232,32 @@
     }
   },
   "settings": {
-    "title": "Account Preferences",
+    "title": "Settings",
+    "badge": "Account Preferences",
     "profileInfo": "Profile Information",
+    "profileSubtitle": "Update your account's profile information and avatar.",
+    "profilePicture": "Profile Picture",
+    "name": "Full Name",
+    "email": "Email Address",
+    "emailmessage":"Email address cannot be changed. Please contact support to update your email.",
+    "saveChanges": "Save Changes",
     "updatePassword": "Update Password",
+    "updatePasswordSubtitle": "Ensure your account is using a long, random password to stay secure.",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "savepasswordbtn": "Save New Password",
     "deleteAccount": "Delete Account",
-    "saveChanges": "Save Changes"
+    "deleteAccountSubtitle": "Permanently delete your account and all associated data.",
+    "paragraph1": "We're sorry to see you go. Deleting your account will remove all your data from our servers, including your profile information, item listings, claims, and trust score history. This action is irreversible.",
+    "paragraph2": "If you're experiencing issues or have concerns, please contact our support team at lqitha.platform@gmail.com before proceeding. We're here to help and may be able to resolve your issues without needing to delete your account.",
+    "deleteConfirmation": "Type DELETE to confirm account deletion",
+    "deleteAccountBtn": "Delete My Account",
+    "toast": {
+      "passwordMismatch": "New passwords do not match.",
+      "deleteConfirmation": "Type DELETE to confirm account deletion.",
+      "accountDeleted": "Account deleted. Redirecting..."
+    }
   },
   "auth": {
     "signIn": "Sign In",
@@ -553,9 +574,28 @@
     "pending": "Pending",
     "accepted": "Accepted",
     "rejected": "Rejected",
-    "providedAnswer": "Provided correct answer "
+    "providedAnswer": "Provided correct answer ",
+    "toast": {
+      "claimAccepted": "Correct answer! Your claim has been sent.",
+      "attemptsExhausted": "You have exhausted all attempts.",
+      "claimSuccessful": "Your claim has been sent successfully."
+    }
   },
   "chat" : {
+    "title": "Chat",
     "chatbtn": "Message"
+  },
+  "imgUpload": {
+    "upload": "Click to Upload Image",
+    "uploading": "Uploading..."
+  },
+  "ui": {
+    "toggleLanguage": "Toggle language",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "notifications": "Notifications",
+    "markAllAsRead": "Mark all as read",
+    "loadingNotifications": "Loading notifications...",
+    "noNotifications": "No notifications yet"
   }
 }

@@ -11,17 +11,20 @@ import { toast } from "sonner";
 import ImageUploader from "@/components/ui/ImageUploader";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { Dictionary } from "@/lib/dictionary.types";
 
-export default function SettingsForm({
-  user,
-}: {
+interface SettingsFormProps {
+  dict: Dictionary;
   user: {
     id: string;
     name: string | null;
     email: string;
     image: string | null;
   };
-}) {
+}
+
+export default function SettingsForm({dict , user } : SettingsFormProps) {
+  const t = dict.settings;
   const router = useRouter();
 
   // Profile State
@@ -103,10 +106,10 @@ export default function SettingsForm({
           </div>
           <div>
             <h2 className="font-display text-2xl text-ivory">
-              Profile Information
+              {t.profileInfo}
             </h2>
             <p className="text-slate text-xs font-interface mt-1">
-              Update your account&apos;s profile information and avatar.
+              {t.profileSubtitle}
             </p>
           </div>
         </div>
@@ -114,7 +117,7 @@ export default function SettingsForm({
         <form onSubmit={handleUpdateProfile} className="space-y-6 max-w-md">
           <div className="space-y-4">
             <label className="block text-xs font-interface uppercase tracking-widest text-slate">
-              Profile Picture
+              {t.profilePicture}
             </label>
             <div className="flex items-start gap-6">
               <div className="w-24 h-24 shrink-0 rounded-full bg-obsidian border border-gold/20 overflow-hidden flex items-center justify-center">
@@ -132,6 +135,7 @@ export default function SettingsForm({
               </div>
               <div className="flex-1">
                 <ImageUploader
+                  dict={dict}
                   value={image && typeof image === "string" ? image : undefined}
                   onChange={(url) => setImage(url || "")}
                 />
@@ -141,7 +145,7 @@ export default function SettingsForm({
 
           <div className="space-y-2">
             <label className="block text-xs font-interface uppercase tracking-widest text-slate">
-              Full Name
+              {t.name}
             </label>
             <input
               type="text"
@@ -155,7 +159,7 @@ export default function SettingsForm({
 
           <div className="space-y-2">
             <label className="block text-xs font-interface uppercase tracking-widest text-slate">
-              Email Address
+              {t.email}
             </label>
             <input
               type="text"
@@ -164,7 +168,7 @@ export default function SettingsForm({
               className="w-full bg-obsidian/50 border border-gold/10 rounded-xs px-4 py-3 text-slate font-interface text-sm cursor-not-allowed"
             />
             <p className="text-xs text-slate/50 font-interface">
-              Email address cannot be changed.
+              {t.emailmessage}
             </p>
           </div>
 
@@ -178,7 +182,7 @@ export default function SettingsForm({
             ) : (
               <Save className="w-4 h-4" />
             )}
-            Save Changes
+            {t.saveChanges}
           </button>
         </form>
       </section>
@@ -193,11 +197,10 @@ export default function SettingsForm({
           </div>
           <div>
             <h2 className="font-display text-2xl text-ivory">
-              Update Password
+              {t.updatePassword}
             </h2>
             <p className="text-slate text-xs font-interface mt-1">
-              Ensure your account is using a long, random password to stay
-              secure.
+              {t.updatePasswordSubtitle}
             </p>
           </div>
         </div>
@@ -205,7 +208,7 @@ export default function SettingsForm({
         <form onSubmit={handleChangePassword} className="space-y-6 max-w-md">
           <div className="space-y-2">
             <label className="block text-xs font-interface uppercase tracking-widest text-slate">
-              Current Password
+              {t.currentPassword}
             </label>
             <input
               type="password"
@@ -219,7 +222,7 @@ export default function SettingsForm({
 
           <div className="space-y-2">
             <label className="block text-xs font-interface uppercase tracking-widest text-slate">
-              New Password
+              {t.newPassword}
             </label>
             <input
               type="password"
@@ -233,7 +236,7 @@ export default function SettingsForm({
 
           <div className="space-y-2">
             <label className="block text-xs font-interface uppercase tracking-widest text-slate">
-              Confirm Password
+              {t.confirmNewPassword}
             </label>
             <input
               type="password"
@@ -255,7 +258,7 @@ export default function SettingsForm({
             ) : (
               <Save className="w-4 h-4" />
             )}
-            Save Password
+            {t.savepasswordbtn}
           </button>
         </form>
       </section>
@@ -270,23 +273,23 @@ export default function SettingsForm({
           </div>
           <div>
             <h2 className="font-display text-2xl text-red-400">
-              Delete Account
+              {t.deleteAccount}
             </h2>
             <p className="text-slate text-xs font-interface mt-1">
-              Permanently delete your account and all associated data.
+              {t.deleteAccountSubtitle}
             </p>
           </div>
         </div>
 
         <div className="space-y-6 max-w-md">
           <p className="text-sm text-slate font-interface leading-relaxed">
-            Once your account is deleted, all of its resources and data will be
-            permanently deleted.
+            <span>{t.paragraph1}</span>
+            <span>{t.paragraph2}</span>
           </p>
 
           <div className="space-y-2">
             <label className="block text-xs font-interface uppercase tracking-widest text-red-400/80">
-              Type DELETE to confirm
+              {t.deleteConfirmation}
             </label>
             <input
               type="text"
@@ -307,7 +310,7 @@ export default function SettingsForm({
             ) : (
               <Trash2 className="w-4 h-4" />
             )}
-            Delete Account
+            {t.deleteAccountBtn}
           </button>
         </div>
       </section>

@@ -7,8 +7,8 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { getLocale } from "@/lib/dictionary";
 import { Toaster } from "sonner";
+import { getDictionary } from "@/lib/dictionary";
 import "./globals.css";
-
 const fraunces = Fraunces({
   subsets: ["latin"],
   weight: ["300", "400", "600"],
@@ -36,6 +36,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const dict = await getDictionary();
   const locale = await getLocale();
   const dir = locale === "ar" ? "rtl" : "ltr";
   
@@ -58,7 +59,7 @@ export default async function RootLayout({
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
-          <ChatSidebar />
+          <ChatSidebar dict={dict} />
           <Toaster
             position="bottom-right"
             closeButton

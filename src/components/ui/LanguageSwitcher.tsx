@@ -4,8 +4,15 @@ import React, { useTransition } from "react";
 import { setLocale } from "@/actions/locale.actions";
 import { Globe } from "lucide-react";
 import { useRouter } from "next/navigation";
+import type { Dictionary } from "@/lib/dictionary.types";
 
-export default function LanguageSwitcher({ currentLocale }: { currentLocale: "en" | "ar" }) {
+interface Props {
+  currentLocale: "en" | "ar";
+  dict: Dictionary;
+}
+
+export default function LanguageSwitcher({ currentLocale, dict }: Props) {
+  const t = dict.ui;
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -27,8 +34,8 @@ export default function LanguageSwitcher({ currentLocale }: { currentLocale: "en
       onClick={toggleLanguage}
       disabled={isPending}
       className={`flex items-center gap-2 px-3 py-1.5 rounded-full border border-gold/20 text-slate hover:text-gold hover:border-gold/50 transition-all ${isPending ? "opacity-50 cursor-not-allowed" : ""}`}
-      aria-label="Toggle language"
-      title={currentLocale === "en" ? "تبديل إلى العربية" : "Switch to English"}
+      aria-label={t.toggleLanguage}
+      title={t.toggleLanguage}
     >
       <Globe className="w-4 h-4" />
       <span className="font-interface text-xs font-medium uppercase tracking-widest mt-px">

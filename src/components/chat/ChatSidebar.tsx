@@ -3,8 +3,11 @@
 import { useChatContext } from "@/context/ChatContext";
 import ChatWindow from "./ChatWindow";
 import { X } from "lucide-react";
+import { Dictionary } from "@/lib/dictionary.types";
 
-export default function ChatSidebar() {
+
+export default function ChatSidebar({ dict }: { dict: Dictionary }) {
+  const t = dict.chat;
   const { isOpen, chatMeta, closeChat } = useChatContext();
 
   return (
@@ -22,7 +25,7 @@ export default function ChatSidebar() {
       >
         {/* Header */}
         <div className="flex items-center justify-between bg-gold border-b px-4 py-3">
-          <h3 className="font-semibold text-xl text-void">Chat</h3>
+          <h3 className="font-semibold text-xl text-void">{t.title}</h3>
           <button
             onClick={closeChat}
             className="rounded-full px-1.5 py-2 hover:bg-ivory/60 flex items-center justify-center"

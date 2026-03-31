@@ -37,7 +37,7 @@ export default function ProfileAvatar({ name, image, dict }: Props) {
   if (editing) {
     return (
       <div style={{ width: "100%", marginBottom: "16px" }}>
-        <ImageUploader value={currentImage ?? ""} onChange={handleChange} />
+        <ImageUploader value={currentImage ?? ""} onChange={handleChange} dict={dict} />
         <button
           onClick={() => setEditing(false)}
           className="font-interface text-md text-slate bg-slate/10 border border-slate/20 rounded-md px-3 py-1 mt-2"

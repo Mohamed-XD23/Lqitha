@@ -4,13 +4,16 @@ import { useRef, useState } from "react";
 import { ImageIcon, Trash2 } from "lucide-react";
 import ImageUploadLoader from "./ImageUploadLoader";
 import Image from "next/image";
+import { Dictionary } from "@/lib/dictionary.types";
 
 interface Props {
+  dict: Dictionary;
   value?: string;
   onChange: (url: string) => void;
 }
 
-export default function ImageUploader({ value, onChange }: Props) {
+export default function ImageUploader({ dict, value, onChange }: Props) {
+  const t = dict.imgUpload;
   const inputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
 
@@ -71,13 +74,13 @@ export default function ImageUploader({ value, onChange }: Props) {
           {loading ? (
             <>
               <ImageUploadLoader />
-              <p className="text-sm text-muted-foreground">Uploading...</p>
+              <p className="text-sm text-muted-foreground">{t.uploading}</p>
             </>
           ) : (
             <>
               <ImageIcon className="w-8 h-8 text-muted-foreground" />
               <p className="text-sm text-muted-foreground">
-                Click to upload image
+                {t.upload}
               </p>
             </>
           )}

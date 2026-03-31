@@ -12,22 +12,9 @@ import { handleSignOut } from "@/actions/auth.actions";
 import { LogOut, LayoutDashboard, Settings } from "lucide-react";
 
 export default async function Navbar() {
-  const fallbackDict = {
-    nav: {
-      browse: "Browse",
-      reportItem: "Post Item",
-      dashboard: "Dashboard",
-      settings: "Settings",
-      signOut: "Sign Out",
-      signIn: "Sign In",
-      register: "Register",
-      language: "Language",
-    },
-  };
-
   let session: Session | null = null;
   let locale: "en" | "ar" = "en";
-  let dict = fallbackDict;
+  let dict: any = null;
 
   try {
     session = await auth();
@@ -45,6 +32,8 @@ export default async function Navbar() {
     dict = await getDictionary();
   } catch (error) {
     console.error("Navbar getDictionary() failed:", error);
+    // Fallback to en
+    dict = await import("@/lib/dictionaries/en.json").then(m => m.default);
   }
 
   // Fetch fresh user data if session exists to avoid stale JWT data
@@ -125,14 +114,14 @@ export default async function Navbar() {
 
           {session?.user && (
             <div className="flex items-center gap-6 rtl:flex-row-reverse">
-              <LanguageSwitcher currentLocale={locale} />
-              <NotificationBell userId={session.user.id!} />
+              <LanguageSwitcher currentLocale={locale} dict={dict} />
+              <NotificationBell userId={session.user.id!} dict={dict} />
               <UserNavMenu user={user ?? session.user} dict={dict} />
             </div>
           )}
           {!session?.user && (
             <div className="flex items-center gap-8 rtl:flex-row-reverse">
-              <LanguageSwitcher currentLocale={locale} />
+              <LanguageSwitcher currentLocale={locale} dict={dict} />
               <Link
                 href="/login"
                 className="font-interface text-[11px] font-medium tracking-[3px] uppercase text-slate hover:text-gold transition-all"
@@ -150,7 +139,7 @@ export default async function Navbar() {
         </nav>
 
         {/* Mobile Nav */}
-        <MobileMenu dir={dir}>
+        <MobileMenu dir={dir} dict={dict}>
           <div className="flex flex-col items-center gap-10 py-10" dir={dir}>
             <Link
               href="/browse"
@@ -212,11 +201,11 @@ export default async function Navbar() {
                 <div className="flex items-center gap-6 mt-4 rtl:flex-row-reverse">
                   <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-gold/5 bg-gold/5 min-w-[100px]">
                     <span className="text-xs text-slate uppercase tracking-widest">{dict.nav.language}</span>
-                    <LanguageSwitcher currentLocale={locale} />
+                    <LanguageSwitcher currentLocale={locale} dict={dict} />
                   </div>
                   <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-gold/5 bg-gold/5 min-w-[100px]">
                     <span className="text-xs text-slate uppercase tracking-widest">Alerts</span>
-                    <NotificationBell userId={session.user.id!} />
+                    <NotificationBell userId={session.user.id!} dict={dict} />
                   </div>
                 </div>
 
@@ -234,7 +223,7 @@ export default async function Navbar() {
 
             {!session?.user && (
               <div className="flex flex-col items-center gap-10">
-                <LanguageSwitcher currentLocale={locale} />
+                <LanguageSwitcher currentLocale={locale} dict={dict} />
                 <Link
                   href="/login"
                   className="font-display text-2xl font-light tracking-sm uppercase text-ivory hover:text-gold transition-all"

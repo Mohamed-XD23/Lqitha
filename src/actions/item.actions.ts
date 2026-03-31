@@ -37,7 +37,6 @@ async function ensureVerifiedEmail(userId: string) {
 // ===Create Item===
 
 export async function createItem(data: unknown) {
-  // 1. ا�تح�� �&�  تسج�`� ا�دخ���
   const session = await auth();
   if (!session?.user?.id) {
     return { error: "You must be signed in first." };
@@ -45,7 +44,6 @@ export async function createItem(data: unknown) {
   const verificationError = await ensureVerifiedEmail(session.user.id);
   if (verificationError) return verificationError;
 
-  // 2. ا�تح�� �&�  صحة ا�ب�`ا� ات عبر Zod
   const parsed = itemSchema.safeParse(data);
   if (!parsed.success) {
     return { error: parsed.error.issues[0].message };
@@ -64,12 +62,10 @@ export async function createItem(data: unknown) {
     secretAnswer,
   } = parsed.data;
 
-  // 3. تشف�`ر ا�إجابة ا�سر�`ة إذا ْا� ت �&��ج��دة
   const hashedAnswer = secretAnswer
     ? await bcrypt.hash(secretAnswer.toLowerCase().trim(), 12)
     : null;
 
-  // 4. حفظ ف�` �اعدة ا�ب�`ا� ات
   const item = await db.item.create({
     data: {
       type,
@@ -93,11 +89,11 @@ export async function createItem(data: unknown) {
 // ===GeT Items===
 
 interface GetItemsParams {
-  page?: number; // ر��& ا�صفحة ا�حا��`ة (�`بدأ �&�  1)
-  limit?: number; // عدد ا�ب�اغات ف�` ْ� صفحة
-  type?: ItemType; // LOST أ�� FOUND أ�� undefined ��ْ�
-  category?: string; // ف�ترة حسب ا�فئة
-  search?: string; // بحث ف�` ا�ع� ��ا�  ��ا���صف
+  page?: number; 
+  limit?: number; 
+  type?: ItemType; 
+  category?: string; 
+  search?: string; 
 }
 
 export async function getItems({
@@ -107,13 +103,10 @@ export async function getItems({
   category,
   search,
 }: GetItemsParams = {}) {
-  // حساب عدد ا�ع� اصر ا�ت�` �`جب تخط�`�!ا
-  // �&ث�ا�9: ا�صفحة 3 �&ع limit=10 تع� �` تخط�` 20 ع� صرا�9
   const skip = (page - 1) * limit;
 
-  // ب� اء شرط ا�ف�ترة د�`� ا�&�`ْ�`ا�9
   const where = {
-    status: ItemStatus.ACTIVE, // � عرض ف�ط ا�ب�اغات ا�� شطة
+    status: ItemStatus.ACTIVE, 
     ...(type && { type }),
     ...(category && { category }),
     ...(search && {
@@ -124,13 +117,12 @@ export async function getItems({
     }),
   };
 
-  // � شغ�� ا�استع�ا�&�`�  �&عا�9 �ت��ف�`ر ا����ت بد�ا�9 �&�  ا� تظار أحد�!�&ا
   const [items, totalCount] = await Promise.all([
     db.item.findMany({
       where,
       skip,
       take: limit,
-      orderBy: { createdAt: "desc" }, // ا�أحدث أ���ا�9
+      orderBy: { createdAt: "desc" },
       select: {
         id: true,
         type: true,
@@ -141,13 +133,11 @@ export async function getItems({
         imageUrl: true,
         status: true,
         createdAt: true,
-        // �ا � ج�ب phone ���ا secretAnswer أبدا�9 ف�` ا��ائ�&ة ا�عا�&ة
         user: {
           select: { id: true, name: true, image: true },
         },
       },
     }),
-    // � حسب ا�عدد ا�ْ��` ��&عرفة عدد ا�صفحات
     db.item.count({ where }),
   ]);
 
@@ -175,9 +165,7 @@ export async function getItemById(id: string) {
       date: true,
       imageUrl: true,
       status: true,
-      secretQuestion: true, // � ج�ب�! �� عرف إذا ْا�  FOUND �`حت���` ع��0 سؤا�
-      // secretAnswer �ا � ج�ب�! أبدا�9 �!� ا � �`ُستخد�& ف�ط ف�` Server Action ��تح��
-      // phone �ا � ج�ب�! أبدا�9 �!� ا � �`ظ�!ر ف�ط بعد Match
+      secretQuestion: true, 
       createdAt: true,
       user: {
         select: {
@@ -196,7 +184,6 @@ export async function getItemById(id: string) {
 // === Submit Claim for item ===
 
 export async function submitClaim(itemId: string, plainTextAnswer: string) {
-  // 1. ا�تح�� �&�  تسج�`� ا�دخ���
   const session = await auth();
   if (!session?.user?.id) {
     return { error: "You must be signed in first." };
@@ -206,15 +193,14 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
 
   const claimantId = session.user.id;
 
-  // 2. ج�ب ا�ب�اغ �&ع hashedAnswer �� maxAttempts
-  // � ج�ب hashedAnswer �!� ا ع��0 ا�٬ Server ف�ط � �ا �`ُرس� ���&تصفح أبدا�9
   const item = await db.item.findUnique({
     where: { id: itemId },
     select: {
       id: true,
+      title: true,
       status: true,
       userId: true,
-      secretAnswer: true, // ا�٬ Hash � �`ب��0 ع��0 ا�٬ Server
+      secretAnswer: true,
       maxAttempts: true,
     },
   });
@@ -224,17 +210,12 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
   if (item.userId === claimantId)
     return { error: "You cannot claim your own item." };
 
-  // 3. إ�`جاد أ�� إ� شاء ClaimRequest
-  // @@unique([itemId, claimantId]) تض�&�  أ�  ْ� �&ستخد�& �`�&�ْ ط�با�9 ��احدا�9 ف�ط
   const claimRequest = await db.claimRequest.upsert({
     where: { itemId_claimantId: { itemId, claimantId } },
-    update: {}, // �ا � ُحد�ث ش�`ئا�9 � ف�ط � ج�ب ا��&��ج��د
+    update: {}, 
     create: { itemId, claimantId },
     include: { attempts: true },
   });
-
-  // 4. ا�تح�� �&�  عدد ا��&حا���ات ا�ساب�ة
-  // �!ذا �!�� ا�٬ Rate Limiting � � �&� ع Brute Force
   if (claimRequest.attempts.length >= item.maxAttempts) {
     return {
       error: `You have reached the maximum number of attempts (${item.maxAttempts}).`,
@@ -242,8 +223,6 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
     };
   }
 
-  // 5. ا��&�ار� ة عبر bcrypt � ��ب ا�� ظا�& ا�أ�&� �`
-  // � ُطب�� � فس ا�تح���`� ا�ذ�` طب��� ا�! ع� د ا�حفظ: toLowerCase().trim()
   const isCorrect = item.secretAnswer
     ? await bcrypt.compare(
         plainTextAnswer.toLowerCase().trim(),
@@ -251,23 +230,16 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
       )
     : false;
 
-  // 6. تحد�`د ا�حا�ة ا�جد�`دة ب� اء�9 ع��0 ا�� ت�`جة ��ا��&حا���ات
-  // ا��&� ط�: إجابة صح�`حة �  PENDING
-  //         إجابة خاطئة ���!ذ�! آخر �&حا���ة �  REJECTED
-  //         إجابة خاطئة ���&ا زا� �!� اْ �&حا���ات �  PENDING
   const attemptsAfter = claimRequest.attempts.length + 1;
   const newStatus = isCorrect
     ? "PENDING"
     : attemptsAfter >= item.maxAttempts
       ? "REJECTED"
       : "PENDING";
-
-  // 7. تسج�`� ا��&حا���ة ��تحد�`ث ا�حا�ة ف�` ع�&��`ة ��احدة � Transaction
-  // � ستخد�& Transaction �ض�&ا�  أ�  ا�خط��ت�`�  تحدثا�  �&عا�9 أ�� �ا تحدثا�  أبدا�9
   await db.$transaction([
     db.claimAttempt.create({
       data: {
-        answer: plainTextAnswer, // � خز��  ا�� ص ا�خا�& ��٬ Audit Trail
+        answer: plainTextAnswer, 
         isCorrect,
         claimId: claimRequest.id,
       },
@@ -276,7 +248,7 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
       where: { id: claimRequest.id },
       data: {
         status: newStatus,
-        isVerified: isCorrect, // � � أضف �!ذا
+        isVerified: isCorrect, 
         ...(newStatus === "REJECTED" && { rejectedBy: "system" }),
       },
     }),
@@ -291,12 +263,10 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
       userId: item.userId,
       type: "CLAIM_NEW",
       title: "New Claim Received",
-      message: `Someone has submitted a verified claim for: ${item.id}`, // Better use title but I don't have it in item object at this point. Wait I should fetch title.
+      message: `Someone has submitted a verified claim for: ${item.title}`,
       link: `/items/${item.id}`,
     });
   }
-
-  // 8. إرجاع ا�� ت�`جة ��٬ Client � بد���  أ�` ب�`ا� ات حساسة
   return {
     success: true,
     isCorrect,
@@ -312,11 +282,11 @@ export async function getItemWithClaims(itemId:string) {
   return db.item.findUnique({
     where:{
       id: itemId,
-      userId: session.user.id //�ض�&ا�  ا�  ا��&ا�ْ ف�ط �&�  �`ر�0 �!ذا
+      userId: session.user.id 
     },
     include:{
       claims:{
-        where:{ isVerified: true}, //ف�ط ��ذ�`�  �ب� ط�ب�!�& 
+        where:{ isVerified: true}, 
         include:{
           claimant:{
             select:{ 
@@ -341,7 +311,6 @@ export async function respondToClaim(
   const session = await auth();
   if (!session?.user?.id) return { error: "You must be signed in first." };
 
-  // تأْد أ�  ا��&ستخد�& �!�� �&ا�ْ ا�ب�اغ
   const item = await db.item.findUnique({
     where: { id: itemId, userId: session.user.id },
     select: { id: true },
@@ -357,14 +326,11 @@ export async function respondToClaim(
   if (!claim) return { error: "Claim not found." };
 
   if (response === "ACCEPTED") {
-    // 3 ع�&��`ات ف�` transaction ��احدة
     await db.$transaction([
-      // 1. �ب��� �!ذ�! ا��&طا�بة
       db.claimRequest.update({
         where: { id: claimId },
         data: { status: "ACCEPTED" },
       }),
-      // 2. رفض با��` ا��&طا�بات ت��ائ�`ا�9
       db.claimRequest.updateMany({
         where: {
           itemId,
@@ -373,16 +339,13 @@ export async function respondToClaim(
         },
         data: { status: "REJECTED", rejectedBy: "system" },
       }),
-      // 3. إغ�ا� ا�ب�اغ
       db.item.update({
         where: { id: itemId },
         data: { status: "RESOLVED" },
       }),
     ]);
 
-    // � حسب Trust Score ���&ا�ْ أ�`ضا�9 (+15 �أ�  ا�ب�اغ أصبح RESOLVED)
     await recalculateTrustScore(session.user.id);
-    // �����&طا�ب ا��&�ب��� (+10 �أ�  �&طا�بت�! �ُب�ت)
     const acceptedClaim = await db.claimRequest.findUnique({ where: { id: claimId }, select: { claimantId: true } });
     if (acceptedClaim) await recalculateTrustScore(acceptedClaim.claimantId);
     // Trigger Accepted Notification
@@ -394,7 +357,6 @@ export async function respondToClaim(
       link: `/dashboard`,
     });
   } else {
-    // رفض �`د���` �&�  ا��&ا�ْ
     await db.claimRequest.update({
       where: { id: claimId },
       data: { status: "REJECTED", rejectedBy: "owner" },
@@ -431,17 +393,16 @@ export async function getUserClaimStatus(itemId: string) {
   });
 
   if (!claim) return null;
-
-  // ج�ب maxAttempts �&�  ا�٬ item
+  
   const item = await db.item.findUnique({
     where: { id: itemId },
     select: { maxAttempts: true },
   });
 
   return {
-    status: claim.status,           // PENDING | ACCEPTED | REJECTED
-    isVerified: claim.isVerified,   // �!� أجاب صح�x
-    rejectedBy: claim.rejectedBy,   // "system" | "owner" | null
+    status: claim.status,   
+    isVerified: claim.isVerified,   
+    rejectedBy: claim.rejectedBy,
     attemptsUsed: claim.attempts.length,
     maxAttempts: item?.maxAttempts ?? 3,
     attemptsLeft: (item?.maxAttempts ?? 3) - claim.attempts.length,

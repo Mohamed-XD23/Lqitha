@@ -421,6 +421,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                     control={form.control}
                     render={({ field }) => (
                       <ImageUploader
+                        dict={dict}
                         value={field.value ?? ""}
                         onChange={(url) => {
                           field.onChange(url);

@@ -2,11 +2,13 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import db from "@/lib/db";
 import SettingsForm from "@/components/settings/SettingsForm";
+import { getDictionary } from "@/lib/dictionary";
 
 export default async function SettingsPage() {
+  const dict = await getDictionary();
+  const t = dict.settings;
   const session = await auth();
   if (!session?.user) redirect("/login");
-
   const user = await db.user.findUnique({
     where: { id: session.user.id },
     select: {
@@ -25,14 +27,16 @@ export default async function SettingsPage() {
         {/* Header */}
         <div className="mb-10">
           <span className="font-interface text-xs font-bold tracking-[3px] uppercase text-gold">
-            Account Preferences
+            {t.badge}
           </span>
           <h1 className="font-display text-4xl font-light text-ivory leading-none mt-2">
-            Settings
+            {t.title}
           </h1>
         </div>
 
-        <SettingsForm key={`${user.name}-${user.image}`} user={user} />
+        <SettingsForm key={`${user.name}-${user.image}`} user={user}
+        dict={dict}
+        />
       </div>
     </div>
   );
