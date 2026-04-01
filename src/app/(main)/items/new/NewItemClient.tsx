@@ -103,7 +103,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
 
   // React Hook Form يحمل حالة كل الخطوات معاً
   const form = useForm<ItemFormData>({
-    resolver: zodResolver(itemSchema),
+    resolver: zodResolver(itemSchema(dict)),
     defaultValues: {
       type: "LOST",
       title: "",
@@ -140,7 +140,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
       fieldsToValidate = ["type", "title", "category", "description"];
     if (step === 2)
       fieldsToValidate = ["location", "date", "phone", "imageUrl"];
-    if (step === 3 && watchedType === "FOUND")
+    if (step === 3)
       fieldsToValidate = ["secretQuestion", "secretAnswer"];
 
     const isValid = await trigger(fieldsToValidate);

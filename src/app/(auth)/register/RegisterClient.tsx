@@ -215,7 +215,7 @@ export default function RegisterClient({ dict }: Props) {
             <button
               type="submit"
               disabled={loading}
-              className="font-interface text-xs rtl:text-sm font-medium tracking-xs uppercase py-4 rounded-xs bg-gold text-obsidian hover:bg-ivory transition-all disabled:opacity-50 mt-2 flex items-center justify-center min-h-[56px]"
+              className="font-interface text-xs rtl:text-sm font-medium tracking-xs uppercase py-4 rounded-xs bg-gold text-obsidian hover:bg-ivory transition-all disabled:opacity-50 mt-2 flex items-center justify-center min-h-14"
             >
               {loading ? (
                 <div className="scale-[1] origin-center">
@@ -241,7 +241,7 @@ export default function RegisterClient({ dict }: Props) {
               signIn("google", { callbackUrl: "/" });
             }}
             disabled={googleLoading}
-            className="w-full flex items-center justify-center gap-3 font-interface text-xs font-medium tracking-xs uppercase py-3.5 rounded-xs bg-transparent text-ivory border border-gold/20 hover:bg-gold/5 transition-all disabled:opacity-50 min-h-[48px]"
+            className="w-full flex items-center justify-center gap-3 font-interface text-xs font-medium tracking-xs uppercase py-3.5 rounded-xs bg-transparent text-ivory border border-gold/20 hover:bg-gold/5 transition-all disabled:opacity-50 min-h-12"
           >
             {googleLoading ? (
               <div className="scale-[1] origin-center">

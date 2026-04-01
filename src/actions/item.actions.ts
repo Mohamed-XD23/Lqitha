@@ -3,14 +3,18 @@
 import bcrypt from "bcryptjs";
 import { auth } from "@/lib/auth";
 import db from "@/lib/db";
-import { itemSchema } from "@/lib/validation/item.schema";
+import { itemSchema} from "@/lib/validation/item.schema";
 import { ItemType, ItemStatus } from "@prisma/client";
 import { recalculateTrustScore } from "./dashboard.actions";
 import { revalidatePath } from "next/cache";
 import { createNotification } from "./notification.actions";
 import { sendVerificationEmailIfNeeded } from "@/lib/email-verification";
+import { getDictionary } from "@/lib/dictionary";
+
 
 async function ensureVerifiedEmail(userId: string) {
+  const dict = await getDictionary();
+  const t = dict.Toast;
   const user = await db.user.findUnique({
     where: { id: userId },
     select: { email: true, emailVerified: true },
@@ -21,13 +25,13 @@ async function ensureVerifiedEmail(userId: string) {
       try {
         await sendVerificationEmailIfNeeded(user.email);
       } catch (error) {
-        console.error("Failed to send verification email for secure action:", error);
+        console.error(t.verifyEmailERR, error);
       }
     }
 
     return {
       error:
-        "Please verify your email first. We sent a verification link to your inbox.",
+        t.verifyEmailReq,
     };
   }
 
@@ -37,14 +41,16 @@ async function ensureVerifiedEmail(userId: string) {
 // ===Create Item===
 
 export async function createItem(data: unknown) {
+  const dict = await getDictionary();
+  const t = dict.Toast;
   const session = await auth();
   if (!session?.user?.id) {
-    return { error: "You must be signed in first." };
+    return { error: t.sessionerror };
   }
   const verificationError = await ensureVerifiedEmail(session.user.id);
   if (verificationError) return verificationError;
 
-  const parsed = itemSchema.safeParse(data);
+  const parsed = itemSchema(dict).safeParse(data);
   if (!parsed.success) {
     return { error: parsed.error.issues[0].message };
   }
@@ -184,9 +190,11 @@ export async function getItemById(id: string) {
 // === Submit Claim for item ===
 
 export async function submitClaim(itemId: string, plainTextAnswer: string) {
+  const dict = await getDictionary();
+  const t = dict.Toast;
   const session = await auth();
   if (!session?.user?.id) {
-    return { error: "You must be signed in first." };
+    return { error: t.sessionerror };
   }
   const verificationError = await ensureVerifiedEmail(session.user.id);
   if (verificationError) return verificationError;
@@ -205,10 +213,10 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
     },
   });
 
-  if (!item) return { error: "Item not found." };
-  if (item.status !== "ACTIVE") return { error: "This item is no longer active." };
+  if (!item) return { error: t.itemNotFound };
+  if (item.status !== "ACTIVE") return { error: t.itemNoActive };
   if (item.userId === claimantId)
-    return { error: "You cannot claim your own item." };
+    return { error: t.claimOwnItem };
 
   const claimRequest = await db.claimRequest.upsert({
     where: { itemId_claimantId: { itemId, claimantId } },
@@ -218,7 +226,7 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
   });
   if (claimRequest.attempts.length >= item.maxAttempts) {
     return {
-      error: `You have reached the maximum number of attempts (${item.maxAttempts}).`,
+      error: `${t.attemptLimit} ${item.maxAttempts}`,
       locked: true,
     };
   }
@@ -262,8 +270,8 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
     await createNotification({
       userId: item.userId,
       type: "CLAIM_NEW",
-      title: "New Claim Received",
-      message: `Someone has submitted a verified claim for: ${item.title}`,
+      title: t.claimNotificationTitle,
+      message: `${t.claimNotificationMsg.split("{itemTitle}")[0]} ${item.title} ${t.claimNotificationMsg.split("{itemTitle}")[1]}`,
       link: `/items/${item.id}`,
     });
   }
@@ -308,22 +316,25 @@ export async function respondToClaim(
   itemId: string,
   response: "ACCEPTED" | "REJECTED"
 ) {
+  const dict = await getDictionary();
+  const t = dict.Toast;
+
   const session = await auth();
-  if (!session?.user?.id) return { error: "You must be signed in first." };
+  if (!session?.user?.id) return { error: t.sessionerror };
 
   const item = await db.item.findUnique({
     where: { id: itemId, userId: session.user.id },
     select: { id: true },
   });
 
-  if (!item) return { error: "You are not allowed to perform this action." };
+  if (!item) return { error: t.unauthorized };
 
   // Fetch claimant info for notifications
   const claim = await db.claimRequest.findUnique({
     where: { id: claimId },
     select: { claimantId: true, item: { select: { title: true } } }
   });
-  if (!claim) return { error: "Claim not found." };
+  if (!claim) return { error: t.claimNotFound };
 
   if (response === "ACCEPTED") {
     await db.$transaction([
@@ -352,8 +363,8 @@ export async function respondToClaim(
     await createNotification({
       userId: claim.claimantId,
       type: "CLAIM_ACCEPTED",
-      title: "Claim Accepted!",
-      message: `Your claim for "${claim.item.title}" has been accepted by the owner.`,
+      title: t.claimNotificationTitle,
+      message: `${t.claimNotificationMsg.split("{claim.item.title}")[0]} "${claim.item.title}" ${t.claimNotificationMsg.split("{claim.item.title}")[1]}`,
       link: `/dashboard`,
     });
   } else {
@@ -366,8 +377,8 @@ export async function respondToClaim(
     await createNotification({
       userId: claim.claimantId,
       type: "CLAIM_REJECTED",
-      title: "Claim Rejected",
-      message: `Your claim for "${claim.item.title}" was not accepted.`,
+      title: t.claimRejNotificationTitle,
+      message: `${t.claimRejNotificationMsg.split("{claim.item.title}")[0]} "${claim.item.title}" ${t.claimRejNotificationMsg.split("{claim.item.title}")[1]}`,
       link: `/dashboard`,
     });
   }

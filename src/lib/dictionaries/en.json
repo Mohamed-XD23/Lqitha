@@ -228,6 +228,19 @@
         "next": "Next",
         "back": "Back",
         "publish": "Publish"
+      },
+      "errorMessages": {
+        "titleInvalid": "Title must be at least 3 characters",
+        "descriptionInvalid": "Description must be at least 10 characters",
+        "locationRequired": "Location is required",
+        "dateRequired": "Date and time are required",
+        "dateFuture": "Date cannot be in the future",
+        "imageURLRequired": "Image is required",
+        "phoneInvalid": "Phone number can only contain digits",
+        "phoneLength": "Phone number must be exactly 10 digits",
+        "secretQuestionRequired": "Secret question is required",
+        "secretAnswerRequired": "Secret answer is required",
+        "secretRequired": "Secret question and answer are required"
       }
     }
   },
@@ -552,7 +565,23 @@
     "claimsubmitted": "Claim submitted",
     "claimerror": "Error submitting claim",
     "reportsubmitted": "Report submitted",
-    "reporterror": "Error submitting report"
+    "reporterror": "Error submitting report",
+    "sessionerror": "You must be signed in first.",
+    "verifyEmailERR":"Failed to send verification email. Please try again later.",
+    "verifyEmailReq": "Please verify your email address to complete registration. Check your inbox for the verification link.",
+    "itemNotFound": "Item not found",
+    "itemNoActive":"This item is no longer active.",
+    "claimOwnItem":"You cannot claim your own item.",
+    "attemptLimit": "You have exhausted all attempts for this claim.",
+    "claimNotificationTitle": "New Claim Received",
+    "claimNotificationMsg":"You have received a new claim on your item '{itemTitle}'. Please review the claim and respond accordingly.",
+    "unauthorized": "You are not allowed to perform this action.",
+    "claimNotFound":"Claim not found.",
+    "claimAccNotificationTitle": "Claim Accepted",
+    "claimAccNotificationMsg": "Your claim on item '{claim.item.title}' has been accepted by the owner. You can now view the owner's contact information and coordinate the return.",
+    "claimRejNotificationTitle": "Claim Rejected",
+    "claimRejNotificationMsg": "Your claim on item '{claim.item.title}' was not accepted by the owner."
+
   },
   "Profile": {
     "edit": "Edit Profile",
@@ -568,17 +597,43 @@
   },
   "claim": {
     "accept" : "Accept",
+    "claimAccepted": "Claim Accepted",
+    "claimMsg":"Your claim has been accepted! You can now view the owner's contact information and have chat",
     "reject" : "Reject",
+    "claimRejected": "Claim Rejected",
+    "claimMsgRej":"Your claim was not accepted by the owner.",
+    "AwaitingResponse": "Awaiting Owner's Response",
+    "claimSubmitted": "Your claim has been submitted.",
     "noClaims": "No claims yet",
     "incoming": "Incoming Claims",
     "pending": "Pending",
     "accepted": "Accepted",
     "rejected": "Rejected",
+    "correctAnswer": "Correct Answer",
+    "incorrectAnswer": "Incorrect Answer",
     "providedAnswer": "Provided correct answer ",
+    "noAttempts": "No Attempts Remaining",
+    "attemptsUsed":"You have used all {currentStatus.maxAttempts} attempts for this item.",
+    "attemptsExhausted": "You have exhausted all attempts for this item.",
+    "attemptsRemaining": "Incorrect answer. You have ${result.attemptsLeft} attempts remaining.",
     "toast": {
       "claimAccepted": "Correct answer! Your claim has been sent.",
       "attemptsExhausted": "You have exhausted all attempts.",
       "claimSuccessful": "Your claim has been sent successfully."
+    },
+    "signReq":"Sign in to claim this item",
+    "ownershipProve": "Prove Ownership",
+    "possessionProve": "Prove Possession",
+    "verifyQues":"Verification Question",
+    "handoverProof": "Handover Proof",
+    "remainingAttempts": "Remaining Attempts",
+    "questionAnsPlaceholder":"Type your answer here...",
+    "Buttons": {
+      "owner" : "I am the owner",
+      "found" : "I found this item",
+      "close" : "Close",
+      "cancel" : "Cancel",
+      "confirm": "Confirm"
     }
   },
   "chat" : {

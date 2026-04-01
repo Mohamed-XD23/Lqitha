@@ -137,7 +137,7 @@
     "cta": {
       "badge": "جاهز للبدء؟",
       "title": "ابحث عن مفقوداتك اليوم",
-      "description": "انضم لآلاف المستخدمين الذين نجحوا في استعادة مقتنياتهم عبر لقييتها.",
+      "description": "انضم لآلاف المستخدمين الذين نجحوا في استعادة مقتنياتهم عبر لقييتها. سواء كنت تبحث عن شيء فقدته أو ترغب في مساعدة الآخرين، نحن هنا للمساعدة.",
       "browse": "تصفح العناصر الآن",
       "register": "إنشاء حساب"
     }
@@ -223,17 +223,30 @@
       },
       "requiredfields": "الحقول المطلوبة",
       "requiredFieldsDescription": "جميع الحقول التي تم تعليمها بـ {asterisk} يجب ملؤها لإكمال هذا المنشور. لا يمكنك الانتقال إلى الخطوة التالية دون ملء جميع الحقول المطلوبة.",
-      "note": "ملاحظة: تظل معلومات الاتصال مشفرة  حتى اكتمال التحقق.",
+      "note": "ملاحظة: تظل معلومات الاتصال مشفرة حتى اكتمال التحقق.",
       "navigation": {
         "next": "التالي",
         "back": "السابق",
         "publish": "نشر"
+      },
+      "errorMessages": {
+        "titleInvalid": "يجب أن يكون العنوان 3 أحرف على الأقل",
+        "descriptionInvalid": "يجب أن يكون الوصف 10 أحرف على الأقل",
+        "locationRequired": "الموقع مطلوب",
+        "dateRequired": "التاريخ والوقت مطلوبان",
+        "dateFuture": "لا يمكن أن يكون التاريخ في المستقبل",
+        "imageURLRequired": "الصورة مطلوبة",
+        "phoneInvalid": "رقم الهاتف يمكن أن يحتوي فقط على أرقام",
+        "phoneLength": "رقم الهاتف يجب أن يكون مكوناً من 10 أرقام",
+        "secretQuestionRequired": "السؤال السري مطلوب",
+        "secretAnswerRequired": "الإجابة السرية مطلوبة",
+        "secretRequired": "السؤال والإجابة السريان مطلوبان"
       }
     }
   },
   "settings": {
     "title": "الاعدادات",
-    "badge": "إعدادات الحساب",
+    "badge": "تفضيلات الحساب",
     "profileInfo": "معلومات الملف الشخصي",
     "profileSubtitle": "قم بتحديث معلومات ملفك الشخصي وصورتك الرمزية.",
     "profilePicture": "صورة الملف الشخصي",
@@ -254,7 +267,7 @@
     "deleteConfirmation": "اكتب DELETE لتأكيد حذف الحساب",
     "deleteAccountBtn": "حذف حسابي",
     "toast": {
-      "passwordMismatch": "كلمتا المرور غير متطابقتين.",
+      "passwordMismatch": "كلمتا المرور الجديدتان غير متطابقتين.",
       "deleteConfirmation": "اكتب DELETE لتأكيد حذف الحساب.",
       "accountDeleted": "تم حذف الحساب. جارٍ التوجيه..."
     }
@@ -289,7 +302,7 @@
     "newCredentials": "إنشاء كلمة مرور جديدة",
     "newPassword": "كلمة المرور الجديدة",
     "commitChanges": "إعادة تعيين كلمة المرور",
-    "invalidToken": "رابط انتهت صلاحيته",
+    "invalidToken": "رابط استعادة غير صالح",
     "invalidTokenDesc": "رابط الاسترداد هذا غير صالح أو انتهت صلاحيته. يرجى طلب رابط جديد.",
     "requestRenewal": "طلب رابط جديد",
     "identityConfirmed": "تم التحقق من الهوية",
@@ -297,9 +310,9 @@
     "protocolSuccess": "تم التحقق بنجاح",
     "securityInterception": "خطأ أمني",
     "enterWorkspace": "الدخول للمنصة",
-    "reInitiate": "المحاولة مرة أخرى",
+    "reInitiate": "إعادة محاولة البروتوكول",
     "passwordResetSuccess": "تم تغيير كلمة المرور بنجاح",
-    "redirecting": "جارٍ التوجيه لصفحة الدخول..."
+    "redirecting": "جارٍ التوجيه للبوابة الآمنة..."
   },
   "notFound": {
     "badge": "خطأ في البحث",
@@ -409,7 +422,7 @@
     "subtitle": "ابحث عما فقدته أو أعد ما وجدته. يتم تتبع",
     "subtitleSuffix": "حالياً.",
     "itemsLabel": "عنصر",
-    "emptyTitle": "لا توجد نتائج",
+    "emptyTitle": "لم يتم العثور على نتائج",
     "emptySubtitle": "حاول تعديل معايير البحث",
     "searchPlaceholder": "ابحث عن عنصر...",
     "statusLabel": "الحالة",
@@ -437,7 +450,7 @@
     "contactTitle": "تواصل معنا",
     "contactSubtitle": "أرسل لنا رسالة وسنرد عليك خلال 24 ساعة.",
     "feedbackTitle": "شارك ملاحظاتك",
-    "feedbackSubtitle": "ساعدنا في تحسين لقيتها باقتراحاتك.",
+    "feedbackSubtitle": "ساعدنا في تحسين لقييتها باقتراحاتك.",
     "nameLabel": "الاسم الكامل",
     "emailLabel": "البريد الإلكتروني",
     "typeLabel": "نوع الرسالة",
@@ -487,7 +500,6 @@
     "githubDesc": "الإبلاغ عن أخطاء أو المساهمة"
   },
   "profileCard": {
-    "title": "ملفك الشخصي",
     "memberSince": "عضو منذ",
     "trustScore": "درجة الثقة",
     "items": {
@@ -506,11 +518,11 @@
     "claims": "الدعاوى",
     "myListings": "منشوراتي",
     "myClaims": "مطالباتي",
-    "recoveryRequests": "طلبات الاسترجاع على عناصرك",
+    "recoveryRequests": "طلبات الاسترداد على عناصرك",
     "claimsOnOthers": "دعاواك على عناصر أخرى",
     "types": {
       "LOST": "مفقود",
-      "FOUND": " موجود"
+      "FOUND": "موجود"
     },
     "empty": {
       "noItems": "لم تقم بإدراج أي عناصر حتى الآن",
@@ -519,7 +531,7 @@
       "noClaims": "لم تقم بالمطالبة بأي عناصر حتى الآن"
     },
     "messages": {
-      "title": "محادثاتك",
+      "title": "المحادثات",
       "empty": "لا توجد محادثات حتى الآن.",
       "status": "متصل"
     },
@@ -533,7 +545,7 @@
       "active": "نشط",
       "resolved": "تم الحل",
       "pending": "قيد الانتظار",
-      "accepted": "مقبول ",
+      "accepted": "مقبول",
       "rejectedByOwner": "مرفوض من المالك",
       "rejected": "مرفوض"
     }
@@ -553,7 +565,22 @@
     "claimsubmitted": "تم إرسال المطالبة",
     "claimerror": "حدث خطأ عند إرسال المطالبة",
     "reportsubmitted": "تم إرسال التقرير",
-    "reporterror": "حدث خطأ عند إرسال التقرير"
+    "reporterror": "حدث خطأ عند إرسال التقرير",
+    "sessionerror": "يجب عليك تسجيل الدخول أولاً.",
+    "verifyEmailERR": "فشل إرسال البريد الإلكتروني للتحقق. يرجى المحاولة لاحقًا.",
+    "verifyEmailReq": "يرجى التحقق من بريدك الإلكتروني لإكمال التسجيل. تفقد بريدك الوارد للحصول على رابط التحقق.",
+    "itemNotFound": "العنصر غير موجود",
+    "itemNoActive": "هذا العنصر لم يعد نشطاً.",
+    "claimOwnItem": "لا يمكنك المطالبة بعنصر تملكه.",
+    "attemptLimit": "لقد استنفذت جميع المحاولات لهذه المطالبة.",
+    "claimNotificationTitle": "تم استلام مطالبة جديدة",
+    "claimNotificationMsg": "لقد تلقيت مطالبة جديدة بشأن العنصر الخاص بك '{itemTitle}'. يرجى مراجعة المطالبة والرد عليها وفقًا لذلك.",
+    "unauthorized": "غير مسموح لك بتنفيذ هذا الإجراء.",
+    "claimNotFound": "المطالبة غير موجودة.",
+    "claimAccNotificationTitle": "مطالبة مقبولة",
+    "claimAccNotificationMsg": "تم قبول مطالبتك بشأن العنصر '{claim.item.title}' من قبل المالك. يمكنك الآن رؤية معلومات الاتصال الخاصة بالمالك وتنسيق عملية الإرجاع.",
+    "claimRejNotificationTitle": "مطالبة مرفوضة",
+    "claimRejNotificationMsg": "لم يتم قبول مطالبتك بشأن العنصر '{claim.item.title}' من قبل المالك."
   },
   "Profile": {
     "edit": "تعديل الملف الشخصي",
@@ -569,32 +596,58 @@
   },
   "claim": {
     "accept": "قبول",
+    "claimAccepted": "تم قبول المطالبة",
+    "claimMsg": "تم قبول مطالبتك! يمكنك الآن رؤية معلومات الاتصال بالمالك والمحادثة معه",
     "reject": "رفض",
+    "claimRejected": "تم رفض المطالبة",
+    "claimMsgRej": "لم يتم قبول مطالبتك من قبل المالك.",
+    "AwaitingResponse": "في انتظار رد المالك",
+    "claimSubmitted": "تم إرسال مطالبتك بنجاح.",
     "noClaims": "لا توجد مطالبات حتى الآن",
-    "incoming": "الدعاوى الواردة",
+    "incoming": "المطالبات الواردة",
     "pending": "قيد الانتظار",
     "accepted": "مقبول",
     "rejected": "مرفوض",
+    "correctAnswer": "إجابة صحيحة",
+    "incorrectAnswer": "إجابة خاطئة",
     "providedAnswer": "قدم إجابة صحيحة",
+    "noAttempts": "لا توجد محاولات متبقية",
+    "attemptsUsed": "لقد استخدمت جميع محاولاتك الـ {currentStatus.maxAttempts} لهذا العنصر.",
+    "attemptsExhausted": "لقد استنفدت جميع محاولاتك لهذا العنصر.",
+    "attemptsRemaining": "إجابة خاطئة. لديك ${result.attemptsLeft} محاولات متبقية.",
     "toast": {
       "claimAccepted": "إجابة صحيحة! تم إرسال مطالبتك.",
       "attemptsExhausted": "لقد استنفذت جميع المحاولات.",
       "claimSuccessful": "تم إرسال مطالبتك بنجاح."
+    },
+    "signReq": "سجل الدخول للمطالبة بهذا العنصر",
+    "ownershipProve": "إثبات الملكية",
+    "possessionProve": "إثبات الحيازة",
+    "verifyQues": "سؤال التحقق",
+    "handoverProof": "إثبات التسليم",
+    "remainingAttempts": "المحاولات المتبقية",
+    "questionAnsPlaceholder": "اكتب إجابتك هنا...",
+    "Buttons": {
+      "owner": "أنا المالك",
+      "found": "وجدت هذا العنصر",
+      "close": "إغلاق",
+      "cancel": "إلغاء",
+      "confirm": "تأكيد"
     }
   },
   "chat": {
-    "title": "الدردشة",
-    "chatbtn": "الدردشة"
+    "title": "المحادثة",
+    "chatbtn": "رسالة"
   },
   "imgUpload": {
     "upload": "انقر لتحميل الصورة",
-    "uploading": "... جاري التحميل"
+    "uploading": "جاري التحميل..."
   },
   "ui": {
     "toggleLanguage": "تبديل اللغة",
     "openMenu": "فتح القائمة",
     "closeMenu": "إغلاق القائمة",
-    "notifications": "الاشعارات",
+    "notifications": "الإشعارات",
     "markAllAsRead": "تحديد الكل كمقروء",
     "loadingNotifications": "جاري تحميل الإشعارات...",
     "noNotifications": "لا توجد إشعارات حتى الآن"

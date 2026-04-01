@@ -5,7 +5,15 @@ import { submitClaim } from "@/actions/item.actions";
 import Link from "next/link";
 import { toast } from "sonner";
 import ButtonLoader from "@/components/ui/ButtonLoader";
-import { CircleCheck, Ban, CircleX, Clock, AlertTriangle, RotateCcw } from "lucide-react";
+import {
+  CircleCheck,
+  Ban,
+  CircleX,
+  Clock,
+  AlertTriangle,
+  RotateCcw,
+} from "lucide-react";
+import { Dictionary } from "@/lib/dictionary.types";
 
 interface ClaimStatus {
   status: "PENDING" | "ACCEPTED" | "REJECTED";
@@ -22,6 +30,7 @@ interface ClaimButtonProps {
   isLoggedIn: boolean;
   secretQuestion: string | null;
   claimStatus: ClaimStatus | null;
+  dict: Dictionary;
 }
 
 export default function ClaimButton({
@@ -30,7 +39,9 @@ export default function ClaimButton({
   isLoggedIn,
   secretQuestion,
   claimStatus,
+  dict,
 }: ClaimButtonProps) {
+  const t = dict.claim;
   const [showModal, setShowModal] = useState(false);
   const [answer, setAnswer] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -40,7 +51,9 @@ export default function ClaimButton({
     status: string;
     attemptsLeft: number;
   } | null>(null);
-  const [currentStatus, setCurrentStatus] = useState<ClaimStatus | null>(claimStatus);
+  const [currentStatus, setCurrentStatus] = useState<ClaimStatus | null>(
+    claimStatus,
+  );
 
   // Not logged in
   if (!isLoggedIn) {
@@ -49,7 +62,7 @@ export default function ClaimButton({
         href="/login"
         className="block text-center font-interface text-sm font-bold tracking-[3px] uppercase py-4 rounded-full bg-gold text-obsidian hover:bg-ivory transition-all duration-300 shadow-lg shadow-gold/20"
       >
-        Sign in to claim this item
+        {t.signReq}
       </Link>
     );
   }
@@ -57,43 +70,115 @@ export default function ClaimButton({
   // Already ACCEPTED
   if (currentStatus?.status === "ACCEPTED") {
     return (
-      <div style={{ background: "rgba(100,200,130,0.08)", border: "1px solid rgba(100,200,130,0.25)", borderRadius: "999px", padding: "16px", textAlign: "center" }}>
+      <div
+        style={{
+          background: "rgba(100,200,130,0.08)",
+          border: "1px solid rgba(100,200,130,0.25)",
+          borderRadius: "999px",
+          padding: "16px",
+          textAlign: "center",
+        }}
+      >
         <CircleCheck className="w-5 h-5 mr-2 text-[#7DC99A]" strokeWidth={2} />
-        <span style={{ fontFamily: "var(--font-interface)", fontSize: "12px", fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase", color: "#7DC99A" }}>
-          Claim Accepted
+        <span
+          style={{
+            fontFamily: "var(--font-interface)",
+            fontSize: "12px",
+            fontWeight: 600,
+            letterSpacing: "2px",
+            textTransform: "uppercase",
+            color: "#7DC99A",
+          }}
+        >
+          {t.claimAccepted}
         </span>
-        <p style={{ fontFamily: "var(--font-interface)", fontSize: "11px", color: "#7A7A8C", marginTop: "6px" }}>
-          The owner accepted your claim. Check your messages.
+        <p
+          style={{
+            fontFamily: "var(--font-interface)",
+            fontSize: "11px",
+            color: "#7A7A8C",
+            marginTop: "6px",
+          }}
+        >
+          {t.claimMsg}
         </p>
       </div>
     );
   }
 
   // REJECTED by system (exhausted)
-  if (currentStatus?.status === "REJECTED" && currentStatus.rejectedBy === "system") {
+  if (
+    currentStatus?.status === "REJECTED" &&
+    currentStatus.rejectedBy === "system"
+  ) {
     return (
-      <div style={{ background: "rgba(200,100,100,0.08)", border: "1px solid rgba(200,100,100,0.25)", borderRadius: "999px", padding: "16px", textAlign: "center" }}>
+      <div
+        style={{
+          background: "rgba(200,100,100,0.08)",
+          border: "1px solid rgba(200,100,100,0.25)",
+          borderRadius: "999px",
+          padding: "16px",
+          textAlign: "center",
+        }}
+      >
         <Ban className="w-5 h-5 mr-2 text-[#D48080]" strokeWidth={2} />
-        <span style={{ fontFamily: "var(--font-interface)", fontSize: "12px", fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase", color: "#D48080" }}>
-          No Attempts Remaining
+        <span
+          style={{
+            fontFamily: "var(--font-interface)",
+            fontSize: "12px",
+            fontWeight: 600,
+            letterSpacing: "2px",
+            textTransform: "uppercase",
+            color: "#D48080",
+          }}
+        >
+          {t.noAttempts}
         </span>
-        <p style={{ fontFamily: "var(--font-interface)", fontSize: "11px", color: "#7A7A8C", marginTop: "6px" }}>
-          You have used all {currentStatus.maxAttempts} attempts for this item.
+        <p
+          style={{
+            fontFamily: "var(--font-interface)",
+            fontSize: "11px",
+            color: "#7A7A8C",
+            marginTop: "6px",
+          }}
+        >
+          {t.attemptsUsed.split("{currentStatus.maxAttempts}")[0]}{" "}
+          {currentStatus.maxAttempts}{" "}
+          {t.attemptsUsed.split("{currentStatus.maxAttempts}")[1]}
         </p>
       </div>
     );
   }
 
   // REJECTED by owner
-  if (currentStatus?.status === "REJECTED" && currentStatus.rejectedBy === "owner") {
+  if (
+    currentStatus?.status === "REJECTED" &&
+    currentStatus.rejectedBy === "owner"
+  ) {
     return (
-      <div style={{ background: "rgba(200,100,100,0.08)", border: "1px solid rgba(200,100,100,0.25)", borderRadius: "999px", padding: "16px", textAlign: "center" }}>
+      <div className="bg-red-100 border border-red-300 rounded-full py-4 text-center">
         <CircleX className="w-5 h-5 mr-2 text-[#D48080]" strokeWidth={2} />
-        <span style={{ fontFamily: "var(--font-interface)", fontSize: "12px", fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase", color: "#D48080" }}>
-          Claim Rejected
+        <span
+          style={{
+            fontFamily: "var(--font-interface)",
+            fontSize: "12px",
+            fontWeight: 600,
+            letterSpacing: "2px",
+            textTransform: "uppercase",
+            color: "#D48080",
+          }}
+        >
+          {t.claimRejected}
         </span>
-        <p style={{ fontFamily: "var(--font-interface)", fontSize: "11px", color: "#7A7A8C", marginTop: "6px" }}>
-          The owner has rejected your claim.
+        <p
+          style={{
+            fontFamily: "var(--font-interface)",
+            fontSize: "11px",
+            color: "#7A7A8C",
+            marginTop: "6px",
+          }}
+        >
+          {t.claimMsgRej}
         </p>
       </div>
     );
@@ -102,24 +187,44 @@ export default function ClaimButton({
   // PENDING + isVerified (awaiting owner)
   if (currentStatus?.status === "PENDING" && currentStatus.isVerified) {
     return (
-      <div style={{ background: "rgba(196,163,90,0.08)", border: "1px solid rgba(196,163,90,0.25)", borderRadius: "999px", padding: "16px", textAlign: "center" }}>
+      <div className="bg-gold/10 border border-gold/25 rounded-full py-4 text-center">
         <Clock className="w-5 h-5 mr-2 text-ivory/70" strokeWidth={2} />
-        <span style={{ fontFamily: "var(--font-interface)", fontSize: "12px", fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase", color: "#C4A35A" }}>
-          Awaiting Owner Response
+        <span
+          style={{
+            fontFamily: "var(--font-interface)",
+            fontSize: "12px",
+            fontWeight: 600,
+            letterSpacing: "2px",
+            textTransform: "uppercase",
+            color: "#C4A35A",
+          }}
+        >
+          {t.AwaitingResponse}
         </span>
-        <p style={{ fontFamily: "var(--font-interface)", fontSize: "11px", color: "#7A7A8C", marginTop: "6px" }}>
-          Your claim has been submitted successfully.
+        <p
+          style={{
+            fontFamily: "var(--font-interface)",
+            fontSize: "11px",
+            color: "#7A7A8C",
+            marginTop: "6px",
+          }}
+        >
+          {t.claimSubmitted}
         </p>
       </div>
     );
   }
 
   // PENDING + wrong answer + attempts left
-  const attemptsLeft = currentStatus?.attemptsLeft ?? currentStatus?.maxAttempts ?? 3;
+  const attemptsLeft =
+    currentStatus?.attemptsLeft ?? currentStatus?.maxAttempts ?? 3;
   const hasExistingClaim = !!currentStatus;
 
   async function handleSubmitAnswer() {
-    if (!answer.trim()) { setError("Please enter an answer"); return; }
+    if (!answer.trim()) {
+      setError("Please enter an answer");
+      return;
+    }
     setIsLoading(true);
     setError(null);
     const response = await submitClaim(itemId, answer);
@@ -134,9 +239,9 @@ export default function ClaimButton({
       return;
     }
     if (response.isCorrect) {
-      toast.success("Correct answer! Your claim has been sent.");
+      toast.success(t.toast.claimAccepted);
     } else if (response.status === "REJECTED") {
-      toast.error("You have exhausted all attempts.");
+      toast.error(t.toast.attemptsExhausted);
     }
     setResult({
       isCorrect: response.isCorrect,
@@ -169,7 +274,7 @@ export default function ClaimButton({
       setIsLoading(false);
       return;
     }
-    toast.success("Your claim has been sent successfully.");
+    toast.success(t.toast.claimSuccessful);
     setCurrentStatus({
       status: response.status as "PENDING" | "ACCEPTED" | "REJECTED",
       isVerified: response.isCorrect,
@@ -185,20 +290,35 @@ export default function ClaimButton({
     <>
       <div className="space-y-2">
         <button
-          onClick={() => secretQuestion ? setShowModal(true) : void handleQuickClaim()}
+          onClick={() =>
+            secretQuestion ? setShowModal(true) : void handleQuickClaim()
+          }
           disabled={isLoading}
           className="w-full font-interface text-sm font-bold tracking-[3px] uppercase py-4 rounded-full bg-gold text-obsidian hover:bg-ivory transition-all duration-300 shadow-lg shadow-gold/20 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          {itemType === "FOUND" ? "I am the owner" : "I found this item"}
+          {itemType === "FOUND" ? t.Buttons.owner : t.Buttons.found}
         </button>
 
         {/* Show attempts warning if previous wrong answer */}
-        {hasExistingClaim && currentStatus?.status === "PENDING" && !currentStatus.isVerified && (
-          <p style={{ fontFamily: "var(--font-interface)", fontSize: "11px", color: "#C4A35A", textAlign: "center", letterSpacing: "1px" }}>
-            <AlertTriangle className="w-3.5 h-3.5 mr-1.5 text-ivory/60" strokeWidth={2.5} />
-            {attemptsLeft} attempt{attemptsLeft !== 1 ? "s" : ""} remaining
-          </p>
-        )}
+        {hasExistingClaim &&
+          currentStatus?.status === "PENDING" &&
+          !currentStatus.isVerified && (
+            <p
+              style={{
+                fontFamily: "var(--font-interface)",
+                fontSize: "11px",
+                color: "#C4A35A",
+                textAlign: "center",
+                letterSpacing: "1px",
+              }}
+            >
+              <AlertTriangle
+                className="w-3.5 h-3.5 mr-1.5 text-ivory/60"
+                strokeWidth={2.5}
+              />
+              {attemptsLeft} attempt{attemptsLeft !== 1 ? "s" : ""} remaining
+            </p>
+          )}
       </div>
 
       {showModal && (
@@ -212,46 +332,78 @@ export default function ClaimButton({
                   {result.isCorrect ? "OK" : "NO"}
                 </div>
                 <span className="font-display text-gold text-lg font-light tracking-widest uppercase">
-                  {result.isCorrect ? "Correct Answer!" : "Incorrect Answer"}
+                  {result.isCorrect ? t.correctAnswer : t.incorrectAnswer}
                 </span>
-                <p className="font-interface text-sm text-slate mb-8 leading-relaxed max-w-[280px] mx-auto">
+                <p className="font-interface text-sm text-slate mb-8 leading-relaxed max-w-70 mx-auto">
                   {result.isCorrect
                     ? "Your request has been sent successfully. The owner will contact you soon."
                     : result.status === "REJECTED"
-                      ? "You have exhausted all your attempts for this item."
-                      : `Incorrect answer. You have ${result.attemptsLeft} attempts remaining.`}
+                      ? t.attemptsExhausted
+                      : t.attemptsRemaining.split("${result.attemptsLeft}")[0] +
+                        result.attemptsLeft +
+                        t.attemptsRemaining.split("${result.attemptsLeft}")[1]}
                 </p>
                 <button
-                  onClick={() => { setShowModal(false); setResult(null); setAnswer(""); }}
+                  onClick={() => {
+                    setShowModal(false);
+                    setResult(null);
+                    setAnswer("");
+                  }}
                   className="w-full font-interface text-[11px] font-bold tracking-xs uppercase py-3 rounded-full bg-gold text-obsidian hover:bg-ivory transition-all"
                 >
-                  Close
+                  {t.Buttons.close}
                 </button>
               </div>
             ) : (
               <div className="space-y-6">
                 <div className="space-y-1">
                   <h2 className="font-display text-3xl font-light text-ivory">
-                    {itemType === "FOUND" ? "Prove Ownership" : "Prove Possession"}
+                    {itemType === "FOUND"
+                      ? t.ownershipProve
+                      : t.possessionProve}
                   </h2>
                   <p className="font-interface text-[11px] text-gold/60 uppercase tracking-widest font-medium">
-                    {itemType === "FOUND" ? "Verification Question" : "Handover Proof"}
+                    {itemType === "FOUND"
+                      ? t.verifyQues
+                      : t.handoverProof}
                   </p>
                 </div>
 
                 {/* Attempts indicator */}
                 {hasExistingClaim && (
-                  <div style={{ background: "rgba(196,163,90,0.06)", border: "1px solid rgba(196,163,90,0.15)", borderRadius: "8px", padding: "10px 14px", display: "flex", alignItems: "center", gap: "8px" }}>
-                    <RotateCcw className="w-3.5 h-3.5 text-slate" strokeWidth={2.5} />
-                    <span style={{ fontFamily: "var(--font-interface)", fontSize: "11px", color: "#C4A35A" }}>
-                      {attemptsLeft} attempt{attemptsLeft !== 1 ? "s" : ""} remaining
+                  <div
+                    style={{
+                      background: "rgba(196,163,90,0.06)",
+                      border: "1px solid rgba(196,163,90,0.15)",
+                      borderRadius: "8px",
+                      padding: "10px 14px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                  >
+                    <RotateCcw
+                      className="w-3.5 h-3.5 text-slate"
+                      strokeWidth={2.5}
+                    />
+                    <span
+                      style={{
+                        fontFamily: "var(--font-interface)",
+                        fontSize: "11px",
+                        color: "#C4A35A",
+                      }}
+                    >
+                      {attemptsLeft} attempt{attemptsLeft !== 1 ? "s" : ""}{" "}
+                      {t.remainingAttempts}
                     </span>
                   </div>
                 )}
 
                 <div className="bg-obsidian border border-gold/15 rounded-xl p-5 relative">
                   <div className="absolute top-0 left-0 w-1 h-full bg-gold/50 rounded-l-xl" />
-                  <p className="font-interface text-sm text-ivory leading-relaxed">{secretQuestion}</p>
+                  <p className="font-interface text-sm text-ivory leading-relaxed">
+                    {secretQuestion}
+                  </p>
                 </div>
 
                 <div className="space-y-4">
@@ -260,27 +412,43 @@ export default function ClaimButton({
                       type="text"
                       value={answer}
                       onChange={(e) => setAnswer(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && handleSubmitAnswer()}
-                      placeholder="Type your answer here..."
+                      onKeyDown={(e) =>
+                        e.key === "Enter" && handleSubmitAnswer()
+                      }
+                      placeholder={t.questionAnsPlaceholder}
                       className="w-full bg-obsidian border border-gold/20 rounded-lg px-4 py-3 text-sm text-ivory placeholder:text-slate/40 outline-none focus:border-gold/50 focus:ring-1 focus:ring-gold/20 transition-all font-interface"
                     />
                   </div>
 
-                  {error && <p className="font-interface text-xs text-red-400">{error}</p>}
+                  {error && (
+                    <p className="font-interface text-xs text-red-400">
+                      {error}
+                    </p>
+                  )}
 
                   <div className="flex gap-3 pt-2">
                     <button
-                      onClick={() => { setShowModal(false); setAnswer(""); setError(null); }}
+                      onClick={() => {
+                        setShowModal(false);
+                        setAnswer("");
+                        setError(null);
+                      }}
                       className="flex-1 font-interface text-[11px] font-bold tracking-xs uppercase py-3 rounded-full border border-gold/20 text-slate hover:bg-gold/5 transition-all"
                     >
-                      Cancel
+                      {t.Buttons.cancel}
                     </button>
                     <button
                       onClick={handleSubmitAnswer}
                       disabled={isLoading}
-                      className="flex-1 font-interface text-[11px] font-bold tracking-xs uppercase py-3 rounded-full bg-gold text-void hover:bg-ivory transition-all shadow-lg shadow-gold/20 disabled:opacity-50 flex items-center justify-center min-h-[44px]"
+                      className="flex-1 font-interface text-[11px] font-bold tracking-xs uppercase py-3 rounded-full bg-gold text-void hover:bg-ivory transition-all shadow-lg shadow-gold/20 disabled:opacity-50 flex items-center justify-center min-h-11"
                     >
-                      {isLoading ? <div className="scale-[1] origin-center"><ButtonLoader /></div> : "Confirm Answer"}
+                      {isLoading ? (
+                        <div className="scale-[1] origin-center">
+                          <ButtonLoader />
+                        </div>
+                      ) : (
+                        t.Buttons.confirm
+                      )}
                     </button>
                   </div>
                 </div>
@@ -292,5 +460,3 @@ export default function ClaimButton({
     </>
   );
 }
-
-

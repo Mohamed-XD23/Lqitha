@@ -121,6 +121,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
                   isLoggedIn={isLoggedIn}
                   secretQuestion={item.secretQuestion ?? null}
                   claimStatus={claimStatus}
+                  dict={dict}
                 />
               )}
             </div>

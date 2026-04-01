@@ -1,10 +1,14 @@
 import { z } from "zod";
+import type { Dictionary } from "../dictionary.types"; 
 
-export const itemSchema = z
-  .object({
+
+
+export const itemSchema = (dict: Dictionary) => {
+  const t = dict.item.new.errorMessages
+  return z.object({
     // Step 1
     type: z.enum(["LOST", "FOUND"]),
-    title: z.string().min(3, "Title must be at least 3 characters"),
+    title: z.string().min(3, t.titleInvalid),
     category: z.enum([
       "PHONE",
       "KEYS",
@@ -13,25 +17,24 @@ export const itemSchema = z
       "ELECTRONICS",
       "OTHER",
     ]),
-    description: z.string().min(10, "Description must be at least 10 characters"),
+    description: z.string().min(10, t.descriptionInvalid),
 
     // Step 2
-    location: z.string().min(2, "Location is required"),
+    location: z.string().min(2, t.locationRequired),
     date: z
       .string()
-      .min(1, "Date is required")
+      .min(1, t.dateRequired)
       .refine(
         (val) => {
           return new Date(val) <= new Date();
         },
-        { message: "Date cannot be in the future" },
+        { message: t.dateFuture },
       ),
-    imageUrl: z.string().nonempty("Image URL is required"),
-    phone: z.string().regex(/^\d+$/, "Phone number can only contain digits").length(10, "Phone number must be exactly 10 digits"),
+    imageUrl: z.string().nonempty(t.imageURLRequired),
+    phone: z.string().regex(/^\d+$/, t.phoneInvalid).length(10, t.phoneLength),
 
-    // Step 3 — مطلوب فقط عند FOUND
-    secretQuestion: z.string().optional(),
-    secretAnswer: z.string().optional(),
+    secretQuestion: z.string().min(3, t.secretQuestionRequired),
+    secretAnswer: z.string().min(3, t.secretAnswerRequired),
   })
   .refine(
     (data) => {
@@ -39,9 +42,9 @@ export const itemSchema = z
       return !!data.secretQuestion && !!data.secretAnswer;
     },
     {
-      message: "Secret question and answer are required",
+      message: t.secretRequired,
       path: ["secretQuestion"],
     },
   );
-
-export type ItemFormData = z.infer<typeof itemSchema>;
+}
+export type ItemFormData = z.infer<ReturnType<typeof itemSchema>>;
