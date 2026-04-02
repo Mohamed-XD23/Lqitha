@@ -19,7 +19,7 @@ export default async function DashboardPage( ) {
   if (!user) redirect("/login");
 
   const t = dict.dashboard;
-  const firstName = user.name?.trim().match(/\S+/)?.[0] ?? "User";
+  const firstName = user.name?.trim().match(/\S+/)?.[0] ?? t.user;
 
   return (
     <div className="bg-obsidian min-h-screen">
@@ -38,7 +38,7 @@ export default async function DashboardPage( ) {
         {/* Profile + Chart */}
         <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
           <ProfileCard
-            name={user.name ?? "User"}
+            name={user.name ?? t.user}
             image={user.image}
             trustScore={user.trustScore}
             createdAt={user.createdAt}
@@ -54,7 +54,7 @@ export default async function DashboardPage( ) {
           listings={user.items}
           claims={user.claims}
           currentUserId={session.user.id!}
-          currentUserName={user.name ?? "User"}
+          currentUserName={user.name ?? t.user}
           currentUserImage={user.image}
           dict={dict}
         />

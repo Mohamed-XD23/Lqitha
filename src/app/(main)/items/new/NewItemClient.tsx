@@ -560,8 +560,8 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                       ),
                     value:
                       watchedValues.type === "LOST"
-                        ? "Lost Report"
-                        : "Found Report",
+                        ? t.new.lost
+                        : t.new.found,
                   },
                   {
                     label: t.new.fields.title,

@@ -21,7 +21,10 @@
     "signOut": "Sign Out",
     "signIn": "Sign In",
     "register": "Register",
-    "language": "Language"
+    "language": "Language",
+    "user": "User",
+    "verifyActionLabel": "Verify Email First",
+    "verifyAlertMsg": "Please verify your email. We sent a verification link to your inbox."
   },
   "home": {
     "hero": {
@@ -163,8 +166,9 @@
     "found": "Found",
     "claims": "claims",
     "openArrow": "Open",
-    "error":{
-      "unauthorized":"You are not authorized to perform this action."
+    "user": "User",
+    "error": {
+      "unauthorized": "You are not authorized to perform this action."
     }
   },
   "item": {
@@ -187,10 +191,13 @@
       "OTHER": "Other"
     },
     "new": {
+      "lost": "Lost Report",
+      "found": "Found Report",
       "registry": "Register New Item",
       "createreport": "Create Report",
       "description": "Help us bridge the gap between lost and found",
       "naturereport": "Nature of Report",
+      "user":"User",
       "steps": {
         "nature": "Nature",
         "details": "Details",
@@ -219,8 +226,8 @@
         "verificationPlaceholder": "Define a specific verification question. The claimant must answer this correctly before contact is permitted.",
         "answerPlaceholder": "The answer to your secret question",
         "example": "Example",
-        "questionExample":"'What color is the charm attached?' or 'What was the lock combination?'",
-        "verificationExample":"'What is the sticker on the back?' or 'What is the unique scuff mark?'",
+        "questionExample": "'What color is the charm attached?' or 'What was the lock combination?'",
+        "verificationExample": "'What is the sticker on the back?' or 'What is the unique scuff mark?'",
         "secretQuestionPlaceholder": "e.g., What is the unique mark on the back?",
         "secretAnswerPlaceholder": "Correct answer for matching"
       },
@@ -255,7 +262,7 @@
     "profilePicture": "Profile Picture",
     "name": "Full Name",
     "email": "Email Address",
-    "emailmessage":"Email address cannot be changed. Please contact support to update your email.",
+    "emailmessage": "Email address cannot be changed. Please contact support to update your email.",
     "saveChanges": "Save Changes",
     "updatePassword": "Update Password",
     "updatePasswordSubtitle": "Ensure your account is using a long, random password to stay secure.",
@@ -274,18 +281,18 @@
       "deleteConfirmation": "Type DELETE to confirm account deletion.",
       "accountDeleted": "Account deleted. Redirecting..."
     },
-    "success":{
-      "profileUpdated":"Your profile updated successfully",
-      "passwordChange":"Your password changed successfully",
-      "accountDelete":"Account deleted"
+    "success": {
+      "profileUpdated": "Your profile updated successfully",
+      "passwordChange": "Your password changed successfully",
+      "accountDelete": "Account deleted"
     },
-    "error":{
-      "unauthorized":"You are not authorized to perform this action.",
-      "profileUpdatedFailed":"Failed to update your profile",
-      "accountWithoutPassword":"Your account is registered via social login and does not have a password.",
-      "incorrectPassword":"Current password is incorrect.",
-      "failedToChangePassword":"Failed to change password. Please try again later.",
-      "accountDeleteFailed":"Failed to delete your account. Please try again later."
+    "error": {
+      "unauthorized": "You are not authorized to perform this action.",
+      "profileUpdatedFailed": "Failed to update your profile",
+      "accountWithoutPassword": "Your account is registered via social login and does not have a password.",
+      "incorrectPassword": "Current password is incorrect.",
+      "failedToChangePassword": "Failed to change password. Please try again later.",
+      "accountDeleteFailed": "Failed to delete your account. Please try again later."
     }
   },
   "auth": {
@@ -329,15 +336,15 @@
     "reInitiate": "Re-Initiate Protocol",
     "passwordResetSuccess": "Password reset successfully",
     "redirecting": "Redirecting to secure gateway...",
-    "error":{
-      "invalid":"Invalid input data. Please check your entries and try again.",
-      "emailInUse":"Email address is already in use.",
-      "invalidLink":"Invalid verification link. Please request a new one.",
-      "expiredLink":"Verification link has expired. Please request a new one.",
-      "tooManyRequests":"Too many password reset requests. Please try again later.",
-      "passwordlength":"Password must be at least 8 characters.",
-      "invalidResetToken":"Invalid reset link. Please request a new one.",
-      "expiredResetToken":"Reset link has expired. Please request a new one."
+    "error": {
+      "invalid": "Invalid input data. Please check your entries and try again.",
+      "emailInUse": "Email address is already in use.",
+      "invalidLink": "Invalid verification link. Please request a new one.",
+      "expiredLink": "Verification link has expired. Please request a new one.",
+      "tooManyRequests": "Too many password reset requests. Please try again later.",
+      "passwordlength": "Password must be at least 8 characters.",
+      "invalidResetToken": "Invalid reset link. Please request a new one.",
+      "expiredResetToken": "Reset link has expired. Please request a new one."
     }
   },
   "notFound": {
@@ -593,16 +600,16 @@
     "reportsubmitted": "Report submitted",
     "reporterror": "Error submitting report",
     "sessionerror": "You must be signed in first.",
-    "verifyEmailERR":"Failed to send verification email. Please try again later.",
+    "verifyEmailERR": "Failed to send verification email. Please try again later.",
     "verifyEmailReq": "Please verify your email address to complete registration. Check your inbox for the verification link.",
     "itemNotFound": "Item not found",
-    "itemNoActive":"This item is no longer active.",
-    "claimOwnItem":"You cannot claim your own item.",
+    "itemNoActive": "This item is no longer active.",
+    "claimOwnItem": "You cannot claim your own item.",
     "attemptLimit": "You have exhausted all attempts for this claim.",
     "claimNotificationTitle": "New Claim Received",
-    "claimNotificationMsg":"You have received a new claim on your item ' {itemTitle} '. Please review the claim and respond accordingly.",
+    "claimNotificationMsg": "You have received a new claim on your item ' {itemTitle} '. Please review the claim and respond accordingly.",
     "unauthorized": "You are not authorized to perform this action.",
-    "claimNotFound":"Claim not found.",
+    "claimNotFound": "Claim not found.",
     "claimAccNotificationTitle": "Claim Accepted",
     "claimAccNotificationMsg": "Your claim on item ' {claim.item.title} ' has been accepted by the owner. You can now view the owner's contact information and coordinate the return.",
     "claimRejNotificationTitle": "Claim Rejected",
@@ -621,12 +628,12 @@
     }
   },
   "claim": {
-    "accept" : "Accept",
+    "accept": "Accept",
     "claimAccepted": "Claim Accepted",
-    "claimMsg":"Your claim has been accepted! You can now view the owner's contact information and have chat",
-    "reject" : "Reject",
+    "claimMsg": "Your claim has been accepted! You can now view the owner's contact information and have chat",
+    "reject": "Reject",
     "claimRejected": "Claim Rejected",
-    "claimMsgRej":"Your claim was not accepted by the owner.",
+    "claimMsgRej": "Your claim was not accepted by the owner.",
     "AwaitingResponse": "Awaiting Owner's Response",
     "claimSubmitted": "Your claim has been submitted.",
     "noClaims": "No claims yet",
@@ -638,8 +645,9 @@
     "incorrectAnswer": "Incorrect Answer",
     "providedAnswer": "Provided correct answer ",
     "noAttempts": "No Attempts Remaining",
-    "attemptsRemain":"Attempts remaining : ",
-    "attemptsUsed":"You have used all {currentStatus.maxAttempts} attempts for this item.",
+    "attemptsRemain": "Attempts remaining : ",
+    "requestSentSuccess": "Your request has benn sent successfully. The owner will contact you soon.",
+    "attemptsUsed": "You have used all {currentStatus.maxAttempts} attempts for this item.",
     "attemptsExhausted": "You have exhausted all attempts for this item.",
     "attemptsRemaining": "Incorrect answer. You have ${result.attemptsLeft} attempts remaining.",
     "toast": {
@@ -647,26 +655,29 @@
       "attemptsExhausted": "You have exhausted all attempts.",
       "claimSuccessful": "Your claim has been sent successfully."
     },
-    "signReq":"Sign in to claim this item",
+    "signReq": "Sign in to claim this item",
     "ownershipProve": "Prove Ownership",
     "possessionProve": "Prove Possession",
-    "verifyQues":"Verification Question",
+    "verifyQues": "Verification Question",
     "handoverProof": "Handover Proof",
     "remainingAttempts": "Remaining Attempts",
-    "questionAnsPlaceholder":"Type your answer here...",
+    "questionAnsPlaceholder": "Type your answer here...",
     "Buttons": {
-      "owner" : "I am the owner",
-      "found" : "I found this item",
-      "close" : "Close",
-      "cancel" : "Cancel",
+      "owner": "I am the owner",
+      "found": "I found this item",
+      "close": "Close",
+      "cancel": "Cancel",
       "confirm": "Confirm"
+    },
+    "error": {
+      "noAnswer": "Please enter an answer."
     }
   },
-  "chat" : {
+  "chat": {
     "title": "Chat",
     "chatbtn": "Message",
-    "error":{
-      "unauthorized":"You are not authorized to perform this action."
+    "error": {
+      "unauthorized": "You are not authorized to perform this action."
     }
   },
   "imgUpload": {
@@ -682,13 +693,13 @@
     "loadingNotifications": "Loading notifications...",
     "noNotifications": "No notifications yet"
   },
-  "notifications":{
-    "error":{
-      "unauthorized":"You are not authorized to perform this action.",
-      "failedFetch":"Failed to fetch notifications. Please try again later.",
-      "markReadFailed":"Failed marking notification as read.",
-      "markAllReadFailed":"Failed marking all notifications as read.",
-      "createFailed":"Failed to create notification."
+  "notifications": {
+    "error": {
+      "unauthorized": "You are not authorized to perform this action.",
+      "failedFetch": "Failed to fetch notifications. Please try again later.",
+      "markReadFailed": "Failed marking notification as read.",
+      "markAllReadFailed": "Failed marking all notifications as read.",
+      "createFailed": "Failed to create notification."
     }
   }
 }

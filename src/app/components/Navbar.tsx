@@ -10,11 +10,12 @@ import UserNavMenu from "@/components/ui/UserNavMenu";
 import { getLocale, getDictionary } from "@/lib/dictionary";
 import { handleSignOut } from "@/actions/auth.actions";
 import { LogOut, LayoutDashboard, Settings } from "lucide-react";
+import { Dictionary } from "@/lib/dictionary.types";
 
 export default async function Navbar() {
   let session: Session | null = null;
   let locale: "en" | "ar" = "en";
-  let dict: any = null;
+  let dict: Dictionary;
 
   try {
     session = await auth();
@@ -47,11 +48,10 @@ export default async function Navbar() {
       })
     : null;
 
+  const t = dict.nav;
   const user = dbUser || (session?.user ? { ...session.user } : null);
   const canUseSecureActions = session?.user ? (dbUser ? Boolean(dbUser.emailVerified) : true) : false;
   const showEmailVerificationAlert = Boolean(session?.user && dbUser && !dbUser.emailVerified);
-  const verifyActionLabel = "Verify Email First";
-  const verifyAlertMessage = "Please verify your email. We sent a verification link to your inbox.";
   const dir = locale === "ar" ? "rtl" : "ltr";
 
 
@@ -94,7 +94,7 @@ export default async function Navbar() {
             href="/browse"
             className="font-interface text-[11px] rtl:text-sm font-medium tracking-[3px] uppercase text-slate hover:text-gold transition-all"
           >
-            {dict.nav.browse}
+            {t.browse}
           </Link>
 
           {session?.user && (
@@ -103,11 +103,11 @@ export default async function Navbar() {
                 href="/items/new"
                 className="font-interface text-xs font-bold tracking-[3px] uppercase bg-gold text-obsidian px-8 py-3 rounded-xs hover:bg-ivory transition-all shadow-xl shadow-gold/10"
               >
-                {dict.nav.reportItem}
+                {t.reportItem}
               </Link>
             ) : (
               <span className="font-interface text-xs font-bold tracking-[3px] uppercase border border-gold/25 text-gold/70 px-8 py-3 rounded-xs cursor-not-allowed">
-                {verifyActionLabel}
+                {t.verifyActionLabel}
               </span>
             )
           )}
@@ -126,13 +126,13 @@ export default async function Navbar() {
                 href="/login"
                 className="font-interface text-[11px] font-medium tracking-[3px] uppercase text-slate hover:text-gold transition-all"
               >
-                {dict.nav.signIn}
+                {t.signIn}
               </Link>
               <Link
                 href="/register"
                 className="font-interface text-xs font-bold tracking-[3px] uppercase bg-gold text-obsidian px-8 py-3 rounded-xs hover:bg-ivory transition-all shadow-xl shadow-gold/10"
               >
-                {dict.nav.register}
+                {t.register}
               </Link>
             </div>
           )}
@@ -145,16 +145,16 @@ export default async function Navbar() {
               href="/browse"
               className="font-display text-2xl font-light tracking-sm uppercase text-ivory hover:text-gold transition-all"
             >
-              {dict.nav.browse}
+              {t.browse}
             </Link>
 
             {session?.user && (
               <>
-                <div className="w-full max-w-[280px] mb-4 p-4 rounded-sm border border-gold/10 bg-void/30 flex flex-col items-center gap-3">
+                <div className="w-full max-w-70 mb-4 p-4 rounded-sm border border-gold/10 bg-void/30 flex flex-col items-center gap-3">
                   <div className="flex items-center gap-3 w-full rtl:flex-row-reverse">
                     <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-gold/20 shrink-0">
                       {user?.image ? (
-                        <NextImage src={user.image} alt="User" width={48} height={48} />
+                        <NextImage src={user.image} alt={t.user} width={48} height={48} />
                       ) : (
                         <div className="w-full h-full bg-gold/10 flex items-center justify-center text-gold font-display text-2xl">
                           {user?.name?.charAt(0).toUpperCase()}
@@ -173,14 +173,14 @@ export default async function Navbar() {
                       className="flex items-center justify-center gap-2 py-3 rounded-xs border border-gold/10 text-slate hover:text-gold hover:bg-gold/5 transition-all"
                     >
                       <LayoutDashboard className="w-4 h-4" />
-                      <span className="font-interface text-xs uppercase tracking-widest">{dict.nav.dashboard}</span>
+                      <span className="font-interface text-xs uppercase tracking-widest">{t.dashboard}</span>
                     </Link>
                     <Link
                       href="/settings"
                       className="flex items-center justify-center gap-2 py-3 rounded-xs border border-gold/10 text-slate hover:text-gold hover:bg-gold/5 transition-all"
                     >
                       <Settings className="w-4 h-4" />
-                      <span className="font-interface text-xs uppercase tracking-widest">{dict.nav.settings}</span>
+                      <span className="font-interface text-xs uppercase tracking-widest">{t.settings}</span>
                     </Link>
                   </div>
                 </div>
@@ -190,17 +190,17 @@ export default async function Navbar() {
                     href="/items/new"
                     className="font-interface text-xs font-bold tracking-sm uppercase bg-gold text-obsidian px-12 py-5 rounded-xs shadow-2xl shadow-gold/20"
                   >
-                    {dict.nav.reportItem}
+                    {t.reportItem}
                   </Link>
                 ) : (
                   <span className="font-interface text-xs font-bold tracking-sm uppercase border border-gold/25 text-gold/70 px-12 py-5 rounded-xs cursor-not-allowed">
-                    {verifyActionLabel}
+                    {t.verifyActionLabel}
                   </span>
                 )}
 
                 <div className="flex items-center gap-6 mt-4 rtl:flex-row-reverse">
                   <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-gold/5 bg-gold/5 min-w-[100px]">
-                    <span className="text-xs text-slate uppercase tracking-widest">{dict.nav.language}</span>
+                    <span className="text-xs text-slate uppercase tracking-widest">{t.language}</span>
                     <LanguageSwitcher currentLocale={locale} dict={dict} />
                   </div>
                   <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-gold/5 bg-gold/5 min-w-[100px]">
@@ -214,7 +214,7 @@ export default async function Navbar() {
                     type="submit"
                     className="flex items-center gap-2 cursor-pointer font-interface text-xs font-medium tracking-sm uppercase text-red-400 border border-red-500/20 px-10 py-4 rounded-xs transition-all mt-4 rtl:flex-row-reverse"
                   >
-                    {dict.nav.signOut}
+                    {t.signOut}
                     <LogOut className="w-5 h-5 ltr:ml-2 rtl:mr-2" strokeWidth={2.5} />
                   </button>
                 </form>
@@ -228,13 +228,13 @@ export default async function Navbar() {
                   href="/login"
                   className="font-display text-2xl font-light tracking-sm uppercase text-ivory hover:text-gold transition-all"
                 >
-                  {dict.nav.signIn}
+                  {t.signIn}
                 </Link>
                 <Link
                   href="/register"
                   className="font-interface text-xs font-bold tracking-sm uppercase bg-gold text-obsidian px-12 py-5 rounded-xs shadow-2xl shadow-gold/20"
                 >
-                  {dict.nav.register}
+                  {t.register}
                 </Link>
               </div>
             )}
@@ -244,7 +244,7 @@ export default async function Navbar() {
       {showEmailVerificationAlert && (
         <div className="mx-auto mt-3 max-w-6xl rounded-xs border border-amber-400/25 bg-amber-400/10 px-4 py-2.5">
           <p className="font-interface text-[11px] font-medium tracking-wide text-amber-100">
-            {verifyAlertMessage}
+            {t.verifyAlertMsg}
           </p>
         </div>
       )}

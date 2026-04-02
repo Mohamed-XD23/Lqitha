@@ -11,7 +11,7 @@ import {
   CircleX,
   Clock,
   AlertTriangle,
-  RotateCcw,
+  RotateCcw, 
 } from "lucide-react";
 import { Dictionary } from "@/lib/dictionary.types";
 
@@ -186,7 +186,7 @@ export default function ClaimButton({
 
   async function handleSubmitAnswer() {
     if (!answer.trim()) {
-      setError("Please enter an answer");
+      setError(t.error.noAnswer);
       return;
     }
     setIsLoading(true);
@@ -285,14 +285,14 @@ export default function ClaimButton({
             {result ? (
               <div className="text-center py-4">
                 <div className="text-5xl mb-6">
-                  {result.isCorrect ? "OK" : "NO"}
+                  {result.isCorrect ? <CircleCheck/> : <Ban/>}
                 </div>
                 <span className="font-display text-gold text-lg font-light tracking-widest uppercase">
                   {result.isCorrect ? t.correctAnswer : t.incorrectAnswer}
                 </span>
                 <p className="font-interface text-sm text-slate mb-8 leading-relaxed max-w-70 mx-auto">
                   {result.isCorrect
-                    ? "Your request has been sent successfully. The owner will contact you soon."
+                    ? t.requestSentSuccess
                     : result.status === "REJECTED"
                       ? t.attemptsExhausted
                       : fillTemplate(
@@ -349,8 +349,7 @@ export default function ClaimButton({
                         color: "#C4A35A",
                       }}
                     >
-                      {attemptsLeft} attempt{attemptsLeft !== 1 ? "s" : ""}{" "}
-                      {t.remainingAttempts}
+                      {t.attemptsRemain} &nbsp; {attemptsLeft}
                     </span>
                   </div>
                 )}

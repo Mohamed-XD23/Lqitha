@@ -142,7 +142,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
               itemId={id}
               ownerId={item.user.id}
               currentUserId={session.user.id!}
-              currentUserName={session.user.name ?? "User"}
+              currentUserName={session.user.name ?? t.new.user}
               currentUserImage={session.user.image}
               dict={dict}
             />

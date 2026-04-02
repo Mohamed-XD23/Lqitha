@@ -446,7 +446,7 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
                 onClick={handleMarkAllRead}
                 className="text-xs text-gold hover:text-ivory transition-colors font-interface"
               >
-                Mark all as read
+                {t.markAllAsRead}
               </button>
             )}
           </div>
@@ -454,11 +454,11 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
           <div className="max-h-[min(60vh,400px)] overflow-y-auto">
             {isLoading ? (
               <div className="p-6 text-center text-slate text-xs font-interface animate-pulse">
-                Loading notifications...
+                {t.loadingNotifications}
               </div>
             ) : notifications.length === 0 ? (
               <div className="p-6 text-center text-slate text-xs font-interface">
-                No notifications yet
+                {t.noNotifications}
               </div>
             ) : (
               <div className="flex flex-col">
