@@ -19,6 +19,7 @@ export default async function DashboardPage( ) {
   if (!user) redirect("/login");
 
   const t = dict.dashboard;
+  const firstName = user.name?.trim().match(/\S+/)?.[0] ?? "User";
 
   return (
     <div className="bg-obsidian min-h-screen">
@@ -30,7 +31,7 @@ export default async function DashboardPage( ) {
             {t.title}
           </span>
           <h1 className="font-display text-4xl font-light text-ivory leading-none mt-2">
-            {t.hello}, {user.name?.split(" ")[0]}
+            {t.hello}, {firstName}
           </h1>
         </div>
 

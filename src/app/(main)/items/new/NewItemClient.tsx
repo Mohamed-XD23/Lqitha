@@ -33,6 +33,19 @@ import { toast } from "sonner";
 import Image from "next/image";
 import type { Dictionary } from "@/lib/dictionary.types";
 
+function getTemplateParts(template: string, placeholder: string) {
+  const placeholderIndex = template.indexOf(placeholder);
+
+  if (placeholderIndex === -1) {
+    return { before: template, after: "" };
+  }
+
+  return {
+    before: template.slice(0, placeholderIndex),
+    after: template.slice(placeholderIndex + placeholder.length),
+  };
+}
+
 // مكوّن شريط التقدم
 // مكوّن شريط التقدم
 function StepIndicator({
@@ -131,6 +144,10 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
   ] as const;
   const watchedValues = useWatch({ control: form.control });
   const watchedType = watchedValues.type;
+  const requiredFieldsDescriptionParts = getTemplateParts(
+    t.new.requiredFieldsDescription,
+    "{asterisk}",
+  );
 
   // التحقق من صحة حقول الخطوة الحالية قبل الانتقال
   async function handleNext() {
@@ -194,9 +211,9 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
               {t.new.requiredfields}
             </p>
             <p className="text-xs text-slate/80 font-interface tracking-px leading-relaxed">
-              {t.new.requiredFieldsDescription.split("{asterisk}")[0]}
+              {requiredFieldsDescriptionParts.before}
               <span className="text-red-500/80 font-bold">*</span>
-              {t.new.requiredFieldsDescription.split("{asterisk}")[1]}
+              {requiredFieldsDescriptionParts.after}
             </p>
           </div>
         </div>

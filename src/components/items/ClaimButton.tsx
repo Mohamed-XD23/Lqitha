@@ -15,6 +15,10 @@ import {
 } from "lucide-react";
 import { Dictionary } from "@/lib/dictionary.types";
 
+function fillTemplate(template: string, placeholder: string, value: string) {
+  return template.replace(placeholder, value);
+}
+
 interface ClaimStatus {
   status: "PENDING" | "ACCEPTED" | "REJECTED";
   isVerified: boolean;
@@ -142,9 +146,11 @@ export default function ClaimButton({
             marginTop: "6px",
           }}
         >
-          {t.attemptsUsed.split("{currentStatus.maxAttempts}")[0]}{" "}
-          {currentStatus.maxAttempts}{" "}
-          {t.attemptsUsed.split("{currentStatus.maxAttempts}")[1]}
+          {fillTemplate(
+            t.attemptsUsed,
+            "{currentStatus.maxAttempts}",
+            String(currentStatus.maxAttempts),
+          )}
         </p>
       </div>
     );
@@ -339,9 +345,11 @@ export default function ClaimButton({
                     ? "Your request has been sent successfully. The owner will contact you soon."
                     : result.status === "REJECTED"
                       ? t.attemptsExhausted
-                      : t.attemptsRemaining.split("${result.attemptsLeft}")[0] +
-                        result.attemptsLeft +
-                        t.attemptsRemaining.split("${result.attemptsLeft}")[1]}
+                      : fillTemplate(
+                          t.attemptsRemaining,
+                          "${result.attemptsLeft}",
+                          String(result.attemptsLeft),
+                        )}
                 </p>
                 <button
                   onClick={() => {
