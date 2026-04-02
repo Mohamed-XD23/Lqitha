@@ -604,9 +604,9 @@
     "unauthorized": "أنت غير مخول لتنفيذ هذا الإجراء.",
     "claimNotFound": "المطالبة غير موجودة.",
     "claimAccNotificationTitle": "مطالبة مقبولة",
-    "claimAccNotificationMsg": "تم قبول مطالبتك بشأن العنصر '{claim.item.title}' من قبل المالك. يمكنك الآن رؤية معلومات الاتصال الخاصة بالمالك وتنسيق عملية الإرجاع.",
+    "claimAccNotificationMsg": "تم قبول مطالبتك بشأن العنصر {claim.item.title} من قبل المالك. يمكنك الآن رؤية معلومات الاتصال الخاصة بالمالك وتنسيق عملية الإرجاع.",
     "claimRejNotificationTitle": "مطالبة مرفوضة",
-    "claimRejNotificationMsg": "لم يتم قبول مطالبتك بشأن العنصر '{claim.item.title}' من قبل المالك."
+    "claimRejNotificationMsg": "لم يتم قبول مطالبتك بشأن العنصر {claim.item.title} من قبل المالك."
   },
   "Profile": {
     "edit": "تعديل الملف الشخصي",

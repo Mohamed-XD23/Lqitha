@@ -600,13 +600,13 @@
     "claimOwnItem":"You cannot claim your own item.",
     "attemptLimit": "You have exhausted all attempts for this claim.",
     "claimNotificationTitle": "New Claim Received",
-    "claimNotificationMsg":"You have received a new claim on your item '{itemTitle}'. Please review the claim and respond accordingly.",
+    "claimNotificationMsg":"You have received a new claim on your item ' {itemTitle} '. Please review the claim and respond accordingly.",
     "unauthorized": "You are not authorized to perform this action.",
     "claimNotFound":"Claim not found.",
     "claimAccNotificationTitle": "Claim Accepted",
-    "claimAccNotificationMsg": "Your claim on item '{claim.item.title}' has been accepted by the owner. You can now view the owner's contact information and coordinate the return.",
+    "claimAccNotificationMsg": "Your claim on item ' {claim.item.title} ' has been accepted by the owner. You can now view the owner's contact information and coordinate the return.",
     "claimRejNotificationTitle": "Claim Rejected",
-    "claimRejNotificationMsg": "Your claim on item '{claim.item.title}' was not accepted by the owner."
+    "claimRejNotificationMsg": "Your claim on item ' {claim.item.title} ' was not accepted by the owner."
   },
   "Profile": {
     "edit": "Edit Profile",

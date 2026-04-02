@@ -12,6 +12,14 @@ import { sendVerificationEmailIfNeeded } from "@/lib/email-verification";
 import { getDictionary } from "@/lib/dictionary";
 
 
+function fillNotificationTemplate(
+  template: string,
+  placeholder: string,
+  value: string,
+) {
+  return template.replace(placeholder, value);
+}
+
 async function ensureVerifiedEmail(userId: string) {
   const dict = await getDictionary();
   const t = dict.Toast;
@@ -271,7 +279,11 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
       userId: item.userId,
       type: "CLAIM_NEW",
       title: t.claimNotificationTitle,
-      message: `${t.claimNotificationMsg.split("{itemTitle}")[0]} ${item.title} ${t.claimNotificationMsg.split("{itemTitle}")[1]}`,
+      message: fillNotificationTemplate(
+        t.claimNotificationMsg,
+        "{itemTitle}",
+        item.title,
+      ),
       link: `/items/${item.id}`,
     });
   }
@@ -363,8 +375,12 @@ export async function respondToClaim(
     await createNotification({
       userId: claim.claimantId,
       type: "CLAIM_ACCEPTED",
-      title: t.claimNotificationTitle,
-      message: `${t.claimNotificationMsg.split("{claim.item.title}")[0]} "${claim.item.title}" ${t.claimNotificationMsg.split("{claim.item.title}")[1]}`,
+      title: t.claimAccNotificationTitle,
+      message: fillNotificationTemplate(
+        t.claimAccNotificationMsg,
+        "{claim.item.title}",
+        claim.item.title,
+      ),
       link: `/dashboard`,
     });
   } else {
@@ -378,7 +394,11 @@ export async function respondToClaim(
       userId: claim.claimantId,
       type: "CLAIM_REJECTED",
       title: t.claimRejNotificationTitle,
-      message: `${t.claimRejNotificationMsg.split("{claim.item.title}")[0]} "${claim.item.title}" ${t.claimRejNotificationMsg.split("{claim.item.title}")[1]}`,
+      message: fillNotificationTemplate(
+        t.claimRejNotificationMsg,
+        "{claim.item.title}",
+        claim.item.title,
+      ),
       link: `/dashboard`,
     });
   }

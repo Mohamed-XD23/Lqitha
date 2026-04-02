@@ -20,8 +20,25 @@ interface Notification {
   createdAt: Date;
 }
 
+function fillTemplate(template: string, placeholder: string, value: string) {
+  return template.replace(placeholder, value);
+}
+
+function extractItemTitleFromBrokenMessage(message: string) {
+  const matches = [...message.matchAll(/["']([^"']+)["']/g)];
+  const candidate = matches.at(-1)?.[1]?.trim();
+
+  if (!candidate) return null;
+  if (candidate === "{itemTitle}" || candidate === "{claim.item.title}") {
+    return null;
+  }
+
+  return candidate;
+}
+
 export default function NotificationBell({ userId, dict }: { userId: string; dict: Dictionary }) {
   const t = dict.ui;
+  const toast = dict.Toast;
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -32,6 +49,70 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
   const hasFetchedNotificationsRef = useRef(false);
   const unreadCountRef = useRef(0);
   const router = useRouter();
+
+  const normalizeNotification = useCallback((notif: Notification): Notification => {
+    if (notif.type === "CLAIM_ACCEPTED") {
+      const isBroken =
+        notif.title === toast.claimNotificationTitle ||
+        notif.message.includes("undefined") ||
+        notif.message.includes("{itemTitle}");
+
+      if (!isBroken) return notif;
+
+      const itemTitle = extractItemTitleFromBrokenMessage(notif.message);
+      return {
+        ...notif,
+        title: toast.claimAccNotificationTitle,
+        message: itemTitle
+          ? fillTemplate(
+              toast.claimAccNotificationMsg,
+              "{claim.item.title}",
+              itemTitle,
+            )
+          : toast.claimAccNotificationMsg,
+      };
+    }
+
+    if (notif.type === "CLAIM_REJECTED") {
+      const isBroken =
+        notif.title === toast.claimNotificationTitle ||
+        notif.message.includes("undefined") ||
+        notif.message.includes("{itemTitle}");
+
+      if (!isBroken) return notif;
+
+      const itemTitle = extractItemTitleFromBrokenMessage(notif.message);
+      return {
+        ...notif,
+        title: toast.claimRejNotificationTitle,
+        message: itemTitle
+          ? fillTemplate(
+              toast.claimRejNotificationMsg,
+              "{claim.item.title}",
+              itemTitle,
+            )
+          : toast.claimRejNotificationMsg,
+      };
+    }
+
+    if (notif.type === "CLAIM_NEW" && notif.message.includes("{itemTitle}")) {
+      const itemTitle = extractItemTitleFromBrokenMessage(notif.message);
+
+      if (!itemTitle) return notif;
+
+      return {
+        ...notif,
+        title: toast.claimNotificationTitle,
+        message: fillTemplate(
+          toast.claimNotificationMsg,
+          "{itemTitle}",
+          itemTitle,
+        ),
+      };
+    }
+
+    return notif;
+  }, [toast]);
 
   const getAudioContextCtor = () => {
     if (typeof window === "undefined") return null;
@@ -165,6 +246,7 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
     try {
       const data = await getNotifications();
       if (data.notifications) {
+        const normalizedNotifications = data.notifications.map(normalizeNotification);
         const nextUnreadCount = data.unreadCount || 0;
         if (
           hasFetchedNotificationsRef.current &&
@@ -173,7 +255,7 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
           void playNotificationSound();
         }
 
-        setNotifications(data.notifications);
+        setNotifications(normalizedNotifications);
         setUnreadCount(nextUnreadCount);
         unreadCountRef.current = nextUnreadCount;
         hasFetchedNotificationsRef.current = true;
@@ -183,7 +265,7 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
     } finally {
       setIsLoading(false);
     }
-  }, [playNotificationSound]);
+  }, [normalizeNotification, playNotificationSound]);
 
   useEffect(() => {
     void fetchNotifications();
@@ -216,7 +298,8 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
       try {
         const channel = pusherClient.subscribe(`user-${userId}`);
         channel.bind("new-notification", (newNotif: Notification) => {
-          setNotifications((prev) => [newNotif, ...prev]);
+          const normalizedNotification = normalizeNotification(newNotif);
+          setNotifications((prev) => [normalizedNotification, ...prev]);
           setUnreadCount((prev) => {
             const nextCount = prev + 1;
             unreadCountRef.current = nextCount;
@@ -249,7 +332,7 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
         pusherClient.unsubscribe(`user-${userId}`);
       }
     };
-  }, [userId, fetchNotifications, playNotificationSound, primeAudio]);
+  }, [userId, fetchNotifications, normalizeNotification, playNotificationSound, primeAudio]);
 
   useEffect(() => {
     if (!isOpen) return;
