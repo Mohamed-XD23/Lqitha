@@ -7,10 +7,9 @@ import { pusherServer } from "@/lib/pusher.server";
 import { NotificationType } from "@prisma/client";
 import { getDictionary } from "@/lib/dictionary";
 
-const dict = await getDictionary();
-const t = dict.notifications;
-
 export async function getNotifications() {
+  const dict = await getDictionary();
+  const t = dict.notifications;
   const session = await auth();
   if (!session?.user?.id) {
     return { error: t.error.unauthorized, notifications: null };
@@ -29,12 +28,14 @@ export async function getNotifications() {
 
     return { notifications, unreadCount };
   } catch (error) {
-    console.error( t.error.failedFetch , error);
+    console.error(t.error.failedFetch, error);
     return { error: t.error.failedFetch, notifications: null };
   }
 }
 
 export async function markAsRead(notificationId: string) {
+  const dict = await getDictionary();
+  const t = dict.notifications;
   const session = await auth();
   if (!session?.user?.id) {
     return { error: t.error.unauthorized };
@@ -63,6 +64,8 @@ export async function markAsRead(notificationId: string) {
 }
 
 export async function markAllAsRead() {
+  const dict = await getDictionary();
+  const t = dict.notifications;
   const session = await auth();
   if (!session?.user?.id) {
     return { error: t.error.unauthorized };
@@ -90,6 +93,8 @@ export async function createNotification(data: {
   message: string;
   link?: string;
 }) {
+  const dict = await getDictionary();
+  const t = dict.notifications;
   try {
     const notification = await prisma.notification.create({
       data: {
@@ -102,7 +107,11 @@ export async function createNotification(data: {
     });
     // Trigger real-time event via Pusher
     if (pusherServer) {
-      await pusherServer.trigger(`user-${data.userId}`, "new-notification", notification);
+      await pusherServer.trigger(
+        `user-${data.userId}`,
+        "new-notification",
+        notification,
+      );
     }
     return { success: true, notification };
   } catch (error) {

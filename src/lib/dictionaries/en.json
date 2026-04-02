@@ -607,7 +607,6 @@
     "claimAccNotificationMsg": "Your claim on item '{claim.item.title}' has been accepted by the owner. You can now view the owner's contact information and coordinate the return.",
     "claimRejNotificationTitle": "Claim Rejected",
     "claimRejNotificationMsg": "Your claim on item '{claim.item.title}' was not accepted by the owner."
-
   },
   "Profile": {
     "edit": "Edit Profile",

@@ -6,10 +6,12 @@ import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
 import { getDictionary } from "@/lib/dictionary";
 
-const dict = await getDictionary();
-const t = dict.settings;
-
-export async function updateProfile(data: { name: string; image?: string | null }) {
+export async function updateProfile(data: {
+  name: string;
+  image?: string | null;
+}) {
+  const dict = await getDictionary();
+  const t = dict.settings;
   const session = await auth();
   if (!session?.user?.id) {
     return { error: t.error.unauthorized };
@@ -35,6 +37,9 @@ export async function updateProfile(data: { name: string; image?: string | null 
 }
 
 export async function changePassword(current: string, newPass: string) {
+  const dict = await getDictionary();
+  const t = dict.settings;
+
   const session = await auth();
   if (!session?.user?.id) {
     return { error: t.error.unauthorized };
@@ -68,6 +73,8 @@ export async function changePassword(current: string, newPass: string) {
 }
 
 export async function deleteAccount() {
+  const dict = await getDictionary();
+  const t = dict.settings;
   const session = await auth();
   if (!session?.user?.id) {
     return { error: t.error.unauthorized };
@@ -77,7 +84,7 @@ export async function deleteAccount() {
     await prisma.user.delete({
       where: { id: session.user.id },
     });
-    
+
     return { success: t.success.accountDelete };
   } catch (error) {
     console.error(t.error.accountDeleteFailed, error);
