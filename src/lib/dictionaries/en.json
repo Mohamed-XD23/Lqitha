@@ -312,7 +312,17 @@
     "enterWorkspace": "Enter Workspace",
     "reInitiate": "Re-Initiate Protocol",
     "passwordResetSuccess": "Password reset successfully",
-    "redirecting": "Redirecting to secure gateway..."
+    "redirecting": "Redirecting to secure gateway...",
+    "error":{
+      "invalid":"Invalid input data. Please check your entries and try again.",
+      "emailInUse":"Email address is already in use.",
+      "invalidLink":"Invalid verification link. Please request a new one.",
+      "expiredLink":"Verification link has expired. Please request a new one.",
+      "tooManyRequests":"Too many password reset requests. Please try again later.",
+      "passwordlength":"Password must be at least 8 characters.",
+      "invalidResetToken":"Invalid reset link. Please request a new one.",
+      "expiredResetToken":"Reset link has expired. Please request a new one."
+    }
   },
   "notFound": {
     "badge": "Discovery Error",

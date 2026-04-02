@@ -7,6 +7,7 @@ import { randomUUID } from "crypto";
 import { sendPasswordResetEmail } from "@/lib/email";
 import { sendVerificationEmailIfNeeded } from "@/lib/email-verification";
 import { checkRateLimit, resetRateLimit } from "@/lib/rate-limit";
+import { getDictionary } from "@/lib/dictionary";
 
 const registerSchema = z.object({
   name: z.string().min(2),
@@ -19,6 +20,9 @@ const registerSchema = z.object({
 
 // ── REGISTER ──────────────────────────────────────────────────────────────────
 export async function registerUser(formData: FormData) {
+  const dict = await getDictionary();
+  const t =dict.auth.error;
+
   const parsed = registerSchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
@@ -26,14 +30,14 @@ export async function registerUser(formData: FormData) {
   });
 
   if (!parsed.success) {
-    return { error: "Invalid input data." };
+    return { error: t.invalid };
   }
 
   const { name, email, password } = parsed.data;
 
   const existingUser = await db.user.findUnique({ where: { email } });
   if (existingUser) {
-    return { error: "Email already in use." };
+    return { error: t.emailInUse };
   }
 
   const hashedPassword = await bcrypt.hash(password, 12);
@@ -49,13 +53,15 @@ export async function registerUser(formData: FormData) {
 
 // ── VERIFY EMAIL ──────────────────────────────────────────────────────────────
 export async function verifyEmail(token: string) {
+  const dict = await getDictionary();
+  const t =dict.auth.error;
   const record = await db.emailVerificationToken.findUnique({
     where: { token },
   });
 
-  if (!record) return { error: "Invalid verification link." };
+  if (!record) return { error: t.invalidLink };
   if (record.expiresAt < new Date())
-    return { error: "Verification link has expired." };
+    return { error: t.expiredLink };
 
   await db.user.update({
     where: { email: record.email },
@@ -69,11 +75,14 @@ export async function verifyEmail(token: string) {
 
 // ── FORGOT PASSWORD ───────────────────────────────────────────────────────────
 export async function forgotPassword(email: string) {
+  const dict = await getDictionary();
+  const t =dict.auth.error;
+
   const normalizedEmail = email.toLowerCase().trim();
 
   const rl = checkRateLimit(`forgot:${normalizedEmail}`);
   if (!rl.allowed)
-    return { error: "Too many requests. Please wait 15 minutes." };
+    return { error: t.tooManyRequests };
 
   const user = await db.user.findUnique({ where: { email: normalizedEmail } });
 
@@ -94,14 +103,17 @@ export async function forgotPassword(email: string) {
 
 // ── RESET PASSWORD ────────────────────────────────────────────────────────────
 export async function resetPassword(token: string, newPassword: string) {
+  const dict = await getDictionary();
+  const t =dict.auth.error;
+
   if (newPassword.length < 8)
-    return { error: "Password must be at least 8 characters." };
+    return { error: t.passwordlength };
 
   const record = await db.passwordResetToken.findUnique({ where: { token } });
 
-  if (!record) return { error: "Invalid or expired reset link." };
+  if (!record) return { error: t.invalidResetToken };
   if (record.expiresAt < new Date())
-    return { error: "Reset link has expired. Please request a new one." };
+    return { error: t.expiredResetToken };
 
   const hashedPassword = await bcrypt.hash(newPassword, 12);
 
