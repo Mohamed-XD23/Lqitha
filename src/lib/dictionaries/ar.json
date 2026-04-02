@@ -638,6 +638,7 @@
     "incorrectAnswer": "إجابة خاطئة",
     "providedAnswer": "قدم إجابة صحيحة",
     "noAttempts": "لا توجد محاولات متبقية",
+    "attemptsRemain":"محاولات متبقية : ",
     "attemptsUsed": "لقد استخدمت جميع محاولاتك الـ {currentStatus.maxAttempts} لهذا العنصر.",
     "attemptsExhausted": "لقد استنفدت جميع محاولاتك لهذا العنصر.",
     "attemptsRemaining": "إجابة خاطئة. لديك ${result.attemptsLeft} محاولات متبقية.",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { submitClaim } from "@/actions/item.actions";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -17,6 +17,56 @@ import { Dictionary } from "@/lib/dictionary.types";
 
 function fillTemplate(template: string, placeholder: string, value: string) {
   return template.replace(placeholder, value);
+}
+
+function ClaimStatusBanner({
+  icon,
+  title,
+  message,
+  tone = "gold",
+}: {
+  icon: ReactNode;
+  title: string;
+  message: string;
+  tone?: "green" | "red" | "gold";
+}) {
+  const toneStyles = {
+    green: {
+      container:
+        "border border-emerald-400/20 bg-emerald-400/8 text-emerald-300",
+      iconWrap: "bg-emerald-400/10 text-emerald-300 ring-1 ring-emerald-400/20",
+    },
+    red: {
+      container: "border border-red-400/20 bg-red-400/8 text-red-300",
+      iconWrap: "bg-red-400/10 text-red-300 ring-1 ring-red-400/20",
+    },
+    gold: {
+      container: "border border-gold/20 bg-gold/8 text-gold",
+      iconWrap: "bg-gold/10 text-gold ring-1 ring-gold/20",
+    },
+  } as const;
+
+  const styles = toneStyles[tone];
+
+  return (
+    <div
+      className={`rounded-[2rem] px-5 py-4 text-center shadow-[0_12px_35px_rgba(0,0,0,0.18)] ${styles.container}`}
+    >
+      <div className="flex items-center justify-center gap-2.5">
+        <span
+          className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${styles.iconWrap}`}
+        >
+          {icon}
+        </span>
+        <span className="font-interface text-[12px] font-semibold uppercase tracking-[2px]">
+          {title}
+        </span>
+      </div>
+      <p className="mt-2 text-center font-interface text-[11px] leading-relaxed text-slate">
+        {message}
+      </p>
+    </div>
+  );
 }
 
 interface ClaimStatus {
@@ -74,39 +124,12 @@ export default function ClaimButton({
   // Already ACCEPTED
   if (currentStatus?.status === "ACCEPTED") {
     return (
-      <div
-        style={{
-          background: "rgba(100,200,130,0.08)",
-          border: "1px solid rgba(100,200,130,0.25)",
-          borderRadius: "999px",
-          padding: "16px",
-          textAlign: "center",
-        }}
-      >
-        <CircleCheck className="w-5 h-5 mr-2 text-[#7DC99A]" strokeWidth={2} />
-        <span
-          style={{
-            fontFamily: "var(--font-interface)",
-            fontSize: "12px",
-            fontWeight: 600,
-            letterSpacing: "2px",
-            textTransform: "uppercase",
-            color: "#7DC99A",
-          }}
-        >
-          {t.claimAccepted}
-        </span>
-        <p
-          style={{
-            fontFamily: "var(--font-interface)",
-            fontSize: "11px",
-            color: "#7A7A8C",
-            marginTop: "6px",
-          }}
-        >
-          {t.claimMsg}
-        </p>
-      </div>
+      <ClaimStatusBanner
+        icon={<CircleCheck className="h-4 w-4" strokeWidth={2.25} />}
+        title={t.claimAccepted}
+        message={t.claimMsg}
+        tone="green"
+      />
     );
   }
 
@@ -116,43 +139,16 @@ export default function ClaimButton({
     currentStatus.rejectedBy === "system"
   ) {
     return (
-      <div
-        style={{
-          background: "rgba(200,100,100,0.08)",
-          border: "1px solid rgba(200,100,100,0.25)",
-          borderRadius: "999px",
-          padding: "16px",
-          textAlign: "center",
-        }}
-      >
-        <Ban className="w-5 h-5 mr-2 text-[#D48080]" strokeWidth={2} />
-        <span
-          style={{
-            fontFamily: "var(--font-interface)",
-            fontSize: "12px",
-            fontWeight: 600,
-            letterSpacing: "2px",
-            textTransform: "uppercase",
-            color: "#D48080",
-          }}
-        >
-          {t.noAttempts}
-        </span>
-        <p
-          style={{
-            fontFamily: "var(--font-interface)",
-            fontSize: "11px",
-            color: "#7A7A8C",
-            marginTop: "6px",
-          }}
-        >
-          {fillTemplate(
-            t.attemptsUsed,
-            "{currentStatus.maxAttempts}",
-            String(currentStatus.maxAttempts),
-          )}
-        </p>
-      </div>
+      <ClaimStatusBanner
+        icon={<Ban className="h-4 w-4" strokeWidth={2.25} />}
+        title={t.noAttempts}
+        message={fillTemplate(
+          t.attemptsUsed,
+          "{currentStatus.maxAttempts}",
+          String(currentStatus.maxAttempts),
+        )}
+        tone="red"
+      />
     );
   }
 
@@ -162,62 +158,24 @@ export default function ClaimButton({
     currentStatus.rejectedBy === "owner"
   ) {
     return (
-      <div className="bg-red-100 border border-red-300 rounded-full py-4 text-center">
-        <CircleX className="w-5 h-5 mr-2 text-[#D48080]" strokeWidth={2} />
-        <span
-          style={{
-            fontFamily: "var(--font-interface)",
-            fontSize: "12px",
-            fontWeight: 600,
-            letterSpacing: "2px",
-            textTransform: "uppercase",
-            color: "#D48080",
-          }}
-        >
-          {t.claimRejected}
-        </span>
-        <p
-          style={{
-            fontFamily: "var(--font-interface)",
-            fontSize: "11px",
-            color: "#7A7A8C",
-            marginTop: "6px",
-          }}
-        >
-          {t.claimMsgRej}
-        </p>
-      </div>
+      <ClaimStatusBanner
+        icon={<CircleX className="h-4 w-4" strokeWidth={2.25} />}
+        title={t.claimRejected}
+        message={t.claimMsgRej}
+        tone="red"
+      />
     );
   }
 
   // PENDING + isVerified (awaiting owner)
   if (currentStatus?.status === "PENDING" && currentStatus.isVerified) {
     return (
-      <div className="bg-gold/10 border border-gold/25 rounded-full py-4 text-center">
-        <Clock className="w-5 h-5 mr-2 text-ivory/70" strokeWidth={2} />
-        <span
-          style={{
-            fontFamily: "var(--font-interface)",
-            fontSize: "12px",
-            fontWeight: 600,
-            letterSpacing: "2px",
-            textTransform: "uppercase",
-            color: "#C4A35A",
-          }}
-        >
-          {t.AwaitingResponse}
-        </span>
-        <p
-          style={{
-            fontFamily: "var(--font-interface)",
-            fontSize: "11px",
-            color: "#7A7A8C",
-            marginTop: "6px",
-          }}
-        >
-          {t.claimSubmitted}
-        </p>
-      </div>
+      <ClaimStatusBanner
+        icon={<Clock className="h-4 w-4" strokeWidth={2.25} />}
+        title={t.AwaitingResponse}
+        message={t.claimSubmitted}
+        tone="gold"
+      />
     );
   }
 
@@ -309,21 +267,13 @@ export default function ClaimButton({
         {hasExistingClaim &&
           currentStatus?.status === "PENDING" &&
           !currentStatus.isVerified && (
-            <p
-              style={{
-                fontFamily: "var(--font-interface)",
-                fontSize: "11px",
-                color: "#C4A35A",
-                textAlign: "center",
-                letterSpacing: "1px",
-              }}
-            >
+            <div className="flex justify-center gap-2 mt-1.5 items-center font-interface text-xs text-gold text-center tracking-tighter">
+              {t.attemptsRemain} &nbsp; {attemptsLeft}
               <AlertTriangle
                 className="w-3.5 h-3.5 mr-1.5 text-ivory/60"
                 strokeWidth={2.5}
               />
-              {attemptsLeft} attempt{attemptsLeft !== 1 ? "s" : ""} remaining
-            </p>
+            </div>
           )}
       </div>
 
@@ -371,9 +321,7 @@ export default function ClaimButton({
                       : t.possessionProve}
                   </h2>
                   <p className="font-interface text-[11px] text-gold/60 uppercase tracking-widest font-medium">
-                    {itemType === "FOUND"
-                      ? t.verifyQues
-                      : t.handoverProof}
+                    {itemType === "FOUND" ? t.verifyQues : t.handoverProof}
                   </p>
                 </div>
 
@@ -448,10 +396,10 @@ export default function ClaimButton({
                     <button
                       onClick={handleSubmitAnswer}
                       disabled={isLoading}
-                      className="flex-1 font-interface text-[11px] font-bold tracking-xs uppercase py-3 rounded-full bg-gold text-void hover:bg-ivory transition-all shadow-lg shadow-gold/20 disabled:opacity-50 flex items-center justify-center min-h-11"
+                      className="flex flex-1 h-11 items-center justify-center rounded-full bg-gold font-interface text-[11px] font-bold leading-none tracking-xs uppercase text-void transition-all shadow-lg shadow-gold/20 hover:bg-ivory disabled:opacity-50"
                     >
                       {isLoading ? (
-                        <div className="scale-[1] origin-center">
+                        <div className="inline-flex items-center justify-center leading-none">
                           <ButtonLoader />
                         </div>
                       ) : (

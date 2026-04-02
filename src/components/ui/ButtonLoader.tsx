@@ -18,6 +18,12 @@ const ButtonLoader = () => {
 };
 
 const StyledWrapper = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  vertical-align: middle;
+
   .dot-spinner {
     --uib-size: 1.5rem;
     --uib-speed: 0.9s;

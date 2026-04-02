@@ -638,6 +638,7 @@
     "incorrectAnswer": "Incorrect Answer",
     "providedAnswer": "Provided correct answer ",
     "noAttempts": "No Attempts Remaining",
+    "attemptsRemain":"Attempts remaining : ",
     "attemptsUsed":"You have used all {currentStatus.maxAttempts} attempts for this item.",
     "attemptsExhausted": "You have exhausted all attempts for this item.",
     "attemptsRemaining": "Incorrect answer. You have ${result.attemptsLeft} attempts remaining.",
