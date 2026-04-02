@@ -162,7 +162,10 @@
     "lost": "مفقود",
     "found": "موجود",
     "claims": "مطالبة",
-    "openArrow": "فتح"
+    "openArrow": "فتح",
+    "error":{
+      "unauthorized":"أنت غير مخول لتنفيذ هذا الإجراء."
+    }
   },
   "item": {
     "lost": "مفقود",
@@ -270,6 +273,19 @@
       "passwordMismatch": "كلمتا المرور الجديدتان غير متطابقتين.",
       "deleteConfirmation": "اكتب DELETE لتأكيد حذف الحساب.",
       "accountDeleted": "تم حذف الحساب. جارٍ التوجيه..."
+    },
+    "success":{
+      "profileUpdated":"تم تحديث ملفك الشخصي بنجاح.",
+      "passwordChange":"تم تغيير كلمة المرور بنجاح.",
+      "accountDelete":"تم حذف الحساب."
+    },
+    "error":{
+      "unauthorized":"أنت غير مخول لتنفيذ هذا الإجراء.",
+      "profileUpdatedFailed":"فشل في تحديث ملفك الشخصي. يرجى المحاولة مرة أخرى لاحقا.",
+      "accountWithoutPassword":"الحساب الخاص بك مسجل عبر تسجيل الدخول الاجتماعي ولا يحتوي على كلمة مرور.",
+      "incorrectPassword":"كلمة المرور الحالية غير صحيحة.",
+      "failedToChangePassword":"فشل تغيير كلمة المرور. يرجى المحاولة مرة أخرى لاحقًا.",
+      "accountDeleteFailed":"فشل في حذف حسابك. يرجى المحاولة مرة أخرى لاحقا"
     }
   },
   "auth": {
@@ -585,7 +601,7 @@
     "attemptLimit": "لقد استنفذت جميع المحاولات لهذه المطالبة.",
     "claimNotificationTitle": "تم استلام مطالبة جديدة",
     "claimNotificationMsg": "لقد تلقيت مطالبة جديدة بشأن العنصر الخاص بك '{itemTitle}'. يرجى مراجعة المطالبة والرد عليها وفقًا لذلك.",
-    "unauthorized": "غير مسموح لك بتنفيذ هذا الإجراء.",
+    "unauthorized": "أنت غير مخول لتنفيذ هذا الإجراء.",
     "claimNotFound": "المطالبة غير موجودة.",
     "claimAccNotificationTitle": "مطالبة مقبولة",
     "claimAccNotificationMsg": "تم قبول مطالبتك بشأن العنصر '{claim.item.title}' من قبل المالك. يمكنك الآن رؤية معلومات الاتصال الخاصة بالمالك وتنسيق عملية الإرجاع.",
@@ -647,7 +663,10 @@
   },
   "chat": {
     "title": "المحادثة",
-    "chatbtn": "رسالة"
+    "chatbtn": "رسالة",
+    "error":{
+      "unauthorized":"أنت غير مخول لتنفيذ هذا الإجراء."
+    }
   },
   "imgUpload": {
     "upload": "انقر لتحميل الصورة",
@@ -661,5 +680,14 @@
     "markAllAsRead": "تحديد الكل كمقروء",
     "loadingNotifications": "جاري تحميل الإشعارات...",
     "noNotifications": "لا توجد إشعارات حتى الآن"
+  },
+  "notifications":{
+    "error":{
+      "unauthorized":"أنت غير مخول لتنفيذ هذا الإجراء.",
+      "failedFetch":"فشل جلب الإشعارات. يرجى المحاولة مرة أخرى لاحقًا.",
+      "markReadFailed":"فشل وضع الإشعار كمقروء.",
+      "markAllReadFailed":"فشل وضع جميع الإشعارات كمقروء.",
+      "createFailed":"فشل إنشاء الإشعار."
+    }
   }
 }

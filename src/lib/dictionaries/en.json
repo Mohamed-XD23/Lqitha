@@ -162,7 +162,10 @@
     "lost": "Lost",
     "found": "Found",
     "claims": "claims",
-    "openArrow": "Open"
+    "openArrow": "Open",
+    "error":{
+      "unauthorized":"You are not authorized to perform this action."
+    }
   },
   "item": {
     "lost": "Lost",
@@ -270,6 +273,19 @@
       "passwordMismatch": "New passwords do not match.",
       "deleteConfirmation": "Type DELETE to confirm account deletion.",
       "accountDeleted": "Account deleted. Redirecting..."
+    },
+    "success":{
+      "profileUpdated":"Your profile updated successfully",
+      "passwordChange":"Your password changed successfully",
+      "accountDelete":"Account deleted"
+    },
+    "error":{
+      "unauthorized":"You are not authorized to perform this action.",
+      "profileUpdatedFailed":"Failed to update your profile",
+      "accountWithoutPassword":"Your account is registered via social login and does not have a password.",
+      "incorrectPassword":"Current password is incorrect.",
+      "failedToChangePassword":"Failed to change password. Please try again later.",
+      "accountDeleteFailed":"Failed to delete your account. Please try again later."
     }
   },
   "auth": {
@@ -585,7 +601,7 @@
     "attemptLimit": "You have exhausted all attempts for this claim.",
     "claimNotificationTitle": "New Claim Received",
     "claimNotificationMsg":"You have received a new claim on your item '{itemTitle}'. Please review the claim and respond accordingly.",
-    "unauthorized": "You are not allowed to perform this action.",
+    "unauthorized": "You are not authorized to perform this action.",
     "claimNotFound":"Claim not found.",
     "claimAccNotificationTitle": "Claim Accepted",
     "claimAccNotificationMsg": "Your claim on item '{claim.item.title}' has been accepted by the owner. You can now view the owner's contact information and coordinate the return.",
@@ -648,7 +664,10 @@
   },
   "chat" : {
     "title": "Chat",
-    "chatbtn": "Message"
+    "chatbtn": "Message",
+    "error":{
+      "unauthorized":"You are not authorized to perform this action."
+    }
   },
   "imgUpload": {
     "upload": "Click to Upload Image",
@@ -662,5 +681,14 @@
     "markAllAsRead": "Mark all as read",
     "loadingNotifications": "Loading notifications...",
     "noNotifications": "No notifications yet"
+  },
+  "notifications":{
+    "error":{
+      "unauthorized":"You are not authorized to perform this action.",
+      "failedFetch":"Failed to fetch notifications. Please try again later.",
+      "markReadFailed":"Failed marking notification as read.",
+      "markAllReadFailed":"Failed marking all notifications as read.",
+      "createFailed":"Failed to create notification."
+    }
   }
 }

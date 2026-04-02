@@ -5,11 +5,15 @@ import { auth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { pusherServer } from "@/lib/pusher.server";
 import { NotificationType } from "@prisma/client";
+import { getDictionary } from "@/lib/dictionary";
+
+const dict = await getDictionary();
+const t = dict.notifications;
 
 export async function getNotifications() {
   const session = await auth();
   if (!session?.user?.id) {
-    return { error: "Unauthorized", notifications: null };
+    return { error: t.error.unauthorized, notifications: null };
   }
 
   try {
@@ -25,15 +29,15 @@ export async function getNotifications() {
 
     return { notifications, unreadCount };
   } catch (error) {
-    console.error("Error fetching notifications:", error);
-    return { error: "Failed to fetch notifications", notifications: null };
+    console.error( t.error.failedFetch , error);
+    return { error: t.error.failedFetch, notifications: null };
   }
 }
 
 export async function markAsRead(notificationId: string) {
   const session = await auth();
   if (!session?.user?.id) {
-    return { error: "Unauthorized" };
+    return { error: t.error.unauthorized };
   }
 
   try {
@@ -42,7 +46,7 @@ export async function markAsRead(notificationId: string) {
     });
 
     if (notification?.userId !== session.user.id) {
-      return { error: "Unauthorized" };
+      return { error: t.error.unauthorized };
     }
 
     await prisma.notification.update({
@@ -53,15 +57,15 @@ export async function markAsRead(notificationId: string) {
     revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
-    console.error("Error marking notification as read:", error);
-    return { error: "Failed to mark as read" };
+    console.error(t.error.markReadFailed, error);
+    return { error: t.error.markReadFailed };
   }
 }
 
 export async function markAllAsRead() {
   const session = await auth();
   if (!session?.user?.id) {
-    return { error: "Unauthorized" };
+    return { error: t.error.unauthorized };
   }
 
   try {
@@ -73,8 +77,8 @@ export async function markAllAsRead() {
     revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
-    console.error("Error marking all as read:", error);
-    return { error: "Failed to mark all as read" };
+    console.error(t.error.markAllReadFailed, error);
+    return { error: t.error.markAllReadFailed };
   }
 }
 
@@ -102,7 +106,7 @@ export async function createNotification(data: {
     }
     return { success: true, notification };
   } catch (error) {
-    console.error("Error creating notification:", error);
-    return { error: "Failed to create notification" };
+    console.error(t.error.createFailed, error);
+    return { error: t.error.createFailed };
   }
 }

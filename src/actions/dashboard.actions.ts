@@ -1,6 +1,8 @@
 "use server";
+
 import { auth } from "@/lib/auth";
 import db from "@/lib/db";
+import { getDictionary } from "@/lib/dictionary";
 import { revalidatePath } from "next/cache";
 
 // Full data for Dashboard
@@ -153,8 +155,10 @@ export async function recalculateTrustScore(userId: string) {
 }
 
 export async function updateProfileImage(imageUrl: string) {
+  const dict = await getDictionary();
+  const t = dict.dashboard.error;
   const session = await auth();
-  if (!session?.user?.id) return { error: "Unauthorized" };
+  if (!session?.user?.id) return { error: t.unauthorized };
 
   await db.user.update({
     where: { id: session.user.id },

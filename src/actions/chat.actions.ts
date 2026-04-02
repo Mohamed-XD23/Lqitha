@@ -2,6 +2,7 @@
 
 import { auth } from "@/lib/auth";
 import { StreamChat } from "stream-chat";
+import {getDictionary} from "@/lib/dictionary"
 
 const serverClient = new StreamChat(
   process.env.NEXT_PUBLIC_STREAM_API_KEY!,
@@ -10,8 +11,10 @@ const serverClient = new StreamChat(
 );
 
 export async function getChatToken() {
+  const dict = await getDictionary();
+  const t = dict.chat.error
   const session = await auth();
-  if (!session?.user?.id) return { error: "Unauthorized" };
+  if (!session?.user?.id) return { error: t.unauthorized };
 
   const token = serverClient.createToken(session.user.id);
   return { token };
@@ -22,11 +25,14 @@ export async function createChatChannel(
   ownerId: string,
   claimantId: string,
 ) {
+  const dict = await getDictionary();
+  const t = dict.chat.error;
+
   const session = await auth();
-  if (!session?.user?.id) return { error: "Unauthorized" };
+  if (!session?.user?.id) return { error: t.unauthorized };
 
   if (session.user.id !== ownerId && session.user.id !== claimantId) {
-    return { error: "Unauthorized" };
+    return { error: t.unauthorized };
   }
 
   await serverClient.upsertUsers([{ id: ownerId }, { id: claimantId }]);

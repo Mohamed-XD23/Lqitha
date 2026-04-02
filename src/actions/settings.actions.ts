@@ -4,11 +4,15 @@ import prisma from "@/lib/db";
 import { auth } from "@/lib/auth";
 import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
+import { getDictionary } from "@/lib/dictionary";
+
+const dict = await getDictionary();
+const t = dict.settings;
 
 export async function updateProfile(data: { name: string; image?: string | null }) {
   const session = await auth();
   if (!session?.user?.id) {
-    return { error: "Unauthorized" };
+    return { error: t.error.unauthorized };
   }
 
   try {
@@ -23,17 +27,17 @@ export async function updateProfile(data: { name: string; image?: string | null 
     revalidatePath("/settings");
     revalidatePath("/dashboard");
     revalidatePath("/");
-    return { success: "Profile updated successfully" };
+    return { success: t.success.profileUpdated };
   } catch (error) {
-    console.error("Profile update error:", error);
-    return { error: "Failed to update profile" };
+    console.error(t.error.profileUpdatedFailed, error);
+    return { error: t.error.profileUpdatedFailed };
   }
 }
 
 export async function changePassword(current: string, newPass: string) {
   const session = await auth();
   if (!session?.user?.id) {
-    return { error: "Unauthorized" };
+    return { error: t.error.unauthorized };
   }
 
   try {
@@ -42,12 +46,12 @@ export async function changePassword(current: string, newPass: string) {
     });
 
     if (!user || !user.password) {
-      return { error: "Account uses OAuth or password is not set" };
+      return { error: t.error.accountWithoutPassword };
     }
 
     const isValid = await bcrypt.compare(current, user.password);
     if (!isValid) {
-      return { error: "Incorrect current password" };
+      return { error: t.error.incorrectPassword };
     }
 
     const hashedPassword = await bcrypt.hash(newPass, 10);
@@ -56,17 +60,17 @@ export async function changePassword(current: string, newPass: string) {
       data: { password: hashedPassword },
     });
 
-    return { success: "Password changed successfully" };
+    return { success: t.success.passwordChange };
   } catch (error) {
-    console.error("Change password error:", error);
-    return { error: "Failed to change password" };
+    console.error(t.error.failedToChangePassword, error);
+    return { error: t.error.failedToChangePassword };
   }
 }
 
 export async function deleteAccount() {
   const session = await auth();
   if (!session?.user?.id) {
-    return { error: "Unauthorized" };
+    return { error: t.error.unauthorized };
   }
 
   try {
@@ -74,9 +78,9 @@ export async function deleteAccount() {
       where: { id: session.user.id },
     });
     
-    return { success: "Account deleted" };
+    return { success: t.success.accountDelete };
   } catch (error) {
-    console.error("Account delete error:", error);
-    return { error: "Failed to delete account" };
+    console.error(t.error.accountDeleteFailed, error);
+    return { error: t.error.accountDeleteFailed };
   }
 }
