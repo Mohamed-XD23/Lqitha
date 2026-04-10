@@ -11,6 +11,7 @@ import { getLocale, getDictionary } from "@/lib/dictionary";
 import { handleSignOut } from "@/actions/auth.actions";
 import { LogOut, LayoutDashboard, Settings } from "lucide-react";
 import { Dictionary } from "@/lib/dictionary.types";
+import { ThemeSwitcher } from "@/components/ui/theme-switcher";
 
 export default async function Navbar() {
   let session: Session | null = null;
@@ -114,6 +115,7 @@ export default async function Navbar() {
 
           {session?.user && (
             <div className="flex items-center gap-6 rtl:flex-row-reverse">
+              <ThemeSwitcher/>
               <LanguageSwitcher currentLocale={locale} dict={dict} />
               <NotificationBell userId={session.user.id!} dict={dict} />
               <UserNavMenu user={user ?? session.user} dict={dict} />
@@ -121,6 +123,7 @@ export default async function Navbar() {
           )}
           {!session?.user && (
             <div className="flex items-center gap-8 rtl:flex-row-reverse">
+              <ThemeSwitcher/>
               <LanguageSwitcher currentLocale={locale} dict={dict} />
               <Link
                 href="/login"
@@ -199,11 +202,15 @@ export default async function Navbar() {
                 )}
 
                 <div className="flex items-center gap-6 mt-4 rtl:flex-row-reverse">
-                  <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-gold/5 bg-gold/5 min-w-[100px]">
+                  <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-gold/5 bg-gold/5 min-w-25">
+                    <span className="text-xs text-slate uppercase tracking-widest">Theme</span>
+                    <ThemeSwitcher/>
+                  </div>
+                  <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-gold/5 bg-gold/5 min-w-25">
                     <span className="text-xs text-slate uppercase tracking-widest">{t.language}</span>
                     <LanguageSwitcher currentLocale={locale} dict={dict} />
                   </div>
-                  <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-gold/5 bg-gold/5 min-w-[100px]">
+                  <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-gold/5 bg-gold/5 min-w-25">
                     <span className="text-xs text-slate uppercase tracking-widest">Alerts</span>
                     <NotificationBell userId={session.user.id!} dict={dict} />
                   </div>
@@ -223,6 +230,7 @@ export default async function Navbar() {
 
             {!session?.user && (
               <div className="flex flex-col items-center gap-10">
+                <ThemeSwitcher/>
                 <LanguageSwitcher currentLocale={locale} dict={dict} />
                 <Link
                   href="/login"
