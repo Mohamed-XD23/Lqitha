@@ -34,7 +34,7 @@ export default async function Footer() {
 
   return (
     <footer
-      className="bg-obsidian border-t border-gold/15 px-6 py-12"
+      className="bg-background border-t border-primary/15 px-6 py-12"
     >
       <div className="mx-auto max-w-6xl flex flex-col items-center justify-between gap-8 text-center md:flex-row rtl:md:flex-row-reverse">
         <div className="flex items-center gap-3 rtl:flex-row-reverse">
@@ -47,14 +47,14 @@ export default async function Footer() {
           >
             <path
               d="M261.42,278v84c0,4.42-3.58,8-8,8H8c-4.42,0-8-3.58-8-8v-174.57l100-100v182.57h153.42c4.42,0,8,3.58,8,8Z"
-              fill="var(--color-gold)"
+              fill="var(--color-primary)"
             />
             <path
               d="M100,.03L0,100.03V8C0,3.58,3.58,0,8,0h92v.03Z"
-              fill="var(--color-slate)"
+              fill="var(--color-muted-foreground)"
             />
           </svg>
-          <span className="font-fraunces text-lg font-light tracking-sm text-ivory">
+          <span className="font-fraunces text-lg font-light tracking-sm text-foreground">
             LQITHA
           </span>
         </div>
@@ -68,14 +68,14 @@ export default async function Footer() {
             <Link
               key={link.href}
               href={link.href}
-              className="font-interface text-xs font-medium tracking-xs uppercase text-slate hover:text-gold transition-colors"
+              className="font-interface text-xs font-medium tracking-xs uppercase text-muted-foreground hover:text-primary transition-colors"
             >
               {link.label}
             </Link>
           ))}
         </nav>
 
-        <p className="font-interface text-xs tracking-xs uppercase text-slate/60">
+        <p className="font-interface text-xs tracking-xs uppercase text-muted-foreground/60">
           © {new Date().getFullYear()} <span className="font-fraunces">LQITHA</span> · {dict.home.hero.badge}
         </p>
       </div>

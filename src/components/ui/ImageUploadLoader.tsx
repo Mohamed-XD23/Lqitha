@@ -23,7 +23,7 @@ const StyledWrapper = styled.div`
     bottom: 0;
     width: 40px;
     height: 40px;
-    transform: rotate(45deg) translate(30%, 40%);
+    transform: rotate(45deg) translate-foreground(30%, 40%);
     background: #C4A35A;
     box-shadow: 32px -34px 0 5px #4ABFA3;
     animation: slide 2s infinite ease-in-out alternate;

@@ -58,8 +58,8 @@ export default function ClaimsSection({
 
   if (claims.length === 0) {
     return (
-      <div className="mt-10 border border-dashed border-gold/20 rounded-lg py-12 text-center bg-void/20">
-        <p className="font-interface text-xs text-slate tracking-widest uppercase opacity-60">
+      <div className="mt-10 border border-dashed border-primary/20 rounded-lg py-12 text-center bg-card/20">
+        <p className="font-interface text-xs text-muted-foreground tracking-widest uppercase opacity-60">
           {t.noClaims}
         </p>
       </div>
@@ -69,10 +69,10 @@ export default function ClaimsSection({
   return (
     <div className="mt-12">
       <div className="flex items-center gap-4 mb-6">
-        <h2 className="font-display text-2xl font-light text-ivory">
+        <h2 className="font-display text-2xl font-light text-foreground">
           {t.incoming}
         </h2>
-        <span className="font-interface text-xs font-bold tracking-xs uppercase px-3 py-1 rounded-full bg-gold/10 text-gold border border-gold/25">
+        <span className="font-interface text-xs font-bold tracking-xs uppercase px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/25">
           {pendingClaims.length} {t.pending}
         </span>
       </div>
@@ -81,20 +81,20 @@ export default function ClaimsSection({
         {claims.map((claim) => (
           <div
             key={claim.id}
-            className="flex items-center justify-between px-6 py-4 bg-void border border-gold/15 rounded-xl hover:border-gold/30 transition-all shadow-lg group"
+            className="flex items-center justify-between px-6 py-4 bg-card border border-primary/15 rounded-xl hover:border-primary/30 transition-all shadow-lg group"
           >
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-gold/10 border border-gold/25 flex items-center justify-center font-interface text-sm font-medium text-gold shrink-0 transition-transform group-hover:scale-105">
+              <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/25 flex items-center justify-center font-interface text-sm font-medium text-primary shrink-0 transition-transform group-hover:scale-105">
                 {claim.claimant.name?.[0]?.toUpperCase() ?? "?"}
               </div>
               <div>
-                <p className="font-interface text-sm font-medium text-ivory transition-colors group-hover:text-gold">
+                <p className="font-interface text-sm font-medium text-foreground transition-colors group-hover:text-primary">
                   {claim.claimant.name}
                 </p>
                 <div className="flex items-center  gap-2 mt-0.5">
-                  <p className="flex items-center gap-0.5 font-interface text-xs text-slate">
+                  <p className="flex items-center gap-0.5 font-interface text-xs text-muted-foreground">
                     <Star
-                      className="w-4 h-4 text-gold fill-gold"
+                      className="w-4 h-4 text-primary fill-primary"
                       strokeWidth={0}
                     />{" "}
                     {claim.claimant.trustScore}
@@ -114,7 +114,7 @@ export default function ClaimsSection({
                 <button
                   onClick={() => handleRespond(claim.id, "ACCEPTED")}
                   disabled={isPending}
-                  className="font-interface text-xs font-bold tracking-xs uppercase px-5 py-2 rounded-full bg-gold text-obsidian hover:bg-ivory transition-all shadow-md shadow-gold/10 disabled:opacity-50 flex items-center justify-center min-h-[36px]"
+                  className="font-interface text-xs font-bold tracking-xs uppercase px-5 py-2 rounded-full bg-primary text-background hover:bg-foreground transition-all shadow-md shadow-primary/10 disabled:opacity-50 flex items-center justify-center min-h-[36px]"
                 >
                   {loadingId === claim.id ? (
                     <div className="scale-[0.8] origin-center">

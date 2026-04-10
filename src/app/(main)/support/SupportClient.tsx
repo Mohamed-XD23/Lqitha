@@ -20,19 +20,19 @@ function FAQItem({ q, a }: { q: string; a: string }) {
   return (
     <div
       onClick={() => setOpen(!open)}
-      className="border border-gold/15 rounded-sm overflow-hidden cursor-pointer hover:border-gold/30 transition-colors"
+      className="border border-primary/15 rounded-sm overflow-hidden cursor-pointer hover:border-primary/30 transition-colors"
     >
-      <div className="flex items-center justify-between px-6 py-4 bg-void">
-        <p className="font-outfit text-sm text-ivory font-medium pr-4">{q}</p>
+      <div className="flex items-center justify-between px-6 py-4 bg-card">
+        <p className="font-outfit text-sm text-foreground font-medium pr-4">{q}</p>
         {open ? (
-          <ChevronUp className="w-4 h-4 text-gold shrink-0" />
+          <ChevronUp className="w-4 h-4 text-primary shrink-0" />
         ) : (
-          <ChevronDown className="w-4 h-4 text-slate shrink-0" />
+          <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />
         )}
       </div>
       {open && (
-        <div className="px-6 py-4 bg-obsidian border-t border-gold/10">
-          <p className="font-outfit text-sm text-slate leading-relaxed">{a}</p>
+        <div className="px-6 py-4 bg-background border-t border-border">
+          <p className="font-outfit text-sm text-muted-foreground leading-relaxed">{a}</p>
         </div>
       )}
     </div>
@@ -74,22 +74,22 @@ export default function SupportClient({ dict }: Props) {
   }
 
   const inputClass =
-    "w-full bg-obsidian border border-gold/18 rounded-xs px-4 py-3 font-outfit text-sm text-ivory outline-none focus:border-gold/50 transition-all placeholder:text-slate/30";
+    "w-full bg-background border border-primary/18 rounded-xs px-4 py-3 font-outfit text-sm text-foreground outline-none focus:border-primary/50 transition-all placeholder:text-muted-foreground/70";
   const labelClass =
-    "font-outfit text-xs font-medium tracking-[3px] uppercase text-slate block mb-2";
+    "font-outfit text-xs font-medium tracking-[3px] uppercase text-muted-foreground block mb-2";
 
   return (
-    <div style={{ background: "#080810", minHeight: "100vh" }}>
+    <div className="bg-background min-h-full">
       <div className="mx-auto max-w-5xl px-6 py-16">
         {/* Header */}
         <div className="mb-14">
-          <span className="font-outfit text-xs font-medium tracking-[4px] uppercase text-gold">
+          <span className="font-outfit text-xs font-medium tracking-[4px] uppercase text-primary">
             {t.badge}
           </span>
-          <h1 className="font-cormorant text-5xl font-light text-ivory mt-2 mb-3">
+          <h1 className="font-cormorant text-5xl font-light text-foreground mt-2 mb-3">
             {t.title}
           </h1>
-          <p className="font-outfit text-sm text-slate max-w-xl leading-relaxed">
+          <p className="font-outfit text-sm text-muted-foreground max-w-xl leading-relaxed">
             {t.subtitle}
           </p>
         </div>
@@ -100,10 +100,10 @@ export default function SupportClient({ dict }: Props) {
             {/* FAQ */}
             <div>
               <div className="mb-6">
-                <h2 className="font-cormorant text-2xl font-400 text-ivory">
+                <h2 className="font-cormorant text-2xl font-400 text-foreground">
                   {t.faqTitle}
                 </h2>
-                <p className="font-outfit text-xs text-slate mt-1">
+                <p className="font-outfit text-xs text-muted-foreground mt-1">
                   {t.faqSubtitle}
                 </p>
               </div>
@@ -116,25 +116,25 @@ export default function SupportClient({ dict }: Props) {
 
             {/* Contact Info Cards */}
             <div>
-              <h2 className="font-cormorant text-2xl font-400 text-ivory mb-4">
+              <h2 className="font-cormorant text-2xl font-400 text-foreground mb-4">
                 {t.contactTitle}
               </h2>
-              <div className="grid grid-cols-2 gap-3">
+              <div>
                 <a
                   href={`mailto:${t.contactEmail}`}
-                  className="flex items-start gap-3 p-4 bg-void border border-gold/15 rounded-sm hover:border-gold/30 transition-colors group"
+                  className="flex items-start gap-3 p-4 bg-card border border-primary/15 rounded-sm hover:border-primary/30 transition-colors group"
                 >
-                  <div className="w-9 h-9 rounded-sm bg-gold/10 border border-gold/20 flex items-center justify-center shrink-0">
-                    <Mail className="w-4 h-4 text-gold" />
+                  <div className="w-9 h-9 rounded-sm bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                    <Mail className="w-4 h-4 text-primary" />
                   </div>
-                  <div>
-                    <p className="font-outfit text-xs font-medium text-ivory">
+                  <div >
+                    <p className="font-outfit text-xs font-medium text-foreground">
                       {t.contactEmailLabel}
                     </p>
-                    <p className="font-outfit text-sm text-slate mt-0.5">
+                    <p className="font-outfit text-sm text-muted-foreground mt-0.5">
                       {t.contactEmail}
                     </p>
-                    <p className="font-outfit text-xs text-gold/60 mt-1">
+                    <p className="font-outfit text-xs text-primary/60 mt-1">
                       {t.responseTime}
                     </p>
                   </div>
@@ -147,21 +147,21 @@ export default function SupportClient({ dict }: Props) {
 
           {/* RIGHT — Contact Form */}
           <div className="lg:col-span-2">
-            <div className="bg-void border border-gold/15 rounded-sm p-6 sticky top-6">
+            <div className="bg-card border border-primary/15 rounded-sm p-6 sticky top-6">
               {sent ? (
                 <div className="text-center py-8">
                   <div className="w-16 h-16 rounded-full bg-green/10 border border-green/20 flex items-center justify-center mx-auto mb-5">
                     <CheckCircle className="w-8 h-8 text-[#7DC99A]" />
                   </div>
-                  <h3 className="font-cormorant text-2xl font-light text-ivory mb-3">
+                  <h3 className="font-cormorant text-2xl font-light text-foreground mb-3">
                     {t.successTitle}
                   </h3>
-                  <p className="font-outfit text-xs text-slate leading-relaxed mb-6">
+                  <p className="font-outfit text-xs text-muted-foreground leading-relaxed mb-6">
                     {t.successDesc}
                   </p>
                   <button
                     onClick={() => setSent(false)}
-                    className="font-outfit text-xs font-medium tracking-[3px] uppercase text-gold border border-gold/25 px-6 py-2.5 rounded-xs hover:bg-gold/5 transition-colors"
+                    className="font-outfit text-xs font-medium tracking-[3px] uppercase text-primary border border-primary/25 px-6 py-2.5 rounded-xs hover:bg-primary/5 transition-colors"
                   >
                     {t.sendAnother}
                   </button>
@@ -169,10 +169,10 @@ export default function SupportClient({ dict }: Props) {
               ) : (
                 <>
                   <div className="mb-6">
-                    <h2 className="font-cormorant text-xl font-400 text-ivory">
+                    <h2 className="font-cormorant text-xl font-400 text-foreground">
                       {t.feedbackTitle}
                     </h2>
-                    <p className="font-outfit text-xs text-slate mt-1">
+                    <p className="font-outfit text-xs text-muted-foreground mt-1">
                       {t.feedbackSubtitle}
                     </p>
                   </div>
@@ -254,7 +254,7 @@ export default function SupportClient({ dict }: Props) {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full font-outfit text-sm font-medium tracking-[3px] uppercase py-3.5 rounded-xs bg-gold text-obsidian hover:bg-ivory transition-all disabled:opacity-50 flex items-center justify-center gap-2 min-h-12"
+                      className="w-full font-outfit text-sm font-medium tracking-[3px] uppercase py-3.5 rounded-xs bg-primary text-background hover:bg-foreground transition-all disabled:opacity-50 flex items-center justify-center gap-2 min-h-12"
                     >
                       {loading ? (
                         <ButtonLoader />

@@ -23,12 +23,12 @@ function ClaimStatusBanner({
   icon,
   title,
   message,
-  tone = "gold",
+  tone = "primary",
 }: {
   icon: ReactNode;
   title: string;
   message: string;
-  tone?: "green" | "red" | "gold";
+  tone?: "green" | "red" | "primary";
 }) {
   const toneStyles = {
     green: {
@@ -40,9 +40,9 @@ function ClaimStatusBanner({
       container: "border border-red-400/20 bg-red-400/8 text-red-300",
       iconWrap: "bg-red-400/10 text-red-300 ring-1 ring-red-400/20",
     },
-    gold: {
-      container: "border border-gold/20 bg-gold/8 text-gold",
-      iconWrap: "bg-gold/10 text-gold ring-1 ring-gold/20",
+    primary: {
+      container: "border border-primary/20 bg-primary/8 text-primary",
+      iconWrap: "bg-primary/10 text-primary ring-1 ring-primary/20",
     },
   } as const;
 
@@ -62,7 +62,7 @@ function ClaimStatusBanner({
           {title}
         </span>
       </div>
-      <p className="mt-2 text-center font-interface text-[11px] leading-relaxed text-slate">
+      <p className="mt-2 text-center font-interface text-[11px] leading-relaxed text-muted-foreground">
         {message}
       </p>
     </div>
@@ -114,7 +114,7 @@ export default function ClaimButton({
     return (
       <Link
         href="/login"
-        className="block text-center font-interface text-sm font-bold tracking-[3px] uppercase py-4 rounded-full bg-gold text-obsidian hover:bg-ivory transition-all duration-300 shadow-lg shadow-gold/20"
+        className="block text-center font-interface text-sm font-bold tracking-[3px] uppercase py-4 rounded-full bg-primary text-background hover:bg-foreground transition-all duration-300 shadow-lg shadow-primary/20"
       >
         {t.signReq}
       </Link>
@@ -174,7 +174,7 @@ export default function ClaimButton({
         icon={<Clock className="h-4 w-4" strokeWidth={2.25} />}
         title={t.AwaitingResponse}
         message={t.claimSubmitted}
-        tone="gold"
+        tone="primary"
       />
     );
   }
@@ -258,7 +258,7 @@ export default function ClaimButton({
             secretQuestion ? setShowModal(true) : void handleQuickClaim()
           }
           disabled={isLoading}
-          className="w-full font-interface text-sm font-bold tracking-[3px] uppercase py-4 rounded-full bg-gold text-obsidian hover:bg-ivory transition-all duration-300 shadow-lg shadow-gold/20 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full font-interface text-sm font-bold tracking-[3px] uppercase py-4 rounded-full bg-primary text-background hover:bg-foreground transition-all duration-300 shadow-lg shadow-primary/20 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {itemType === "FOUND" ? t.Buttons.owner : t.Buttons.found}
         </button>
@@ -267,10 +267,10 @@ export default function ClaimButton({
         {hasExistingClaim &&
           currentStatus?.status === "PENDING" &&
           !currentStatus.isVerified && (
-            <div className="flex justify-center gap-2 mt-1.5 items-center font-interface text-xs text-gold text-center tracking-tighter">
+            <div className="flex justify-center gap-2 mt-1.5 items-center font-interface text-xs text-primary text-center tracking-tighter">
               {t.attemptsRemain} &nbsp; {attemptsLeft}
               <AlertTriangle
-                className="w-3.5 h-3.5 mr-1.5 text-ivory/60"
+                className="w-3.5 h-3.5 mr-1.5 text-foreground/60"
                 strokeWidth={2.5}
               />
             </div>
@@ -279,18 +279,18 @@ export default function ClaimButton({
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
-          <div className="w-full max-w-md bg-void border border-gold/20 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-gold/50 to-transparent" />
+          <div className="w-full max-w-md bg-card border border-primary/20 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-primary/50 to-transparent" />
 
             {result ? (
               <div className="text-center py-4">
                 <div className="text-5xl mb-6">
                   {result.isCorrect ? <CircleCheck/> : <Ban/>}
                 </div>
-                <span className="font-display text-gold text-lg font-light tracking-widest uppercase">
+                <span className="font-display text-primary text-lg font-light tracking-widest uppercase">
                   {result.isCorrect ? t.correctAnswer : t.incorrectAnswer}
                 </span>
-                <p className="font-interface text-sm text-slate mb-8 leading-relaxed max-w-70 mx-auto">
+                <p className="font-interface text-sm text-muted-foreground mb-8 leading-relaxed max-w-70 mx-auto">
                   {result.isCorrect
                     ? t.requestSentSuccess
                     : result.status === "REJECTED"
@@ -307,7 +307,7 @@ export default function ClaimButton({
                     setResult(null);
                     setAnswer("");
                   }}
-                  className="w-full font-interface text-[11px] font-bold tracking-xs uppercase py-3 rounded-full bg-gold text-obsidian hover:bg-ivory transition-all"
+                  className="w-full font-interface text-[11px] font-bold tracking-xs uppercase py-3 rounded-full bg-primary text-background hover:bg-foreground transition-all"
                 >
                   {t.Buttons.close}
                 </button>
@@ -315,12 +315,12 @@ export default function ClaimButton({
             ) : (
               <div className="space-y-6">
                 <div className="space-y-1">
-                  <h2 className="font-display text-3xl font-light text-ivory">
+                  <h2 className="font-display text-3xl font-light text-foreground">
                     {itemType === "FOUND"
                       ? t.ownershipProve
                       : t.possessionProve}
                   </h2>
-                  <p className="font-interface text-[11px] text-gold/60 uppercase tracking-widest font-medium">
+                  <p className="font-interface text-[11px] text-primary/60 uppercase tracking-widest font-medium">
                     {itemType === "FOUND" ? t.verifyQues : t.handoverProof}
                   </p>
                 </div>
@@ -339,7 +339,7 @@ export default function ClaimButton({
                     }}
                   >
                     <RotateCcw
-                      className="w-3.5 h-3.5 text-slate"
+                      className="w-3.5 h-3.5 text-muted-foreground"
                       strokeWidth={2.5}
                     />
                     <span
@@ -354,9 +354,9 @@ export default function ClaimButton({
                   </div>
                 )}
 
-                <div className="bg-obsidian border border-gold/15 rounded-xl p-5 relative">
-                  <div className="absolute top-0 left-0 w-1 h-full bg-gold/50 rounded-l-xl" />
-                  <p className="font-interface text-sm text-ivory leading-relaxed">
+                <div className="bg-background border border-primary/15 rounded-xl p-5 relative">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-primary/50 rounded-l-xl" />
+                  <p className="font-interface text-sm text-foreground leading-relaxed">
                     {secretQuestion}
                   </p>
                 </div>
@@ -371,7 +371,7 @@ export default function ClaimButton({
                         e.key === "Enter" && handleSubmitAnswer()
                       }
                       placeholder={t.questionAnsPlaceholder}
-                      className="w-full bg-obsidian border border-gold/20 rounded-lg px-4 py-3 text-sm text-ivory placeholder:text-slate/40 outline-none focus:border-gold/50 focus:ring-1 focus:ring-gold/20 transition-all font-interface"
+                      className="w-full bg-background border border-primary/20 rounded-lg px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all font-interface"
                     />
                   </div>
 
@@ -388,14 +388,14 @@ export default function ClaimButton({
                         setAnswer("");
                         setError(null);
                       }}
-                      className="flex-1 font-interface text-[11px] font-bold tracking-xs uppercase py-3 rounded-full border border-gold/20 text-slate hover:bg-gold/5 transition-all"
+                      className="flex-1 font-interface text-[11px] font-bold tracking-xs uppercase py-3 rounded-full border border-primary/20 text-muted-foreground hover:bg-primary/5 transition-all"
                     >
                       {t.Buttons.cancel}
                     </button>
                     <button
                       onClick={handleSubmitAnswer}
                       disabled={isLoading}
-                      className="flex flex-1 h-11 items-center justify-center rounded-full bg-gold font-interface text-[11px] font-bold leading-none tracking-xs uppercase text-void transition-all shadow-lg shadow-gold/20 hover:bg-ivory disabled:opacity-50"
+                      className="flex flex-1 h-11 items-center justify-center rounded-full bg-primary font-interface text-[11px] font-bold leading-none tracking-xs uppercase text-card transition-all shadow-lg shadow-primary/20 hover:bg-foreground disabled:opacity-50"
                     >
                       {isLoading ? (
                         <div className="inline-flex items-center justify-center leading-none">

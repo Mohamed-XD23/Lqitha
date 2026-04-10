@@ -24,13 +24,13 @@ export default function ChatSidebar({ dict }: { dict: Dictionary }) {
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between bg-gold border-b px-4 py-3">
-          <h3 className="font-semibold text-xl text-void">{t.title}</h3>
+        <div className="flex items-center justify-between bg-primary border-b px-4 py-3">
+          <h3 className="font-semibold text-xl text-card">{t.title}</h3>
           <button
             onClick={closeChat}
-            className="rounded-full px-1.5 py-2 hover:bg-ivory/60 flex items-center justify-center"
+            className="rounded-full px-1.5 py-2 hover:bg-foreground/60 flex items-center justify-center"
           >
-            <X className="w-5 h-5 text-void" strokeWidth={2.5} />
+            <X className="w-5 h-5 text-card" strokeWidth={2.5} />
           </button>
         </div>
 

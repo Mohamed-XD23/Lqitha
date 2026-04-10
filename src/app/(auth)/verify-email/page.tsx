@@ -42,27 +42,27 @@ function VerifyResult({
   const t = dict.auth;
 
   return (
-    <div className="bg-obsidian min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+    <div className="bg-background min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
       {/* Decorative center glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gold/5 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-foreground-x-1/2 -translate-foreground-y-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="w-full max-w-[440px] relative z-10 text-center">
         {/* Brand Header */}
         <div className="mb-14">
           <div className="inline-flex items-center gap-3 mb-4">
-            <div className="h-px w-6 bg-gold/30"></div>
-            <span className="font-interface text-xs font-bold tracking-sm uppercase text-gold">
+            <div className="h-px w-6 bg-primary/30"></div>
+            <span className="font-interface text-xs font-bold tracking-sm uppercase text-primary">
               {dict.home.hero.badge}
             </span>
-            <div className="h-px w-6 bg-gold/30"></div>
+            <div className="h-px w-6 bg-primary/30"></div>
           </div>
-          <h1 className="font-fraunces text-5xl font-light text-ivory leading-tight">
+          <h1 className="font-fraunces text-5xl font-light text-foreground leading-tight">
             LQITHA
           </h1>
         </div>
 
-        <div className="bg-void border border-gold/15 rounded-sm p-12 shadow-2xl relative group">
-          <div className="absolute top-0 left-0 w-full h-[0.5px] bg-linear-to-r from-transparent via-gold/40 to-transparent" />
+        <div className="bg-card border border-primary/15 rounded-sm p-12 shadow-2xl relative group">
+          <div className="absolute top-0 left-0 w-full h-[0.5px] bg-linear-to-r from-transparent via-primary/40 to-transparent" />
 
           <div className="mb-10 relative">
             <div
@@ -79,26 +79,26 @@ function VerifyResult({
               )}
             </div>
 
-            <h2 className="font-display text-4xl font-light text-ivory leading-tight">
+            <h2 className="font-display text-4xl font-light text-foreground leading-tight">
               {success ? t.identityConfirmed : t.accessDenied}
             </h2>
-            <p className="font-interface text-xs text-slate mt-2 tracking-widest uppercase opacity-60">
+            <p className="font-interface text-xs text-muted-foreground mt-2 tracking-widest uppercase opacity-60">
               {success ? t.protocolSuccess : t.securityInterception}
             </p>
           </div>
 
-          <p className="font-interface text-sm text-slate leading-relaxed mb-12">
+          <p className="font-interface text-sm text-muted-foreground leading-relaxed mb-12">
             {message}
           </p>
 
           <Link
             href={success ? "/login" : "/register"}
-            className="block w-full bg-gold py-5 rounded-xs text-obsidian font-interface text-xs font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-xl shadow-gold/5 group/btn"
+            className="block w-full bg-primary py-5 rounded-xs text-background font-interface text-xs font-bold uppercase tracking-sm hover:bg-foreground transition-all shadow-xl shadow-primary/5 group/btn"
           >
             <span className="flex items-center justify-center gap-3">
               {success ? t.enterWorkspace : t.reInitiate}
               {success ? (
-                <LogIn className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <LogIn className="w-4 h-4 group-hover:translate-foreground-x-1 transition-transform" />
               ) : (
                 <RotateCcw className="w-4 h-4 group-hover:rotate-12 transition-transform" />
               )}
@@ -106,7 +106,7 @@ function VerifyResult({
           </Link>
         </div>
 
-        <p className="mt-12 text-[9px] text-slate font-interface tracking-[3px] uppercase opacity-30">
+        <p className="mt-12 text-[9px] text-muted-foreground font-interface tracking-[3px] uppercase opacity-30">
           {dict.home.hero.badge}
         </p>
       </div>

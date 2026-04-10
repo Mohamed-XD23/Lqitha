@@ -47,7 +47,7 @@ export default function ChatButton({
     <button
       onClick={handleOpen}
       disabled={isPending}
-      className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium font-interface bg-gold text-obsidian hover:bg-ivory transition-colors disabled:opacity-50"
+      className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium font-interface bg-primary text-background hover:bg-foreground transition-colors disabled:opacity-50"
     >
       <MessageSquare className="w-3 h-3" />
       {isPending ? "..." : t.chatbtn}

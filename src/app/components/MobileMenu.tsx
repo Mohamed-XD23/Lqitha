@@ -52,7 +52,7 @@ export default function MobileMenu({
     <>
       {/* Overlay */}
       <div
-        className="fixed inset-0 bg-obsidian/40 backdrop-blur-md z-100 transition-opacity animate-in fade-in duration-300"
+        className="fixed inset-0 bg-background/40 backdrop-blur-md z-100 transition-opacity animate-in fade-in duration-300"
         onClick={closeMenu}
         aria-hidden="true"
       />
@@ -60,18 +60,18 @@ export default function MobileMenu({
       {/* Menu Content */}
       <div
         dir={dir}
-        className="fixed inset-y-0 right-0 w-100 max-w-[90vw] bg-obsidian z-110 shadow-2xl overflow-y-auto overflow-x-hidden animate-in duration-500 ease-out border-l border-gold/15 slide-in-from-right"
+        className="fixed inset-y-0 right-0 w-100 max-w-[90vw] bg-background z-110 shadow-2xl overflow-y-auto overflow-x-hidden animate-in duration-500 ease-out border-l border-primary/15 slide-in-from-right"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
       >
         {/* Decorative center glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gold/5 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-foreground-x-1/2 -translate-foreground-y-1/2 w-64 h-64 bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
 
         {/* Close button */}
         <button
           type="button"
-          className="absolute z-20 top-8 right-8 text-gold text-4xl p-2 hover:scale-110 active:scale-95 transition-all duration-300"
+          className="absolute z-20 top-8 right-8 text-primary text-4xl p-2 hover:scale-110 active:scale-95 transition-all duration-300"
           onClick={closeMenu}
           aria-label={t.closeMenu}
         >
@@ -95,7 +95,7 @@ export default function MobileMenu({
       <button
         type="button"
         onClick={openMenu}
-        className="text-gold text-2xl p-2 hover:opacity-70 active:scale-90 transition-all"
+        className="text-primary text-2xl p-2 hover:opacity-70 active:scale-90 transition-all"
         aria-label={t.openMenu}
       >
         <Menu className="w-7 h-7" strokeWidth={2.5} />

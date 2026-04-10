@@ -70,10 +70,10 @@ function StepIndicator({
                 className={`flex h-11 w-11 items-center justify-center rounded-px text-[12px] font-bold transition-all duration-500 font-interface tracking-tighter
                 ${
                   isCompleted
-                    ? "bg-gold text-obsidian"
+                    ? "bg-primary text-background"
                     : isCurrent
-                      ? "bg-void border border-gold text-gold shadow-[0_0_15px_rgba(196,163,90,0.15)]"
-                      : "bg-void border border-gold/10 text-slate/40"
+                      ? "bg-card border border-primary text-primary shadow-[0_0_15px_rgba(196,163,90,0.15)]"
+                      : "bg-card border border-border text-muted-foreground/40"
                 }`}
               >
                 {isCompleted ? (
@@ -84,7 +84,7 @@ function StepIndicator({
               </div>
               <span
                 className={`mt-3 text-md uppercase tracking-[3px] font-interface font-bold transition-colors ${
-                  isCurrent ? "text-gold" : "text-slate/40"
+                  isCurrent ? "text-primary" : "text-muted-foreground/40"
                 }`}
               >
                 {label}
@@ -93,7 +93,7 @@ function StepIndicator({
             {index < steps.length - 1 && (
               <div
                 className={`mx-4 mb-8 h-px flex-1 transition-all duration-700 ${
-                  isCompleted ? "bg-gold" : "bg-gold/10"
+                  isCompleted ? "bg-primary" : "bg-primary/10"
                 }`}
               />
             )}
@@ -183,20 +183,20 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
   }
 
   return (
-    <div className="bg-obsidian min-h-screen">
+    <div className="bg-background min-h-screen">
       <div className="mx-auto max-w-xl px-6 py-20">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-3 mb-4">
-            <div className="h-px w-6 bg-gold/40"></div>
-            <span className="font-interface text-xs font-bold tracking-sm uppercase text-gold">
+            <div className="h-px w-6 bg-primary/40"></div>
+            <span className="font-interface text-xs font-bold tracking-sm uppercase text-primary">
               {t.new.registry}
             </span>
-            <div className="h-px w-6 bg-gold/40"></div>
+            <div className="h-px w-6 bg-primary/40"></div>
           </div>
-          <h1 className="font-display text-5xl font-light text-ivory leading-tight mt-2">
+          <h1 className="font-display text-5xl font-light text-foreground leading-tight mt-2">
             {t.new.createreport}
           </h1>
-          <p className="mt-6 text-xs text-slate font-interface tracking-[1.5px] max-w-xs mx-auto uppercase">
+          <p className="mt-6 text-xs text-muted-foreground font-interface tracking-[1.5px] max-w-xs mx-auto uppercase">
             {t.new.description}
           </p>
         </div>
@@ -204,13 +204,13 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
         <StepIndicator current={step} dict={dict} />
 
         {/* 🎯 LEGEND AT TOP - Users see this BEFORE starting the form */}
-        <div className="mb-10 bg-gold/5 border border-gold/20 rounded-xs px-6 py-5 flex gap-4 items-start">
-          <Info className="w-4 h-4 text-gold shrink-0 mt-0.5" strokeWidth={2} />
+        <div className="mb-10 bg-primary/15 border border-primary/20 rounded-xs px-6 py-5 flex gap-4 items-start">
+          <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" strokeWidth={2} />
           <div className="flex-1">
-            <p className="text-xs text-slate font-interface uppercase tracking-px font-bold mb-2">
+            <p className="text-xs text-muted-foreground font-interface uppercase tracking-px font-bold mb-2">
               {t.new.requiredfields}
             </p>
-            <p className="text-xs text-slate/80 font-interface tracking-px leading-relaxed">
+            <p className="text-xs text-muted-foreground/80 font-interface tracking-px leading-relaxed">
               {requiredFieldsDescriptionParts.before}
               <span className="text-red-500/80 font-bold">*</span>
               {requiredFieldsDescriptionParts.after}
@@ -218,13 +218,13 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
           </div>
         </div>
 
-        <div className="bg-void border border-gold/15 rounded-sm p-10 shadow-2xl relative overflow-hidden group">
-          <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-gold/30 to-transparent" />
+        <div className="bg-card border border-primary/15 rounded-sm p-10 shadow-2xl relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-primary/30 to-transparent" />
           {/* ===== STEP 1 ===== */}
           {step === 1 && (
             <div className="flex flex-col gap-8">
               <div>
-                <label className="mb-4 block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="mb-4 block text-xs font-bold tracking-[3px] uppercase text-muted-foreground font-interface">
                   {t.new.naturereport}
                   <span className="ml-3 text-lg tracking-px lowercase text-red-500/60 font-medium mx-1">
                     *
@@ -237,8 +237,8 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                       className={`flex cursor-pointer flex-col items-center rounded-xs border p-6 transition-all duration-500 relative group
                       ${
                         watchedType === value
-                          ? "border-gold bg-gold/5 shadow-xl shadow-gold/5"
-                          : "border-gold/10 hover:border-gold/30 bg-transparent"
+                          ? "border-primary bg-primary/5 shadow-xl shadow-primary/5"
+                          : "border-border hover:border-primary/30 bg-transparent"
                       }`}
                     >
                       <input
@@ -248,7 +248,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                         className="hidden"
                       />
                       <span
-                        className={`text-2xl transition-all duration-500 group-hover:scale-110 ${watchedType === value ? "text-gold" : "text-slate/40"}`}
+                        className={`text-2xl transition-all duration-500 group-hover:scale-110 ${watchedType === value ? "text-primary" : "text-muted-foreground/40"}`}
                       >
                         {value === "LOST" ? (
                           <Search className="w-6 h-6" strokeWidth={2} />
@@ -257,12 +257,12 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                         )}
                       </span>
                       <span
-                        className={`mt-3 font-semibold font-interface text-[11px] tracking-xs uppercase ${watchedType === value ? "text-ivory" : "text-slate"}`}
+                        className={`mt-3 font-semibold font-interface text-[11px] tracking-xs uppercase ${watchedType === value ? "text-foreground" : "text-muted-foreground"}`}
                       >
                         {label}
                       </span>
                       {watchedType === value && (
-                        <div className="absolute top-2 right-2 text-md text-gold">
+                        <div className="absolute top-2 right-2 text-md text-primary">
                           <CheckCircle2 className="w-4 h-4" strokeWidth={2.5} />
                         </div>
                       )}
@@ -272,7 +272,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="block text-xs font-bold tracking-[3px] uppercase text-muted-foreground font-interface">
                   {t.new.fields.title}
                   <span className="ml-3 text-lg tracking-px lowercase text-red-500/60 font-medium mx-1">
                     *
@@ -281,7 +281,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                 <input
                   {...register("title")}
                   placeholder={t.new.fields.titlePlaceholder}
-                  className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-interface shadow-sm"
+                  className="w-full bg-background border border-primary/15 rounded-xs px-5 py-4 text-sm text-foreground placeholder:text-muted-foreground/70 outline-none focus:border-primary/50 transition-all font-interface shadow-sm"
                 />
                 {errors.title && (
                   <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-interface">
@@ -291,7 +291,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="block text-xs font-bold tracking-[3px] uppercase text-muted-foreground font-interface">
                   {t.new.fields.category}
                   <span className="ml-3 text-lg tracking-px lowercase text-red-500/60 font-medium mx-1">
                     *
@@ -300,7 +300,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                 <div className="relative">
                   <select
                     {...register("category")}
-                    className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory outline-none focus:border-gold/50 transition-all appearance-none font-interface shadow-sm"
+                    className="w-full bg-background border border-primary/15 rounded-xs px-5 py-4 text-sm text-foreground outline-none focus:border-primary/50 transition-all appearance-none font-interface shadow-sm"
                   >
                     {[
                       ["PHONE", t.categories.PHONE],
@@ -310,19 +310,19 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                       ["ELECTRONICS", t.categories.ELECTRONICS],
                       ["OTHER", t.categories.OTHER],
                     ].map(([v, l]) => (
-                      <option key={v} value={v} className="bg-void">
+                      <option key={v} value={v} className="bg-card">
                         {l}
                       </option>
                     ))}
                   </select>
-                  <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-gold/40">
+                  <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-primary/40">
                     <ChevronDown className="w-3 h-3" strokeWidth={3} />
                   </div>
                 </div>
               </div>
 
               <div className="space-y-3">
-                <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="block text-xs font-bold tracking-[3px] uppercase text-muted-foreground font-interface">
                   {t.new.fields.description}
                   <span className="ml-3 text-lg tracking-px lowercase text-red-500/60 font-medium mx-1">
                     *
@@ -332,7 +332,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                   {...register("description")}
                   rows={4}
                   placeholder={t.new.fields.descriptionPlaceholder}
-                  className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-interface resize-none shadow-sm"
+                  className="w-full bg-background border border-primary/15 rounded-xs px-5 py-4 text-sm text-foreground placeholder:text-muted-foreground/70 outline-none focus:border-primary/50 transition-all font-interface resize-none shadow-sm"
                 />
                 {errors.description && (
                   <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-interface">
@@ -347,7 +347,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
           {step === 2 && (
             <div className="flex flex-col gap-8">
               <div className="space-y-3">
-                <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="block text-xs font-bold tracking-[3px] uppercase text-muted-foreground font-interface">
                   {t.new.fields.location}
                   <span className="ml-3 text-lg tracking-px lowercase text-red-500/60 font-medium mx-1">
                     *
@@ -356,7 +356,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                 <input
                   {...register("location")}
                   placeholder={t.new.fields.locationPlaceholder}
-                  className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-interface shadow-sm"
+                  className="w-full bg-background border border-primary/15 rounded-xs px-5 py-4 text-sm text-foreground placeholder:text-muted-foreground/70 outline-none focus:border-primary/50 transition-all font-interface shadow-sm"
                 />
                 {errors.location && (
                   <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-interface">
@@ -366,7 +366,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="block text-xs font-bold tracking-[3px] uppercase text-muted-foreground font-interface">
                   {t.new.fields.date}
                   <span className="ml-3 text-lg tracking-px lowercase text-red-500/60 font-medium mx-1">
                     *
@@ -384,7 +384,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                     const min = String(now.getMinutes()).padStart(2, "0");
                     return `${y}-${m}-${d}T${h}:${min}`;
                   })()}
-                  className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory outline-none focus:border-gold/50 transition-all font-interface scheme-dark shadow-sm"
+                  className="w-full bg-background border border-primary/15 rounded-xs px-5 py-4 text-sm text-foreground outline-none focus:border-primary/50 transition-all font-interface scheme-dark shadow-sm"
                 />
                 {errors.date && (
                   <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-interface">
@@ -394,12 +394,12 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="block text-xs font-bold tracking-[3px] uppercase text-muted-foreground font-interface">
                   {t.new.fields.phone}
                   <span className="ml-3 text-lg tracking-px lowercase text-red-500/60 font-medium ">
                     *
                   </span>
-                  <span className="ml-3 text-md tracking-px lowercase text-gold/60 font-medium mx-1">
+                  <span className="ml-3 text-md tracking-px lowercase text-primary/60 font-medium mx-1">
                     {t.new.fields.noVisible}
                   </span>
                 </label>
@@ -416,7 +416,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                   maxLength={10}
                   minLength={10}
                   inputMode="numeric"
-                  className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-interface shadow-sm"
+                  className="w-full bg-background border border-primary/15 rounded-xs px-5 py-4 text-sm text-foreground placeholder:text-muted-foreground/70 outline-none focus:border-primary/50 transition-all font-interface shadow-sm"
                 />
                 {errors.phone && (
                   <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-interface">
@@ -426,13 +426,13 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="block text-xs font-bold tracking-[3px] uppercase text-muted-foreground font-interface">
                   {t.new.fields.image}
                   <span className="ml-3 text-lg tracking-px lowercase text-red-500/90 font-medium mx-1">
                     *
                   </span>
                 </label>
-                <div className="rounded-xs overflow-hidden border border-dashed border-gold/15 bg-obsidian/40 hover:border-gold/40 transition-all">
+                <div className="rounded-xs overflow-hidden border border-dashed border-primary/15 bg-background/40 hover:border-primary/40 transition-all">
                   <Controller
                     name="imageUrl"
                     control={form.control}
@@ -460,26 +460,26 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
           {/* ===== STEP 3 ===== */}
           {step === 3 && (
             <div className="flex flex-col gap-8">
-              <div className="bg-obsidian border border-gold/15 rounded-xs p-6 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-0.5 h-full bg-gold" />
+              <div className="bg-background border border-primary/15 rounded-xs p-6 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-0.5 h-full bg-primary" />
                 <div className="flex gap-5">
-                  <div className="shrink-0 w-10 h-10 rounded-px bg-gold/10 flex items-center justify-center border border-gold/20">
-                    <ShieldHalf className="w-4 h-4 text-gold" strokeWidth={2} />
+                  <div className="shrink-0 w-10 h-10 rounded-px bg-primary/10 flex items-center justify-center border border-primary/20">
+                    <ShieldHalf className="w-4 h-4 text-primary" strokeWidth={2} />
                   </div>
                   <div className="space-y-3">
-                    <p className="font-interface text-sm font-semibold text-ivory tracking-tight">
+                    <p className="font-interface text-sm font-semibold text-foreground tracking-tight">
                       {t.new.securityProtocol.title}
                     </p>
-                    <p className="text-[12px] text-slate leading-relaxed font-interface font-light">
+                    <p className="text-[12px] text-muted-foreground leading-relaxed font-interface font-light">
                       {watchedType === "FOUND"
                         ? t.new.securityProtocol.verificationPlaceholder
                         : t.new.securityProtocol.questionPlaceholder}
                     </p>
                     <div className="pt-2">
-                      <p className="text-[9px] text-gold/70 font-interface font-bold uppercase tracking-xs">
+                      <p className="text-[9px] text-primary/70 font-interface font-bold uppercase tracking-xs">
                         {t.new.securityProtocol.example}
                       </p>
-                      <p className="text-[11px] text-slate/60 font-interface italic mt-1">
+                      <p className="text-[11px] text-muted-foreground/60 font-interface italic mt-1">
                         {watchedType === "FOUND"
                           ? t.new.securityProtocol.verificationExample
                           : t.new.securityProtocol.questionExample}
@@ -490,7 +490,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="block text-xs font-bold tracking-[3px] uppercase text-muted-foreground font-interface">
                   {t.new.fields.secretQuestion}
                   <span className="ml-3 text-lg tracking-px lowercase text-red-500/60 font-medium mx-1">
                     *
@@ -499,7 +499,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                 <input
                   {...register("secretQuestion")}
                   placeholder={t.new.securityProtocol.secretQuestionPlaceholder}
-                  className="w-full bg-obsidian border border-gold/15 rounded-xs px-5 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-interface shadow-sm"
+                  className="w-full bg-background border border-primary/15 rounded-xs px-5 py-4 text-sm text-foreground placeholder:text-muted-foreground/70 outline-none focus:border-primary/50 transition-all font-interface shadow-sm"
                 />
                 {errors.secretQuestion && (
                   <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-interface">
@@ -509,7 +509,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface">
+                <label className="block text-xs font-bold tracking-[3px] uppercase text-muted-foreground font-interface">
                   {t.new.fields.secretAnswer}
                   <span className="ml-3 text-lg tracking-px lowercase text-red-500/60 font-medium mx-1">
                     *
@@ -520,12 +520,12 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                     {...register("secretAnswer")}
                     type={showAnswer ? "text" : "password"}
                     placeholder={t.new.securityProtocol.secretAnswerPlaceholder}
-                    className="w-full bg-obsidian border border-gold/15 rounded-xs pl-5 pr-12 py-4 text-sm text-ivory placeholder:text-slate/30 outline-none focus:border-gold/50 transition-all font-interface shadow-sm"
+                    className="w-full bg-background border border-primary/15 rounded-xs pl-5 pr-12 py-4 text-sm text-foreground placeholder:text-muted-foreground/70 outline-none focus:border-primary/50 transition-all font-interface shadow-sm"
                   />
                   <button
                     type="button"
                     onClick={() => setShowAnswer(!showAnswer)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate/40 hover:text-gold transition-colors p-1"
+                    className="absolute right-4 top-1/2 -translate-foreground-y-1/2 text-muted-foreground/40 hover:text-primary transition-colors p-1"
                   >
                     {showAnswer ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
@@ -549,12 +549,12 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                     icon:
                       watchedValues.type === "LOST" ? (
                         <Search
-                          className="w-3.5 h-3.5 text-gold/40 group-hover:text-gold transition-colors"
+                          className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary transition-colors"
                           strokeWidth={2.5}
                         />
                       ) : (
                         <Package
-                          className="w-3.5 h-3.5 text-gold/40 group-hover:text-gold transition-colors"
+                          className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary transition-colors"
                           strokeWidth={2.5}
                         />
                       ),
@@ -567,7 +567,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                     label: t.new.fields.title,
                     icon: (
                       <Heading
-                        className="w-3.5 h-3.5 text-gold/40 group-hover:text-gold transition-colors"
+                        className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary transition-colors"
                         strokeWidth={2.5}
                       />
                     ),
@@ -577,7 +577,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                     label: t.new.fields.category,
                     icon: (
                       <Tag
-                        className="w-3.5 h-3.5 text-gold/40 group-hover:text-gold transition-colors"
+                        className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary transition-colors"
                         strokeWidth={2.5}
                       />
                     ),
@@ -587,7 +587,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                     label: t.new.fields.location,
                     icon: (
                       <MapPin
-                        className="w-3.5 h-3.5 text-gold/40 group-hover:text-gold transition-colors"
+                        className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary transition-colors"
                         strokeWidth={2.5}
                       />
                     ),
@@ -597,7 +597,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                     label: t.new.fields.date,
                     icon: (
                       <CalendarDays
-                        className="w-3.5 h-3.5 text-gold/40 group-hover:text-gold transition-colors"
+                        className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary transition-colors"
                         strokeWidth={2.5}
                       />
                     ),
@@ -607,7 +607,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                     label: t.new.fields.phone,
                     icon: (
                       <Phone
-                        className="w-3.5 h-3.5 text-gold/40 group-hover:text-gold transition-colors"
+                        className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary transition-colors"
                         strokeWidth={2.5}
                       />
                     ),
@@ -619,7 +619,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                           label: t.new.fields.secretQuestion,
                           icon: (
                             <ShieldHalf
-                              className="w-3.5 h-3.5 text-gold/40 group-hover:text-gold transition-colors"
+                              className="w-3.5 h-3.5 text-primary/40 group-hover:text-primary transition-colors"
                               strokeWidth={2.5}
                             />
                           ),
@@ -630,30 +630,30 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                 ].map(({ label, icon, value }) => (
                   <div
                     key={label}
-                    className="flex justify-between items-center rounded-xs bg-obsidian/40 border border-gold/10 px-6 py-4 hover:border-gold/30 transition-all group"
+                    className="flex justify-between items-center rounded-xs bg-background/40 border border-border px-6 py-4 hover:border-primary/30 transition-all group"
                   >
                     <div className="flex items-center gap-4">
                       {icon}
-                      <span className="font-interface text-[9px] uppercase tracking-[3px] text-slate font-bold">
+                      <span className="font-interface text-[9px] uppercase tracking-[3px] text-muted-foreground font-bold">
                         {label}
                       </span>
                     </div>
-                    <span className="text-[13px] font-medium text-ivory font-interface">
+                    <span className="text-[13px] font-medium text-foreground font-interface">
                       {value}
                     </span>
                   </div>
                 ))}
               </div>
 
-              <div className="bg-gold/5 border border-gold/20 rounded-xs px-6 py-4 flex gap-4 items-center">
-                <Info className="w-4 h-4 text-gold shrink-0" strokeWidth={2} />
-                <p className="text-xs text-slate font-interface leading-relaxed uppercase tracking-px">
+              <div className="bg-primary/5 border border-primary/20 rounded-xs px-6 py-4 flex gap-4 items-center">
+                <Info className="w-4 h-4 text-primary shrink-0" strokeWidth={2} />
+                <p className="text-xs text-muted-foreground font-interface leading-relaxed uppercase tracking-px">
                   {t.new.note}
                 </p>
               </div>
 
               {watchedValues.imageUrl && (
-                <div className="overflow-hidden rounded-sm h-72 border border-gold/20 shadow-2xl relative">
+                <div className="overflow-hidden rounded-sm h-72 border border-primary/20 shadow-2xl relative">
                   <Image
                     src={watchedValues.imageUrl}
                     alt="preview"
@@ -662,7 +662,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                     sizes="(max-width: 768px) 100vw, 680px"
                     className="h-56 w-full object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-1000"
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-obsidian/60 to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-linear-to-t from-background/60 to-transparent pointer-events-none" />
                 </div>
               )}
             </div>
@@ -674,11 +674,11 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
           {step > 1 && (
             <button
               onClick={() => setStep((s) => s - 1)}
-              className="px-10 py-5 rounded-xs border border-gold/30 text-gold font-interface text-xs font-bold uppercase tracking-sm hover:bg-gold/5 hover:border-gold transition-all flex items-center justify-center gap-3 group min-w-35"
+              className="px-10 py-5 rounded-xs border border-primary/30 text-primary font-interface text-xs font-bold uppercase tracking-sm hover:bg-primary/5 hover:border-primary transition-all flex items-center justify-center gap-3 group min-w-35"
             >
               {t.new.navigation.back}
               <ArrowLeft
-                className="w-3 h-3 transition-transform group-hover:-translate-x-1"
+                className="w-3 h-3 transition-transform group-hover:-translate-foreground-x-1"
                 strokeWidth={2.5}
               />
             </button>
@@ -686,11 +686,11 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
           {step < 4 ? (
             <button
               onClick={handleNext}
-              className="flex-1 bg-gold px-10 py-5 rounded-xs text-obsidian font-interface text-xs font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-2xl shadow-gold/10 flex items-center justify-center gap-3 group"
+              className="flex-1 bg-primary px-10 py-5 rounded-xs text-background font-interface text-xs font-bold uppercase tracking-sm hover:bg-foreground transition-all shadow-2xl shadow-primary/10 flex items-center justify-center gap-3 group"
             >
               {t.new.navigation.next}
               <ArrowRight
-                className="w-3 h-3 transition-transform group-hover:translate-x-1"
+                className="w-3 h-3 transition-transform group-hover:translate-foreground-x-1"
                 strokeWidth={2.5}
               />
             </button>
@@ -698,7 +698,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
             <button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="flex-1 bg-gold px-10 py-5 rounded-xs text-obsidian font-interface text-xs font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-2xl shadow-gold/10 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 min-h-15"
+              className="flex-1 bg-primary px-10 py-5 rounded-xs text-background font-interface text-xs font-bold uppercase tracking-sm hover:bg-foreground transition-all shadow-2xl shadow-primary/10 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 min-h-15"
             >
               {isSubmitting ? (
                 <div className="scale-[1.2] origin-center">

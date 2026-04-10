@@ -177,6 +177,7 @@ export async function getItemById(id: string) {
       description: true,
       location: true,
       date: true,
+      phone: true,
       imageUrl: true,
       status: true,
       secretQuestion: true, 
@@ -193,6 +194,29 @@ export async function getItemById(id: string) {
   });
 
   return item;
+}
+
+export async function getItemPhone(itemId: string) {
+  const session = await auth();
+  if (!session?.user?.id) return null;
+
+  // Check if current user has an accepted claim
+  const claim = await db.claimRequest.findFirst({
+    where: {
+      itemId,
+      claimantId: session.user.id,
+      status: "ACCEPTED",
+    },
+  });
+
+  if (!claim) return null;
+
+  const item = await db.item.findUnique({
+    where: { id: itemId },
+    select: { phone: true, userId: true },
+  });
+
+  return item?.phone ?? null;
 }
 
 // === Submit Claim for item ===

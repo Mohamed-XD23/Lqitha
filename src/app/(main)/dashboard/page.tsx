@@ -22,15 +22,15 @@ export default async function DashboardPage( ) {
   const firstName = user.name?.trim().match(/\S+/)?.[0] ?? t.user;
 
   return (
-    <div className="bg-obsidian min-h-screen">
+    <div className="bg-background min-h-screen">
       <div className="mx-auto max-w-6xl px-6 py-12">
 
         {/* Header */}
         <div className="mb-10">
-          <span className="font-interface text-xs font-bold tracking-sm uppercase text-gold">
+          <span className="font-interface text-xs font-bold tracking-sm uppercase text-primary">
             {t.title}
           </span>
-          <h1 className="font-display text-4xl font-light text-ivory leading-none mt-2">
+          <h1 className="font-display text-4xl font-light text-foreground leading-none mt-2">
             {t.hello}, {firstName}
           </h1>
         </div>

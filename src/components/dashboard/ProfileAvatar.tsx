@@ -40,11 +40,11 @@ export default function ProfileAvatar({ name, image, dict }: Props) {
         <ImageUploader value={currentImage ?? ""} onChange={handleChange} dict={dict} />
         <button
           onClick={() => setEditing(false)}
-          className="font-interface text-md text-slate bg-slate/10 border border-slate/20 rounded-md px-3 py-1 mt-2"
+          className="font-interface text-md text-muted-foreground bg-muted-foreground/10 border border-muted-foreground/20 rounded-md px-3 py-1 mt-2"
         >
           <div className="flex items-center gap-2">
             <span>{t.cancel}</span>
-            <X className="w-4 h-4 text-slate" strokeWidth={2} />
+            <X className="w-4 h-4 text-muted-foreground" strokeWidth={2} />
           </div>
         </button>
       </div>
@@ -63,7 +63,7 @@ export default function ProfileAvatar({ name, image, dict }: Props) {
           alt={name}
           width={120}
           height={120}
-          className="rounded-full object-cover border-2 border-gold/30"
+          className="rounded-full object-cover border-2 border-primary/30"
         />
       ) : (
         <div
@@ -79,14 +79,14 @@ export default function ProfileAvatar({ name, image, dict }: Props) {
             fontFamily: "var(--font-display), serif",
             fontSize: "52px",
             fontWeight: 400,
-            color: "var(--color-gold)",
+            color: "var(--color-primary)",
           }}
         >
           {name.charAt(0).toUpperCase()}
         </div>
       )}
       <div className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-        <Camera className="w-4 h-4 text-ivory/80" strokeWidth={2} />
+        <Camera className="w-4 h-4 text-foreground/80" strokeWidth={2} />
       </div>
     </div>
   );

@@ -181,6 +181,8 @@
     "category": "الفئة",
     "location": "الموقع",
     "date": "التاريخ",
+    "phone": "رقم الهاتف",
+    "phoneHidden": "يظهر بعد قبول المطالبة",
     "trustScore": "درجة الموثوقية",
     "categories": {
       "PHONE": "هاتف",
@@ -197,7 +199,7 @@
       "createreport": "إنشاء منشور",
       "description": "ساعدنا في سد الفجوة بين المفقودات والمعثورات",
       "naturereport": "طبيعة المنشور",
-      "user":"مستخدم",
+      "user": "مستخدم",
       "steps": {
         "nature": "النوع",
         "details": "التفاصيل",
@@ -701,5 +703,9 @@
       "markAllReadFailed": "فشل وضع جميع الإشعارات كمقروء.",
       "createFailed": "فشل إنشاء الإشعار."
     }
+  },
+  "theme": {
+    "light": "فاتح",
+    "dark": "داكن"
   }
 }

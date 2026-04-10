@@ -50,7 +50,7 @@ export default function RegisterClient({ dict }: Props) {
   }
 
   return (
-    <div className="bg-obsidian min-h-screen flex items-center justify-center p-6">
+    <div className="bg-background min-h-screen flex items-center justify-center p-6">
       <div className="w-full max-w-105">
         <div className="text-center mb-10">
           <div className="flex items-center justify-center gap-3 mb-2">
@@ -64,49 +64,49 @@ export default function RegisterClient({ dict }: Props) {
                 fill="#7A7A8C"
               />
             </svg>
-            <span className="font-fraunces text-3xl font-light tracking-sm text-ivory">
+            <span className="font-fraunces text-3xl font-light tracking-sm text-foreground">
               LQITHA
             </span>
           </div>
-          <p className="font-interface text-xs tracking-[3px] ltr:uppercase text-slate">
+          <p className="font-interface text-xs tracking-[3px] ltr:uppercase text-muted-foreground">
             {dict.home.hero.badge}
           </p>
         </div>
 
-        <div className="bg-void border border-gold/18 rounded-sm p-10 relative overflow-hidden">
-          <h1 className="font-display text-3xl font-light text-ivory mb-8 text-center">
+        <div className="bg-card border border-primary/18 rounded-sm p-10 relative overflow-hidden">
+          <h1 className="font-display text-3xl font-light text-foreground mb-8 text-center">
             {t.createAccount}
           </h1>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="space-y-2">
-              <label className="font-interface text-xs font-medium tracking-xs uppercase text-slate block">
+              <label className="font-interface text-xs font-medium tracking-xs uppercase text-muted-foreground block">
                 {t.fullName}
               </label>
               <input
                 name="name"
                 type="text"
                 required
-                className="w-full bg-[#0F0F1A] border border-gold/18 rounded-xs px-4 py-3 font-interface text-sm text-ivory outline-none focus:border-gold/50 transition-all placeholder:text-slate/30"
+                className="w-full bg-sidebar-accent border border-primary/18 rounded-xs px-4 py-3 font-interface text-sm text-foreground outline-none focus:border-primary/50 transition-all placeholder:text-muted-foreground/70"
                 placeholder="Your name"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="font-interface text-xs font-medium tracking-xs uppercase text-slate block">
+              <label className="font-interface text-xs font-medium tracking-xs uppercase text-muted-foreground block">
                 {t.emailAddress}
               </label>
               <input
                 name="email"
                 type="email"
                 required
-                className="w-full bg-[#0F0F1A] border border-gold/18 rounded-xs px-4 py-3 font-interface text-sm text-ivory outline-none focus:border-gold/50 transition-all placeholder:text-slate/30"
+                className="w-full bg-sidebar-accent border border-primary/18 rounded-xs px-4 py-3 font-interface text-sm text-foreground outline-none focus:border-primary/50 transition-all placeholder:text-muted-foreground/70"
                 placeholder="email@example.com"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="font-interface text-xs font-medium tracking-xs uppercase text-slate block">
+              <label className="font-interface text-xs font-medium tracking-xs uppercase text-muted-foreground block">
                 {t.password}
               </label>
               <div className="relative">
@@ -115,13 +115,13 @@ export default function RegisterClient({ dict }: Props) {
                   type={showPassword ? "text" : "password"}
                   required
                   minLength={8}
-                  className="w-full bg-[#0F0F1A] border border-gold/18 rounded-xs px-4 py-3 font-interface text-sm text-ivory outline-none focus:border-gold/50 transition-all pr-12"
+                  className="w-full bg-sidebar-accent border border-primary/18 rounded-xs px-4 py-3 font-interface text-sm text-foreground outline-none focus:border-primary/50 transition-all pr-12"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-slate hover:text-gold transition-colors"
+                  className="absolute right-4 top-1/2 -translate-foreground-y-1/2 bg-transparent border-none cursor-pointer text-muted-foreground hover:text-primary transition-colors"
                 >
                   {showPassword ? (
                     <EyeOff className="w-4 h-4" />
@@ -133,7 +133,7 @@ export default function RegisterClient({ dict }: Props) {
             </div>
 
             <div className="space-y-2">
-              <label className="font-interface text-xs font-medium tracking-xs uppercase text-slate block">
+              <label className="font-interface text-xs font-medium tracking-xs uppercase text-muted-foreground block">
                 {t.confirmPassword}
               </label>
               <div className="relative">
@@ -141,13 +141,13 @@ export default function RegisterClient({ dict }: Props) {
                   name="confirmPassword"
                   type={showConfirm ? "text" : "password"}
                   required
-                  className={`w-full bg-[#0F0F1A] border rounded-xs px-4 py-3 font-interface text-sm text-ivory outline-none focus:border-gold/50 transition-all pr-12 ${passwordError ? "border-red-400/50" : "border-gold/18"}`}
+                  className={`w-full bg-sidebar-accent border rounded-xs px-4 py-3 font-interface text-sm text-foreground outline-none focus:border-primary/50 transition-all pr-12 ${passwordError ? "border-red-400/50" : "border-primary/18"}`}
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirm(!showConfirm)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-slate hover:text-gold transition-colors"
+                  className="absolute right-4 top-1/2 -translate-foreground-y-1/2 bg-transparent border-none cursor-pointer text-muted-foreground hover:text-primary transition-colors"
                 >
                   {showConfirm ? (
                     <EyeOff className="w-4 h-4" />
@@ -215,7 +215,7 @@ export default function RegisterClient({ dict }: Props) {
             <button
               type="submit"
               disabled={loading}
-              className="font-interface text-xs rtl:text-sm font-medium tracking-xs uppercase py-4 rounded-xs bg-gold text-obsidian hover:bg-ivory transition-all disabled:opacity-50 mt-2 flex items-center justify-center min-h-14"
+              className="font-interface text-xs rtl:text-sm font-medium tracking-xs uppercase py-4 rounded-xs bg-primary text-background hover:bg-foreground transition-all disabled:opacity-50 mt-2 flex items-center justify-center min-h-14"
             >
               {loading ? (
                 <div className="scale-[1] origin-center">
@@ -228,11 +228,11 @@ export default function RegisterClient({ dict }: Props) {
           </form>
 
           <div className="flex items-center gap-4 my-8">
-            <div className="flex-1 h-px bg-gold/10" />
-            <span className="font-interface text-xs tracking-xs uppercase text-slate/60">
+            <div className="flex-1 h-px bg-primary/10" />
+            <span className="font-interface text-xs tracking-xs uppercase text-muted-foreground/60">
               OR
             </span>
-            <div className="flex-1 h-px bg-gold/10" />
+            <div className="flex-1 h-px bg-primary/10" />
           </div>
 
           <button
@@ -241,7 +241,7 @@ export default function RegisterClient({ dict }: Props) {
               signIn("google", { callbackUrl: "/" });
             }}
             disabled={googleLoading}
-            className="w-full flex items-center justify-center gap-3 font-interface text-xs font-medium tracking-xs uppercase py-3.5 rounded-xs bg-transparent text-ivory border border-gold/20 hover:bg-gold/5 transition-all disabled:opacity-50 min-h-12"
+            className="w-full flex items-center justify-center gap-3 font-interface text-xs font-medium tracking-xs uppercase py-3.5 rounded-xs bg-transparent text-foreground border border-primary/20 hover:bg-primary/5 transition-all disabled:opacity-50 min-h-12"
           >
             {googleLoading ? (
               <div className="scale-[1] origin-center">
@@ -272,11 +272,11 @@ export default function RegisterClient({ dict }: Props) {
             )}
           </button>
 
-          <p className="font-interface text-sm text-slate text-center mt-8">
+          <p className="font-interface text-sm text-muted-foreground text-center mt-8">
             {t.alreadyAccount}{" "}
             <Link
               href="/login"
-              className="text-gold hover:text-ivory transition-colors font-medium"
+              className="text-primary hover:text-foreground transition-colors font-medium"
             >
               {t.signIn}
             </Link>

@@ -40,7 +40,7 @@ export default function LoginClient({ dict }: Props) {
   }
 
   return (
-    <div className="bg-obsidian min-h-screen flex items-center justify-center p-6">
+    <div className="bg-background min-h-screen flex items-center justify-center p-6">
       <div className="w-full max-w-105">
         {/* Logo */}
         <div className="text-center mb-10">
@@ -49,32 +49,32 @@ export default function LoginClient({ dict }: Props) {
               <path d="M261.42,278v84c0,4.42-3.58,8-8,8H8c-4.42,0-8-3.58-8-8v-174.57l100-100v182.57h153.42c4.42,0,8,3.58,8,8Z" fill="#C4A35A"/>
               <path d="M100,.03L0,100.03V8C0,3.58,3.58,0,8,0h92v.03Z" fill="#7A7A8C"/>
             </svg>
-            <span className="font-fraunces text-3xl font-light tracking-sm text-ivory">LQITHA</span>
+            <span className="font-fraunces text-3xl font-light tracking-sm text-foreground">LQITHA</span>
           </div>
-          <p className="font-interface text-xs rtl:text-xs tracking-[3px] ltr:uppercase text-slate">
+          <p className="font-interface text-xs rtl:text-xs tracking-[3px] ltr:uppercase text-muted-foreground">
             {dict.home.hero.badge}
           </p>
         </div>
 
-        <div className="bg-void border border-gold/18 rounded-sm p-10">
-          <h1 className="font-display text-3xl font-light text-ivory mb-8 text-center">{t.signIn}</h1>
+        <div className="bg-card border border-primary/18 rounded-sm p-10">
+          <h1 className="font-display text-3xl font-light text-foreground mb-8 text-center">{t.signIn}</h1>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="space-y-2">
-              <label className="font-interface text-xs font-medium tracking-xs uppercase text-slate block">{t.emailAddress}</label>
+              <label className="font-interface text-xs font-medium tracking-xs uppercase text-muted-foreground block">{t.emailAddress}</label>
               <input name="email" type="email" required
-                className="w-full bg-[#0F0F1A] border border-gold/18 rounded-xs px-4 py-3 font-interface text-sm text-ivory outline-none focus:border-gold/50 transition-all placeholder:text-slate/30"
+                className="w-full bg-sidebar-accent border border-primary/18 rounded-xs px-4 py-3 font-interface text-sm text-foreground outline-none focus:border-primary/50 transition-all placeholder:text-muted-foreground/70"
                 placeholder="email@example.com" />
             </div>
 
             <div className="space-y-2">
-              <label className="font-interface text-xs font-medium tracking-xs uppercase text-slate block">{t.password}</label>
+              <label className="font-interface text-xs font-medium tracking-xs uppercase text-muted-foreground block">{t.password}</label>
               <div className="relative">
                 <input name="password" type={showPassword ? "text" : "password"} required
-                  className="w-full bg-[#0F0F1A] border border-gold/18 rounded-xs px-4 py-3 font-interface text-sm text-ivory outline-none focus:border-gold/50 transition-all pr-12"
+                  className="w-full bg-sidebar-accent border border-primary/18 rounded-xs px-4 py-3 font-interface text-sm text-foreground outline-none focus:border-primary/50 transition-all pr-12"
                   placeholder="••••••••" />
                 <button type="button" onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-slate hover:text-gold transition-colors">
+                  className="absolute right-4 top-1/2 -translate-foreground-y-1/2 bg-transparent border-none cursor-pointer text-muted-foreground hover:text-primary transition-colors">
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
@@ -87,26 +87,26 @@ export default function LoginClient({ dict }: Props) {
             )}
 
             <div className="text-right -mt-4">
-              <Link href="/forgot-password" className="font-interface text-xs text-slate hover:text-gold transition-colors">
+              <Link href="/forgot-password" className="font-interface text-xs text-muted-foreground hover:text-primary transition-colors">
                 {t.forgotPassword}
               </Link>
             </div>
 
             <button type="submit" disabled={loading}
-              className="font-interface text-sm font-medium tracking-widest uppercase py-4 rounded-xs bg-gold text-obsidian hover:bg-ivory transition-all disabled:opacity-50 mt-2 flex items-center justify-center min-h-14">
+              className="font-interface text-sm font-medium tracking-widest uppercase py-4 rounded-xs bg-primary text-background hover:bg-foreground transition-all disabled:opacity-50 mt-2 flex items-center justify-center min-h-14">
               {loading ? <ButtonLoader /> : t.signIn}
             </button>
           </form>
 
           <div className="flex items-center gap-4 my-8">
-            <div className="flex-1 h-px bg-gold/10" />
-            <span className="font-interface text-xs tracking-xs uppercase text-slate/60">OR</span>
-            <div className="flex-1 h-px bg-gold/10" />
+            <div className="flex-1 h-px bg-primary/10" />
+            <span className="font-interface text-xs tracking-xs uppercase text-muted-foreground/60">OR</span>
+            <div className="flex-1 h-px bg-primary/10" />
           </div>
 
           <button onClick={() => { setGoogleLoading(true); signIn("google", { callbackUrl: "/" }); }}
             disabled={googleLoading}
-            className="w-full flex items-center justify-center gap-3 font-interface text-xs font-medium tracking-xs uppercase py-3.5 rounded-xs bg-transparent text-ivory border border-gold/20 hover:bg-gold/5 transition-all disabled:opacity-50 min-h-12">
+            className="w-full flex items-center justify-center gap-3 font-interface text-xs font-medium tracking-xs uppercase py-3.5 rounded-xs bg-transparent text-foreground border border-primary/20 hover:bg-primary/5 transition-all disabled:opacity-50 min-h-12">
             {googleLoading ? <ButtonLoader /> : (
               <>
                 <svg width="18" height="18" viewBox="0 0 24 24">
@@ -120,9 +120,9 @@ export default function LoginClient({ dict }: Props) {
             )}
           </button>
 
-          <p className="font-interface text-sm text-slate text-center mt-8">
+          <p className="font-interface text-sm text-muted-foreground text-center mt-8">
             {t.noAccount}{" "}
-            <Link href="/register" className="text-gold hover:text-ivory transition-colors font-medium">{t.createAccount}</Link>
+            <Link href="/register" className="text-primary hover:text-foreground transition-colors font-medium">{t.createAccount}</Link>
           </p>
         </div>
       </div>

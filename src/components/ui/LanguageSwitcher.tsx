@@ -33,7 +33,7 @@ export default function LanguageSwitcher({ currentLocale, dict }: Props) {
     <button
       onClick={toggleLanguage}
       disabled={isPending}
-      className={`flex items-center gap-2 px-3 py-1.5 rounded-full border border-gold/20 text-slate hover:text-gold hover:border-gold/50 transition-all ${isPending ? "opacity-50 cursor-not-allowed" : ""}`}
+      className={`flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 text-muted-foreground hover:text-primary hover:border-primary/50 transition-all ${isPending ? "opacity-50 cursor-not-allowed" : ""}`}
       aria-label={t.toggleLanguage}
       title={t.toggleLanguage}
     >

@@ -38,7 +38,7 @@ export default async function Navbar() {
     dict = await import("@/lib/dictionaries/en.json").then(m => m.default);
   }
 
-  // Fetch fresh user data if session exists to avoid stale JWT data
+  // Fetch fresh user data if session exists to acard stale JWT data
   const dbUser = session?.user?.id 
     ? await db.user.findUnique({
         where: { id: session.user.id },
@@ -58,7 +58,7 @@ export default async function Navbar() {
 
   return (
     <header
-      className="bg-obsidian/90 border-b border-gold/15 px-6 py-4 sticky top-0 z-50 backdrop-blur-xl"
+      className="bg-background/90 border-b border-primary/15 px-6 py-4 sticky top-0 z-50 backdrop-blur-xl"
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between rtl:flex-row-reverse">
         {/* Logo */}
@@ -82,7 +82,7 @@ export default async function Navbar() {
             </svg>
           </div>
           <span
-            className="text-2xl font-light tracking-[4px] text-ivory group-hover:text-gold transition-colors"
+            className="text-2xl font-light tracking-[4px] text-foreground group-hover:text-primary transition-colors"
             style={{ fontFamily: "var(--font-fraunces), serif" }}
           >
             LQITHA
@@ -93,7 +93,7 @@ export default async function Navbar() {
         <nav className="hidden md:flex items-center gap-12 rtl:flex-row-reverse">
           <Link
             href="/browse"
-            className="font-interface text-[11px] rtl:text-sm font-medium tracking-[3px] uppercase text-slate hover:text-gold transition-all"
+            className="font-interface text-[11px] rtl:text-sm font-medium tracking-[3px] uppercase text-muted-foreground hover:text-primary transition-all"
           >
             {t.browse}
           </Link>
@@ -102,12 +102,12 @@ export default async function Navbar() {
             canUseSecureActions ? (
               <Link
                 href="/items/new"
-                className="font-interface text-xs font-bold tracking-[3px] uppercase bg-gold text-obsidian px-8 py-3 rounded-xs hover:bg-ivory transition-all shadow-xl shadow-gold/10"
+                className="font-interface text-xs font-bold tracking-[3px] uppercase bg-primary text-background px-8 py-3 rounded-xs hover:bg-foreground transition-all shadow-xl shadow-primary/10"
               >
                 {t.reportItem}
               </Link>
             ) : (
-              <span className="font-interface text-xs font-bold tracking-[3px] uppercase border border-gold/25 text-gold/70 px-8 py-3 rounded-xs cursor-not-allowed">
+              <span className="font-interface text-xs font-bold tracking-[3px] uppercase border border-primary/25 text-primary/70 px-8 py-3 rounded-xs cursor-not-allowed">
                 {t.verifyActionLabel}
               </span>
             )
@@ -115,7 +115,7 @@ export default async function Navbar() {
 
           {session?.user && (
             <div className="flex items-center gap-6 rtl:flex-row-reverse">
-              <ThemeSwitcher/>
+              <ThemeSwitcher {...dict}/>
               <LanguageSwitcher currentLocale={locale} dict={dict} />
               <NotificationBell userId={session.user.id!} dict={dict} />
               <UserNavMenu user={user ?? session.user} dict={dict} />
@@ -123,17 +123,17 @@ export default async function Navbar() {
           )}
           {!session?.user && (
             <div className="flex items-center gap-8 rtl:flex-row-reverse">
-              <ThemeSwitcher/>
+              <ThemeSwitcher {...dict}/>
               <LanguageSwitcher currentLocale={locale} dict={dict} />
               <Link
                 href="/login"
-                className="font-interface text-[11px] font-medium tracking-[3px] uppercase text-slate hover:text-gold transition-all"
+                className="font-interface text-[11px] font-medium tracking-[3px] uppercase text-muted-foreground hover:text-primary transition-all"
               >
                 {t.signIn}
               </Link>
               <Link
                 href="/register"
-                className="font-interface text-xs font-bold tracking-[3px] uppercase bg-gold text-obsidian px-8 py-3 rounded-xs hover:bg-ivory transition-all shadow-xl shadow-gold/10"
+                className="font-interface text-xs font-bold tracking-[3px] uppercase bg-primary text-background px-8 py-3 rounded-xs hover:bg-foreground transition-all shadow-xl shadow-primary/10"
               >
                 {t.register}
               </Link>
@@ -146,41 +146,41 @@ export default async function Navbar() {
           <div className="flex flex-col items-center gap-10 py-10" dir={dir}>
             <Link
               href="/browse"
-              className="font-display text-2xl font-light tracking-sm uppercase text-ivory hover:text-gold transition-all"
+              className="font-display text-2xl font-light tracking-sm uppercase text-foreground hover:text-primary transition-all"
             >
               {t.browse}
             </Link>
 
             {session?.user && (
               <>
-                <div className="w-full max-w-70 mb-4 p-4 rounded-sm border border-gold/10 bg-void/30 flex flex-col items-center gap-3">
+                <div className="w-full max-w-70 mb-4 p-4 rounded-sm border border-border bg-card/30 flex flex-col items-center gap-3">
                   <div className="flex items-center gap-3 w-full rtl:flex-row-reverse">
-                    <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-gold/20 shrink-0">
+                    <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-primary/20 shrink-0">
                       {user?.image ? (
                         <NextImage src={user.image} alt={t.user} width={48} height={48} />
                       ) : (
-                        <div className="w-full h-full bg-gold/10 flex items-center justify-center text-gold font-display text-2xl">
+                        <div className="w-full h-full bg-primary/10 flex items-center justify-center text-primary font-display text-2xl">
                           {user?.name?.charAt(0).toUpperCase()}
                         </div>
                       )}
                     </div>
                     <div className="flex-1 min-w-0 rtl:text-right">
-                      <p className="font-interface text-sm font-semibold text-ivory truncate">{user?.name}</p>
-                      <p className="font-interface text-xs text-slate truncate uppercase tracking-widest mt-0.5">{user?.email}</p>
+                      <p className="font-interface text-sm font-semibold text-foreground truncate">{user?.name}</p>
+                      <p className="font-interface text-xs text-muted-foreground truncate uppercase tracking-widest mt-0.5">{user?.email}</p>
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-3 w-full mt-2">
                     <Link
                       href="/dashboard"
-                      className="flex items-center justify-center gap-2 py-3 rounded-xs border border-gold/10 text-slate hover:text-gold hover:bg-gold/5 transition-all"
+                      className="flex items-center justify-center gap-2 py-3 rounded-xs border border-border text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all"
                     >
                       <LayoutDashboard className="w-4 h-4" />
                       <span className="font-interface text-xs uppercase tracking-widest">{t.dashboard}</span>
                     </Link>
                     <Link
                       href="/settings"
-                      className="flex items-center justify-center gap-2 py-3 rounded-xs border border-gold/10 text-slate hover:text-gold hover:bg-gold/5 transition-all"
+                      className="flex items-center justify-center gap-2 py-3 rounded-xs border border-border text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all"
                     >
                       <Settings className="w-4 h-4" />
                       <span className="font-interface text-xs uppercase tracking-widest">{t.settings}</span>
@@ -191,27 +191,27 @@ export default async function Navbar() {
                 {canUseSecureActions ? (
                   <Link
                     href="/items/new"
-                    className="font-interface text-xs font-bold tracking-sm uppercase bg-gold text-obsidian px-12 py-5 rounded-xs shadow-2xl shadow-gold/20"
+                    className="font-interface text-xs font-bold tracking-sm uppercase bg-primary text-background px-12 py-5 rounded-xs shadow-2xl shadow-primary/20"
                   >
                     {t.reportItem}
                   </Link>
                 ) : (
-                  <span className="font-interface text-xs font-bold tracking-sm uppercase border border-gold/25 text-gold/70 px-12 py-5 rounded-xs cursor-not-allowed">
+                  <span className="font-interface text-xs font-bold tracking-sm uppercase border border-primary/25 text-primary/70 px-12 py-5 rounded-xs cursor-not-allowed">
                     {t.verifyActionLabel}
                   </span>
                 )}
 
                 <div className="flex items-center gap-6 mt-4 rtl:flex-row-reverse">
-                  <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-gold/5 bg-gold/5 min-w-25">
-                    <span className="text-xs text-slate uppercase tracking-widest">Theme</span>
-                    <ThemeSwitcher/>
+                  <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-primary/5 bg-primary/5 min-w-25">
+                    <span className="text-xs text-muted-foreground uppercase tracking-widest">Theme</span>
+                    <ThemeSwitcher {...dict}/>
                   </div>
-                  <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-gold/5 bg-gold/5 min-w-25">
-                    <span className="text-xs text-slate uppercase tracking-widest">{t.language}</span>
+                  <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-primary/5 bg-primary/5 min-w-25">
+                    <span className="text-xs text-muted-foreground uppercase tracking-widest">{t.language}</span>
                     <LanguageSwitcher currentLocale={locale} dict={dict} />
                   </div>
-                  <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-gold/5 bg-gold/5 min-w-25">
-                    <span className="text-xs text-slate uppercase tracking-widest">Alerts</span>
+                  <div className="flex flex-col items-center gap-2 p-3 rounded-sm border border-primary/5 bg-primary/5 min-w-25">
+                    <span className="text-xs text-muted-foreground uppercase tracking-widest">Alerts</span>
                     <NotificationBell userId={session.user.id!} dict={dict} />
                   </div>
                 </div>
@@ -230,17 +230,17 @@ export default async function Navbar() {
 
             {!session?.user && (
               <div className="flex flex-col items-center gap-10">
-                <ThemeSwitcher/>
+                <ThemeSwitcher {...dict}/>
                 <LanguageSwitcher currentLocale={locale} dict={dict} />
                 <Link
                   href="/login"
-                  className="font-display text-2xl font-light tracking-sm uppercase text-ivory hover:text-gold transition-all"
+                  className="font-display text-2xl font-light tracking-sm uppercase text-foreground hover:text-primary transition-all"
                 >
                   {t.signIn}
                 </Link>
                 <Link
                   href="/register"
-                  className="font-interface text-xs font-bold tracking-sm uppercase bg-gold text-obsidian px-12 py-5 rounded-xs shadow-2xl shadow-gold/20"
+                  className="font-interface text-xs font-bold tracking-sm uppercase bg-primary text-background px-12 py-5 rounded-xs shadow-2xl shadow-primary/20"
                 >
                   {t.register}
                 </Link>

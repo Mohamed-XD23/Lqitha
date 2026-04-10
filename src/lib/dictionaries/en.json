@@ -181,6 +181,8 @@
     "category": "Category",
     "location": "Location",
     "date": "Date",
+    "phone": "Phone Number",
+    "phoneHidden": "Visible after claim is accepted",
     "trustScore": "Trust Score",
     "categories": {
       "PHONE": "Phone",
@@ -197,7 +199,7 @@
       "createreport": "Create Report",
       "description": "Help us bridge the gap between lost and found",
       "naturereport": "Nature of Report",
-      "user":"User",
+      "user": "User",
       "steps": {
         "nature": "Nature",
         "details": "Details",
@@ -701,5 +703,9 @@
       "markAllReadFailed": "Failed marking all notifications as read.",
       "createFailed": "Failed to create notification."
     }
+  },
+  "theme": {
+    "light": "light",
+    "dark": "dark"
   }
 }

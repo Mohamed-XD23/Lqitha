@@ -3,12 +3,14 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
+import { Dictionary } from "@/lib/dictionary.types";
 
-export function ThemeSwitcher() {
+export function ThemeSwitcher(dict: Dictionary) {
+  const t = dict.theme;
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // Avoid hydration mismatch — render only after mount
+  // Acard hydration mismatch — render only after mount
   useEffect(() => setMounted(true), []);
   if (!mounted) return null;
 
@@ -18,20 +20,19 @@ export function ThemeSwitcher() {
     <button
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label="Toggle theme"
-      className="flex items-center justify-centerw-9 h-9 rounded-smborder border-border bg-(--surface) text-muted hover:text-(--gold) hover:border-(--gold) transition-colors duration-200
-      "
+      className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 text-muted-foreground hover:text-primary hover:border-primary/50 transition-all"
     >
       {isDark ? (
-        <div className="flex items-center gap-2 border py-1 px-2 rounded-full border-gold/20 text-secondary hover:text-primary hover:bg-background ">
+        <div className="flex items-center gap-2">
           {" "}
-          <Sun size={20} />
-          <span>Light</span>
+          <Sun size={18} />
+          <span className="font-interface text-xs font-medium uppercase tracking-widest mt-px">{t.light}</span>
         </div>
       ) : (
-        <div className="flex items-center gap-2 border py-1 px-2 rounded-full border-gold/20 text-secondary hover:text-primary hover:bg-background ">
+        <div className="flex items-center gap-2">
           {" "}
-          <Moon size={20} />
-          <span>Dark</span>
+          <Moon size={18} />
+          <span className="font-interface text-xs font-medium uppercase tracking-widest mt-px">{t.dark}</span>
         </div>
       )}
     </button>

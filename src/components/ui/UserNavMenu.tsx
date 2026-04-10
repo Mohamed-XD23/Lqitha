@@ -44,7 +44,7 @@ export default function UserNavMenu({ user, dict }: UserNavMenuProps) {
     const positionPanel = () => {
       if (!panelRef.current) return;
       const viewportPadding = 8;
-      // Always measure from the unshifted base state to avoid drift on repeated scroll updates.
+      // Always measure from the unshifted base state to acard drift on repeated scroll updates.
       panelRef.current.style.transform = "translateX(-50%)";
       const rect = panelRef.current.getBoundingClientRect();
 
@@ -78,7 +78,7 @@ export default function UserNavMenu({ user, dict }: UserNavMenuProps) {
         className="relative flex items-center gap-2 focus:outline-none group"
         aria-label="User menu"
       >
-        <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-gold/20 group-hover:border-gold/50 transition-all flex items-center justify-center bg-gold/10">
+        <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-primary/20 group-hover:border-primary/50 transition-all flex items-center justify-center bg-primary/10">
           {user.image ? (
             <NextImage
               src={user.image}
@@ -88,14 +88,14 @@ export default function UserNavMenu({ user, dict }: UserNavMenuProps) {
               className="object-cover"
             />
           ) : (
-            <span className="font-display text-gold text-lg">
-              {initials || <UserIcon className="w-5 h-5 text-gold" />}
+            <span className="font-display text-primary text-lg">
+              {initials || <UserIcon className="w-5 h-5 text-primary" />}
             </span>
           )}
         </div>
         <span
           aria-hidden="true"
-          className={`pointer-events-none absolute -bottom-1 left-1/2 h-1 w-8 -translate-x-1/2 rounded-full bg-gold/35 transition-opacity ${
+          className={`pointer-events-none absolute -bottom-1 left-1/2 h-1 w-8 -translate-x-1/2 rounded-full bg-primary/35 transition-opacity ${
             isOpen ? "opacity-100" : "opacity-0"
           }`}
         />
@@ -104,34 +104,34 @@ export default function UserNavMenu({ user, dict }: UserNavMenuProps) {
       {isOpen && (
         <div
           ref={panelRef}
-          className="absolute left-1/2 mt-3 w-64 max-w-[calc(100vw-1rem)] bg-obsidian border border-gold/15 rounded-sm shadow-2xl z-50 overflow-visible origin-top"
+          className="absolute left-1/2 mt-3 w-64 max-w-[calc(100vw-1rem)] bg-background border border-primary/15 rounded-sm shadow-2xl z-50 overflow-visible origin-top"
           style={{ transform: "translateX(-50%)" }}
         >
-          <div className="p-4 border-b border-gold/10 bg-void/50 text-left ltr:text-left rtl:text-right">
-            <p className="font-interface text-sm font-semibold text-ivory truncate">{user.name}</p>
-            <p className="font-interface text-xs text-slate truncate uppercase tracking-widest mt-0.5">{user.email}</p>
+          <div className="p-4 border-b border-border bg-card/50 text-left ltr:text-left rtl:text-right">
+            <p className="font-interface text-sm font-semibold text-foreground truncate">{user.name}</p>
+            <p className="font-interface text-xs text-muted-foreground truncate uppercase tracking-widest mt-0.5">{user.email}</p>
           </div>
 
           <div className="p-2">
             <Link
               href="/dashboard"
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xs text-slate hover:text-gold hover:bg-gold/5 transition-all group"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xs text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all group"
             >
-              <LayoutDashboard className="w-4 h-4 text-slate group-hover:text-gold" strokeWidth={2} />
+              <LayoutDashboard className="w-4 h-4 text-muted-foreground group-hover:text-primary" strokeWidth={2} />
               <span className="font-interface text-[11px] font-medium tracking-[2px] uppercase">{dict.nav.dashboard}</span>
             </Link>
 
             <Link
               href="/settings"
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xs text-slate hover:text-gold hover:bg-gold/5 transition-all group"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xs text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all group"
             >
-              <Settings className="w-4 h-4 text-slate group-hover:text-gold" strokeWidth={2} />
+              <Settings className="w-4 h-4 text-muted-foreground group-hover:text-primary" strokeWidth={2} />
               <span className="font-interface text-[11px] font-medium tracking-[2px] uppercase">{dict.nav.settings}</span>
             </Link>
 
-            <div className="my-1 border-t border-gold/5" />
+            <div className="my-1 border-t border-primary/5" />
 
             <form action={handleSignOut}>
               <button

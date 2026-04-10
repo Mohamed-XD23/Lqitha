@@ -31,21 +31,21 @@ export default function BrowseClient({ dict, items, totalPages, currentPage, tot
             <path d="M261.42,278v84c0,4.42-3.58,8-8,8H8c-4.42,0-8-3.58-8-8v-174.57l100-100v182.57h153.42c4.42,0,8,3.58,8,8Z" fill="#C4A35A"/>
             <path d="M100,.03L0,100.03V8C0,3.58,3.58,0,8,0h92v.03Z" fill="#7A7A8C"/>
           </svg>
-          <span className="font-fraunces text-3xl font-light tracking-sm text-ivory">LQITHA</span>
+          <span className="font-fraunces text-3xl font-light tracking-sm text-foreground">LQITHA</span>
         </div>
 
         <div className="flex items-center gap-3 mb-4">
-          <div className="h-px w-8 bg-gold/40"></div>
-          <span className="font-interface text-xs font-semibold tracking-sm uppercase text-gold">
+          <div className="h-px w-8 bg-primary/40"></div>
+          <span className="font-interface text-xs font-semibold tracking-sm uppercase text-primary">
             {t.badge}
           </span>
         </div>
-        <h1 className="font-display text-[56px] font-light text-ivory leading-tight mt-2">
+        <h1 className="font-display text-[56px] font-light text-foreground leading-tight mt-2">
           {t.title}
         </h1>
-        <p className="font-interface text-sm text-slate mt-4 tracking-px font-light max-w-lg">
+        <p className="font-interface text-sm text-muted-foreground mt-4 tracking-px font-light max-w-lg">
           {t.subtitle}{" "}
-          <span className="text-gold font-medium">{totalCount} {t.itemsLabel}</span>{" "}
+          <span className="text-primary font-medium">{totalCount} {t.itemsLabel}</span>{" "}
           {t.subtitleSuffix}
         </p>
       </div>
@@ -57,12 +57,12 @@ export default function BrowseClient({ dict, items, totalPages, currentPage, tot
 
       {/* Listings Grid */}
       {items.length === 0 ? (
-        <div className="mt-32 text-center py-20 border border-dashed border-gold/10 rounded-sm">
-          <PackageOpen className="w-12 h-12 text-gold/20 mx-auto mb-6" strokeWidth={1} />
-          <h2 className="font-display text-3xl font-light text-ivory/70">
+        <div className="mt-32 text-center py-20 border border-dashed border-border rounded-sm">
+          <PackageOpen className="w-12 h-12 text-primary/20 mx-auto mb-6" strokeWidth={1} />
+          <h2 className="font-display text-3xl font-light text-foreground/70">
             {t.emptyTitle}
           </h2>
-          <p className="font-interface text-xs text-slate mt-3 tracking-xs uppercase">
+          <p className="font-interface text-xs text-muted-foreground mt-3 tracking-xs uppercase">
             {t.emptySubtitle}
           </p>
         </div>

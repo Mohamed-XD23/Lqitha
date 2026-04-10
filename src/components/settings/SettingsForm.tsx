@@ -97,18 +97,18 @@ export default function SettingsForm({dict , user } : SettingsFormProps) {
   return (
     <div className="space-y-12">
       {/* Profile Section */}
-      <section className="bg-void border border-gold/15 rounded-xl p-8 relative overflow-hidden group">
-        <div className="absolute top-0 left-0 w-1 h-full bg-gold/50 group-hover:bg-gold transition-colors" />
+      <section className="bg-card border border-primary/15 rounded-xl p-8 relative overflow-hidden group">
+        <div className="absolute top-0 left-0 w-1 h-full bg-primary/50 group-hover:bg-primary transition-colors" />
 
         <div className="flex items-center gap-4 mb-8">
-          <div className="w-12 h-12 rounded-full bg-gold/10 text-gold flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
             <User className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="font-display text-2xl text-ivory">
+            <h2 className="font-display text-2xl text-foreground">
               {t.profileInfo}
             </h2>
-            <p className="text-slate text-xs font-interface mt-1">
+            <p className="text-muted-foreground text-xs font-interface mt-1">
               {t.profileSubtitle}
             </p>
           </div>
@@ -116,11 +116,11 @@ export default function SettingsForm({dict , user } : SettingsFormProps) {
 
         <form onSubmit={handleUpdateProfile} className="space-y-6 max-w-md">
           <div className="space-y-4">
-            <label className="block text-xs font-interface uppercase tracking-widest text-slate">
+            <label className="block text-xs font-interface uppercase tracking-widest text-muted-foreground">
               {t.profilePicture}
             </label>
             <div className="flex items-start gap-6">
-              <div className="w-24 h-24 shrink-0 rounded-full bg-obsidian border border-gold/20 overflow-hidden flex items-center justify-center">
+              <div className="w-24 h-24 shrink-0 rounded-full bg-background border border-primary/20 overflow-hidden flex items-center justify-center">
                 {image && typeof image === "string" ? (
                   <Image
                     src={image}
@@ -130,7 +130,7 @@ export default function SettingsForm({dict , user } : SettingsFormProps) {
                     height={96}
                   />
                 ) : (
-                  <User className="w-8 h-8 text-gold/30" />
+                  <User className="w-8 h-8 text-primary/30" />
                 )}
               </div>
               <div className="flex-1">
@@ -144,7 +144,7 @@ export default function SettingsForm({dict , user } : SettingsFormProps) {
           </div>
 
           <div className="space-y-2">
-            <label className="block text-xs font-interface uppercase tracking-widest text-slate">
+            <label className="block text-xs font-interface uppercase tracking-widest text-muted-foreground">
               {t.name}
             </label>
             <input
@@ -152,22 +152,22 @@ export default function SettingsForm({dict , user } : SettingsFormProps) {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full bg-obsidian border border-gold/20 rounded-xs px-4 py-3 text-ivory font-interface text-sm focus:border-gold focus:ring-1 focus:ring-gold outline-none transition-all placeholder:text-slate/40"
+              className="w-full bg-background border border-primary/20 rounded-xs px-4 py-3 text-foreground font-interface text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground/70"
               placeholder="Your full name"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="block text-xs font-interface uppercase tracking-widest text-slate">
+            <label className="block text-xs font-interface uppercase tracking-widest text-muted-foreground">
               {t.email}
             </label>
             <input
               type="text"
               disabled
               value={user.email}
-              className="w-full bg-obsidian/50 border border-gold/10 rounded-xs px-4 py-3 text-slate font-interface text-sm cursor-not-allowed"
+              className="w-full bg-background/50 border border-border rounded-xs px-4 py-3 text-muted-foreground font-interface text-sm cursor-not-allowed"
             />
-            <p className="text-xs text-slate/50 font-interface">
+            <p className="text-xs text-muted-foreground/50 font-interface">
               {t.emailmessage}
             </p>
           </div>
@@ -175,7 +175,7 @@ export default function SettingsForm({dict , user } : SettingsFormProps) {
           <button
             type="submit"
             disabled={isUpdatingProfile}
-            className="flex items-center gap-2 px-6 py-3 bg-gold text-obsidian rounded-xs font-interface text-xs font-bold uppercase tracking-widest hover:bg-ivory transition-all disabled:opacity-50"
+            className="flex items-center gap-2 px-6 py-3 bg-primary text-background rounded-xs font-interface text-xs font-bold uppercase tracking-widest hover:bg-foreground transition-all disabled:opacity-50"
           >
             {isUpdatingProfile ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -188,18 +188,18 @@ export default function SettingsForm({dict , user } : SettingsFormProps) {
       </section>
 
       {/* Security Section */}
-      <section className="bg-void border border-gold/15 rounded-xl p-8 relative overflow-hidden group">
-        <div className="absolute top-0 left-0 w-1 h-full bg-gold/50 group-hover:bg-gold transition-colors" />
+      <section className="bg-card border border-primary/15 rounded-xl p-8 relative overflow-hidden group">
+        <div className="absolute top-0 left-0 w-1 h-full bg-primary/50 group-hover:bg-primary transition-colors" />
 
         <div className="flex items-center gap-4 mb-8">
-          <div className="w-12 h-12 rounded-full bg-gold/10 text-gold flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
             <Lock className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="font-display text-2xl text-ivory">
+            <h2 className="font-display text-2xl text-foreground">
               {t.updatePassword}
             </h2>
-            <p className="text-slate text-xs font-interface mt-1">
+            <p className="text-muted-foreground text-xs font-interface mt-1">
               {t.updatePasswordSubtitle}
             </p>
           </div>
@@ -207,7 +207,7 @@ export default function SettingsForm({dict , user } : SettingsFormProps) {
 
         <form onSubmit={handleChangePassword} className="space-y-6 max-w-md">
           <div className="space-y-2">
-            <label className="block text-xs font-interface uppercase tracking-widest text-slate">
+            <label className="block text-xs font-interface uppercase tracking-widest text-muted-foreground">
               {t.currentPassword}
             </label>
             <input
@@ -215,13 +215,13 @@ export default function SettingsForm({dict , user } : SettingsFormProps) {
               required
               value={currentPass}
               onChange={(e) => setCurrentPass(e.target.value)}
-              className="w-full bg-obsidian border border-gold/20 rounded-xs px-4 py-3 text-ivory font-interface text-sm focus:border-gold focus:ring-1 focus:ring-gold outline-none transition-all placeholder:text-slate/40"
+              className="w-full bg-background border border-primary/20 rounded-xs px-4 py-3 text-foreground font-interface text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground/70"
               placeholder="••••••••"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="block text-xs font-interface uppercase tracking-widest text-slate">
+            <label className="block text-xs font-interface uppercase tracking-widest text-muted-foreground">
               {t.newPassword}
             </label>
             <input
@@ -229,13 +229,13 @@ export default function SettingsForm({dict , user } : SettingsFormProps) {
               required
               value={newPass}
               onChange={(e) => setNewPass(e.target.value)}
-              className="w-full bg-obsidian border border-gold/20 rounded-xs px-4 py-3 text-ivory font-interface text-sm focus:border-gold focus:ring-1 focus:ring-gold outline-none transition-all placeholder:text-slate/40"
+              className="w-full bg-background border border-primary/20 rounded-xs px-4 py-3 text-foreground font-interface text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground/70"
               placeholder="••••••••"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="block text-xs font-interface uppercase tracking-widest text-slate">
+            <label className="block text-xs font-interface uppercase tracking-widest text-muted-foreground">
               {t.confirmNewPassword}
             </label>
             <input
@@ -243,7 +243,7 @@ export default function SettingsForm({dict , user } : SettingsFormProps) {
               required
               value={confirmPass}
               onChange={(e) => setConfirmPass(e.target.value)}
-              className="w-full bg-obsidian border border-gold/20 rounded-xs px-4 py-3 text-ivory font-interface text-sm focus:border-gold focus:ring-1 focus:ring-gold outline-none transition-all placeholder:text-slate/40"
+              className="w-full bg-background border border-primary/20 rounded-xs px-4 py-3 text-foreground font-interface text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground/70"
               placeholder="••••••••"
             />
           </div>
@@ -251,7 +251,7 @@ export default function SettingsForm({dict , user } : SettingsFormProps) {
           <button
             type="submit"
             disabled={isChangingPass}
-            className="flex items-center gap-2 px-6 py-3 bg-gold text-obsidian rounded-xs font-interface text-xs font-bold uppercase tracking-widest hover:bg-ivory transition-all disabled:opacity-50"
+            className="flex items-center gap-2 px-6 py-3 bg-primary text-background rounded-xs font-interface text-xs font-bold uppercase tracking-widest hover:bg-foreground transition-all disabled:opacity-50"
           >
             {isChangingPass ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -264,7 +264,7 @@ export default function SettingsForm({dict , user } : SettingsFormProps) {
       </section>
 
       {/* Danger Zone */}
-      <section className="bg-void border border-red-500/20 rounded-xl p-8 relative overflow-hidden group">
+      <section className="bg-card border border-red-500/20 rounded-xl p-8 relative overflow-hidden group">
         <div className="absolute top-0 left-0 w-1 h-full bg-red-500/50 group-hover:bg-red-500 transition-colors" />
 
         <div className="flex items-center gap-4 mb-8">
@@ -275,14 +275,14 @@ export default function SettingsForm({dict , user } : SettingsFormProps) {
             <h2 className="font-display text-2xl text-red-400">
               {t.deleteAccount}
             </h2>
-            <p className="text-slate text-xs font-interface mt-1">
+            <p className="text-muted-foreground text-xs font-interface mt-1">
               {t.deleteAccountSubtitle}
             </p>
           </div>
         </div>
 
         <div className="space-y-6 max-w-md">
-          <p className="text-sm text-slate font-interface leading-relaxed">
+          <p className="text-sm text-muted-foreground font-interface leading-relaxed">
             <span>{t.paragraph1}</span>
             <span>{t.paragraph2}</span>
           </p>
@@ -295,7 +295,7 @@ export default function SettingsForm({dict , user } : SettingsFormProps) {
               type="text"
               value={deleteConfirm}
               onChange={(e) => setDeleteConfirm(e.target.value)}
-              className="w-full bg-obsidian border border-red-500/20 rounded-xs px-4 py-3 text-ivory font-interface text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none transition-all placeholder:text-red-500/20"
+              className="w-full bg-background border border-red-500/20 rounded-xs px-4 py-3 text-foreground font-interface text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none transition-all placeholder:text-red-500/20"
               placeholder="DELETE"
             />
           </div>

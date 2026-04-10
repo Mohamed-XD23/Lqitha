@@ -408,7 +408,7 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
       case "CLAIM_REJECTED":
         return <div className="w-8 h-8 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center shrink-0"><Circle className="w-4 h-4" /></div>;
       default:
-        return <div className="w-8 h-8 rounded-full bg-gold/20 text-gold flex items-center justify-center shrink-0"><Bell className="w-4 h-4" /></div>;
+        return <div className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center shrink-0"><Bell className="w-4 h-4" /></div>;
     }
   };
 
@@ -416,18 +416,18 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 text-slate hover:text-gold transition-colors"
+        className="relative p-2 text-muted-foreground hover:text-primary transition-colors"
         aria-label={t.notifications}
       >
         <Bell className="w-5 h-5" strokeWidth={2} />
         <span
           aria-hidden="true"
-          className={`pointer-events-none absolute -bottom-1 left-1/2 h-1 w-8 -translate-x-1/2 rounded-full bg-gold/35 transition-opacity ${
+          className={`pointer-events-none absolute -bottom-1 left-1/2 h-1 w-8 -translate-x-1/2 rounded-full bg-primary/35 transition-opacity ${
             isOpen ? "opacity-100" : "opacity-0"
           }`}
         />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 min-w-4.5 h-4.5 px-1 bg-red-500 rounded-full border border-obsidian flex items-center justify-center text-xs font-bold text-white font-interface ltr:-right-1 rtl:-left-1">
+          <span className="absolute -top-1 -right-1 min-w-4.5 h-4.5 px-1 bg-red-500 rounded-full border border-background flex items-center justify-center text-xs font-bold text-white font-interface ltr:-right-1 rtl:-left-1">
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
@@ -436,15 +436,15 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
       {isOpen && (
         <div
           ref={panelRef}
-          className="absolute left-1/2 mt-2 w-[min(20rem,calc(90vw-1rem))] md:w-80 md:max-w-[calc(100vw-1rem)] bg-obsidian border border-gold/15 rounded-sm shadow-2xl z-50 overflow-visible origin-top transition-all"
+          className="absolute left-1/2 mt-2 w-[min(20rem,calc(90vw-1rem))] md:w-80 md:max-w-[calc(100vw-1rem)] bg-background border border-primary/15 rounded-sm shadow-2xl z-50 overflow-visible origin-top transition-all"
           style={{ transform: "translateX(-50%)" }}
         >
-          <div className="p-4 border-b border-gold/10 flex justify-between items-center bg-void/50">
-            <h3 className="font-interface text-sm font-semibold text-ivory tracking-widest uppercase">{t.notifications}</h3>
+          <div className="p-4 border-b border-border flex justify-between items-center bg-card/50">
+            <h3 className="font-interface text-sm font-semibold text-foreground tracking-widest uppercase">{t.notifications}</h3>
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllRead}
-                className="text-xs text-gold hover:text-ivory transition-colors font-interface"
+                className="text-xs text-primary hover:text-foreground transition-colors font-interface"
               >
                 {t.markAllAsRead}
               </button>
@@ -453,11 +453,11 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
 
           <div className="max-h-[min(60vh,400px)] overflow-y-auto">
             {isLoading ? (
-              <div className="p-6 text-center text-slate text-xs font-interface animate-pulse">
+              <div className="p-6 text-center text-muted-foreground text-xs font-interface animate-pulse">
                 {t.loadingNotifications}
               </div>
             ) : notifications.length === 0 ? (
-              <div className="p-6 text-center text-slate text-xs font-interface">
+              <div className="p-6 text-center text-muted-foreground text-xs font-interface">
                 {t.noNotifications}
               </div>
             ) : (
@@ -466,24 +466,24 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
                   <div
                     key={notif.id}
                     onClick={() => handleNotificationClick(notif)}
-                    className={`p-4 border-b border-gold/5 cursor-pointer hover:bg-gold/5 transition-colors flex gap-3 ${
-                      !notif.isRead ? "bg-gold/5" : ""
+                    className={`p-4 border-b border-primary/5 cursor-pointer hover:bg-primary/5 transition-colors flex gap-3 ${
+                      !notif.isRead ? "bg-primary/5" : ""
                     }`}
                   >
                     {getTypeIcon(notif.type)}
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-start gap-2">
-                        <p className={`text-sm font-interface truncate ${!notif.isRead ? "text-ivory font-medium" : "text-slate"}`}>
+                        <p className={`text-sm font-interface truncate ${!notif.isRead ? "text-foreground font-medium" : "text-muted-foreground"}`}>
                           {notif.title}
                         </p>
                         {!notif.isRead && (
-                          <div className="w-1.5 h-1.5 rounded-full bg-gold mt-1.5 shrink-0" />
+                          <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
                         )}
                       </div>
-                      <p className="text-xs text-slate mt-1 line-clamp-2 leading-relaxed">
+                      <p className="text-xs text-muted-foreground mt-1 line-clamp-2 leading-relaxed">
                         {notif.message}
                       </p>
-                      <p className="text-xs text-slate/60 mt-2 uppercase tracking-widest font-interface">
+                      <p className="text-xs text-muted-foreground/60 mt-2 uppercase tracking-widest font-interface">
                         {formatDate(notif.createdAt)}
                       </p>
                     </div>

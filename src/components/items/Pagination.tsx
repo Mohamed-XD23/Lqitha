@@ -27,7 +27,7 @@ export default function Pagination({
   }
 
   const btnClass =
-    "font-interface text-xs font-semibold tracking-[3px] uppercase px-8 py-3.5 rounded-xs cursor-pointer bg-transparent text-gold border border-gold/30 transition-all duration-300 hover:bg-gold/10 hover:border-gold disabled:opacity-20 disabled:cursor-not-allowed flex items-center gap-3";
+    "font-interface text-xs font-semibold tracking-[3px] uppercase px-8 py-3.5 rounded-xs cursor-pointer bg-transparent text-primary border border-primary/30 transition-all duration-300 hover:bg-primary/10 hover:border-primary disabled:opacity-20 disabled:cursor-not-allowed flex items-center gap-3";
 
   return (
     <div className="mt-20 flex items-center justify-center gap-10">
@@ -40,9 +40,9 @@ export default function Pagination({
         {t.prev}
       </button>
 
-      <div className="font-interface text-xs font-bold tracking-sm text-slate uppercase">
+      <div className="font-interface text-xs font-bold tracking-sm text-muted-foreground uppercase">
         <span className="flex items-center gap-4">
-          <span className="text-ivory">{currentPage}</span>
+          <span className="text-foreground">{currentPage}</span>
           <span className="opacity-30">/</span>
           <span>{totalPages}</span>
         </span>

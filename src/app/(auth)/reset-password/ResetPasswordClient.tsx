@@ -45,19 +45,19 @@ function ResetForm({ dict }: Props) {
 
   if (!token) {
     return (
-      <div className="bg-void border border-red-500/20 rounded-sm p-12 text-center shadow-2xl">
+      <div className="bg-card border border-red-500/20 rounded-sm p-12 text-center shadow-2xl">
         <div className="w-22 h-22 rounded-full bg-red-500/5 flex items-center justify-center mx-auto mb-8 border border-red-500/20">
           <AlertTriangle className="w-10 h-10 text-red-400" />
         </div>
-        <h2 className="font-display text-3xl text-ivory mb-4">
+        <h2 className="font-display text-3xl text-foreground mb-4">
           {t.invalidToken}
         </h2>
-        <p className="font-interface text-sm text-slate mb-8 leading-relaxed">
+        <p className="font-interface text-sm text-muted-foreground mb-8 leading-relaxed">
           {t.invalidTokenDesc}
         </p>
         <Link
           href="/forgot-password"
-          className="font-interface text-xs font-bold tracking-[3px] uppercase text-gold hover:text-ivory transition-colors"
+          className="font-interface text-xs font-bold tracking-[3px] uppercase text-primary hover:text-foreground transition-colors"
         >
           {t.requestRenewal}
         </Link>
@@ -66,35 +66,35 @@ function ResetForm({ dict }: Props) {
   }
 
   return (
-    <div className="bg-void border border-gold/15 rounded-sm p-10 shadow-2xl relative group overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-gold/30 to-transparent" />
+    <div className="bg-card border border-primary/15 rounded-sm p-10 shadow-2xl relative group overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-primary/30 to-transparent" />
 
       {success ? (
         <div className="text-center py-6">
           <div className="w-20 h-20 rounded-full bg-[#30D158]/5 border border-[#30D158]/20 flex items-center justify-center mx-auto mb-10 transition-transform duration-1000 group-hover:scale-105">
             <ShieldCheck className="w-10 h-10 text-[#30D158] animate-pulse" />
           </div>
-          <h2 className="font-display text-4xl font-light text-ivory mb-4">
+          <h2 className="font-display text-4xl font-light text-foreground mb-4">
             {t.passwordResetSuccess}
           </h2>
-          <p className="font-interface text-sm text-slate leading-relaxed">
+          <p className="font-interface text-sm text-muted-foreground leading-relaxed">
             {t.redirecting}
           </p>
         </div>
       ) : (
         <>
           <div className="mb-12">
-            <h2 className="font-display text-4xl font-light text-ivory">
+            <h2 className="font-display text-4xl font-light text-foreground">
               {t.finalStep}
             </h2>
-            <p className="font-interface text-xs text-slate mt-2 tracking-widest uppercase opacity-60">
+            <p className="font-interface text-xs text-muted-foreground mt-2 tracking-widest uppercase opacity-60">
               {t.newCredentials}
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="space-y-3">
-              <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface px-1">
+              <label className="block text-xs font-bold tracking-[3px] uppercase text-muted-foreground font-interface px-1">
                 {t.newPassword}
               </label>
               <div className="relative group/input">
@@ -105,12 +105,12 @@ function ResetForm({ dict }: Props) {
                   required
                   minLength={8}
                   placeholder="••••••••"
-                  className="w-full bg-obsidian border border-gold/20 rounded-xs pl-5 pr-14 py-4 text-sm text-ivory placeholder:text-slate/20 outline-none focus:border-gold/60 transition-all font-interface"
+                  className="w-full bg-background border border-primary/20 rounded-xs pl-5 pr-14 py-4 text-sm text-foreground placeholder:text-muted-foreground/70 outline-none focus:border-primary/60 transition-all font-interface"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPass(!showPass)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate/40 hover:text-gold transition-colors p-1"
+                  className="absolute right-4 top-1/2 -translate-foreground-y-1/2 text-muted-foreground/40 hover:text-primary transition-colors p-1"
                 >
                   {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -118,7 +118,7 @@ function ResetForm({ dict }: Props) {
             </div>
 
             <div className="space-y-3">
-              <label className="block text-xs font-bold tracking-[3px] uppercase text-slate font-interface px-1">
+              <label className="block text-xs font-bold tracking-[3px] uppercase text-muted-foreground font-interface px-1">
                 {t.confirmPassword}
               </label>
               <div className="relative group/input">
@@ -128,16 +128,16 @@ function ResetForm({ dict }: Props) {
                   onChange={(e) => setConfirm(e.target.value)}
                   required
                   placeholder="••••••••"
-                  className={`w-full bg-obsidian border rounded-xs pl-5 pr-14 py-4 text-sm text-ivory placeholder:text-slate/20 outline-none transition-all font-interface ${
+                  className={`w-full bg-background border rounded-xs pl-5 pr-14 py-4 text-sm text-foreground placeholder:text-muted-foreground/70 outline-none transition-all font-interface ${
                     error === t.passwordsNoMatch
                       ? "border-red-500/40 focus:border-red-500/60"
-                      : "border-gold/20 focus:border-gold/60"
+                      : "border-primary/20 focus:border-primary/60"
                   }`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirm(!showConfirm)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate/40 hover:text-gold transition-colors p-1"
+                  className="absolute right-4 top-1/2 -translate-foreground-y-1/2 text-muted-foreground/40 hover:text-primary transition-colors p-1"
                 >
                   {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -155,7 +155,7 @@ function ResetForm({ dict }: Props) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gold py-5 rounded-xs text-obsidian font-interface text-xs font-bold uppercase tracking-sm hover:bg-ivory transition-all shadow-xl shadow-gold/5 disabled:opacity-50 disabled:cursor-not-allowed min-h-[58px]"
+              className="w-full bg-primary py-5 rounded-xs text-background font-interface text-xs font-bold uppercase tracking-sm hover:bg-foreground transition-all shadow-xl shadow-primary/5 disabled:opacity-50 disabled:cursor-not-allowed min-h-[58px]"
             >
               {loading ? (
                 <div className="scale-[1.2] origin-center">
@@ -177,20 +177,20 @@ function ResetForm({ dict }: Props) {
 
 export default function ResetPasswordClient({ dict }: Props) {
   return (
-    <div className="bg-obsidian min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-full h-px bg-linear-to-r from-transparent via-gold/20 to-transparent" />
-      <div className="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-gold/5 rounded-full blur-[150px] pointer-events-none" />
+    <div className="bg-background min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-full h-px bg-linear-to-r from-transparent via-primary/20 to-transparent" />
+      <div className="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="w-full max-w-[460px] relative z-10">
         <div className="text-center mb-14">
           <div className="inline-flex items-center gap-4 mb-6">
-            <div className="h-px w-8 bg-gold/30"></div>
-            <span className="font-interface text-xs font-bold tracking-[5px] uppercase text-gold">
+            <div className="h-px w-8 bg-primary/30"></div>
+            <span className="font-interface text-xs font-bold tracking-[5px] uppercase text-primary">
               {dict.auth.recoveryProtocol}
             </span>
-            <div className="h-px w-8 bg-gold/30"></div>
+            <div className="h-px w-8 bg-primary/30"></div>
           </div>
-          <h1 className="font-fraunces text-5xl font-light text-ivory leading-tight">
+          <h1 className="font-fraunces text-5xl font-light text-foreground leading-tight">
             LQITHA
           </h1>
         </div>
@@ -198,8 +198,8 @@ export default function ResetPasswordClient({ dict }: Props) {
         <Suspense
           fallback={
             <div className="text-center py-20 flex flex-col items-center gap-4">
-              <div className="w-12 h-12 border-2 border-gold/20 border-t-gold rounded-full animate-spin" />
-              <p className="font-interface text-xs uppercase tracking-[3px] text-slate">
+              <div className="w-12 h-12 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
+              <p className="font-interface text-xs uppercase tracking-[3px] text-muted-foreground">
                 {dict.common.loading}
               </p>
             </div>

@@ -23,7 +23,7 @@ export default async function BrowsePage({ searchParams }: BrowsePageProps) {
   });
 
   return (
-    <div className="bg-obsidian min-h-screen">
+    <div className="bg-background min-h-screen">
       <div className="mx-auto max-w-6xl px-6 py-20">
         <BrowseClient
           dict={dict}

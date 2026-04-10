@@ -47,7 +47,7 @@ export default async function RootLayout({
     locale === "ar" ? "var(--font-cairo)" : "var(--font-outfit)";
 
   return (
-    <html dir={dir} lang={locale}>
+    <html dir={dir} lang={locale} suppressHydrationWarning>
       <body
         className={`${outfit.variable} ${fraunces.variable} ${cairo.variable} flex min-h-screen flex-col`}
         style={
@@ -60,14 +60,14 @@ export default async function RootLayout({
           } as React.CSSProperties
         }
       >
-        <ChatProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            themes={["dark", ]}
-            enableSystem={false}
-            disableTransitionOnChange
-          >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          themes={["dark", "light"]}
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          <ChatProvider>
             <Navbar />
             <main className="flex-1">{children}</main>
             <Footer />
@@ -97,9 +97,9 @@ export default async function RootLayout({
                   cancelButton: "app-toast__cancel",
                 },
               }}
-           />
-          </ThemeProvider>
-        </ChatProvider>
+            />
+          </ChatProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
