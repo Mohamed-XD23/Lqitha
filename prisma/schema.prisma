@@ -25,6 +25,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   notifications Notification[]
+  userSession   UserSession?
   createdAt     DateTime       @default(now())
 }
 
@@ -147,4 +148,13 @@ enum NotificationType {
   CLAIM_REJECTED
   NEW_MESSAGE
   SYSTEM
+}
+
+model UserSession {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastSeen  DateTime @default(now())
+  isOnline  Boolean  @default(true)
+  createdAt DateTime @default(now())
 }

@@ -693,7 +693,13 @@
     "notifications": "الإشعارات",
     "markAllAsRead": "تحديد الكل كمقروء",
     "loadingNotifications": "جاري تحميل الإشعارات...",
-    "noNotifications": "لا توجد إشعارات حتى الآن"
+    "noNotifications": "لا توجد إشعارات حتى الآن",
+    "claimsTab": "المطالبات",
+    "messagesTab": "الرسائل",
+    "noMessages": "لا توجد رسائل حتى الآن",
+    "loadingMessages": "جاري تحميل الرسائل...",
+    "online": "متصل",
+    "offline": "غير متصل"
   },
   "notifications": {
     "error": {

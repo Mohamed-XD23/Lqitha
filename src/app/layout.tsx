@@ -8,7 +8,11 @@ import Footer from "./components/Footer";
 import { getLocale } from "@/lib/dictionary";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import HeartbeatProvider from "@/components/providers/HeartbeatProvider";
+import StreamChatProvider from "@/components/providers/StreamChatProvider";
 import { getDictionary } from "@/lib/dictionary";
+import db from "@/lib/db";
+import { auth } from "@/lib/auth";
 import "./globals.css";
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -40,6 +44,8 @@ export default async function RootLayout({
   const dict = await getDictionary();
   const locale = await getLocale();
   const dir = locale === "ar" ? "rtl" : "ltr";
+  const session = await auth();
+  const dbUser = session?.user?.id ? await db.user.findUnique({ where: { id: session.user.id } }) : null;
 
   const fontDisplay =
     locale === "ar" ? "var(--font-cairo)" : "var(--font-fraunces)";
@@ -67,38 +73,46 @@ export default async function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <ChatProvider>
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-            <ChatSidebar dict={dict} />
-            <Toaster
-              position="bottom-right"
-              closeButton
-              visibleToasts={4}
-              gap={12}
-              offset={20}
-              toastOptions={{
-                duration: 4000,
-                unstyled: true,
-                classNames: {
-                  toast: "app-toast",
-                  title: "app-toast__title",
-                  description: "app-toast__description",
-                  icon: "app-toast__icon",
-                  content: "app-toast__content",
-                  success: "app-toast--success",
-                  error: "app-toast--error",
-                  info: "app-toast--info",
-                  warning: "app-toast--warning",
-                  loading: "app-toast--loading",
-                  closeButton: "app-toast__close",
-                  actionButton: "app-toast__action",
-                  cancelButton: "app-toast__cancel",
-                },
-              }}
-            />
-          </ChatProvider>
+          <HeartbeatProvider>
+            <StreamChatProvider 
+              userId={session?.user?.id ?? ""} 
+              userName={dbUser?.name ?? session?.user?.name}
+              userImage={dbUser?.image ?? session?.user?.image}
+            >
+              <ChatProvider>
+                <Navbar />
+                <main className="flex-1">{children}</main>
+                <Footer />
+                <ChatSidebar dict={dict} />
+                <Toaster
+                  position="bottom-right"
+                  closeButton
+                  visibleToasts={4}
+                  gap={12}
+                  offset={20}
+                  toastOptions={{
+                    duration: 4000,
+                    unstyled: true,
+                    classNames: {
+                      toast: "app-toast",
+                      title: "app-toast__title",
+                      description: "app-toast__description",
+                      icon: "app-toast__icon",
+                      content: "app-toast__content",
+                      success: "app-toast--success",
+                      error: "app-toast--error",
+                      info: "app-toast--info",
+                      warning: "app-toast--warning",
+                      loading: "app-toast--loading",
+                      closeButton: "app-toast__close",
+                      actionButton: "app-toast__action",
+                      cancelButton: "app-toast__cancel",
+                    },
+                  }}
+                />
+              </ChatProvider>
+            </StreamChatProvider>
+          </HeartbeatProvider>
         </ThemeProvider>
       </body>
     </html>

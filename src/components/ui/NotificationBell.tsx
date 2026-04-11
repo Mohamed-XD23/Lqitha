@@ -1,12 +1,17 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Bell, Check, Circle } from "lucide-react";
+import { Bell, Check, CheckCheck, Circle, MessageSquare } from "lucide-react";
 import { getNotifications, markAsRead, markAllAsRead } from "@/actions/notification.actions";
+import { getMessageNotifications, type MessageNotif } from "@/actions/message-notifications.actions";
 import { formatDate } from "@/lib/utils/date";
 import { useRouter } from "next/navigation";
 import { pusherClient } from "@/lib/pusher.client";
+import { useChatContext } from "@/context/ChatContext";
+import { useStreamChat } from "@/components/providers/StreamChatProvider";
 import type { Dictionary } from "@/lib/dictionary.types";
+import { Event } from "stream-chat";
+import Image from "next/image";
 
 // Since we cannot use Prisma types reliably on frontend if it exports node modules,
 // we define local types based on Prisma schema:
@@ -25,7 +30,7 @@ function fillTemplate(template: string, placeholder: string, value: string) {
 }
 
 function extractItemTitleFromBrokenMessage(message: string) {
-  const matches = [...message.matchAll(/["']([^"']+)["']/g)];
+  const matches = [...message.matchAll(/[\"']([^\"']+)[\"']/g)];
   const candidate = matches.at(-1)?.[1]?.trim();
 
   if (!candidate) return null;
@@ -40,26 +45,31 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
   const t = dict.ui;
   const toast = dict.Toast;
   const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<"claims" | "messages">("claims");
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Message notifications state
+  const [messageNotifs, setMessageNotifs] = useState<MessageNotif[]>([]);
+  const [messageUnreadCount, setMessageUnreadCount] = useState(0);
+  const [isLoadingMessages, setIsLoadingMessages] = useState(true);
+
   const dropdownRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const hasFetchedNotificationsRef = useRef(false);
+  const hasFetchedMessagesRef = useRef(false);
   const unreadCountRef = useRef(0);
+  const messageUnreadCountRef = useRef(0);
   const router = useRouter();
+  const { openChat } = useChatContext();
+  const { client: streamClient } = useStreamChat();
 
   const normalizeNotification = useCallback((notif: Notification): Notification => {
+    const itemTitle = extractItemTitleFromBrokenMessage(notif.message);
+
     if (notif.type === "CLAIM_ACCEPTED") {
-      const isBroken =
-        notif.title === toast.claimNotificationTitle ||
-        notif.message.includes("undefined") ||
-        notif.message.includes("{itemTitle}");
-
-      if (!isBroken) return notif;
-
-      const itemTitle = extractItemTitleFromBrokenMessage(notif.message);
       return {
         ...notif,
         title: toast.claimAccNotificationTitle,
@@ -74,14 +84,6 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
     }
 
     if (notif.type === "CLAIM_REJECTED") {
-      const isBroken =
-        notif.title === toast.claimNotificationTitle ||
-        notif.message.includes("undefined") ||
-        notif.message.includes("{itemTitle}");
-
-      if (!isBroken) return notif;
-
-      const itemTitle = extractItemTitleFromBrokenMessage(notif.message);
       return {
         ...notif,
         title: toast.claimRejNotificationTitle,
@@ -95,24 +97,24 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
       };
     }
 
-    if (notif.type === "CLAIM_NEW" && notif.message.includes("{itemTitle}")) {
-      const itemTitle = extractItemTitleFromBrokenMessage(notif.message);
-
-      if (!itemTitle) return notif;
-
+    if (notif.type === "CLAIM_NEW") {
       return {
         ...notif,
         title: toast.claimNotificationTitle,
-        message: fillTemplate(
-          toast.claimNotificationMsg,
-          "{itemTitle}",
-          itemTitle,
-        ),
+        message: itemTitle
+          ? fillTemplate(
+              toast.claimNotificationMsg,
+              "{itemTitle}",
+              itemTitle,
+            )
+          : toast.claimNotificationMsg,
       };
     }
 
     return notif;
   }, [toast]);
+
+  // ─── Audio helpers ───────────────────────────────────────────────
 
   const getAudioContextCtor = () => {
     if (typeof window === "undefined") return null;
@@ -134,7 +136,8 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
     }
   }, []);
 
-  const playNotificationSound = useCallback(async () => {
+  /** Claims notification sound — 3-note ascending chime */
+  const playClaimNotificationSound = useCallback(async () => {
     try {
       const AudioContextCtor = getAudioContextCtor();
       if (!AudioContextCtor) return;
@@ -238,9 +241,80 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
         airOscillator.stop(noteEnd + 0.03);
       });
     } catch (error) {
-      console.error("Failed to play notification sound:", error);
+      console.error("Failed to play claim notification sound:", error);
     }
   }, []);
+
+  /** Message notification sound — gentle single-tone "pop" */
+  const playMessageNotificationSound = useCallback(async () => {
+    try {
+      const AudioContextCtor = getAudioContextCtor();
+      if (!AudioContextCtor) return;
+
+      if (!audioContextRef.current) {
+        audioContextRef.current = new AudioContextCtor();
+      }
+
+      const ctx = audioContextRef.current;
+
+      if (ctx.state === "suspended") {
+        await ctx.resume();
+      }
+
+      if (ctx.state !== "running") return;
+
+      const now = ctx.currentTime;
+
+      // A soft, warm pop — single tone with subtle harmonic
+      const masterGain = ctx.createGain();
+      masterGain.gain.setValueAtTime(0.0001, now);
+      masterGain.gain.exponentialRampToValueAtTime(0.28, now + 0.02);
+      masterGain.gain.exponentialRampToValueAtTime(0.12, now + 0.15);
+      masterGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(1800, now);
+      filter.Q.setValueAtTime(0.7, now);
+
+      masterGain.connect(filter);
+      filter.connect(ctx.destination);
+
+      // Primary tone — warm sine
+      const primary = ctx.createOscillator();
+      primary.type = "sine";
+      primary.frequency.setValueAtTime(880, now);
+      primary.frequency.exponentialRampToValueAtTime(660, now + 0.3);
+
+      const primaryGain = ctx.createGain();
+      primaryGain.gain.setValueAtTime(0.5, now);
+      primaryGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
+
+      primary.connect(primaryGain);
+      primaryGain.connect(masterGain);
+      primary.start(now);
+      primary.stop(now + 0.55);
+
+      // Subtle harmonic overtone
+      const harmonic = ctx.createOscillator();
+      harmonic.type = "sine";
+      harmonic.frequency.setValueAtTime(1320, now);
+      harmonic.frequency.exponentialRampToValueAtTime(990, now + 0.2);
+
+      const harmonicGain = ctx.createGain();
+      harmonicGain.gain.setValueAtTime(0.15, now);
+      harmonicGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
+
+      harmonic.connect(harmonicGain);
+      harmonicGain.connect(masterGain);
+      harmonic.start(now);
+      harmonic.stop(now + 0.4);
+    } catch (error) {
+      console.error("Failed to play message notification sound:", error);
+    }
+  }, []);
+
+  // ─── Fetch helpers ───────────────────────────────────────────────
 
   const fetchNotifications = useCallback(async () => {
     try {
@@ -252,7 +326,7 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
           hasFetchedNotificationsRef.current &&
           nextUnreadCount > unreadCountRef.current
         ) {
-          void playNotificationSound();
+          void playClaimNotificationSound();
         }
 
         setNotifications(normalizedNotifications);
@@ -265,10 +339,37 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
     } finally {
       setIsLoading(false);
     }
-  }, [normalizeNotification, playNotificationSound]);
+  }, [normalizeNotification, playClaimNotificationSound]);
+
+  const fetchMessages = useCallback(async () => {
+    try {
+      const data = await getMessageNotifications();
+      const nextMessageUnread = data.unreadCount || 0;
+
+      if (
+        hasFetchedMessagesRef.current &&
+        nextMessageUnread > messageUnreadCountRef.current
+      ) {
+        void playMessageNotificationSound();
+      }
+
+      setMessageNotifs(data.messages);
+      setMessageUnreadCount(nextMessageUnread);
+      messageUnreadCountRef.current = nextMessageUnread;
+      hasFetchedMessagesRef.current = true;
+    } catch (error) {
+      console.error("Failed to fetch message notifications:", error);
+    } finally {
+      setIsLoadingMessages(false);
+    }
+  }, [playMessageNotificationSound]);
+
+  // ─── Effects ─────────────────────────────────────────────────────
 
   useEffect(() => {
     void fetchNotifications();
+    void fetchMessages();
+
     const unlockAudio = () => {
       primeAudio();
     };
@@ -279,15 +380,18 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
 
     const intervalId = window.setInterval(() => {
       void fetchNotifications();
+      void fetchMessages();
     }, 10000);
 
     const handleFocus = () => {
       void fetchNotifications();
+      void fetchMessages();
     };
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
         void fetchNotifications();
+        void fetchMessages();
       }
     };
 
@@ -306,11 +410,42 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
             return nextCount;
           });
           hasFetchedNotificationsRef.current = true;
-          void playNotificationSound();
+          void playClaimNotificationSound();
         });
       } catch (error) {
         console.error("Failed to subscribe to notifications channel:", error);
       }
+    }
+
+    // ─── Stream Chat Real-time Synchronization ───
+    if (streamClient) {
+      const handleEvent = (event: Event) => {
+        // Refresh messages for relevant events
+        const relevantEvents = [
+          "message.new",
+          "notification.message_new",
+          "message.read",
+          "message.updated",
+          "message.deleted",
+          "notification.mark_read"
+        ];
+
+        if (relevantEvents.includes(event.type!)) {
+          // Add a small delay for server consistency if needed, 
+          // but "no gap" suggests we should try immediately.
+          void fetchMessages();
+          
+          // Play sound for new incoming messages only
+          if (event.type === "notification.message_new" || (event.type === "message.new" && event.user?.id !== userId)) {
+            void playMessageNotificationSound();
+          }
+        }
+      };
+
+      streamClient.on(handleEvent);
+      return () => {
+        streamClient.off(handleEvent);
+      };
     }
 
     const handleClickOutside = (event: MouseEvent) => {
@@ -332,7 +467,7 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
         pusherClient.unsubscribe(`user-${userId}`);
       }
     };
-  }, [userId, fetchNotifications, normalizeNotification, playNotificationSound, primeAudio]);
+  }, [userId, fetchNotifications, fetchMessages, normalizeNotification, playClaimNotificationSound, playMessageNotificationSound, primeAudio, streamClient]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -365,6 +500,8 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
     };
   }, [isOpen]);
 
+  // ─── Handlers ────────────────────────────────────────────────────
+
   const handleNotificationClick = async (notif: Notification) => {
     if (!notif.isRead) {
       try {
@@ -388,16 +525,34 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
     }
   };
 
-  const handleMarkAllRead = async () => {
-    try {
-      await markAllAsRead();
-      setUnreadCount(0);
-      unreadCountRef.current = 0;
-      setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
-    } catch (error) {
-      console.error("Failed to mark all notifications as read:", error);
-    }
+  const handleMessageClick = (msg: MessageNotif) => {
+    setIsOpen(false);
+    openChat({
+      channelId: msg.channelId,
+      userId,
+      userName: msg.otherUserName,
+      userImage: msg.otherUserImage,
+    });
   };
+
+  const handleMarkAllRead = async () => {
+    if (activeTab === "claims") {
+      try {
+        await markAllAsRead();
+        setUnreadCount(0);
+        unreadCountRef.current = 0;
+        setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+      } catch (error) {
+        console.error("Failed to mark all notifications as read:", error);
+      }
+    }
+    // For messages, there's no server-side "mark all read" since it's Stream Chat
+    // Users should open individual conversations to mark them as read
+  };
+
+  // ─── Render helpers ──────────────────────────────────────────────
+
+  const totalUnread = unreadCount + messageUnreadCount;
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -411,6 +566,27 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
         return <div className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center shrink-0"><Bell className="w-4 h-4" /></div>;
     }
   };
+
+  const formatMessageTime = (timestamp: string) => {
+    try {
+      const date = new Date(timestamp);
+      const now = new Date();
+      const diffMs = now.getTime() - date.getTime();
+      const diffMins = Math.floor(diffMs / 60000);
+      const diffHours = Math.floor(diffMs / 3600000);
+      const diffDays = Math.floor(diffMs / 86400000);
+
+      if (diffMins < 1) return "now";
+      if (diffMins < 60) return `${diffMins}m`;
+      if (diffHours < 24) return `${diffHours}h`;
+      if (diffDays < 7) return `${diffDays}d`;
+      return date.toLocaleDateString();
+    } catch {
+      return "";
+    }
+  };
+
+  // ─── JSX ─────────────────────────────────────────────────────────
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -426,9 +602,9 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
             isOpen ? "opacity-100" : "opacity-0"
           }`}
         />
-        {unreadCount > 0 && (
+        {totalUnread > 0 && (
           <span className="absolute -top-1 -right-1 min-w-4.5 h-4.5 px-1 bg-red-500 rounded-full border border-background flex items-center justify-center text-xs font-bold text-white font-interface ltr:-right-1 rtl:-left-1">
-            {unreadCount > 9 ? "9+" : unreadCount}
+            {totalUnread > 9 ? "9+" : totalUnread}
           </span>
         )}
       </button>
@@ -436,60 +612,200 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
       {isOpen && (
         <div
           ref={panelRef}
-          className="absolute left-1/2 mt-2 w-[min(20rem,calc(90vw-1rem))] md:w-80 md:max-w-[calc(100vw-1rem)] bg-background border border-primary/15 rounded-sm shadow-2xl z-50 overflow-visible origin-top transition-all"
+          className="absolute left-1/2 mt-2 w-[min(22rem,calc(90vw-1rem))] md:w-88 md:max-w-[calc(100vw-1rem)] bg-background border border-primary/15 rounded-sm shadow-2xl z-50 overflow-visible origin-top transition-all"
           style={{ transform: "translateX(-50%)" }}
         >
+          {/* Header */}
           <div className="p-4 border-b border-border flex justify-between items-center bg-card/50">
             <h3 className="font-interface text-sm font-semibold text-foreground tracking-widest uppercase">{t.notifications}</h3>
-            {unreadCount > 0 && (
-              <button
-                onClick={handleMarkAllRead}
-                className="text-xs text-primary hover:text-foreground transition-colors font-interface"
-              >
-                {t.markAllAsRead}
-              </button>
-            )}
           </div>
 
+          {/* Tabs */}
+          <div className="flex border-b border-border">
+            <button
+              onClick={() => setActiveTab("claims")}
+              className={`flex-1 py-2.5 text-xs font-interface font-medium tracking-widest uppercase transition-colors relative ${
+                activeTab === "claims"
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <span className="flex items-center justify-center gap-2">
+                {t.claimsTab}
+                {unreadCount > 0 && (
+                  <span className="min-w-4 h-4 px-1 bg-red-500 rounded-full flex items-center justify-center text-[10px] font-bold text-white leading-none">
+                    {unreadCount > 9 ? "9+" : unreadCount}
+                  </span>
+                )}
+              </span>
+              {activeTab === "claims" && (
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-0.5 bg-primary rounded-full" />
+              )}
+            </button>
+            <button
+              onClick={() => setActiveTab("messages")}
+              className={`flex-1 py-2.5 text-xs font-interface font-medium tracking-widest uppercase transition-colors relative ${
+                activeTab === "messages"
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <span className="flex items-center justify-center gap-2">
+                {t.messagesTab}
+                {messageUnreadCount > 0 && (
+                  <span className="min-w-4 h-4 px-1 bg-blue-500 rounded-full flex items-center justify-center text-[10px] font-bold text-white leading-none">
+                    {messageUnreadCount > 9 ? "9+" : messageUnreadCount}
+                  </span>
+                )}
+              </span>
+              {activeTab === "messages" && (
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-0.5 bg-primary rounded-full" />
+              )}
+            </button>
+          </div>
+
+          {/* Content */}
           <div className="max-h-[min(60vh,400px)] overflow-y-auto">
-            {isLoading ? (
-              <div className="p-6 text-center text-muted-foreground text-xs font-interface animate-pulse">
-                {t.loadingNotifications}
-              </div>
-            ) : notifications.length === 0 ? (
-              <div className="p-6 text-center text-muted-foreground text-xs font-interface">
-                {t.noNotifications}
-              </div>
-            ) : (
-              <div className="flex flex-col">
-                {notifications.map((notif) => (
-                  <div
-                    key={notif.id}
-                    onClick={() => handleNotificationClick(notif)}
-                    className={`p-4 border-b border-primary/5 cursor-pointer hover:bg-primary/5 transition-colors flex gap-3 ${
-                      !notif.isRead ? "bg-primary/5" : ""
-                    }`}
-                  >
-                    {getTypeIcon(notif.type)}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex justify-between items-start gap-2">
-                        <p className={`text-sm font-interface truncate ${!notif.isRead ? "text-foreground font-medium" : "text-muted-foreground"}`}>
-                          {notif.title}
-                        </p>
-                        {!notif.isRead && (
-                          <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
+            {/* Claims Tab */}
+            {activeTab === "claims" && (
+              <>
+                {isLoading ? (
+                  <div className="p-6 text-center text-muted-foreground text-xs font-interface animate-pulse">
+                    {t.loadingNotifications}
+                  </div>
+                ) : notifications.length === 0 ? (
+                  <div className="p-6 text-center text-muted-foreground text-xs font-interface">
+                    {t.noNotifications}
+                  </div>
+                ) : (
+                  <div className="flex flex-col">
+                    {notifications.map((notif) => (
+                      <div
+                        key={notif.id}
+                        onClick={() => handleNotificationClick(notif)}
+                        className={`p-4 border-b border-primary/5 cursor-pointer hover:bg-primary/5 transition-colors flex gap-3 ${
+                          !notif.isRead ? "bg-primary/5" : ""
+                        }`}
+                      >
+                        {getTypeIcon(notif.type)}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex justify-between items-start gap-2">
+                            <p className={`text-sm font-interface truncate ${!notif.isRead ? "text-foreground font-medium" : "text-muted-foreground"}`}>
+                              {notif.title}
+                            </p>
+                            {!notif.isRead && (
+                              <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
+                            )}
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1 line-clamp-2 leading-relaxed">
+                            {notif.message}
+                          </p>
+                          <p className="text-xs text-muted-foreground/60 mt-2 uppercase tracking-widest font-interface">
+                            {formatDate(notif.createdAt)}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                    {notifications.length > 0 && (
+                      <button
+                        onClick={handleMarkAllRead}
+                        className="p-4 text-xs text-primary hover:bg-primary/5 transition-colors font-interface uppercase tracking-widest text-center border-t border-primary/5"
+                      >
+                        {t.markAllAsRead}
+                      </button>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Messages Tab */}
+            {activeTab === "messages" && (
+              <>
+                {isLoadingMessages ? (
+                  <div className="p-6 text-center text-muted-foreground text-xs font-interface animate-pulse">
+                    {t.loadingMessages}
+                  </div>
+                ) : messageNotifs.length === 0 ? (
+                  <div className="p-6 text-center text-muted-foreground text-xs font-interface">
+                    <MessageSquare className="w-8 h-8 mx-auto mb-2 opacity-30" />
+                    {t.noMessages}
+                  </div>
+                ) : (
+                  <div className="flex flex-col">
+                    {messageNotifs.map((msg) => (
+                      <div
+                        key={msg.id}
+                        onClick={() => handleMessageClick(msg)}
+                        className={`p-4 border-b border-primary/5 cursor-pointer hover:bg-primary/5 transition-colors flex gap-3 ${
+                          !msg.isRead ? "bg-blue-500/5" : ""
+                        }`}
+                      >
+                        {/* Avatar with online indicator */}
+                        <div className="relative shrink-0">
+                          <div className="w-10 h-10 rounded-full overflow-hidden border border-primary/15 bg-primary/10 flex items-center justify-center">
+                            {msg.otherUserImage ? (
+                              <Image
+                                src={msg.otherUserImage}
+                                width={40}
+                                height={40}
+                                alt={msg.otherUserName}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <span className="text-sm font-display text-primary">
+                                {msg.otherUserName.charAt(0).toUpperCase()}
+                              </span>
+                            )}
+                          </div>
+                          {msg.isOnline && (
+                            <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-background rounded-full" />
+                          )}
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex justify-between items-start gap-2">
+                            <p className={`text-sm font-interface truncate ${!msg.isRead ? "text-foreground font-medium" : "text-muted-foreground"}`}>
+                              {msg.otherUserName}
+                            </p>
+                            <span className="text-[10px] text-muted-foreground/60 font-interface uppercase tracking-wider whitespace-nowrap shrink-0">
+                              {formatMessageTime(msg.timestamp)}
+                            </span>
+                          </div>
+                          {msg.itemTitle && (
+                            <p className="text-[10px] text-primary/60 font-interface uppercase tracking-widest mt-0.5 truncate">
+                              {msg.itemTitle}
+                            </p>
+                          )}
+                            <div className="flex items-center gap-1.5 mt-1.5">
+                              {/* Check marks for all messages */}
+                              <span className={`shrink-0 ${
+                                (msg.isSentByMe ? msg.isReadByOther : msg.isRead) 
+                                  ? "text-blue-400" 
+                                  : "text-slate-400"
+                              }`}>
+                                {(msg.isSentByMe ? msg.isReadByOther : msg.isRead) ? (
+                                  <CheckCheck className="w-4 h-4 stroke-[2.5]" />
+                                ) : (
+                                  <Check className="w-4 h-4 stroke-[2.5]" />
+                                )}
+                              </span>
+                              <p className={`text-xs truncate leading-relaxed ${!msg.isRead ? "text-foreground/90 font-medium" : "text-muted-foreground"}`}>
+                                {msg.preview}
+                              </p>
+                            </div>
+                        </div>
+
+                        {/* Unread dot */}
+                        {!msg.isRead && (
+                          <div className="w-2 h-2 rounded-full bg-blue-500 mt-2 shrink-0" />
                         )}
                       </div>
-                      <p className="text-xs text-muted-foreground mt-1 line-clamp-2 leading-relaxed">
-                        {notif.message}
-                      </p>
-                      <p className="text-xs text-muted-foreground/60 mt-2 uppercase tracking-widest font-interface">
-                        {formatDate(notif.createdAt)}
-                      </p>
-                    </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                )}
+              </>
             )}
           </div>
         </div>

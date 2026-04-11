@@ -38,9 +38,6 @@ export default function ChatSidebar({ dict }: { dict: Dictionary }) {
         <div className="h-[calc(100%-57px)]">
           {isOpen && chatMeta && (
             <ChatWindow
-              userId={chatMeta.userId}
-              userName={chatMeta.userName}
-              userImage={chatMeta.userImage}
               channelId={chatMeta.channelId}
             />
           )}

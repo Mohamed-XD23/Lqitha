@@ -1,6 +1,6 @@
 "use server";
 
-import prisma from "@/lib/db";
+import db from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { pusherServer } from "@/lib/pusher.server";
@@ -16,13 +16,13 @@ export async function getNotifications() {
   }
 
   try {
-    const notifications = await prisma.notification.findMany({
+    const notifications = await db.notification.findMany({
       where: { userId: session.user.id },
       orderBy: { createdAt: "desc" },
       take: 20, // Fetch recent 20
     });
 
-    const unreadCount = await prisma.notification.count({
+    const unreadCount = await db.notification.count({
       where: { userId: session.user.id, isRead: false },
     });
 
@@ -42,7 +42,7 @@ export async function markAsRead(notificationId: string) {
   }
 
   try {
-    const notification = await prisma.notification.findUnique({
+    const notification = await db.notification.findUnique({
       where: { id: notificationId },
     });
 
@@ -50,7 +50,7 @@ export async function markAsRead(notificationId: string) {
       return { error: t.error.unauthorized };
     }
 
-    await prisma.notification.update({
+    await db.notification.update({
       where: { id: notificationId },
       data: { isRead: true },
     });
@@ -72,7 +72,7 @@ export async function markAllAsRead() {
   }
 
   try {
-    await prisma.notification.updateMany({
+    await db.notification.updateMany({
       where: { userId: session.user.id, isRead: false },
       data: { isRead: true },
     });
@@ -96,7 +96,7 @@ export async function createNotification(data: {
   const dict = await getDictionary();
   const t = dict.notifications;
   try {
-    const notification = await prisma.notification.create({
+    const notification = await db.notification.create({
       data: {
         userId: data.userId,
         type: data.type,

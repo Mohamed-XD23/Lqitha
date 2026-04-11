@@ -10,6 +10,11 @@ import { revalidatePath } from "next/cache";
 import { createNotification } from "./notification.actions";
 import { sendVerificationEmailIfNeeded } from "@/lib/email-verification";
 import { getDictionary } from "@/lib/dictionary";
+import enDict from "@/lib/dictionaries/en.json";
+
+// Always use English for stored notification text so rendering
+// can re-localise at display time based on the reader's locale.
+const en = enDict.Toast;
 
 
 function fillNotificationTemplate(
@@ -302,9 +307,9 @@ export async function submitClaim(itemId: string, plainTextAnswer: string) {
     await createNotification({
       userId: item.userId,
       type: "CLAIM_NEW",
-      title: t.claimNotificationTitle,
+      title: en.claimNotificationTitle,
       message: fillNotificationTemplate(
-        t.claimNotificationMsg,
+        en.claimNotificationMsg,
         "{itemTitle}",
         item.title,
       ),
@@ -399,9 +404,9 @@ export async function respondToClaim(
     await createNotification({
       userId: claim.claimantId,
       type: "CLAIM_ACCEPTED",
-      title: t.claimAccNotificationTitle,
+      title: en.claimAccNotificationTitle,
       message: fillNotificationTemplate(
-        t.claimAccNotificationMsg,
+        en.claimAccNotificationMsg,
         "{claim.item.title}",
         claim.item.title,
       ),
@@ -417,9 +422,9 @@ export async function respondToClaim(
     await createNotification({
       userId: claim.claimantId,
       type: "CLAIM_REJECTED",
-      title: t.claimRejNotificationTitle,
+      title: en.claimRejNotificationTitle,
       message: fillNotificationTemplate(
-        t.claimRejNotificationMsg,
+        en.claimRejNotificationMsg,
         "{claim.item.title}",
         claim.item.title,
       ),

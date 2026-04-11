@@ -1,6 +1,6 @@
 "use server";
 
-import prisma from "@/lib/db";
+import db from "@/lib/db";
 import { auth } from "@/lib/auth";
 import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
@@ -18,7 +18,7 @@ export async function updateProfile(data: {
   }
 
   try {
-    await prisma.user.update({
+    await db.user.update({
       where: { id: session.user.id },
       data: {
         name: data.name,
@@ -46,7 +46,7 @@ export async function changePassword(current: string, newPass: string) {
   }
 
   try {
-    const user = await prisma.user.findUnique({
+    const user = await db.user.findUnique({
       where: { id: session.user.id },
     });
 
@@ -60,7 +60,7 @@ export async function changePassword(current: string, newPass: string) {
     }
 
     const hashedPassword = await bcrypt.hash(newPass, 10);
-    await prisma.user.update({
+    await db.user.update({
       where: { id: user.id },
       data: { password: hashedPassword },
     });
@@ -81,7 +81,7 @@ export async function deleteAccount() {
   }
 
   try {
-    await prisma.user.delete({
+    await db.user.delete({
       where: { id: session.user.id },
     });
 

@@ -12,19 +12,14 @@ import {
   Avatar,
   useChannelStateContext,
   useChatContext,
+  AvatarProps,
 } from "stream-chat-react";
-import { StreamChat } from "stream-chat";
-import { getChatToken } from "@/actions/chat.actions";
+import { Channel as StreamChannel } from "stream-chat";
+import { useStreamChat } from "@/components/providers/StreamChatProvider";
 import "stream-chat-react/dist/css/v2/index.css";
 
-interface Props {
-  userId: string;
-  userName: string;
-  userImage?: string | null;
-  channelId: string;
-}
 
-const MessengerAvatar = (props: any) => {
+const MessengerAvatar = (props: AvatarProps) => {
   const { channel } = useChannelStateContext();
   const { client } = useChatContext();
 
@@ -34,9 +29,11 @@ const MessengerAvatar = (props: any) => {
   if (!members) return <Avatar {...props} />;
 
   // Find the other member in a 1-on-1 chat
-  const otherMember = Object.values(members).find(
-    (m: any) => m.user?.id !== client.userID
-  ) as any;
+  const outOfMe = Object.values(members).filter(
+    (m) => m.user?.id !== client.userID
+  );
+  
+  const otherMember = outOfMe[0];
 
   // Check if they are currently online
   const isOnline = otherMember?.user?.online;
@@ -63,37 +60,23 @@ const MessengerAvatar = (props: any) => {
   );
 };
 
-export default function ChatWindow({ userId, userName, userImage, channelId }: Props) {
-  const [client, setClient] = useState<StreamChat | null>(null);
-  const [channel, setChannel] = useState<any>(null);
+export default function ChatWindow({ channelId }: { channelId: string }) {
+  const { client } = useStreamChat();
+  const [channel, setChannel] = useState<StreamChannel | null>(null);
 
   useEffect(() => {
-    let chatClient: StreamChat;
+    if (!client) return;
 
     async function init() {
-      const { token, error } = await getChatToken();
-      if (error || !token) return;
-
-      chatClient = StreamChat.getInstance(process.env.NEXT_PUBLIC_STREAM_API_KEY!);
-
-      await chatClient.connectUser(
-        { id: userId, name: userName, image: userImage ?? undefined },
-        token
-      );
-
-      const ch = chatClient.channel("messaging", channelId);
+      const ch = client!.channel("messaging", channelId);
       await ch.watch();
-
-      setClient(chatClient);
       setChannel(ch);
     }
 
     init();
 
-    return () => {
-      chatClient?.disconnectUser();
-    };
-  }, [userId, channelId]);
+    // No need to disconnect globally managed client on unmount
+  }, [client, channelId]);
 
   if (!client || !channel) {
     return (
