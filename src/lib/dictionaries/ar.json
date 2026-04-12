@@ -699,7 +699,8 @@
     "noMessages": "لا توجد رسائل حتى الآن",
     "loadingMessages": "جاري تحميل الرسائل...",
     "online": "متصل",
-    "offline": "غير متصل"
+    "offline": "غير متصل",
+    "ScrollUp": "الانتقال إلى الأعلى"
   },
   "notifications": {
     "error": {

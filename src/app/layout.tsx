@@ -4,6 +4,7 @@ import { Fraunces, Outfit, Cairo } from "next/font/google";
 import { ChatProvider } from "@/context/ChatContext";
 import ChatSidebar from "@/components/chat/ChatSidebar";
 import Navbar from "./components/Navbar";
+import ScrollUp from "@/components/ScrollUp/scroll-up";
 import Footer from "./components/Footer";
 import { getLocale } from "@/lib/dictionary";
 import { Toaster } from "sonner";
@@ -45,7 +46,9 @@ export default async function RootLayout({
   const locale = await getLocale();
   const dir = locale === "ar" ? "rtl" : "ltr";
   const session = await auth();
-  const dbUser = session?.user?.id ? await db.user.findUnique({ where: { id: session.user.id } }) : null;
+  const dbUser = session?.user?.id
+    ? await db.user.findUnique({ where: { id: session.user.id } })
+    : null;
 
   const fontDisplay =
     locale === "ar" ? "var(--font-cairo)" : "var(--font-fraunces)";
@@ -74,14 +77,17 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <HeartbeatProvider>
-            <StreamChatProvider 
-              userId={session?.user?.id ?? ""} 
+            <StreamChatProvider
+              userId={session?.user?.id ?? ""}
               userName={dbUser?.name ?? session?.user?.name}
               userImage={dbUser?.image ?? session?.user?.image}
             >
               <ChatProvider>
                 <Navbar />
-                <main className="flex-1">{children}</main>
+                <main className="flex-1">
+                  <ScrollUp dict={dict} />
+                  {children}
+                </main>
                 <Footer />
                 <ChatSidebar dict={dict} />
                 <Toaster

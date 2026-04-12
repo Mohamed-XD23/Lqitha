@@ -699,7 +699,8 @@
     "noMessages": "No messages yet",
     "loadingMessages": "Loading messages...",
     "online": "Online",
-    "offline": "Offline"
+    "offline": "Offline",
+    "ScrollUp": "Scroll to top"
   },
   "notifications": {
     "error": {
