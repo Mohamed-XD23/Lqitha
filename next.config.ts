@@ -11,7 +11,9 @@ const securityHeaders = [
       font-src 'self';
       connect-src 'self' https:;
       frame-ancestors 'self';
-    `.replace(/\n/g, ""),
+      base-uri 'self';
+      object-src 'none';
+    `.replace(/\s{2,}/g, " ").trim(),
   },
   {
     key: "X-Frame-Options",
@@ -26,9 +28,9 @@ const securityHeaders = [
     value: "strict-origin-when-cross-origin",
   },
   {
-    key: "X-XSS-Protection",
-    value: "1; mode=block",
-  },
+    key:"Permissions-Policy",
+    value: "camera=(self), microphone=(), geolocation=(), payment=(), usb=()",
+  }
 ];
 
 const nextConfig: NextConfig = {
