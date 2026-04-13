@@ -10,11 +10,21 @@ interface ScrollUpProps {
 export default function ScrollUp({ dict }: ScrollUpProps) {
   const t = dict.ui;
   const [isExpanded, setIsExpanded] = useState(false);
-  const [supportsHover, setSupportsHover] = useState(() =>
-    typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches
+  const [visible, setVisible] = useState(false);
+  const [supportsHover, setSupportsHover] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(hover: hover)").matches,
   );
 
   useEffect(() => {
+    const handleScroll = () => {
+      if (typeof window === "undefined") return null;
+      setVisible(window.scrollY > 300);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
     const handleMediaChange = (e: MediaQueryListEvent) => {
       setSupportsHover(e.matches);
     };
@@ -30,7 +40,13 @@ export default function ScrollUp({ dict }: ScrollUpProps) {
   };
 
   return (
-    <div className="w-fit h-fit p-1 bg-primary/20 rounded-full fixed bottom-5 right-5 z-50">
+    <div
+      className="w-fit h-fit p-1 bg-primary/20 rounded-full fixed bottom-5 right-5 z-50 transition-all duration-300"
+      style={{
+        opacity: visible ? 1 : 0,
+        pointerEvents: visible ? "auto" : "none",
+      }}
+    >
       <button
         className="h-12 flex flex-row items-center justify-center bg-primary rounded-full cursor-pointer hover:bg-primary/90 transition-all duration-300 overflow-hidden"
         style={{
