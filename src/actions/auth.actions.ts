@@ -6,7 +6,7 @@ import db from "@/lib/db";
 import { randomUUID } from "crypto";
 import { sendPasswordResetEmail } from "@/lib/email";
 import { sendVerificationEmailIfNeeded } from "@/lib/email-verification";
-import { checkRateLimit, resetRateLimit } from "@/lib/rate-limit";
+import { forgotRateLimit, registerRateLimit , resetRateLimit } from "@/lib/rate-limit";
 import { getDictionary } from "@/lib/dictionary";
 
 const registerSchema = z.object({
@@ -34,6 +34,9 @@ export async function registerUser(formData: FormData) {
   }
 
   const { name, email, password } = parsed.data;
+
+  const { success } = await registerRateLimit.limit(email);
+  if (!success) return { error: t.tooManyRequests };
 
   const existingUser = await db.user.findUnique({ where: { email } });
   if (existingUser) {
@@ -80,9 +83,8 @@ export async function forgotPassword(email: string) {
 
   const normalizedEmail = email.toLowerCase().trim();
 
-  const rl = checkRateLimit(`forgot:${normalizedEmail}`);
-  if (!rl.allowed)
-    return { error: t.tooManyRequests };
+  const { success } = await forgotRateLimit.limit(normalizedEmail);
+  if (!success) return { error: t.tooManyRequests };
 
   const user = await db.user.findUnique({ where: { email: normalizedEmail } });
 
@@ -106,6 +108,9 @@ export async function resetPassword(token: string, newPassword: string) {
   const dict = await getDictionary();
   const t =dict.auth.error;
 
+  const { success } = await resetRateLimit.limit(`reset:${token}`);
+  if (!success) return { error: t.tooManyRequests };
+
   if (newPassword.length < 8)
     return { error: t.passwordlength };
 
@@ -123,7 +128,6 @@ export async function resetPassword(token: string, newPassword: string) {
   });
 
   await db.passwordResetToken.delete({ where: { token } });
-  resetRateLimit(`forgot:${record.email}`);
 
   return { success: true };
 }

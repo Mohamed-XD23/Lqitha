@@ -1,37 +1,28 @@
-const loginAttempts = new Map<string, { count: number; lastAttempt: number }>();
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
-const MAX_ATTEMPTS = 5;
-const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const redis = Redis.fromEnv();
 
-export function checkRateLimit(identifier: string): {
-  allowed: boolean;
-  remainingMs?: number;
-} {
-  const now = Date.now();
-  const record = loginAttempts.get(identifier);
+export const loginRateLimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(5, "15 m"),
+  prefix:"rl:login",
+});
 
-  if (!record) {
-    loginAttempts.set(identifier, { count: 1, lastAttempt: now });
-    return { allowed: true };
-  }
+export const registerRateLimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(3, "1 h"),
+  prefix:"rl:register",
+});
 
-  if (now - record.lastAttempt > WINDOW_MS) {
-    loginAttempts.set(identifier, { count: 1, lastAttempt: now });
-    return { allowed: true };
-  }
+export const forgotRateLimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(5, "15 m"),
+  prefix:"rl:forgot",
+});
 
-  if (record.count >= MAX_ATTEMPTS) {
-    return {
-      allowed: false,
-      remainingMs: WINDOW_MS - (now - record.lastAttempt),
-    };
-  }
-
-  record.count++;
-  record.lastAttempt = now;
-  return { allowed: true };
-}
-
-export function resetRateLimit(identifier: string) {
-  loginAttempts.delete(identifier);
-}
+export const resetRateLimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(5, "15 m"),
+  prefix:"rl:reset",
+});

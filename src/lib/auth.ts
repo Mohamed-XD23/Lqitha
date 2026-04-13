@@ -7,6 +7,7 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import db from "@/lib/db";
 import { sendVerificationEmailIfNeeded } from "@/lib/email-verification";
+import { loginRateLimit } from "@/lib/rate-limit";
 
 const loginSchema = z.object({
   email: z.string().email().transform((val) => val.toLowerCase().trim()),
@@ -26,6 +27,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!parsed.success) return null;
 
         const { email, password } = parsed.data;
+
+        const {success} = await loginRateLimit.limit(email);
+        if (!success) return null;
 
         const user = await db.user.findUnique({ where: { email } });
         if (!user || !user.password) return null;
