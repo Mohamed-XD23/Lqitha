@@ -9,7 +9,7 @@ const securityHeaders = [
       style-src 'self' 'unsafe-inline';
       img-src 'self' data: blob:;
       font-src 'self';
-      connect-src 'self' https:;
+      connect-src 'self' https: wss:;
       frame-ancestors 'self';
       base-uri 'self';
       object-src 'none';

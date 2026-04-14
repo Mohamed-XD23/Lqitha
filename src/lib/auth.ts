@@ -32,9 +32,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!success) return null;
 
         const user = await db.user.findUnique({ where: { email } });
+
+        const dummyHash = "$2a$10$invalidhashxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"; // bcrypt hash for "password123"
+        const isValid = await bcrypt.compare(password, user?.password ?? dummyHash);
         if (!user || !user.password) return null;
 
-        const isValid = await bcrypt.compare(password, user.password);
+        
         if (!isValid) return null;
         if (!user.emailVerified) {
           try {

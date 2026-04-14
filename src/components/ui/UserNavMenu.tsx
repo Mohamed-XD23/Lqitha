@@ -3,7 +3,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import NextImage from "next/image";
-import { LayoutDashboard, Settings, LogOut, User as UserIcon } from "lucide-react";
+import {
+  LayoutDashboard,
+  Settings,
+  LogOut,
+  User as UserIcon,
+} from "lucide-react";
 import { handleSignOut } from "@/actions/auth.actions";
 
 interface UserNavMenuProps {
@@ -28,7 +33,10 @@ export default function UserNavMenu({ user, dict }: UserNavMenuProps) {
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     }
@@ -104,12 +112,15 @@ export default function UserNavMenu({ user, dict }: UserNavMenuProps) {
       {isOpen && (
         <div
           ref={panelRef}
-          className="absolute left-1/2 mt-3 w-64 max-w-[calc(100vw-1rem)] bg-background border border-primary/15 rounded-sm shadow-2xl z-50 overflow-visible origin-top"
-          style={{ transform: "translateX(-50%)" }}
+          className="absolute mt-3 w-64 max-w-[calc(100vw-1rem)] bg-background border border-primary/15 rounded-sm shadow-2xl z-50 overflow-visible origin-top transition-all"
         >
           <div className="p-4 border-b border-border bg-card/50 text-left ltr:text-left rtl:text-right">
-            <p className="font-interface text-sm font-semibold text-foreground truncate">{user.name}</p>
-            <p className="font-interface text-xs text-muted-foreground truncate uppercase tracking-widest mt-0.5">{user.email}</p>
+            <p className="font-interface text-sm font-semibold text-foreground truncate">
+              {user.name}
+            </p>
+            <p className="font-interface text-xs text-muted-foreground truncate uppercase tracking-widest mt-0.5">
+              {user.email}
+            </p>
           </div>
 
           <div className="p-2">
@@ -118,8 +129,13 @@ export default function UserNavMenu({ user, dict }: UserNavMenuProps) {
               onClick={() => setIsOpen(false)}
               className="flex items-center gap-3 px-3 py-2.5 rounded-xs text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all group"
             >
-              <LayoutDashboard className="w-4 h-4 text-muted-foreground group-hover:text-primary" strokeWidth={2} />
-              <span className="font-interface text-[11px] font-medium tracking-[2px] uppercase">{dict.nav.dashboard}</span>
+              <LayoutDashboard
+                className="w-4 h-4 text-muted-foreground group-hover:text-primary"
+                strokeWidth={2}
+              />
+              <span className="font-interface text-[11px] font-medium tracking-[2px] uppercase">
+                {dict.nav.dashboard}
+              </span>
             </Link>
 
             <Link
@@ -127,8 +143,13 @@ export default function UserNavMenu({ user, dict }: UserNavMenuProps) {
               onClick={() => setIsOpen(false)}
               className="flex items-center gap-3 px-3 py-2.5 rounded-xs text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all group"
             >
-              <Settings className="w-4 h-4 text-muted-foreground group-hover:text-primary" strokeWidth={2} />
-              <span className="font-interface text-[11px] font-medium tracking-[2px] uppercase">{dict.nav.settings}</span>
+              <Settings
+                className="w-4 h-4 text-muted-foreground group-hover:text-primary"
+                strokeWidth={2}
+              />
+              <span className="font-interface text-[11px] font-medium tracking-[2px] uppercase">
+                {dict.nav.settings}
+              </span>
             </Link>
 
             <div className="my-1 border-t border-primary/5" />
@@ -139,7 +160,9 @@ export default function UserNavMenu({ user, dict }: UserNavMenuProps) {
                 className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xs text-red-400 hover:bg-red-500/10 transition-all group"
               >
                 <LogOut className="w-4 h-4" strokeWidth={2} />
-                <span className="font-interface text-[11px] font-medium tracking-[2px] uppercase">{dict.nav.signOut}</span>
+                <span className="font-interface text-[11px] font-medium tracking-[2px] uppercase">
+                  {dict.nav.signOut}
+                </span>
               </button>
             </form>
           </div>

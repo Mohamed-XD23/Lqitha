@@ -24,7 +24,8 @@
     "language": "Language",
     "user": "User",
     "verifyActionLabel": "Verify Email First",
-    "verifyAlertMsg": "Please verify your email. We sent a verification link to your inbox."
+    "verifyAlertMsg": "Please verify your email. We sent a verification link to your inbox.",
+    "theme":"theme"
   },
   "home": {
     "hero": {

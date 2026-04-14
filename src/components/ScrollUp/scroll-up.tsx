@@ -11,28 +11,25 @@ export default function ScrollUp({ dict }: ScrollUpProps) {
   const t = dict.ui;
   const [isExpanded, setIsExpanded] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [supportsHover, setSupportsHover] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      window.matchMedia("(hover: hover)").matches,
-  );
+  const [supportsHover, setSupportsHover] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (typeof window === "undefined") return null;
-      setVisible(window.scrollY > 300);
-    };
+  const mediaQuery = window.matchMedia("(hover: hover)");
+  setSupportsHover(mediaQuery.matches); // set on client after hydration
 
-    window.addEventListener("scroll", handleScroll);
+  const handleScroll = () => setVisible(window.scrollY > 300);
+  window.addEventListener("scroll", handleScroll);
 
-    const handleMediaChange = (e: MediaQueryListEvent) => {
-      setSupportsHover(e.matches);
-    };
+  const handleMediaChange = (e: MediaQueryListEvent) => {
+    setSupportsHover(e.matches);
+  };
+  mediaQuery.addEventListener("change", handleMediaChange);
 
-    const mediaQuery = window.matchMedia("(hover: hover)");
-    mediaQuery.addEventListener("change", handleMediaChange);
-    return () => mediaQuery.removeEventListener("change", handleMediaChange);
-  }, []);
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+    mediaQuery.removeEventListener("change", handleMediaChange);
+  };
+}, []);
 
   const scrollToTop = () => {
     if (typeof window === "undefined") return;

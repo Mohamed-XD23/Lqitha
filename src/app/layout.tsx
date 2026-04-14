@@ -75,6 +75,7 @@ export default async function RootLayout({
           themes={["dark", "light"]}
           enableSystem={false}
           disableTransitionOnChange
+          scriptProps={{ suppressHydrationWarning: true }}
         >
           <HeartbeatProvider>
             <StreamChatProvider
