@@ -45,9 +45,9 @@ function VerifyResult({
   return (
     <div className="bg-background min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
       {/* Decorative center glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-foreground-x-1/2 -translate-foreground-y-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-foreground-x-1/2 -translate-foreground-y-1/2 w-125 h-125 bg-primary/5 rounded-full blur-[150px] pointer-events-none" />
 
-      <div className="w-full max-w-[440px] relative z-10 text-center">
+      <div className="w-full max-w-110 relative z-10 text-center">
         {/* Brand Header */}
         <div className="mb-14">
           <div className="inline-flex items-center gap-3 mb-4">

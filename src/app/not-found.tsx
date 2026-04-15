@@ -29,10 +29,10 @@ export default async function NotFound() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-6">
-            <Link href="/" className="bg-primary hover:bg-foreground text-background px-10 py-4 text-xs font-bold tracking-[3px] uppercase transition-all duration-300 rounded-xs min-w-[200px]">
+            <Link href="/" className="bg-primary hover:bg-foreground text-background px-10 py-4 text-xs font-bold tracking-[3px] uppercase transition-all duration-300 rounded-xs min-w-50">
               {t.returnHome}
             </Link>
-            <Link href="/browse" className="border border-primary/20 hover:border-primary text-foreground px-10 py-4 text-xs font-bold tracking-[3px] uppercase transition-all duration-300 rounded-xs min-w-[200px]">
+            <Link href="/browse" className="border border-primary/20 hover:border-primary text-foreground px-10 py-4 text-xs font-bold tracking-[3px] uppercase transition-all duration-300 rounded-xs min-w-50">
               {t.browseItems}
             </Link>
           </div>
