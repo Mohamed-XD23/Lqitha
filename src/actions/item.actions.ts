@@ -9,7 +9,7 @@ import { recalculateTrustScore } from "./dashboard.actions";
 import { revalidatePath } from "next/cache";
 import { createNotification } from "./notification.actions";
 import { sendVerificationEmailIfNeeded } from "@/lib/email-verification";
-import { getDictionary } from "@/lib/dictionary";
+import { getDictionary, getLocale } from "@/lib/dictionary";
 import enDict from "@/lib/dictionaries/en.json";
 
 // Always use English for stored notification text so rendering
@@ -26,7 +26,8 @@ function fillNotificationTemplate(
 }
 
 async function ensureVerifiedEmail(userId: string) {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const t = dict.Toast;
   const user = await db.user.findUnique({
     where: { id: userId },
@@ -54,7 +55,8 @@ async function ensureVerifiedEmail(userId: string) {
 // ===Create Item===
 
 export async function createItem(data: unknown) {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const t = dict.Toast;
   const session = await auth();
   if (!session?.user?.id) {
@@ -227,7 +229,8 @@ export async function getItemPhone(itemId: string) {
 // === Submit Claim for item ===
 
 export async function submitClaim(itemId: string, plainTextAnswer: string) {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const t = dict.Toast;
   const session = await auth();
   if (!session?.user?.id) {
@@ -357,7 +360,8 @@ export async function respondToClaim(
   itemId: string,
   response: "ACCEPTED" | "REJECTED"
 ) {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const t = dict.Toast;
 
   const session = await auth();

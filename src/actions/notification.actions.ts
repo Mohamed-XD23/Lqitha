@@ -5,10 +5,11 @@ import { auth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { pusherServer } from "@/lib/pusher.server";
 import { NotificationType } from "@prisma/client";
-import { getDictionary } from "@/lib/dictionary";
+import { getDictionary , getLocale } from "@/lib/dictionary";
 
 export async function getNotifications() {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const t = dict.notifications;
   const session = await auth();
   if (!session?.user?.id) {
@@ -34,7 +35,8 @@ export async function getNotifications() {
 }
 
 export async function markAsRead(notificationId: string) {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const t = dict.notifications;
   const session = await auth();
   if (!session?.user?.id) {
@@ -64,7 +66,8 @@ export async function markAsRead(notificationId: string) {
 }
 
 export async function markAllAsRead() {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const t = dict.notifications;
   const session = await auth();
   if (!session?.user?.id) {
@@ -93,7 +96,8 @@ export async function createNotification(data: {
   message: string;
   link?: string;
 }) {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const t = dict.notifications;
   try {
     const notification = await db.notification.create({

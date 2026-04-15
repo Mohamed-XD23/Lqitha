@@ -1,7 +1,8 @@
-import { getDictionary } from "@/lib/dictionary";
+import { getDictionary, getLocale } from "@/lib/dictionary";
 import ResetPasswordClient from "./ResetPasswordClient";
 
 export default async function ResetPasswordPage() {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   return <ResetPasswordClient dict={dict} />;
 }

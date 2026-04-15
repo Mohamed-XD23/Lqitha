@@ -1,8 +1,9 @@
 // app/[locale]/new-item/page.tsx
-import { getDictionary } from "@/lib/dictionary";
+import { getDictionary, getLocale } from "@/lib/dictionary";
 import NewItemPage from "./NewItemClient";
 
 export default async function NewItem() {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   return <NewItemPage dict={dict} />;
 }

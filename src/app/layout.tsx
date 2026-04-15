@@ -42,8 +42,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const dict = await getDictionary();
   const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const dir = locale === "ar" ? "rtl" : "ltr";
   const session = await auth();
   const dbUser = session?.user?.id

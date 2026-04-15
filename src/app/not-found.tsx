@@ -1,8 +1,9 @@
-import { getDictionary } from "@/lib/dictionary";
+import { getDictionary, getLocale } from "@/lib/dictionary";
 import Link from "next/link";
 
 export default async function NotFound() {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const t = dict.notFound;
 
   return (

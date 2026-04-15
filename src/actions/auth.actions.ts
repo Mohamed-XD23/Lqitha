@@ -7,7 +7,7 @@ import { randomUUID } from "crypto";
 import { sendPasswordResetEmail } from "@/lib/email";
 import { sendVerificationEmailIfNeeded } from "@/lib/email-verification";
 import { forgotRateLimit, registerRateLimit , resetRateLimit } from "@/lib/rate-limit";
-import { getDictionary } from "@/lib/dictionary";
+import { getDictionary, getLocale } from "@/lib/dictionary";
 
 const registerSchema = z.object({
   name: z.string().min(2),
@@ -20,7 +20,8 @@ const registerSchema = z.object({
 
 // ── REGISTER ──────────────────────────────────────────────────────────────────
 export async function registerUser(formData: FormData) {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const t =dict.auth.error;
 
   const parsed = registerSchema.safeParse({
@@ -56,7 +57,8 @@ export async function registerUser(formData: FormData) {
 
 // ── VERIFY EMAIL ──────────────────────────────────────────────────────────────
 export async function verifyEmail(token: string) {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const t =dict.auth.error;
   const record = await db.emailVerificationToken.findUnique({
     where: { token },
@@ -78,7 +80,8 @@ export async function verifyEmail(token: string) {
 
 // ── FORGOT PASSWORD ───────────────────────────────────────────────────────────
 export async function forgotPassword(email: string) {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const t =dict.auth.error;
 
   const normalizedEmail = email.toLowerCase().trim();
@@ -105,7 +108,8 @@ export async function forgotPassword(email: string) {
 
 // ── RESET PASSWORD ────────────────────────────────────────────────────────────
 export async function resetPassword(token: string, newPassword: string) {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const t =dict.auth.error;
 
   const { success } = await resetRateLimit.limit(`reset:${token}`);

@@ -1,7 +1,8 @@
-import { getDictionary } from "@/lib/dictionary";
+import { getDictionary, getLocale } from "@/lib/dictionary";
 
 export default async function TermsPage() {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
 
   return (
     <div className="bg-background min-h-screen">

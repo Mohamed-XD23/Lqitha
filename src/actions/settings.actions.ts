@@ -4,13 +4,14 @@ import db from "@/lib/db";
 import { auth } from "@/lib/auth";
 import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
-import { getDictionary } from "@/lib/dictionary";
+import { getDictionary , getLocale } from "@/lib/dictionary";
 
 export async function updateProfile(data: {
   name: string;
   image?: string | null;
 }) {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const t = dict.settings;
   const session = await auth();
   if (!session?.user?.id) {
@@ -37,7 +38,8 @@ export async function updateProfile(data: {
 }
 
 export async function changePassword(current: string, newPass: string) {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const t = dict.settings;
 
   const session = await auth();
@@ -73,7 +75,8 @@ export async function changePassword(current: string, newPass: string) {
 }
 
 export async function deleteAccount() {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const t = dict.settings;
   const session = await auth();
   if (!session?.user?.id) {

@@ -1,5 +1,5 @@
 import { verifyEmail } from "@/actions/auth.actions";
-import { getDictionary } from "@/lib/dictionary";
+import { getDictionary, getLocale } from "@/lib/dictionary";
 import type { Dictionary } from "@/lib/dictionary.types";
 import Link from "next/link";
 import { CheckCircle, ShieldAlert, LogIn, RotateCcw } from "lucide-react";
@@ -9,7 +9,8 @@ export default async function VerifyEmailPage({
 }: {
   searchParams: Promise<{ token?: string }>;
 }) {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const t = dict.auth;
   const { token } = await searchParams;
 

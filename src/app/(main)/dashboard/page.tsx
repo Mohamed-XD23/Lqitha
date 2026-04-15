@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { getDashboardData, getTrustScoreHistory } from "@/actions/dashboard.actions";
-import { getDictionary } from "@/lib/dictionary";
+import { getDictionary, getLocale } from "@/lib/dictionary";
 import ProfileCard from "@/components/dashboard/ProfileCard";
 import TrustChart from "@/components/dashboard/TrustChart";
 import DashboardTabs from "@/components/dashboard/DashboardTabs";
@@ -10,10 +10,11 @@ export default async function DashboardPage( ) {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
+  const locale = await getLocale();
   const [user, trustHistory, dict] = await Promise.all([
     getDashboardData(),
     getTrustScoreHistory(),
-    getDictionary(),
+    getDictionary(locale),
   ]);
 
   if (!user) redirect("/login");

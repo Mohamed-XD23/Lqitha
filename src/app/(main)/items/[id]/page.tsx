@@ -6,7 +6,7 @@ import {
   getItemWithClaims,
   getUserClaimStatus,
 } from "@/actions/item.actions";
-import { getDictionary } from "@/lib/dictionary";
+import { getDictionary, getLocale } from "@/lib/dictionary";
 import { formatDate } from "@/lib/utils/date";
 import ClaimButton from "@/components/items/ClaimButton";
 import ClaimsSection from "@/components/items/ClaimsSection";
@@ -30,10 +30,11 @@ interface ItemPageProps {
 
 export default async function ItemPage({ params }: ItemPageProps) {
   const { id } = await params;
+  const locale = await getLocale();
   const [item, session, dict] = await Promise.all([
     getItemById(id),
     auth(),
-    getDictionary(),
+    getDictionary(locale),
   ]);
   if (!item) return notFound();
 

@@ -31,9 +31,9 @@ export default async function Navbar() {
   }
 
   try {
-    dict = await getDictionary();
+    dict = await getDictionary(locale);
   } catch (error) {
-    console.error("Navbar getDictionary() failed:", error);
+    console.error("Navbar getDictionary(locale) failed:", error);
     // Fallback to en
     dict = await import("@/lib/dictionaries/en.json").then((m) => m.default);
   }

@@ -2,10 +2,11 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import db from "@/lib/db";
 import SettingsForm from "@/components/settings/SettingsForm";
-import { getDictionary } from "@/lib/dictionary";
+import { getDictionary, getLocale } from "@/lib/dictionary";
 
 export default async function SettingsPage() {
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const t = dict.settings;
   const session = await auth();
   if (!session?.user) redirect("/login");

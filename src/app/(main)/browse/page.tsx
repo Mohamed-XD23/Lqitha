@@ -1,6 +1,6 @@
 import { getItems } from "@/actions/item.actions";
 import { ItemType } from "@prisma/client";
-import { getDictionary } from "@/lib/dictionary";
+import { getDictionary, getLocale } from "@/lib/dictionary";
 import BrowseClient from "./BrowseClient";
 
 interface BrowsePageProps {
@@ -14,7 +14,8 @@ interface BrowsePageProps {
 
 export default async function BrowsePage({ searchParams }: BrowsePageProps) {
   const params = await searchParams;
-  const dict = await getDictionary();
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   const { items, totalPages, currentPage, totalCount } = await getItems({
     type: params.type as ItemType | undefined,
     category: params.category,

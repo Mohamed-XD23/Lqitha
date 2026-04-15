@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getDictionary } from "@/lib/dictionary";
+import { getDictionary, getLocale } from "@/lib/dictionary";
 
 export default async function Footer() {
   const fallbackDict = {
@@ -16,26 +16,24 @@ export default async function Footer() {
     privacy: {
       title: "Privacy Policy",
     },
-    terms:{
+    terms: {
       title: "Terms of Service",
     },
     support: {
       title: "Support",
-    }
+    },
   };
 
   let dict = fallbackDict;
-
+  const locale = await getLocale();
   try {
-    dict = await getDictionary();
+    dict = await getDictionary(locale);
   } catch (error) {
-    console.error("Footer getDictionary() failed:", error);
+    console.error("Footer getDictionary(locale) failed:", error);
   }
 
   return (
-    <footer
-      className="bg-background border-t border-primary/15 px-6 py-12"
-    >
+    <footer className="bg-background border-t border-primary/15 px-6 py-12">
       <div className="mx-auto max-w-6xl flex flex-col items-center justify-between gap-8 text-center md:flex-row rtl:md:flex-row-reverse">
         <div className="flex items-center gap-3 rtl:flex-row-reverse">
           <svg
@@ -76,7 +74,8 @@ export default async function Footer() {
         </nav>
 
         <p className="font-interface text-xs tracking-xs uppercase text-muted-foreground/60">
-          © {new Date().getFullYear()} <span className="font-fraunces">LQITHA</span> · {dict.home.hero.badge}
+          © {new Date().getFullYear()}{" "}
+          <span className="font-fraunces">LQITHA</span> · {dict.home.hero.badge}
         </p>
       </div>
     </footer>
