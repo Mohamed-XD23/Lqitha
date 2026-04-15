@@ -112,7 +112,7 @@ export default function UserNavMenu({ user, dict }: UserNavMenuProps) {
       {isOpen && (
         <div
           ref={panelRef}
-          className="absolute mt-3 w-64 max-w-[calc(100vw-1rem)] bg-background border border-primary/15 rounded-sm shadow-2xl z-50 overflow-visible origin-top transition-all"
+          className="absolute right-1/2 translate-x-[73%] mt-4 w-[min(22rem,calc(90vw-1rem))] md:w-88 md:max-w-[calc(100vw-1rem)] bg-background border border-primary/15 rounded-sm shadow-2xl z-50 overflow-visible origin-top transition-all"
         >
           <div className="p-4 border-b border-border bg-card/50 text-left ltr:text-left rtl:text-right">
             <p className="font-interface text-sm font-semibold text-foreground truncate">

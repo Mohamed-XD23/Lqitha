@@ -418,34 +418,31 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
     }
 
     // ─── Stream Chat Real-time Synchronization ───
-    if (streamClient) {
-      const handleEvent = (event: Event) => {
-        // Refresh messages for relevant events
-        const relevantEvents = [
-          "message.new",
-          "notification.message_new",
-          "message.read",
-          "message.updated",
-          "message.deleted",
-          "notification.mark_read"
-        ];
+    const handleEvent = (event: Event) => {
+      // Refresh messages for relevant events
+      const relevantEvents = [
+        "message.new",
+        "notification.message_new",
+        "message.read",
+        "message.updated",
+        "message.deleted",
+        "notification.mark_read"
+      ];
 
-        if (relevantEvents.includes(event.type!)) {
-          // Add a small delay for server consistency if needed, 
-          // but "no gap" suggests we should try immediately.
-          void fetchMessages();
-          
-          // Play sound for new incoming messages only
-          if (event.type === "notification.message_new" || (event.type === "message.new" && event.user?.id !== userId)) {
-            void playMessageNotificationSound();
-          }
+      if (relevantEvents.includes(event.type!)) {
+        // Add a small delay for server consistency if needed, 
+        // but "no gap" suggests we should try immediately.
+        void fetchMessages();
+        
+        // Play sound for new incoming messages only
+        if (event.type === "notification.message_new" || (event.type === "message.new" && event.user?.id !== userId)) {
+          void playMessageNotificationSound();
         }
-      };
+      }
+    };
 
+    if (streamClient) {
       streamClient.on(handleEvent);
-      return () => {
-        streamClient.off(handleEvent);
-      };
     }
 
     const handleClickOutside = (event: MouseEvent) => {
@@ -463,6 +460,9 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.clearInterval(intervalId);
       document.removeEventListener("mousedown", handleClickOutside);
+      if (streamClient) {
+        streamClient.off(handleEvent);
+      }
       if (pusherClient && userId) {
         pusherClient.unsubscribe(`user-${userId}`);
       }
