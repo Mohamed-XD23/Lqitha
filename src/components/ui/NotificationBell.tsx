@@ -612,7 +612,7 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
       {isOpen && (
         <div
           ref={panelRef}
-          className="absolute right-1/2 translate-x-[73%] mt-4 w-[min(22rem,calc(90vw-1rem))] md:w-88 md:max-w-[calc(100vw-1rem)] bg-background border border-primary/15 rounded-sm shadow-2xl z-50 overflow-visible origin-top transition-all"
+          className="absolute left-1/2 -translate-x-1/3 rtl:md:translate-x-6/4  mt-4 w-[min(22rem,calc(90vw-1rem))] md:w-88 md:max-w-[calc(100vw-1rem)] bg-background border border-primary/15 rounded-sm shadow-2xl z-50 overflow-visible origin-top transition-colors duration-300"
         >
           {/* Header */}
           <div className="p-4 border-b border-border flex justify-between items-center bg-card/50">
