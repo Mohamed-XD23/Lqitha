@@ -7,7 +7,19 @@ import { formatDate } from "@/lib/utils/date";
 import ChatButton from "@/components/chat/ChatButton";
 import ButtonLoader from "@/components/ui/ButtonLoader";
 import { useChatContext } from "@/context/ChatContext";
-import { Circle, Check, CheckCircle2, X, Hourglass, MessageSquare, PackageOpen, ArrowRight, FileText, Search, Package } from "lucide-react";
+import {
+  Circle,
+  Check,
+  CheckCircle2,
+  X,
+  Hourglass,
+  MessageSquare,
+  PackageOpen,
+  ArrowRight,
+  FileText,
+  Search,
+  Package,
+} from "lucide-react";
 
 interface Listing {
   id: string;
@@ -48,7 +60,10 @@ function StatusBadge({
       className: "bg-[#0A84FF]/10 text-[#0A84FF] border-[#0A84FF]/20",
       label: (
         <span className="flex items-center gap-1.5">
-          <Circle className="w-1.5 h-1.5 opacity-70 fill-current" strokeWidth={2.5} />
+          <Circle
+            className="w-1.5 h-1.5 opacity-70 fill-current"
+            strokeWidth={2.5}
+          />
           {t.active}
         </span>
       ),
@@ -81,7 +96,8 @@ function StatusBadge({
       ),
     },
     PENDING: {
-      className: "bg-muted-foreground/10 text-muted-foreground border-muted-foreground/20",
+      className:
+        "bg-muted-foreground/10 text-muted-foreground border-muted-foreground/20",
       label: (
         <span className="flex items-center gap-1.5">
           <Hourglass className="w-2.5 h-2.5" strokeWidth={2.5} />
@@ -113,7 +129,7 @@ function MessagesTab({
   currentUserImage?: string | null;
   dict: Dictionary;
 }) {
-  const t = dict.dashboardTabs
+  const t = dict.dashboardTabs;
   const { openChat } = useChatContext();
   const [isPending, startTransition] = useTransition();
   const acceptedClaims = claims.filter((c) => c.status === "ACCEPTED");
@@ -127,33 +143,17 @@ function MessagesTab({
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col min-h-75 max-h-125 overflow-y-auto">
       {acceptedClaims.map((claim) => (
-        <button
+        <div
           key={claim.id}
-          disabled={isPending}
-          onClick={() => {
-            startTransition(async () => {
-              const { createChatChannel } =
-                await import("@/actions/chat.actions");
-              const result = await createChatChannel(
-                claim.id,
-                claim.item.userId,
-                currentUserId,
-              );
-              if (result.channelId)
-                openChat({
-                  channelId: result.channelId,
-                  userId: currentUserId,
-                  userName: currentUserName,
-                  userImage: currentUserImage,
-                });
-            });
-          }}
           className={`flex items-center gap-4 px-6 py-5 border-b border-border bg-transparent cursor-pointer w-full text-left transition-all hover:bg-primary/5 ${isPending ? "opacity-50 cursor-not-allowed" : "opacity-100"}`}
         >
           <div className="w-10 h-10 rounded-xs bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group">
-            <MessageSquare className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" strokeWidth={2} />
+            <MessageSquare
+              className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors"
+              strokeWidth={2}
+            />
           </div>
           <div className="flex-1">
             <p className="font-interface text-sm font-medium text-foreground">
@@ -163,7 +163,29 @@ function MessagesTab({
               {t.messages.status} · {formatDate(claim.createdAt)}
             </p>
           </div>
-          <span className="font-interface bg-primary text-background text-xs font-semibold tracking-xs uppercase px-4 py-2 rounded-xs flex items-center justify-center gap-2 min-w-20 hover:bg-foreground transition-colors">
+          <button
+            key={claim.id}
+            disabled={isPending}
+            onClick={() => {
+              startTransition(async () => {
+                const { createChatChannel } =
+                  await import("@/actions/chat.actions");
+                const result = await createChatChannel(
+                  claim.id,
+                  claim.item.userId,
+                  currentUserId,
+                );
+                if (result.channelId)
+                  openChat({
+                    channelId: result.channelId,
+                    userId: currentUserId,
+                    userName: currentUserName,
+                    userImage: currentUserImage,
+                  });
+              });
+            }}
+            className="font-interface bg-primary text-background text-xs font-semibold tracking-xs uppercase px-4 py-2 rounded-xs flex items-center justify-center gap-2 min-w-20 hover:bg-foreground transition-colors"
+          >
             {isPending ? (
               <div className="scale-[0.8] origin-center">
                 <ButtonLoader />
@@ -171,8 +193,8 @@ function MessagesTab({
             ) : (
               <>{t.actions.openChat}</>
             )}
-          </span>
-        </button>
+          </button>
+        </div>
       ))}
     </div>
   );
@@ -204,12 +226,12 @@ export default function DashboardTabs({
   return (
     <div className="bg-card border border-primary/18 rounded-sm overflow-hidden shadow-2xl">
       {/* Tab Headers */}
-      <div className="bg-background/50 flex border-b border-primary/15 px-2">
+      <div className="bg-background/50 flex border-b border-primary/15 px-2 overflow-x-auto">
         {tabs.map((tab) => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`flex items-center justify-center gap-3 px-6 py-5 font-interface text-xs font-medium tracking-[3px] uppercase cursor-pointer bg-transparent border-none border-b-2 transition-all duration-300 relative ${
+            className={`flex items-center justify-center gap-2 px-4 py-3 font-interface text-[10px] sm:text-xs font-light sm:font-medium sm:tracking-[3px] uppercase cursor-pointer bg-transparent border-none border-b-2 transition-all duration-300 relative ${
               activeTab === tab.key
                 ? "border-primary text-foreground"
                 : "border-transparent text-muted-foreground hover:text-primary/70"
@@ -228,13 +250,16 @@ export default function DashboardTabs({
       </div>
 
       {/* Content Area */}
-      <div className="min-h-75">
+      <div className="min-h-75 max-h-125 overflow-y-auto">
         {/* My Listings */}
         {activeTab === "listings" && (
           <div className="flex flex-col">
             {listings.length === 0 ? (
               <div className="flex flex-col items-center justify-center flex-1 py-16 opacity-50">
-                <PackageOpen className="w-8 h-8 text-primary/20 mb-4" strokeWidth={1.5} />
+                <PackageOpen
+                  className="w-8 h-8 text-primary/20 mb-4"
+                  strokeWidth={1.5}
+                />
                 <p className="font-interface text-xs text-muted-foreground">
                   {t.empty.noItems}
                 </p>
@@ -243,7 +268,7 @@ export default function DashboardTabs({
               listings.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center justify-between px-6 py-5 border-b border-border last:border-0 hover:bg-primary/5 transition-colors"
+                  className="flex flex-col gap-2 sm:gap-0 sm:flex-row items-center justify-between px-6 py-5 border-b border-border last:border-0 hover:bg-primary/5 transition-colors"
                 >
                   <div className="flex items-center gap-4">
                     <div
@@ -257,7 +282,17 @@ export default function DashboardTabs({
                         <span>{formatDate(item.createdAt)}</span>
                         <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
                         <div className="flex items-center gap-1.5">
-                          {item.type === "LOST" ? <Search className="w-2.5 h-2.5 text-muted-foreground/60" strokeWidth={2.5} /> : <Package className="w-2.5 h-2.5 text-muted-foreground/60" strokeWidth={2.5} />}
+                          {item.type === "LOST" ? (
+                            <Search
+                              className="w-2.5 h-2.5 text-muted-foreground/60"
+                              strokeWidth={2.5}
+                            />
+                          ) : (
+                            <Package
+                              className="w-2.5 h-2.5 text-muted-foreground/60"
+                              strokeWidth={2.5}
+                            />
+                          )}
                           {item.type === "LOST" ? t.types.LOST : t.types.FOUND}
                         </div>
                         <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
@@ -288,7 +323,10 @@ export default function DashboardTabs({
           <div className="flex flex-col">
             {claims.length === 0 ? (
               <div className="flex flex-col items-center justify-center flex-1 py-16 opacity-50">
-                <FileText className="w-8 h-8 text-primary/20 mb-4" strokeWidth={1.5} />
+                <FileText
+                  className="w-8 h-8 text-primary/20 mb-4"
+                  strokeWidth={1.5}
+                />
                 <p className="font-interface text-xs text-muted-foreground">
                   {t.empty.noClaims}
                 </p>
@@ -297,7 +335,7 @@ export default function DashboardTabs({
               claims.map((claim) => (
                 <div
                   key={claim.id}
-                  className="flex items-center justify-between px-6 py-5 border-b border-border last:border-0 hover:bg-primary/5 transition-colors"
+                  className="flex flex-col gap-4 sm:gap-0 sm:flex-row sm:items-center justify-between px-6 py-5 border-b border-border last:border-0 hover:bg-primary/5 transition-colors"
                 >
                   <div className="flex flex-col gap-1.5">
                     <p className="font-interface text-sm font-medium text-foreground">
@@ -307,7 +345,17 @@ export default function DashboardTabs({
                       <span>{formatDate(claim.createdAt)}</span>
                       <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
                       <div className="flex items-center gap-1.5">
-                        {claim.item.type === "LOST" ? <Search className="w-2.5 h-2.5 text-muted-foreground/60" strokeWidth={2.5} /> : <Package className="w-2.5 h-2.5 text-muted-foreground/60" strokeWidth={2.5} />}
+                        {claim.item.type === "LOST" ? (
+                          <Search
+                            className="w-2.5 h-2.5 text-muted-foreground/60"
+                            strokeWidth={2.5}
+                          />
+                        ) : (
+                          <Package
+                            className="w-2.5 h-2.5 text-muted-foreground/60"
+                            strokeWidth={2.5}
+                          />
+                        )}
                         {claim.item.type === "LOST" ? "Lost" : "Found"}
                       </div>
                     </div>
@@ -318,7 +366,7 @@ export default function DashboardTabs({
                       rejectedBy={claim.rejectedBy}
                       dict={dict}
                     />
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-4">
                       <Link
                         href={`/items/${claim.item.id}`}
                         className="font-interface bg-transparent border border-primary/20 text-xs tracking-xs uppercase text-foreground px-4 py-2 rounded-xs flex items-center gap-2 hover:bg-primary/10 transition-all"

@@ -51,19 +51,25 @@ export default function UserNavMenu({ user, dict }: UserNavMenuProps) {
 
     const positionPanel = () => {
       if (!panelRef.current) return;
-      const viewportPadding = 8;
-      // Always measure from the unshifted base state to acard drift on repeated scroll updates.
-      panelRef.current.style.transform = "translateX(-50%)";
+      const viewportPadding = 12;
+      
       const rect = panelRef.current.getBoundingClientRect();
-
       let shift = 0;
+
+      // Check if panel goes off left edge
       if (rect.left < viewportPadding) {
         shift = viewportPadding - rect.left;
-      } else if (rect.right > window.innerWidth - viewportPadding) {
-        shift = window.innerWidth - viewportPadding - rect.right;
+      } 
+      // Check if panel goes off right edge
+      else if (rect.right > window.innerWidth - viewportPadding) {
+        shift = -(rect.right - (window.innerWidth - viewportPadding));
       }
 
-      panelRef.current.style.transform = `translateX(calc(-50% + ${shift}px))`;
+      if (shift !== 0) {
+        panelRef.current.style.transform = `translateX(${shift}px)`;
+      } else {
+        panelRef.current.style.transform = "translateX(0)";
+      }
     };
 
     const rafId = window.requestAnimationFrame(positionPanel);
@@ -112,7 +118,7 @@ export default function UserNavMenu({ user, dict }: UserNavMenuProps) {
       {isOpen && (
         <div
           ref={panelRef}
-          className="absolute right-1/2 translate-x-[73%] mt-4 w-[min(22rem,calc(90vw-1rem))] md:w-88 md:max-w-[calc(100vw-1rem)] bg-background border border-primary/15 rounded-sm shadow-2xl z-50 overflow-visible origin-top transition-all"
+          className="absolute -right-2 mt-4 w-[min(22rem,calc(100vw-2rem))] md:w-88 bg-background border border-primary/15 rounded-sm shadow-2xl z-50 overflow-visible origin-top transition-all"
         >
           <div className="p-4 border-b border-border bg-card/50 text-left ltr:text-left rtl:text-right">
             <p className="font-interface text-sm font-semibold text-foreground truncate">

@@ -474,19 +474,24 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
 
     const positionPanel = () => {
       if (!panelRef.current) return;
-      const viewportPadding = 8;
-      // Always measure from the unshifted base state to avoid drift on repeated scroll updates.
+      const viewportPadding = 12;
+      
+      // Reset to base centered position
       panelRef.current.style.transform = "translateX(-50%)";
+      
       const rect = panelRef.current.getBoundingClientRect();
+      let translateX = -50;
 
-      let shift = 0;
+      // Adjust if panel goes off left edge
       if (rect.left < viewportPadding) {
-        shift = viewportPadding - rect.left;
-      } else if (rect.right > window.innerWidth - viewportPadding) {
-        shift = window.innerWidth - viewportPadding - rect.right;
+        translateX = -50 + (viewportPadding - rect.left);
+      } 
+      // Adjust if panel goes off right edge
+      else if (rect.right > window.innerWidth - viewportPadding) {
+        translateX = -50 - (rect.right - (window.innerWidth - viewportPadding));
       }
 
-      panelRef.current.style.transform = `translateX(calc(-50% + ${shift}px))`;
+      panelRef.current.style.transform = `translateX(calc(-50% + ${translateX - (-50)}px))`;
     };
 
     const rafId = window.requestAnimationFrame(positionPanel);
@@ -612,7 +617,7 @@ export default function NotificationBell({ userId, dict }: { userId: string; dic
       {isOpen && (
         <div
           ref={panelRef}
-          className="absolute left-1/2 -translate-x-1/3 rtl:md:translate-x-6/4  mt-4 w-[min(22rem,calc(90vw-1rem))] md:w-88 md:max-w-[calc(100vw-1rem)] bg-background border border-primary/15 rounded-sm shadow-2xl z-50 overflow-visible origin-top transition-colors duration-300"
+          className="absolute left-1/2 -translate-x-1/2 mt-4 w-[min(22rem,calc(100vw-2rem))] md:w-88 bg-background border border-primary/15 rounded-sm shadow-2xl z-50 overflow-visible origin-top transition-colors duration-300"
         >
           {/* Header */}
           <div className="p-4 border-b border-border flex justify-between items-center bg-card/50">
