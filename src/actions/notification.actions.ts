@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { pusherServer } from "@/lib/pusher.server";
 import { NotificationType } from "@prisma/client";
 import { getDictionary , getLocale } from "@/lib/dictionary";
+import { sendPushToUser } from "./push.actions";
 
 export async function getNotifications() {
   const locale = await getLocale();
@@ -116,6 +117,12 @@ export async function createNotification(data: {
         "new-notification",
         notification,
       );
+      // Send push notification
+      await sendPushToUser(data.userId, {
+        title: notification.title,
+        body: notification.message,
+        url: notification.link ?? undefined,
+      });
     }
     return { success: true, notification };
   } catch (error) {
