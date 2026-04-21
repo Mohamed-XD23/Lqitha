@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "leaflet/dist/leaflet.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -97,13 +98,13 @@
 /* Arabic Font Overrides (Handled in layout.tsx body style) */
 
 .light {
-  --background: #FFF6E0;
+  --background: #fff6e0;
   --foreground: #080810;
   --card: #efeded;
   --card-foreground: #080810;
   --popover: #ffffff;
   --popover-foreground: #080810;
-  --primary: #be8c15;           /* deeper gold on light bg */
+  --primary: #be8c15; /* deeper gold on light bg */
   --primary-foreground: #ffffff;
   --secondary: #e8e5de;
   --secondary-foreground: #080810;
@@ -251,7 +252,11 @@
   position: absolute;
   inset: auto 0 0;
   height: 3px;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--toast-accent) 84%, white 16%), color-mix(in srgb, var(--toast-accent) 68%, black 32%));
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--toast-accent) 84%, white 16%),
+    color-mix(in srgb, var(--toast-accent) 68%, black 32%)
+  );
   transform-origin: left center;
   animation: toast-progress 4s linear forwards;
   opacity: 0.92;
@@ -267,9 +272,14 @@
   justify-content: center;
   width: 2rem;
   height: 2rem;
-  border: 1px solid color-mix(in srgb, var(--toast-accent) 55%, rgba(255, 255, 255, 0.05));
+  border: 1px solid
+    color-mix(in srgb, var(--toast-accent) 55%, rgba(255, 255, 255, 0.05));
   border-radius: 0.45rem;
-  background: color-mix(in srgb, var(--toast-accent) 10%, rgba(255, 255, 255, 0.015));
+  background: color-mix(
+    in srgb,
+    var(--toast-accent) 10%,
+    rgba(255, 255, 255, 0.015)
+  );
   color: var(--toast-accent);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
@@ -316,7 +326,8 @@
   justify-content: center;
   width: 1.85rem;
   height: 1.85rem;
-  border: 1px solid color-mix(in srgb, var(--toast-accent) 45%, rgba(255, 255, 255, 0.04));
+  border: 1px solid
+    color-mix(in srgb, var(--toast-accent) 45%, rgba(255, 255, 255, 0.04));
   border-radius: 0.45rem;
   background: rgba(255, 255, 255, 0.02);
   color: rgba(242, 239, 232, 0.74);
@@ -328,8 +339,16 @@
 
 .app-toast__close:hover {
   color: #f2efe8;
-  border-color: color-mix(in srgb, var(--toast-accent) 72%, rgba(255, 255, 255, 0.1));
-  background: color-mix(in srgb, var(--toast-accent) 10%, rgba(255, 255, 255, 0.02));
+  border-color: color-mix(
+    in srgb,
+    var(--toast-accent) 72%,
+    rgba(255, 255, 255, 0.1)
+  );
+  background: color-mix(
+    in srgb,
+    var(--toast-accent) 10%,
+    rgba(255, 255, 255, 0.02)
+  );
 }
 
 .app-toast__close svg {
@@ -348,9 +367,14 @@
 }
 
 .app-toast__action {
-  background: color-mix(in srgb, var(--toast-accent) 16%, rgba(255, 255, 255, 0.02));
+  background: color-mix(
+    in srgb,
+    var(--toast-accent) 16%,
+    rgba(255, 255, 255, 0.02)
+  );
   color: #f2efe8;
-  border: 1px solid color-mix(in srgb, var(--toast-accent) 40%, rgba(255, 255, 255, 0.06));
+  border: 1px solid
+    color-mix(in srgb, var(--toast-accent) 40%, rgba(255, 255, 255, 0.06));
 }
 
 .app-toast__cancel {
@@ -397,4 +421,46 @@
   .app-toast__description {
     font-size: 0.74rem;
   }
+}
+
+/* Override Leaflet styles */
+.leaflet-container {
+  background: #080810 !important; /* Obsidian بدل الرمادي */
+  font-family: var(--font-interface) !important;
+  z-index: 0 !important; /* تأكد أن الخريطة تحت العناصر الأخرى */
+}
+
+.leaflet-popup-content-wrapper {
+  background: #13131f !important; /* Void */
+  border: 1px solid rgba(196, 163, 90, 0.2) !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5) !important;
+  color: #f2efe8 !important;
+}
+
+.leaflet-popup-tip {
+  background: #13131f !important;
+}
+
+.leaflet-popup-close-button {
+  color: #7a7a8c !important;
+}
+
+.leaflet-control-zoom a {
+  background: #13131f !important;
+  border-color: rgba(196, 163, 90, 0.2) !important;
+  color: #c4a35a !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: #c4a35a !important;
+  color: #080810 !important;
+}
+
+.light .leaflet-tile-pane {
+  filter: brightness(1) saturate(1);
+}
+
+.dark .leaflet-tile-pane {
+  filter: brightness(0.8) saturate(0.7);
 }

@@ -29,6 +29,7 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import ImageUploader from "@/components/ui/ImageUploader";
 import ButtonLoader from "@/components/ui/ButtonLoader";
+import LocationPicker from "@/components/ui/LocationPicker";
 import { toast } from "sonner";
 import Image from "next/image";
 import type { Dictionary } from "@/lib/dictionary.types";
@@ -112,6 +113,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [location, setLocation] = useState<{ lat: number; lng: number; address?: string } | null>(null);
   const router = useRouter();
 
   // React Hook Form يحمل حالة كل الخطوات معاً
@@ -170,7 +172,11 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
     const values = getValues();
     values.date = new Date(values.date).toISOString();
 
-    const result = await createItem(values);
+    const result = await createItem({
+      ...values,
+      lat: location?.lat,
+      lng: location?.lng,
+    });
 
     if ("error" in result) {
       toast.error(tToast.errorreport);
@@ -363,6 +369,24 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                     {errors.location.message}
                   </p>
                 )}
+              </div>
+
+              {/* Map Location Picker */}
+              <div className="flex flex-col gap-2">
+                <label className="font-interface text-[9px] uppercase tracking-[3px] text-muted-foreground font-bold">
+                  {t.new.fields.location} — GPS
+                </label>
+                <LocationPicker
+                  value={location}
+                  onChange={(loc) => {
+                    setLocation(loc);
+                    // نملأ حقل الـ location النصي تلقائياً
+                    if (loc?.address) {
+                      form.setValue("location", loc.address);
+                    }
+                  }}
+                  dict={dict}
+                />
               </div>
 
               <div className="space-y-3">

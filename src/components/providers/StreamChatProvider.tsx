@@ -78,7 +78,7 @@ export default function StreamChatProvider({
         });
       }
     };
-  }, [userId, userName, userImage]);
+  }, [userId, userName, userImage,]);
 
   return (
     <StreamChatContext.Provider value={{ client, isConnected }}>

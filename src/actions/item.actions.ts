@@ -83,6 +83,10 @@ export async function createItem(data: unknown) {
     secretAnswer,
   } = parsed.data;
 
+  // Extract lat/lng from the original data (not from schema validation)
+  const lat = data && typeof data === 'object' && 'lat' in data ? (data as Record<string, number | null>).lat : null;
+  const lng = data && typeof data === 'object' && 'lng' in data ? (data as Record<string, number | null>).lng : null;
+
   const hashedAnswer = secretAnswer
     ? await bcrypt.hash(secretAnswer.toLowerCase().trim(), 12)
     : null;
@@ -99,6 +103,8 @@ export async function createItem(data: unknown) {
       phone,
       secretQuestion: secretQuestion ?? null,
       secretAnswer: hashedAnswer,
+      lat: lat,
+      lng: lng || undefined,
       userId: session.user.id,
     },
   });
@@ -154,6 +160,8 @@ export async function getItems({
         imageUrl: true,
         status: true,
         createdAt: true,
+        lat: true,
+        lng: true,
         user: {
           select: { id: true, name: true, image: true },
         },
@@ -188,6 +196,8 @@ export async function getItemById(id: string) {
       imageUrl: true,
       status: true,
       secretQuestion: true, 
+      lat: true,
+      lng: true,
       createdAt: true,
       user: {
         select: {

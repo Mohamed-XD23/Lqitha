@@ -20,10 +20,9 @@ import {
   Calendar,
   ArrowLeft,
   CheckCircle,
-  Phone
+  Phone,
 } from "lucide-react";
-import { Label } from "recharts";
-
+import ItemMapWrapper from "@/components/ui/ItemMapWrapper";
 interface ItemPageProps {
   params: Promise<{ id: string }>;
 }
@@ -134,38 +133,45 @@ export default async function ItemPage({ params }: ItemPageProps) {
                 </div>
               ))}
               {/* Phone — visible only to owner or accepted claimant */}
-            {(isOwner || phone) && (
-              <div className="flex items-center justify-between px-6 py-4 border-b border-gold/10 last:border-0 hover:bg-gold/5 transition-colors">
-                <div className="flex items-center gap-3">
-                  <Phone className="w-3.5 h-3.5 text-primary/50" />
-                  <span className="font-interface text-xs uppercase tracking-xs text-muted-foreground font-bold">
-                    {t.phone}
+              {(isOwner || phone) && (
+                <div className="flex items-center justify-between px-6 py-4 border-b border-gold/10 last:border-0 hover:bg-gold/5 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <Phone className="w-3.5 h-3.5 text-primary/50" />
+                    <span className="font-interface text-xs uppercase tracking-xs text-muted-foreground font-bold">
+                      {t.phone}
+                    </span>
+                  </div>
+                  <span className="font-interface text-sm font-medium text-foreground">
+                    {isOwner ? item.phone : phone}
                   </span>
                 </div>
-                <span className="font-interface text-sm font-medium text-foreground">
-                  {isOwner ? item.phone : phone}
-                </span>
-              </div>
-            )}
+              )}
 
-            {/* Phone hidden hint — for logged-in non-owner without accepted claim */}
-            {isLoggedIn && !isOwner && !phone && (
-              <div className="flex items-center justify-between px-6 py-4 border-b border-gold/10 last:border-0">
-                <div className="flex items-center gap-3">
-                  <Phone
-                    className="w-3.5 h-3.5 text-muted-foreground/30"
-                    strokeWidth={2}
-                  />
-                  <span className="font-interface text-xs uppercase tracking-xs text-muted-foreground/30 font-bold">
-                    {t.phone}
+              {/* Phone hidden hint — for logged-in non-owner without accepted claim */}
+              {isLoggedIn && !isOwner && !phone && (
+                <div className="flex items-center justify-between px-6 py-4 border-b border-gold/10 last:border-0">
+                  <div className="flex items-center gap-3">
+                    <Phone
+                      className="w-3.5 h-3.5 text-muted-foreground/30"
+                      strokeWidth={2}
+                    />
+                    <span className="font-interface text-xs uppercase tracking-xs text-muted-foreground/30 font-bold">
+                      {t.phone}
+                    </span>
+                  </div>
+                  <span className="font-interface text-xs text-muted-foreground/40 italic">
+                    {t.phoneHidden}
                   </span>
                 </div>
-                <span className="font-interface text-xs text-muted-foreground/40 italic">
-                  {t.phoneHidden}
-                </span>
+              )}
+            </div>
+
+            {/* Map — إذا عند الغرضة موقع GPS */}
+            {item.lat && item.lng && (
+              <div className="rounded-xl overflow-hidden border border-primary/15 shadow-xl">
+                <ItemMapWrapper lat={item.lat} lng={item.lng} title={item.title} />
               </div>
             )}
-            </div>
 
             {/* Publisher */}
             <div className="flex items-center gap-4 bg-card border border-primary/15 rounded-xl px-6 py-5 shadow-lg group hover:border-primary/30 transition-all">

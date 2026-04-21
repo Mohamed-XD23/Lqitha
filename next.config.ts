@@ -7,9 +7,9 @@ const securityHeaders = [
       default-src 'self';
       script-src 'self' 'unsafe-inline' 'unsafe-eval';
       style-src 'self' 'unsafe-inline';
-      img-src 'self' data: blob: https://res.cloudinary.com;
+      img-src 'self' data: blob: https://res.cloudinary.com https://*.tile.openstreetmap.org https://unpkg.com https://*.basemaps.cartocdn.com https://*.cartocdn.com;
       font-src 'self';
-      connect-src 'self' https: wss:;
+      connect-src 'self' https: wss: https://nominatim.openstreetmap.org;
       frame-ancestors 'self';
       base-uri 'self';
       object-src 'none';
@@ -32,7 +32,7 @@ const securityHeaders = [
   },
   {
     key:"Permissions-Policy",
-    value: "camera=(self), microphone=(), geolocation=(), payment=(), usb=()",
+    value: "camera=(self), microphone=(), geolocation=(self), payment=(), usb=()",
   }
 ];
 

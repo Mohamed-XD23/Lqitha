@@ -37,6 +37,8 @@ model Item {
   description    String
   category       String
   location       String
+  lat            Float?        //Latitude
+  lng            Float?        //Longitude
   date           DateTime
   imageUrl       String?
   phone          String         // مخفي حتى يحدث Match

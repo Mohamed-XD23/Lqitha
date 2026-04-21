@@ -60,7 +60,7 @@ export default function FilterBar({ dict }: FilterBarProps) {
         />
       </div>
 
-      <div className="flex flex-col md:flex-row gap-8 md:items-center justify-between">
+      <div className="flex flex-col gap-8 justify-between">
         {/* Type Filter */}
         <div className="flex items-center gap-4">
           <span className="font-interface text-xs font-bold tracking-[3px] uppercase text-muted-foreground/60 ltr:mr-2 rtl:ml-2">
