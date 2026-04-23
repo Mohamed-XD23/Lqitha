@@ -65,10 +65,10 @@ function StepIndicator({
         const isCompleted = stepNum < current;
         const isCurrent = stepNum === current;
         return (
-          <div key={label} className="flex flex-1 items-center">
+          <div key={label} className="flex items-center">
             <div className="flex flex-col items-center">
               <div
-                className={`flex h-11 w-11 items-center justify-center rounded-px text-[12px] font-bold transition-all duration-500 font-interface tracking-tighter
+                className={`flex h-7 w-7 sm:h-8 sm:w-8 px-1 py-2 items-center justify-center rounded-px text-[10] sm:text-xs transition-all duration-500 font-interface tracking-tighter
                 ${
                   isCompleted
                     ? "bg-primary text-background"
@@ -84,7 +84,7 @@ function StepIndicator({
                 )}
               </div>
               <span
-                className={`mt-3 text-md uppercase tracking-[3px] font-interface font-bold transition-colors ${
+                className={`hidden sm:block mt-3 text-[10] sm:text-md uppercase tracking-[3px] font-interface font-bold transition-colors ${
                   isCurrent ? "text-primary" : "text-muted-foreground/40"
                 }`}
               >
@@ -93,7 +93,7 @@ function StepIndicator({
             </div>
             {index < steps.length - 1 && (
               <div
-                className={`mx-4 mb-8 h-px flex-1 transition-all duration-700 ${
+                className={`mx-1 sm:mx-4 sm:mb-8 h-px flex-1 transition-all duration-700 ${
                   isCompleted ? "bg-primary" : "bg-primary/10"
                 }`}
               />
@@ -159,8 +159,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
       fieldsToValidate = ["type", "title", "category", "description"];
     if (step === 2)
       fieldsToValidate = ["location", "date", "phone", "imageUrl"];
-    if (step === 3)
-      fieldsToValidate = ["secretQuestion", "secretAnswer"];
+    if (step === 3) fieldsToValidate = ["secretQuestion", "secretAnswer"];
 
     const isValid = await trigger(fieldsToValidate);
     if (isValid) setStep((s) => s + 1);
@@ -211,7 +210,10 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
 
         {/* 🎯 LEGEND AT TOP - Users see this BEFORE starting the form */}
         <div className="mb-10 bg-primary/15 border border-primary/20 rounded-xs px-6 py-5 flex gap-4 items-start">
-          <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" strokeWidth={2} />
+          <Info
+            className="w-4 h-4 text-primary shrink-0 mt-0.5"
+            strokeWidth={2}
+          />
           <div className="flex-1">
             <p className="text-xs text-muted-foreground font-interface uppercase tracking-px font-bold mb-2">
               {t.new.requiredfields}
@@ -359,34 +361,34 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                     *
                   </span>
                 </label>
-                <input
-                  {...register("location")}
-                  placeholder={t.new.fields.locationPlaceholder}
-                  className="w-full bg-background border border-primary/15 rounded-xs px-5 py-4 text-sm text-foreground placeholder:text-muted-foreground/70 outline-none focus:border-primary/50 transition-all font-interface shadow-sm"
-                />
+                <div className="flex flex-row gap-4">
+                  <input
+                    {...register("location")}
+                    placeholder={t.new.fields.locationPlaceholder}
+                    className="w-full bg-background border border-primary/15 rounded-xs px-5 py-4 text-sm text-foreground placeholder:text-muted-foreground/70 outline-none focus:border-primary/50 transition-all font-interface shadow-sm"
+                  />
+
+                  {/* Map Location Picker */}
+                  <div className="flex flex-col gap-2">
+                    <LocationPicker
+                      value={location}
+                      onChange={(loc) => {
+                        setLocation(loc);
+                        // نملأ حقل الـ location النصي تلقائياً
+                        if (loc?.address) {
+                          form.setValue("location", loc.address);
+                        }
+                      }}
+                      dict={dict}
+                    />
+                  </div>
+                </div>
+
                 {errors.location && (
                   <p className="mt-2 text-[9px] font-bold tracking-px text-red-400/80 uppercase font-interface">
                     {errors.location.message}
                   </p>
                 )}
-              </div>
-
-              {/* Map Location Picker */}
-              <div className="flex flex-col gap-2">
-                <label className="font-interface text-[9px] uppercase tracking-[3px] text-muted-foreground font-bold">
-                  {t.new.fields.location} — GPS
-                </label>
-                <LocationPicker
-                  value={location}
-                  onChange={(loc) => {
-                    setLocation(loc);
-                    // نملأ حقل الـ location النصي تلقائياً
-                    if (loc?.address) {
-                      form.setValue("location", loc.address);
-                    }
-                  }}
-                  dict={dict}
-                />
               </div>
 
               <div className="space-y-3">
@@ -488,7 +490,10 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                 <div className="absolute top-0 left-0 w-0.5 h-full bg-primary" />
                 <div className="flex gap-5">
                   <div className="shrink-0 w-10 h-10 rounded-px bg-primary/10 flex items-center justify-center border border-primary/20">
-                    <ShieldHalf className="w-4 h-4 text-primary" strokeWidth={2} />
+                    <ShieldHalf
+                      className="w-4 h-4 text-primary"
+                      strokeWidth={2}
+                    />
                   </div>
                   <div className="space-y-3">
                     <p className="font-interface text-sm font-semibold text-foreground tracking-tight">
@@ -583,9 +588,7 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
                         />
                       ),
                     value:
-                      watchedValues.type === "LOST"
-                        ? t.new.lost
-                        : t.new.found,
+                      watchedValues.type === "LOST" ? t.new.lost : t.new.found,
                   },
                   {
                     label: t.new.fields.title,
@@ -670,7 +673,10 @@ export default function NewItemPage({ dict }: { dict: Dictionary }) {
               </div>
 
               <div className="bg-primary/5 border border-primary/20 rounded-xs px-6 py-4 flex gap-4 items-center">
-                <Info className="w-4 h-4 text-primary shrink-0" strokeWidth={2} />
+                <Info
+                  className="w-4 h-4 text-primary shrink-0"
+                  strokeWidth={2}
+                />
                 <p className="text-xs text-muted-foreground font-interface leading-relaxed uppercase tracking-px">
                   {t.new.note}
                 </p>

@@ -81,32 +81,39 @@ export default function BrowseClient({
       </div>
 
       {/* Filter Area + View Toggle */}
-      <div className="mb-12 flex items-start justify-between gap-4">
+      <div className="mb-12 flex flex-col md:flex-row items-start justify-between gap-4">
         <div className="flex-1">
           <FilterBar dict={dict} />
         </div>
         {/* View Toggle */}
-        <div className="flex items-center bg-card border border-primary/15 rounded-lg p-1 shrink-0 mt-0.5">
-          <button
-            onClick={() => setViewMode("list")}
-            className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-interface font-medium transition-all ${
-              viewMode === "list"
-                ? "bg-primary text-background"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            <List className="" />
-          </button>
-          <button
-            onClick={() => setViewMode("map")}
-            className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-interface font-medium transition-all ${
-              viewMode === "map"
-                ? "bg-primary text-background"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            <Map></Map>
-          </button>
+        <div>
+          <span className="block md:hidden font-interface text-xs font-bold tracking-[3px] uppercase text-muted-foreground/60 mb-2">
+            View Toggle
+          </span>
+          <div className="flex items-center justify-between gap-2 bg-card border border-primary/15 rounded-lg p-1 mt-0.5">
+            <button
+              onClick={() => setViewMode("list")}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-interface font-medium transition-all duration-300 ${
+                viewMode === "list"
+                  ? "bg-primary text-background"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <List className="w-4 h-4" />
+              List
+            </button>
+            <button
+              onClick={() => setViewMode("map")}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-interface font-medium transition-all duration-1000 ${
+                viewMode === "map"
+                  ? "bg-primary text-background"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Map className="w-4 h-4" />
+              Map
+            </button>
+          </div>
         </div>
       </div>
 

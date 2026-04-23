@@ -29,12 +29,6 @@ interface Props {
 }
 
 export default function ItemMap({ lat, lng, title }: Props) {
-  const { theme } = useTheme();
-  const tileUrl =
-  theme === "dark"
-    ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-    : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
-
   return (
     <MapContainer
       center={[lat, lng]}
@@ -45,9 +39,8 @@ export default function ItemMap({ lat, lng, title }: Props) {
       scrollWheelZoom={false}
     >
       <TileLayer
-        key={theme}
-        url={tileUrl}
-        attribution='© <a href="https://carto.com">CARTO</a>'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       />
       <Marker position={[lat, lng]} icon={goldIcon}>
         <Popup>{title}</Popup>

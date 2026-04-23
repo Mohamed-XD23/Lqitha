@@ -402,9 +402,6 @@
 
 /*Override leaflet styles*/
 .leaflet-container {
-  background: var(--background) !important;
-  font-family: var(--font-interface) !important;
-  position: relative !important;
   z-index: 0 !important;
 }
 

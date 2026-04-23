@@ -32,13 +32,6 @@ interface Item {
 }
 
 export default function BrowseMap({ items }: { items: Item[] }) {
-  const { theme } = useTheme();
-
-  const tileUrl =
-    theme === "dark"
-      ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-      : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
-
   const withCoords = items.filter((i) => i.lat && i.lng);
 
   // center على الجزائر افتراضياً
@@ -59,9 +52,8 @@ export default function BrowseMap({ items }: { items: Item[] }) {
       }}
     >
       <TileLayer
-        key={theme}
-        url={tileUrl}
-        attribution='© <a href="https://carto.com">CARTO</a>'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       />
       {withCoords.map((item) => (
         <Marker key={item.id} position={[item.lat!, item.lng!]} icon={goldIcon}>

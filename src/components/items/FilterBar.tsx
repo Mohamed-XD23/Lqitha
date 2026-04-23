@@ -50,7 +50,7 @@ export default function FilterBar({ dict }: FilterBarProps) {
     <div className="flex flex-col gap-8">
       {/* Search */}
       <div className="relative group">
-        <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-foreground-y-1/2 text-muted-foreground/40 group-focus-within:text-primary/60 transition-colors rtl:left-auto rtl:right-4" />
+        <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/40 group-focus-within:text-primary/60 transition-colors rtl:left-auto rtl:right-4" />
         <input
           type="text"
           placeholder={t.searchPlaceholder}
@@ -60,9 +60,9 @@ export default function FilterBar({ dict }: FilterBarProps) {
         />
       </div>
 
-      <div className="flex flex-col gap-8 justify-between">
+      <div className="flex flex-col  gap-8 justify-between">
         {/* Type Filter */}
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col md:flex-row items-start gap-4">
           <span className="font-interface text-xs font-bold tracking-[3px] uppercase text-muted-foreground/60 ltr:mr-2 rtl:ml-2">
             {t.statusLabel}
           </span>

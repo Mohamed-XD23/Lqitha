@@ -48,14 +48,7 @@ function ClickHandler({ onChange }: { onChange: Props["onChange"] }) {
 }
 
 export default function MapSelector({ value, onChange }: Props) {
-  const { theme } = useTheme();
-
-  const tileUrl =
-    theme === "dark"
-      ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-      : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
-
-  const defaultCenter: [number, number] = [36.7538, 3.0588]; 
+  const defaultCenter: [number, number] = [36.7538, 3.0588];
   const center: [number, number] = value
     ? [value.lat, value.lng]
     : defaultCenter;
@@ -67,9 +60,8 @@ export default function MapSelector({ value, onChange }: Props) {
       style={{ height: "280px", width: "100%" }}
     >
       <TileLayer
-        key={theme}
-        url={tileUrl}
-        attribution='© <a href="https://carto.com">CARTO</a>'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       />
       <ClickHandler onChange={onChange} />
       {value && <Marker position={[value.lat, value.lng]} icon={goldIcon} />}

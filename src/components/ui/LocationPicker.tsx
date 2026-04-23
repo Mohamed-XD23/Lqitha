@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react';
-import { MapPin, Loader2, X } from 'lucide-react';
+import { MapPin, Loader2, } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { Dictionary } from "@/lib/dictionary.types";
 
@@ -60,15 +60,10 @@ export default function LocationPicker({ value, onChange, dict }: LocationPicker
         setError('لم نتمكن من تحديد موقعك، اختر يدوياً من الخريطة')
         setIsLocating(false)
         setShowMap(true)
+        console.error('Geolocation error:', err)
       },
       { timeout: 10000, maximumAge: 60000 }
     )
-  }
-
-  function clearLocation() {
-    onChange(null)
-    setShowMap(false)
-    setError(null)
   }
 
   return (
@@ -80,53 +75,18 @@ export default function LocationPicker({ value, onChange, dict }: LocationPicker
           type="button"
           onClick={useMyLocation}
           disabled={isLocating}
-          className="flex items-center gap-2 px-4 py-2.5 bg-gold/10 border border-gold/30 text-gold rounded-lg text-sm font-medium hover:bg-gold/20 transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 px-5 py-4 bg-gold/10 border border-gold/30 text-gold rounded-lg text-sm font-medium hover:bg-gold/20 transition-colors disabled:opacity-50"
         >
           {isLocating 
-            ? <Loader2 className="w-4 h-4 animate-spin" />
-            : <MapPin className="w-4 h-4" />
+            ? <Loader2 className="w-5 h-5 animate-spin" />
+            : <MapPin className="w-5 h-5" />
           }
-          {isLocating ? 'جاري التحديد...' : 'موقعي الحالي'}
         </button>
-
-        <button
-          type="button"
-          onClick={() => setShowMap(!showMap)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-void border border-gold/20 text-ivory rounded-lg text-sm hover:border-gold/40 transition-colors"
-        >
-          <MapPin className="w-4 h-4 text-slate" />
-          اختر من الخريطة
-        </button>
-
-        {value && (
-          <button
-            type="button"
-            onClick={clearLocation}
-            className="p-2.5 text-slate hover:text-ivory transition-colors"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        )}
       </div>
 
       {/* Error */}
       {error && (
         <p className="text-red-400 text-xs">{error}</p>
-      )}
-
-      {/* Selected Location Display */}
-      {value && (
-        <div className="flex items-start gap-2 px-3 py-2 bg-gold/5 border border-gold/20 rounded-lg">
-          <MapPin className="w-4 h-4 text-gold mt-0.5 shrink-0" />
-          <div>
-            {value.address && (
-              <p className="text-ivory text-xs">{value.address}</p>
-            )}
-            <p className="text-slate text-xs">
-              {value.lat.toFixed(5)}, {value.lng.toFixed(5)}
-            </p>
-          </div>
-        </div>
       )}
 
       {/* Map */}
