@@ -33,7 +33,7 @@
       "titlePrefix": "Lqi",
       "titleSuffix": "tha",
       "tagline": "Your Lost Items Deserve to Come Home",
-      "description": "A secure digital platform for lost & found item management with ownership verification. Built for young adults who demand clarity, trust, and precision in every interaction.",
+      "description": "A secure digital platform for lost & found item management with ownership verification and AI matching. Built for young adults who demand clarity, trust, and precision in every interaction.",
       "getStarted": "Get Started",
       "learnMore": "Learn More"
     },
@@ -92,7 +92,7 @@
         },
         {
           "title": "Verify",
-          "desc": "Claimants answer your secret question. Only the real owner will know the answer."
+          "desc": "Our AI engine detects likely lost/found matches, then claimants answer your secret question for final verification."
         },
         {
           "title": "Reunite",
@@ -104,6 +104,10 @@
       "sectionNum": "04",
       "sectionTitle": "Core Features",
       "items": [
+        {
+          "title": "AI Match Alerts",
+          "desc": "AI compares title, description, category, and location signals to detect likely LOST/FOUND pairs and notify users quickly."
+        },
         {
           "title": "Report Lost Items",
           "desc": "Quickly report any misplaced valuable with precise details, location data, and photos."

@@ -123,3 +123,161 @@ export async function sendVerificationEmail(email: string, token: string) {
     }),
   });
 }
+
+export async function sendMatchEmail({
+  to,
+  ownerName,
+  newItemType,
+  newItemTitle,
+  matchedItemType,
+  matchedItemTitle,
+  newItemId,
+  similarity,
+}: {
+  to: string;
+  ownerName: string;
+  newItemType: string;
+  newItemTitle: string;
+  matchedItemType: string;
+  matchedItemTitle: string;
+  newItemId: string;
+  similarity: number;
+}) {
+  const matchPercent = Math.round(similarity * 100);
+  const itemUrl = `${process.env.NEXTAUTH_URL}/items/${newItemId}`;
+
+  await transporter.sendMail({
+    from: `"Lqitha Platform" <${process.env.GMAIL_USER}>`,
+    to,
+    subject: `🔍 Possible Match Found for Your ${matchedItemType} Item — Lqitha`,
+    html: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Possible Match Found</title>
+</head>
+<body style="margin:0;padding:0;background:#080810;font-family:'Outfit',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#080810;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0"
+               style="background:#13131F;border-radius:12px;overflow:hidden;max-width:600px;width:100%;">
+
+          <!-- Header -->
+          <tr>
+            <td style="background:#13131F;padding:32px 40px;border-bottom:1px solid #2a2a3d;">
+              <h1 style="margin:0;font-size:28px;color:#C4A35A;letter-spacing:1px;">Lqitha</h1>
+              <p style="margin:4px 0 0;color:#7A7A8C;font-size:13px;">Secure Digital Lost &amp; Found</p>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="padding:36px 40px;">
+
+              <p style="margin:0 0 8px;color:#7A7A8C;font-size:14px;">Hello, ${ownerName}</p>
+              <h2 style="margin:0 0 24px;color:#F2EFE8;font-size:22px;font-weight:600;">
+                We found a possible match!
+              </h2>
+
+              <p style="margin:0 0 24px;color:#F2EFE8;font-size:15px;line-height:1.6;">
+                Someone just posted a <strong style="color:#C4A35A;">${newItemType}</strong> item
+                that our AI matching engine flagged as a
+                <strong style="color:#C4A35A;">${matchPercent}% match</strong>
+                for your <strong style="color:#C4A35A;">${matchedItemType}</strong> item.
+              </p>
+
+              <!-- Match Card -->
+              <table width="100%" cellpadding="0" cellspacing="0"
+                     style="background:#080810;border:1px solid #2a2a3d;border-radius:8px;margin-bottom:28px;">
+                <tr>
+                  <td style="padding:20px 24px;">
+
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td width="48%" style="padding:0 8px 0 0;vertical-align:top;">
+                          <p style="margin:0 0 6px;font-size:11px;color:#7A7A8C;text-transform:uppercase;letter-spacing:1px;">
+                            Your ${matchedItemType} item
+                          </p>
+                          <p style="margin:0;font-size:15px;color:#F2EFE8;font-weight:600;">
+                            ${matchedItemTitle}
+                          </p>
+                        </td>
+
+                        <td width="4%" align="center" style="color:#C4A35A;font-size:20px;">⇄</td>
+
+                        <td width="48%" style="padding:0 0 0 8px;vertical-align:top;">
+                          <p style="margin:0 0 6px;font-size:11px;color:#7A7A8C;text-transform:uppercase;letter-spacing:1px;">
+                            New ${newItemType} item
+                          </p>
+                          <p style="margin:0;font-size:15px;color:#F2EFE8;font-weight:600;">
+                            ${newItemTitle}
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <!-- Similarity bar -->
+                    <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+                      <tr>
+                        <td>
+                          <p style="margin:0 0 6px;font-size:12px;color:#7A7A8C;">
+                            Match confidence: <span style="color:#C4A35A;font-weight:600;">${matchPercent}%</span>
+                          </p>
+                          <div style="background:#2a2a3d;border-radius:4px;height:6px;width:100%;">
+                            <div style="background:#C4A35A;border-radius:4px;height:6px;width:${matchPercent}%;"></div>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+
+                  </td>
+                </tr>
+              </table>
+
+              <!-- CTA Button -->
+              <table cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
+                <tr>
+                  <td style="background:#C4A35A;border-radius:8px;">
+                    <a href="${itemUrl}"
+                       style="display:inline-block;padding:14px 32px;color:#080810;font-size:15px;
+                              font-weight:700;text-decoration:none;border-radius:8px;">
+                      View the Matching Item →
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:0;color:#7A7A8C;font-size:13px;line-height:1.6;">
+                This match was detected automatically by Lqitha's AI engine.
+                If this doesn't look right, you can ignore this email.
+              </p>
+
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding:20px 40px;border-top:1px solid #2a2a3d;">
+              <p style="margin:0;color:#7A7A8C;font-size:12px;text-align:center;">
+                © 2026 Lqitha Platform · University of Tissemsilt
+                <br/>
+                <a href="${process.env.NEXTAUTH_URL}" style="color:#C4A35A;text-decoration:none;">
+                  lqitha.vercel.app
+                </a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+    `,
+  });
+}
+

@@ -50,6 +50,7 @@ model Item {
   maxAttempts    Int            @default(3) // قابل للتغيير من الـ Admin
   claims         ClaimRequest[]
   createdAt      DateTime       @default(now())
+  embeddings     Unsupported("vector(384)")?
 }
 
 model ClaimRequest {
@@ -161,6 +162,8 @@ enum NotificationType {
   CLAIM_REJECTED
   NEW_MESSAGE
   SYSTEM
+  ITEM_FOUND
+  ITEM_LOST
 }
 
 model UserSession {
