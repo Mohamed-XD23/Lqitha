@@ -40,11 +40,11 @@ model Item {
   lat            Float?        //Latitude
   lng            Float?        //Longitude
   date           DateTime
-  imageUrl       String?
+  imageUrl       String
   phone          String         // مخفي حتى يحدث Match
   status         ItemStatus     @default(ACTIVE)
-  secretQuestion String?
-  secretAnswer   String?
+  secretQuestion String
+  secretAnswer   String
   userId         String
   user           User           @relation(fields: [userId], references: [id])
   maxAttempts    Int            @default(3) // قابل للتغيير من الـ Admin
