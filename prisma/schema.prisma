@@ -152,7 +152,7 @@ model Notification {
   title     String
   message   String
   isRead    Boolean          @default(false)
-  link      String?          // Optional link to redirect
+  link      String
   createdAt DateTime         @default(now())
 }
 
@@ -160,8 +160,6 @@ enum NotificationType {
   CLAIM_NEW
   CLAIM_ACCEPTED
   CLAIM_REJECTED
-  NEW_MESSAGE
-  SYSTEM
   ITEM_FOUND
   ITEM_LOST
 }

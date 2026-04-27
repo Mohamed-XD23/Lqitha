@@ -95,7 +95,7 @@ export async function createNotification(data: {
   type: NotificationType;
   title: string;
   message: string;
-  link?: string;
+  link: string;
 }) {
   const locale = await getLocale();
   const dict = await getDictionary(locale);
@@ -121,7 +121,7 @@ export async function createNotification(data: {
       await sendPushToUser(data.userId, {
         title: notification.title,
         body: notification.message,
-        url: notification.link ?? undefined,
+        url: notification.link,
       });
     }
     return { success: true, notification };
