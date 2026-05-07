@@ -18,6 +18,19 @@ const registerSchema = z.object({
   password: z.string().min(8),
 });
 
+async function issuePasswordSetupEmail(email: string) {
+  await db.passwordResetToken.deleteMany({ where: { email } });
+
+  const token = randomUUID();
+  const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+
+  await db.passwordResetToken.create({
+    data: { email, token, expiresAt },
+  });
+
+  await sendPasswordResetEmail(email, token);
+}
+
 // ── REGISTER ──────────────────────────────────────────────────────────────────
 export async function registerUser(formData: FormData) {
   const locale = await getLocale();
@@ -41,7 +54,19 @@ export async function registerUser(formData: FormData) {
 
   const existingUser = await db.user.findUnique({ where: { email } });
   if (existingUser) {
-    return { error: t.emailInUse };
+    if (existingUser.password) {
+      return { error: t.emailInUse };
+    }
+
+    if (!existingUser.name && name) {
+      await db.user.update({
+        where: { id: existingUser.id },
+        data: { name },
+      });
+    }
+
+    await issuePasswordSetupEmail(email);
+    return { success: true, passwordSetup: true as const };
   }
 
   const hashedPassword = await bcrypt.hash(password, 12);
@@ -91,17 +116,9 @@ export async function forgotPassword(email: string) {
 
   const user = await db.user.findUnique({ where: { email: normalizedEmail } });
 
-  if (!user || !user.password) return { success: true };
+  if (!user) return { success: true };
 
-  await db.passwordResetToken.deleteMany({ where: { email: normalizedEmail } });
-
-  const token = randomUUID();
-  const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
-
-  await db.passwordResetToken.create({
-    data: { email: normalizedEmail, token, expiresAt },
-  });
-  await sendPasswordResetEmail(normalizedEmail, token);
+  await issuePasswordSetupEmail(normalizedEmail);
 
   return { success: true };
 }

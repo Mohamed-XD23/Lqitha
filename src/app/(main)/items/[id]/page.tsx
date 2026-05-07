@@ -23,6 +23,7 @@ import {
   Phone,
 } from "lucide-react";
 import ItemMapWrapper from "@/components/ui/ItemMapWrapper";
+import TrustScoreStars from "@/components/ui/TrustScoreStars";
 interface ItemPageProps {
   params: Promise<{ id: string }>;
 }
@@ -182,9 +183,12 @@ export default async function ItemPage({ params }: ItemPageProps) {
                 <p className="font-interface text-sm font-medium text-foreground tracking-tight transition-colors group-hover:text-primary">
                   {item.user.name}
                 </p>
-                <p className="font-interface text-xs text-muted-foreground uppercase tracking-xs font-bold mt-1">
-                  {t.trustScore}: {item.user.trustScore}
-                </p>
+                <div className="mt-1 flex items-center gap-2">
+                  <span className="font-interface text-xs text-muted-foreground uppercase tracking-xs font-bold">
+                    {t.trustScore}:
+                  </span>
+                  <TrustScoreStars score={item.user.trustScore} size="sm" />
+                </div>
               </div>
               <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
             </div>

@@ -45,7 +45,12 @@ export default function RegisterClient({ dict }: Props) {
       return;
     }
 
-    toast.success(t.accountCreated);
+    toast.success(
+      result.passwordSetup
+        ? (t.passwordSetupEmailSent ??
+            "This email already belongs to a Google account. We sent a secure link so you can create a password.")
+        : t.accountCreated,
+    );
     router.push("/login");
   }
 

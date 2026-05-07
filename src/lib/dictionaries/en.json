@@ -320,6 +320,7 @@
     "and": "and",
     "privacyPolicy": "Privacy Policy",
     "accountCreated": "Account created. Please verify your email.",
+    "passwordSetupEmailSent": "This email already belongs to a Google account. We sent a secure link so you can create a password.",
     "recovery": "Recovery",
     "recoveryProtocol": "Password Reset",
     "registeredEmail": "Registered Email",

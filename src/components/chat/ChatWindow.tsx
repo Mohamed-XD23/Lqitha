@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Chat,
   Channel,
@@ -16,6 +16,7 @@ import {
 } from "stream-chat-react";
 import { Channel as StreamChannel } from "stream-chat";
 import { useStreamChat } from "@/components/providers/StreamChatProvider";
+import { sendChatMessagePushNotification } from "@/actions/chat.actions";
 import "stream-chat-react/dist/css/v2/index.css";
 
 
@@ -63,6 +64,7 @@ const MessengerAvatar = (props: AvatarProps) => {
 export default function ChatWindow({ channelId }: { channelId: string }) {
   const { client } = useStreamChat();
   const [channel, setChannel] = useState<StreamChannel | null>(null);
+  const pushedMessageIdsRef = useRef(new Set<string>());
 
   useEffect(() => {
     if (!client) return;
@@ -77,6 +79,38 @@ export default function ChatWindow({ channelId }: { channelId: string }) {
 
     // No need to disconnect globally managed client on unmount
   }, [client, channelId]);
+
+  useEffect(() => {
+    if (!channel || !client?.userID) return;
+
+    const handleNewMessage = (event: {
+      message?: { id?: string; text?: string };
+      user?: { id?: string };
+    }) => {
+      const messageId = event.message?.id;
+
+      if (
+        !messageId ||
+        event.user?.id !== client.userID ||
+        pushedMessageIdsRef.current.has(messageId)
+      ) {
+        return;
+      }
+
+      pushedMessageIdsRef.current.add(messageId);
+      void sendChatMessagePushNotification({
+        channelId,
+        messageId,
+        text: event.message?.text,
+      });
+    };
+
+    channel.on("message.new", handleNewMessage);
+
+    return () => {
+      channel.off("message.new", handleNewMessage);
+    };
+  }, [channel, channelId, client?.userID]);
 
   if (!client || !channel) {
     return (

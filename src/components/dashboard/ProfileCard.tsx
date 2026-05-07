@@ -1,6 +1,7 @@
 import { formatDateOnly } from "@/lib/utils/date";
 import ProfileAvatar from "./ProfileAvatar";
 import type { Dictionary } from "@/lib/dictionary.types";
+import TrustScoreStars from "@/components/ui/TrustScoreStars";
 
 interface Props {
   name: string;
@@ -18,8 +19,6 @@ export default function ProfileCard({
   dict,
 }: Props) {
   const t = dict.profileCard;
-  const scoreColor =
-    trustScore >= 70 ? "#7DC99A" : trustScore >= 40 ? "#C4A35A" : "#D48080";
 
   return (
     <div className="bg-card border border-primary/18 rounded-sm p-8 flex flex-col items-center text-center shadow-xl">
@@ -37,12 +36,12 @@ export default function ProfileCard({
         <p className="font-interface text-xs font-semibold tracking-[3px] uppercase text-muted-foreground mb-1">
           {t.trustScore}
         </p>
-        <p
-          className="font-display text-5xl font-light leading-none mt-2"
-          style={{ color: scoreColor }}
-        >
-          {trustScore}
-        </p>
+        <TrustScoreStars
+          score={trustScore}
+          size="lg"
+          className="mt-4 flex-col gap-3"
+          intervalClassName="text-sm tracking-xs"
+        />
       </div>
     </div>
   );

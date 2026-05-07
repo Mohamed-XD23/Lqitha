@@ -62,16 +62,24 @@ export default async function Navbar() {
     session?.user && dbUser && !dbUser.emailVerified,
   );
   const dir = locale === "ar" ? "rtl" : "ltr";
+  const mobileActionBaseClass =
+    "flex w-full items-center justify-center gap-2 rounded-xs px-4 py-4 text-sm uppercase transition-all";
+  const mobileNavLinkClass = `${mobileActionBaseClass} border border-border bg-card/20 font-display text-lg font-light tracking-[0.2em] text-foreground hover:border-primary/30 hover:text-primary`;
+  const mobileSecondaryActionClass = `${mobileActionBaseClass} border border-border bg-card/30 font-interface font-medium tracking-[0.24em] text-muted-foreground hover:border-primary/25 hover:bg-primary/5 hover:text-primary`;
+  const mobilePrimaryActionClass = `${mobileActionBaseClass} bg-primary font-interface font-bold tracking-[0.24em] text-background shadow-xl shadow-primary/15 hover:bg-foreground`;
+  const mobileDisabledActionClass = `${mobileActionBaseClass} cursor-not-allowed border border-primary/25 font-interface font-bold tracking-[0.24em] text-primary/70`;
+  const mobileSectionCardClass =
+    "w-full rounded-sm border border-border bg-card/40 p-4 sm:p-5";
 
   return (
-    <header className="bg-background/90 border-b border-primary/15 px-6 py-4 sticky top-0 z-50 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-6xl items-center justify-between rtl:flex-row-reverse">
+    <header className="sticky top-0 z-50 border-b border-primary/15 bg-background/90 px-4 py-3 backdrop-blur-xl sm:px-5 lg:px-6 lg:py-4">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 sm:gap-4 rtl:flex-row-reverse">
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-3 relative z-50 group rtl:flex-row-reverse"
+          className="relative z-50 flex min-w-0 items-center gap-2.5 group rtl:flex-row-reverse sm:gap-3"
         >
-          <div className="transition-transform duration-700 group-hover:rotate-12 rtl:group-hover:-rotate-12">
+          <div className="shrink-0 transition-transform duration-700 group-hover:rotate-12 rtl:group-hover:-rotate-12">
             <svg
               width="28"
               height="40"
@@ -90,7 +98,7 @@ export default async function Navbar() {
             </svg>
           </div>
           <span
-            className="text-2xl font-light tracking-[4px] text-foreground group-hover:text-primary transition-colors"
+            className="whitespace-nowrap text-sm font-light tracking-[0.24em] text-foreground transition-colors group-hover:text-primary sm:text-lg sm:tracking-[0.32em] lg:text-xl lg:tracking-[0.36em] xl:text-2xl xl:tracking-[0.4em]"
             style={{ fontFamily: "var(--font-fraunces), serif" }}
           >
             LQITHA
@@ -98,7 +106,7 @@ export default async function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-12 rtl:flex-row-reverse">
+        <nav className="hidden items-center gap-6 rtl:flex-row-reverse md:flex lg:gap-8 xl:gap-12">
           <Link
             href="/browse"
             className="font-interface text-[11px] rtl:text-sm font-medium tracking-[3px] uppercase text-muted-foreground hover:text-primary transition-all"
@@ -110,18 +118,18 @@ export default async function Navbar() {
             (canUseSecureActions ? (
               <Link
                 href="/items/new"
-                className="font-interface text-xs font-bold tracking-[3px] uppercase bg-primary text-background px-8 py-3 rounded-xs hover:bg-foreground transition-all shadow-xl shadow-primary/10"
+                className="rounded-xs bg-primary px-6 py-3 font-interface text-xs font-bold uppercase tracking-[3px] text-background shadow-xl shadow-primary/10 transition-all hover:bg-foreground xl:px-8"
               >
                 {t.reportItem}
               </Link>
             ) : (
-              <span className="font-interface text-xs font-bold tracking-[3px] uppercase border border-primary/25 text-primary/70 px-8 py-3 rounded-xs cursor-not-allowed">
+              <span className="cursor-not-allowed rounded-xs border border-primary/25 px-6 py-3 font-interface text-xs font-bold uppercase tracking-[3px] text-primary/70 xl:px-8">
                 {t.verifyActionLabel}
               </span>
             ))}
 
           {session?.user && (
-            <div className="flex items-center gap-6 rtl:flex-row-reverse">
+            <div className="flex items-center gap-4 rtl:flex-row-reverse xl:gap-6">
               <ThemeSwitcher {...dict} />
               <LanguageSwitcher currentLocale={locale} dict={dict} />
               <NotificationBell userId={session.user.id!} dict={dict} />
@@ -129,7 +137,7 @@ export default async function Navbar() {
             </div>
           )}
           {!session?.user && (
-            <div className="flex items-center gap-8 rtl:flex-row-reverse">
+            <div className="flex items-center gap-6 rtl:flex-row-reverse xl:gap-8">
               <ThemeSwitcher {...dict} />
               <LanguageSwitcher currentLocale={locale} dict={dict} />
               <Link
@@ -148,67 +156,69 @@ export default async function Navbar() {
           )}
         </nav>
 
-        <div className="md:hidden flex items-center gap-3 rtl:flex-row-reverse">
+        <div className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rtl:flex-row-reverse sm:gap-2.5 md:hidden">
           {session?.user && (
-            <span className="text-xs text-muted-foreground uppercase tracking-widest">
+            <div className="shrink-0">
               <NotificationBell userId={session.user.id!} dict={dict} />
-            </span>
+            </div>
           )}
 
           {/* Mobile Nav */}
           <MobileMenu dir={dir} dict={dict}>
-            <div className="flex flex-col items-center gap-10 py-10" dir={dir}>
-              <Link
-                href="/browse"
-                className="font-display text-2xl font-light tracking-sm uppercase text-foreground hover:text-primary transition-all"
-              >
-                {t.browse}
-              </Link>
+            <div className="flex min-h-full flex-col gap-6 py-4 sm:gap-7 sm:py-6" dir={dir}>
+              <div className="w-full max-w-sm self-center">
+                <Link href="/browse" className={mobileNavLinkClass}>
+                  {t.browse}
+                </Link>
+              </div>
 
               {session?.user && (
-                <>
-                  <div className="w-full max-w-70 mb-4 p-4 rounded-sm border border-border bg-card/30 flex flex-col items-center gap-3">
-                    <div className="flex items-center gap-3 w-full rtl:flex-row-reverse">
-                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-primary/20 shrink-0">
+                <div className="flex w-full max-w-sm self-center flex-col gap-4">
+                  <div className={mobileSectionCardClass}>
+                    <div className="flex w-full items-center gap-3 rtl:flex-row-reverse">
+                      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full border-2 border-primary/20">
                         {user?.image ? (
                           <NextImage
                             src={user.image}
                             alt={t.user}
                             width={48}
                             height={48}
+                            className="h-full w-full object-cover"
                           />
                         ) : (
-                          <div className="w-full h-full bg-primary/10 flex items-center justify-center text-primary font-display text-2xl">
-                            {user?.name?.charAt(0).toUpperCase()}
+                          <div className="flex h-full w-full items-center justify-center bg-primary/10 font-display text-2xl text-primary">
+                            {user?.name?.charAt(0)?.toUpperCase() ||
+                              user?.email?.charAt(0)?.toUpperCase() ||
+                              "U"}
                           </div>
                         )}
                       </div>
-                      <div className="flex-1 min-w-0 rtl:text-right">
+                      <div className="min-w-0 flex-1 rtl:text-right">
                         <p className="font-interface text-sm font-semibold text-foreground truncate">
                           {user?.name}
                         </p>
-                        <p className="font-interface text-xs text-muted-foreground truncate uppercase tracking-widest mt-0.5">
+                        <p className="mt-0.5 truncate font-interface text-xs uppercase tracking-widest text-muted-foreground">
                           {user?.email}
                         </p>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 w-full mt-2">
+                    <div className="mt-4 flex flex-col gap-2.5">
                       <Link
                         href="/dashboard"
-                        className="flex items-center justify-center gap-2 py-3 rounded-xs border border-border text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all"
+                        className="flex w-full items-center gap-3 rounded-xs border border-border bg-background/60 px-4 py-3.5 text-muted-foreground transition-all hover:border-primary/25 hover:bg-primary/5 hover:text-primary rtl:flex-row-reverse"
                       >
-                        <LayoutDashboard className="w-4 h-4" />
-                        <span className="font-interface text-xs uppercase tracking-widest">
+                        <LayoutDashboard className="h-4 w-4 shrink-0" />
+                        <span className="font-interface text-xs uppercase tracking-[0.24em]">
                           {t.dashboard}
                         </span>
                       </Link>
                       <Link
                         href="/settings"
-                        className="flex items-center justify-center gap-2 py-3 rounded-xs border border-border text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all"
+                        className="flex w-full items-center gap-3 rounded-xs border border-border bg-background/60 px-4 py-3.5 text-muted-foreground transition-all hover:border-primary/25 hover:bg-primary/5 hover:text-primary rtl:flex-row-reverse"
                       >
-                        <Settings className="w-4 h-4" />
-                        <span className="font-interface text-xs uppercase tracking-widest">
+                        <Settings className="h-4 w-4 shrink-0" />
+                        <span className="font-interface text-xs uppercase tracking-[0.24em]">
                           {t.settings}
                         </span>
                       </Link>
@@ -216,64 +226,81 @@ export default async function Navbar() {
                   </div>
 
                   {canUseSecureActions ? (
-                    <Link
-                      href="/items/new"
-                      className="font-interface text-xs font-bold tracking-sm uppercase bg-primary text-background px-12 py-5 rounded-xs shadow-2xl shadow-primary/20"
-                    >
+                    <Link href="/items/new" className={mobilePrimaryActionClass}>
                       {t.reportItem}
                     </Link>
                   ) : (
-                    <span className="font-interface text-xs font-bold tracking-sm uppercase border border-primary/25 text-primary/70 px-12 py-5 rounded-xs cursor-not-allowed">
+                    <span className={mobileDisabledActionClass}>
                       {t.verifyActionLabel}
                     </span>
                   )}
 
-                  <div className="flex items-center gap-6 mt-4 rtl:flex-row-reverse">
-                    <div className="flex flex-row items-center gap-6 p-4 rounded-sm border border-primary/5 bg-primary/5 min-w-25">
-                      <div className="flex flex-col items-center gap-2">
-                        <span className="text-xs text-muted-foreground uppercase tracking-widest">
+                  <div className="grid w-full gap-3 sm:grid-cols-2">
+                    <div className="rounded-sm border border-primary/10 bg-primary/5 p-4">
+                      <div className="flex flex-col gap-3">
+                        <span className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
                           {t.theme}
                         </span>
-                        <ThemeSwitcher {...dict} />
+                        <div className="w-full [&>button]:w-full [&>button]:justify-center">
+                          <ThemeSwitcher {...dict} />
+                        </div>
                       </div>
-                      <div className="flex flex-col items-center gap-2">
-                        <span className="text-xs text-muted-foreground uppercase tracking-widest">
+                    </div>
+                    <div className="rounded-sm border border-primary/10 bg-primary/5 p-4">
+                      <div className="flex flex-col gap-3">
+                        <span className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
                           {t.language}
                         </span>
-                        <LanguageSwitcher currentLocale={locale} dict={dict} />
+                        <div className="w-full [&>button]:w-full [&>button]:justify-center">
+                          <LanguageSwitcher currentLocale={locale} dict={dict} />
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <form action={handleSignOut}>
+                  <form action={handleSignOut} className="w-full">
                     <button
                       type="submit"
-                      className="flex items-center gap-2 cursor-pointer font-interface text-xs font-medium tracking-sm uppercase text-red-400 border border-red-500/20 px-10 py-4 rounded-xs transition-all mt-4 rtl:flex-row-reverse"
+                      className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xs border border-red-500/20 px-4 py-4 font-interface text-sm font-medium uppercase tracking-[0.24em] text-red-400 transition-all hover:bg-red-500/10 rtl:flex-row-reverse"
                     >
                       {t.signOut}
                       <LogOut
-                        className="w-5 h-5 ltr:ml-2 rtl:mr-2"
+                        className="h-5 w-5"
                         strokeWidth={2.5}
                       />
                     </button>
                   </form>
-                </>
+                </div>
               )}
 
               {!session?.user && (
-                <div className="flex flex-col items-center gap-10">
-                  <ThemeSwitcher {...dict} />
-                  <LanguageSwitcher currentLocale={locale} dict={dict} />
-                  <Link
-                    href="/login"
-                    className="font-display text-2xl font-light tracking-sm uppercase text-foreground hover:text-primary transition-all"
-                  >
+                <div className="flex w-full max-w-sm self-center flex-col gap-4">
+                  <div className="grid w-full gap-3 sm:grid-cols-2">
+                    <div className="rounded-sm border border-primary/10 bg-primary/5 p-4">
+                      <div className="flex flex-col gap-3">
+                        <span className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
+                          {t.theme}
+                        </span>
+                        <div className="w-full [&>button]:w-full [&>button]:justify-center">
+                          <ThemeSwitcher {...dict} />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="rounded-sm border border-primary/10 bg-primary/5 p-4">
+                      <div className="flex flex-col gap-3">
+                        <span className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
+                          {t.language}
+                        </span>
+                        <div className="w-full [&>button]:w-full [&>button]:justify-center">
+                          <LanguageSwitcher currentLocale={locale} dict={dict} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <Link href="/login" className={mobileSecondaryActionClass}>
                     {t.signIn}
                   </Link>
-                  <Link
-                    href="/register"
-                    className="font-interface text-xs font-bold tracking-sm uppercase bg-primary text-background px-12 py-5 rounded-xs shadow-2xl shadow-primary/20"
-                  >
+                  <Link href="/register" className={mobilePrimaryActionClass}>
                     {t.register}
                   </Link>
                 </div>

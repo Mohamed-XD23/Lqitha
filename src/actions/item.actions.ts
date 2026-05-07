@@ -331,7 +331,7 @@ export async function createItem(data: unknown) {
 
   // Send notifications for ALL matches (not just top 1)
   const pusher = pusherServer;
-  if (matches.length > 0 && pusher) {
+  if (matches.length > 0) {
     const newItemType = itemType === ItemType.LOST ? "LOST" : "FOUND";
     const matchedItemType = itemType === ItemType.LOST ? "FOUND" : "LOST";
     const notificationType: NotificationType =
@@ -354,14 +354,16 @@ export async function createItem(data: unknown) {
 
         await Promise.all([
           // 1. Pusher - real-time bell update
-          pusher.trigger(`user-${matchOwner.id}`, "match-found", {
-            type: notificationType,
-            itemId: itemId,
-            matchId: match.id,
-            title: title,
-            matchTitle: match.title,
-            similarity: match.finalScore,
-          }),
+          pusher
+            ? pusher.trigger(`user-${matchOwner.id}`, "match-found", {
+                type: notificationType,
+                itemId: itemId,
+                matchId: match.id,
+                title: title,
+                matchTitle: match.title,
+                similarity: match.finalScore,
+              })
+            : Promise.resolve(),
 
           // 2. DB notification - persisted, shown in NotificationBell
           createNotification({

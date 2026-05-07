@@ -144,7 +144,31 @@ self.addEventListener("fetch", function (event) {
                     caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
                 }
                 return response;
+            }).catch(async (err) => {
+                console.warn('[SW] Asset fetch failed:', event.request.url, err);
+                const cachedFallback = await caches.match(event.request);
+                return cachedFallback || Response.error();
             });
+        })
+    );
+});
+
+self.addEventListener("message", function (event) {
+    if (event.data?.type !== "SHOW_TEST_NOTIFICATION") return;
+
+    const data = event.data.payload || {};
+
+    event.waitUntil(
+        self.registration.showNotification(data.title || "Lqitha test notification", {
+            body: data.body || "Your service worker can display notifications.",
+            icon: data.icon || "/android-chrome-192x192.png",
+            badge: data.badge || "/android-chrome-192x192.png",
+            tag: data.tag || `local-sw-test-${Date.now()}`,
+            renotify: true,
+            vibrate: [100, 50, 100],
+            data: { url: data.url || "/" },
+            dir: "rtl",
+            lang: "ar",
         })
     );
 });
@@ -158,13 +182,28 @@ self.addEventListener("push", function (event) {
         return;
     }
 
-    const data = event.data.json();
+    let data;
+
+    try {
+        data = event.data.json();
+    } catch (error) {
+        console.warn("[SW] Push payload was not valid JSON:", error);
+        data = {
+            title: "Lqitha",
+            body: event.data.text(),
+            icon: "/android-chrome-192x192.png",
+            badge: "/android-chrome-192x192.png",
+            url: "/",
+        };
+    }
 
     event.waitUntil(
-        self.registration.showNotification(data.title, {
-            body: data.body,
-            icon: data.icon || '/android-chrome-192x192.png',
-            badge: '/android-chrome-192x192.png',
+        self.registration.showNotification(data.title || "Lqitha", {
+            body: data.body || "",
+            icon: data.icon || "/android-chrome-192x192.png",
+            badge: data.badge || "/android-chrome-192x192.png",
+            tag: data.tag || data.url || "lqitha-notification",
+            renotify: true,
             vibrate: [100, 50, 100],
             data: { url: data.url || "/" },
             dir: 'rtl',

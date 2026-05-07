@@ -5,9 +5,9 @@ import { respondToClaim } from "@/actions/item.actions";
 import ChatButton from "@/components/chat/ChatButton";
 import ButtonLoader from "@/components/ui/ButtonLoader";
 import { toast } from "sonner";
-import { Star } from "lucide-react";
 import { Dictionary } from "@/lib/dictionary.types";
 import { Check } from 'lucide-react';
+import TrustScoreStars from "@/components/ui/TrustScoreStars";
 
 interface Claimant {
   id: string;
@@ -92,15 +92,13 @@ export default function ClaimsSection({
                   {claim.claimant.name}
                 </p>
                 <div className="flex items-center  gap-2 mt-0.5">
-                  <p className="flex items-center gap-0.5 font-interface text-xs text-muted-foreground">
-                    <Star
-                      className="w-4 h-4 text-primary fill-primary"
-                      strokeWidth={0}
-                    />{" "}
-                    {claim.claimant.trustScore}
-                  </p>
+                  <TrustScoreStars
+                    score={claim.claimant.trustScore}
+                    size="sm"
+                    intervalClassName="text-[11px]"
+                  />
                   <span className=" flex items-center gap-1 font-interface text-xs text-emerald-400 font-bold uppercase tracking-wider">
-                    {t.providedAnswer} 
+                    {t.providedAnswer}
                     <Check 
                     className="w-6 h-6"
                     />

@@ -110,20 +110,30 @@ export async function createNotification(data: {
         link: data.link,
       },
     });
-    // Trigger real-time event via Pusher
-    if (pusherServer) {
-      await pusherServer.trigger(
-        `user-${data.userId}`,
-        "new-notification",
-        notification,
-      );
-      // Send push notification
+    try {
+      // In-site realtime notification.
+      if (pusherServer) {
+        await pusherServer.trigger(
+          `user-${data.userId}`,
+          "new-notification",
+          notification,
+        );
+      }
+    } catch (pusherError) {
+      console.error("Failed to send in-site realtime notification:", pusherError);
+    }
+
+    try {
+      // Browser push notification. This is independent from the in-site Pusher event.
       await sendPushToUser(data.userId, {
         title: notification.title,
         body: notification.message,
         url: notification.link,
       });
+    } catch (pushError) {
+      console.error("Failed to send browser push notification:", pushError);
     }
+
     return { success: true, notification };
   } catch (error) {
     console.error(t.error.createFailed, error);

@@ -8,13 +8,12 @@ import {
   UserX,
   Check,
   ShieldCheck,
-  Star,
-  StarHalf,
   PenTool,
   CheckCircle,
   Handshake,
 } from "lucide-react";
 import type { Dictionary } from "@/lib/dictionary.types";
+import TrustScoreStars from "@/components/ui/TrustScoreStars";
 
 interface Props {
   dict: Dictionary;
@@ -333,7 +332,7 @@ export default function Home({ dict }: Props) {
             <div className="flex-1 h-px bg-primary/10"></div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-12">
             {home.features.items.map((feature, idx: number) => (
               <div
                 key={idx}
@@ -407,32 +406,26 @@ export default function Home({ dict }: Props) {
 
                 <div className="space-y-4">
                   <div className="flex items-center gap-4 p-4 bg-background rounded-lg border border-green-500/20">
-                    <div className="text-2xl text-green-400">
-                      <Star className="w-6 h-6" fill="currentColor" strokeWidth={1} />
-                    </div>
+                    <TrustScoreStars score={85} size="sm" showInterval={false} />
                     <div>
                       <p className="text-foreground text-sm font-medium">{home.trustSystem.levels.verified}</p>
-                      <p className="text-muted-foreground text-xs">Score 70+</p>
+                      <p className="text-muted-foreground text-xs">80+</p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-4 p-4 bg-background rounded-lg border border-primary/30">
-                    <div className="text-2xl text-primary">
-                      <StarHalf className="w-6 h-6" fill="currentColor" strokeWidth={1} />
-                    </div>
+                    <TrustScoreStars score={55} size="sm" showInterval={false} />
                     <div>
                       <p className="text-foreground text-sm font-medium">{home.trustSystem.levels.trusted}</p>
-                      <p className="text-muted-foreground text-xs">Score 40-69</p>
+                      <p className="text-muted-foreground text-xs">40-59</p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-4 p-4 bg-background rounded-lg border border-red-500/20">
-                    <div className="text-2xl text-red-400">
-                      <Star className="w-6 h-6" fill="currentColor" strokeWidth={1} />
-                    </div>
+                    <TrustScoreStars score={15} size="sm" showInterval={false} />
                     <div>
                       <p className="text-foreground text-sm font-medium">{home.trustSystem.levels.new}</p>
-                      <p className="text-muted-foreground text-xs">Score Below 40</p>
+                      <p className="text-muted-foreground text-xs">0-19</p>
                     </div>
                   </div>
                 </div>

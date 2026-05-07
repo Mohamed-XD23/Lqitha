@@ -88,7 +88,7 @@ export default async function RootLayout({
                 <Navbar />
                 <main className="flex-1">
                   <ScrollUp dict={dict} />
-                  <InstallPrompt />
+                  <InstallPrompt isAuthenticated={Boolean(session?.user?.id)} />
                   {children}
                 </main>
                 <Footer />

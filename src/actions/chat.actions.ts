@@ -3,6 +3,8 @@
 import { auth } from "@/lib/auth";
 import { StreamChat } from "stream-chat";
 import {getDictionary, getLocale} from "@/lib/dictionary"
+import db from "@/lib/db";
+import { sendPushToUser } from "./push.actions";
 
 const serverClient = new StreamChat(
   process.env.NEXT_PUBLIC_STREAM_API_KEY!,
@@ -46,4 +48,57 @@ export async function createChatChannel(
 
   await channel.create();
   return { channelId: `claim-${claimId}` };
+}
+
+export async function sendChatMessagePushNotification(data: {
+  channelId: string;
+  messageId: string;
+  text?: string;
+}) {
+  const session = await auth();
+  if (!session?.user?.id) return { error: "Unauthorized" };
+
+  if (!data.channelId.startsWith("claim-")) {
+    return { error: "Unsupported chat channel" };
+  }
+
+  const claimId = data.channelId.replace("claim-", "");
+  const claim = await db.claimRequest.findUnique({
+    where: { id: claimId },
+    select: {
+      claimantId: true,
+      item: {
+        select: {
+          title: true,
+          userId: true,
+        },
+      },
+    },
+  });
+
+  if (!claim) return { error: "Claim not found" };
+
+  const senderId = session.user.id;
+  const ownerId = claim.item.userId;
+  const claimantId = claim.claimantId;
+
+  if (senderId !== ownerId && senderId !== claimantId) {
+    return { error: "Unauthorized" };
+  }
+
+  const recipientId = senderId === ownerId ? claimantId : ownerId;
+  const senderName = session.user.name || "Lqitha";
+  const messagePreview = data.text?.trim() || "New message";
+
+  await sendPushToUser(recipientId, {
+    title: `New message from ${senderName}`,
+    body:
+      claim.item.title
+        ? `${claim.item.title}: ${messagePreview}`
+        : messagePreview,
+    url: "/dashboard",
+    tag: data.messageId,
+  });
+
+  return { success: true };
 }
