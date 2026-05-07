@@ -185,9 +185,18 @@ export default function InstallPrompt({
 
         if (cancelled) return;
 
-        if (isAuthenticated && Notification.permission === "granted" && sub) {
-          await persistPushSubscription(sub);
-          if (!cancelled) setPushSubscribed(true);
+        if (isAuthenticated && Notification.permission === "granted") {
+          if (sub) {
+            await persistPushSubscription(sub);
+          } else {
+            await savePushSubscription(reg);
+            localStorage.removeItem("push-dismissed");
+          }
+
+          if (!cancelled) {
+            setPushDismissed(false);
+            setPushSubscribed(true);
+          }
           return;
         }
 
@@ -356,8 +365,8 @@ export default function InstallPrompt({
     isAuthenticated &&
     notificationsSupported &&
     !pushSubscribed &&
-    !pushDismissed &&
-    notificationPermission !== "denied";
+    notificationPermission !== "denied" &&
+    (!pushDismissed || notificationPermission === "granted");
   const canTestPush =
     isAuthenticated &&
     notificationsSupported &&
