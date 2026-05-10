@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Download, X } from "lucide-react";
 import {
-  sendTestPushNotification,
+  sendTestPushNotificationToDevice,
   subscribeUser,
 } from "@/actions/push.actions";
 
@@ -87,6 +87,7 @@ async function savePushSubscription(reg: ServiceWorkerRegistration) {
     }));
 
   await persistPushSubscription(subscription);
+  return subscription;
 }
 
 function getPermissionMessage(permission: NotificationPermission) {
@@ -329,10 +330,12 @@ export default function InstallPrompt({
       }
 
       const reg = await getServiceWorkerRegistration();
-      await savePushSubscription(reg);
+      const subscription = await savePushSubscription(reg);
       setPushSubscribed(true);
 
-      const result = await sendTestPushNotification();
+      const result = await sendTestPushNotificationToDevice(
+        subscription.endpoint,
+      );
 
       if (!result.success) {
         throw new Error(result.error || "Test push notification failed.");

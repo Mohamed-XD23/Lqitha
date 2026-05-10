@@ -155,3 +155,71 @@ export async function sendTestPushNotification() {
 
   return { success: true, result };
 }
+
+export async function sendTestPushNotificationToDevice(endpoint: string) {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    return { success: false, error: "You must be logged in." };
+  }
+
+  const subscription = await db.pushSubscription.findFirst({
+    where: {
+      endpoint,
+      userId: session.user.id,
+    },
+  });
+
+  if (!subscription) {
+    return {
+      success: false,
+      error: "No saved subscription found for this browser.",
+    };
+  }
+
+  try {
+    await webpush.sendNotification(
+      {
+        endpoint: subscription.endpoint,
+        keys: {
+          p256dh: subscription.p256dh,
+          auth: subscription.auth,
+        },
+      },
+      JSON.stringify({
+        title: "Lqitha device notification test",
+        body: "If you see this, Web Push reached this browser.",
+        icon: "/android-chrome-192x192.png",
+        badge: "/android-chrome-192x192.png",
+        url: "/dashboard",
+        tag: `push-test-${Date.now()}`,
+      }),
+    );
+
+    return { success: true };
+  } catch (error) {
+    const pushError = error as PushSendError;
+    const shouldDeleteSubscription =
+      pushError.statusCode === 404 || pushError.statusCode === 410;
+
+    if (shouldDeleteSubscription) {
+      await db.pushSubscription.delete({
+        where: { endpoint: subscription.endpoint },
+      });
+    }
+
+    console.error("Failed to send browser push test notification:", {
+      statusCode: pushError.statusCode,
+      message: pushError.message,
+      body: pushError.body,
+    });
+
+    return {
+      success: false,
+      error:
+        pushError.statusCode === 404 || pushError.statusCode === 410
+          ? "This browser subscription expired. Enable notifications again."
+          : "The push service rejected this browser notification.",
+    };
+  }
+}
