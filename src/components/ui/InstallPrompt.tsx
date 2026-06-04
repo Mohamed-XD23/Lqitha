@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Download, X } from "lucide-react";
+import { Download, X, Bell } from "lucide-react";
 import {
   sendTestPushNotificationToDevice,
   subscribeUser,
 } from "@/actions/push.actions";
+import { getCachedSW } from "@/lib/sw";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -90,50 +91,14 @@ async function savePushSubscription(reg: ServiceWorkerRegistration) {
   return subscription;
 }
 
-function getPermissionMessage(permission: NotificationPermission) {
-  if (permission === "denied") {
-    return "Notifications are blocked. Enable them in your browser or device site settings, then reload the app.";
-  }
+async function isBraveBrowser() {
+  const brave = (
+    navigator as Navigator & {
+      brave?: { isBrave?: () => Promise<boolean> };
+    }
+  ).brave;
 
-  return "Notification permission was not allowed. Please choose Allow when the browser asks.";
-}
-
-function getPushSetupErrorMessage(error: unknown) {
-  if (error instanceof DOMException && error.name === "AbortError") {
-    return "Browser push service registration failed. On localhost this can happen with a self-signed HTTPS certificate, blocked Google/FCM push service, VPN/firewall, or a browser profile that disables push. The local SW test can still verify notification display.";
-  }
-
-  return error instanceof Error
-    ? error.message
-    : "Failed to enable notifications.";
-}
-
-async function getPushDiagnostics() {
-  const details = [
-    `Origin: ${window.location.origin}`,
-    `Secure context: ${window.isSecureContext ? "yes" : "no"}`,
-    `Permission: ${Notification.permission}`,
-    `Service workers supported: ${"serviceWorker" in navigator ? "yes" : "no"}`,
-    `Push API supported: ${"PushManager" in window ? "yes" : "no"}`,
-    `SW controller: ${navigator.serviceWorker.controller ? "yes" : "no"}`,
-    `VAPID public key length: ${process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY?.length ?? 0}`,
-  ];
-
-  try {
-    const reg = await navigator.serviceWorker.ready;
-    const sub = await reg.pushManager.getSubscription();
-
-    details.push(`SW active: ${reg.active ? "yes" : "no"}`);
-    details.push(`Existing push endpoint: ${sub?.endpoint ? "yes" : "no"}`);
-  } catch (error) {
-    details.push(
-      `SW diagnostics failed: ${
-        error instanceof Error ? error.message : "unknown error"
-      }`,
-    );
-  }
-
-  return details;
+  return Boolean(brave?.isBrave && (await brave.isBrave()));
 }
 
 export default function InstallPrompt({
@@ -144,17 +109,11 @@ export default function InstallPrompt({
   const [deferredPrompt, setDeferredPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
   const [dismissed, setDismissed] = useState(false);
-  const [pushDismissed, setPushDismissed] = useState(false);
   const [pushSubscribed, setPushSubscribed] = useState(false);
   const [notificationsSupported, setNotificationsSupported] = useState(false);
-  const [notificationPermission, setNotificationPermission] =
-    useState<NotificationPermission>("default");
   const [isPushLoading, setIsPushLoading] = useState(false);
   const [isTestLoading, setIsTestLoading] = useState(false);
-  const [isLocalTestLoading, setIsLocalTestLoading] = useState(false);
-  const [pushError, setPushError] = useState<string | null>(null);
-  const [pushSuccess, setPushSuccess] = useState<string | null>(null);
-  const [pushDiagnostics, setPushDiagnostics] = useState<string[]>([]);
+  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -173,12 +132,9 @@ export default function InstallPrompt({
       setIsIOS(/iPad|iPhone|iPod/.test(navigator.userAgent));
       setIsStandalone(standalone);
       setDismissed(localStorage.getItem("pwa-dismissed") === "true");
-      setPushDismissed(localStorage.getItem("push-dismissed") === "true");
       setNotificationsSupported(supportsNotifications);
 
       if (!supportsNotifications) return;
-
-      setNotificationPermission(Notification.permission);
 
       try {
         const reg = await getServiceWorkerRegistration();
@@ -186,18 +142,9 @@ export default function InstallPrompt({
 
         if (cancelled) return;
 
-        if (isAuthenticated && Notification.permission === "granted") {
-          if (sub) {
-            await persistPushSubscription(sub);
-          } else {
-            await savePushSubscription(reg);
-            localStorage.removeItem("push-dismissed");
-          }
-
-          if (!cancelled) {
-            setPushDismissed(false);
-            setPushSubscribed(true);
-          }
+        if (isAuthenticated && Notification.permission === "granted" && !sub) {
+          await savePushSubscription(reg);
+          if (!cancelled) setPushSubscribed(true);
           return;
         }
 
@@ -226,210 +173,213 @@ export default function InstallPrompt({
 
   async function enablePushNotifications() {
     try {
-      setPushError(null);
-      setPushSuccess(null);
+      setMessage(null);
       setIsPushLoading(true);
 
       if (!notificationsSupported) {
         throw new Error("Push notifications are not supported on this device.");
       }
 
+      const t0 = performance.now();
       const permission =
         Notification.permission === "default"
           ? await Notification.requestPermission()
           : Notification.permission;
 
-      setNotificationPermission(permission);
+      // log permission timing
+      // eslint-disable-next-line no-console
+      console.debug('[push] permission request took', Math.round(performance.now() - t0), 'ms');
 
       if (permission !== "granted") {
-        setPushError(getPermissionMessage(permission));
+        setMessage({
+          type: "error",
+          text: "Notification permission denied. Enable it in your browser settings.",
+        });
         return;
       }
 
-      const reg = await getServiceWorkerRegistration();
+      const t1 = performance.now();
+      const reg = await getCachedSW();
+      // eslint-disable-next-line no-console
+      console.debug('[push] sw ready after', Math.round(performance.now() - t1), 'ms');
+
+      const t2 = performance.now();
       await savePushSubscription(reg);
-      localStorage.removeItem("push-dismissed");
-      setPushDismissed(false);
+      // eslint-disable-next-line no-console
+      console.debug('[push] subscribe+save took', Math.round(performance.now() - t2), 'ms');
       setPushSubscribed(true);
-      setPushSuccess("Device notifications are ready.");
+      setMessage({
+        type: "success",
+        text: "✓ Notifications enabled! Click 'Test' to verify.",
+      });
     } catch (error) {
-      setPushError(getPushSetupErrorMessage(error));
-      setPushDiagnostics(await getPushDiagnostics());
+      const isBrave = await isBraveBrowser();
+      if (
+        error instanceof DOMException &&
+        error.name === "AbortError" &&
+        isBrave
+      ) {
+        setMessage({
+          type: "error",
+          text: 'Open brave://settings/privacy and enable "Use Google services for push messaging", then try again.',
+        });
+      } else {
+        setMessage({
+          type: "error",
+          text: "Failed to enable notifications. Try reloading the page.",
+        });
+      }
     } finally {
       setIsPushLoading(false);
     }
   }
 
-  async function testLocalServiceWorkerNotification() {
-    try {
-      setPushError(null);
-      setPushSuccess(null);
-      setIsLocalTestLoading(true);
-
-      if (!notificationsSupported) {
-        throw new Error("Notifications are not supported on this device.");
-      }
-
-      const permission =
-        Notification.permission === "default"
-          ? await Notification.requestPermission()
-          : Notification.permission;
-
-      setNotificationPermission(permission);
-
-      if (permission !== "granted") {
-        setPushError(getPermissionMessage(permission));
-        return;
-      }
-
-      const reg = await getServiceWorkerRegistration();
-
-      if (reg.active) {
-        reg.active.postMessage({
-          type: "SHOW_TEST_NOTIFICATION",
-          payload: {
-            title: "Lqitha local SW test",
-            body: "This notification was displayed by sw.js without Web Push.",
-            url: "/dashboard",
-          },
-        });
-      } else {
-        await reg.showNotification("Lqitha local SW test", {
-          body: "This notification was displayed by the service worker registration.",
-          icon: "/android-chrome-192x192.png",
-          badge: "/android-chrome-192x192.png",
-          tag: `local-sw-test-${Date.now()}`,
-          data: { url: "/dashboard" },
-        });
-      }
-
-      setPushSuccess("Local service worker notification sent.");
-      setPushDiagnostics(await getPushDiagnostics());
-    } catch (error) {
-      setPushError(getPushSetupErrorMessage(error));
-      setPushDiagnostics(await getPushDiagnostics());
-    } finally {
-      setIsLocalTestLoading(false);
-    }
-  }
-
   async function testPushNotification() {
     try {
-      setPushError(null);
-      setPushSuccess(null);
+      setMessage(null);
       setIsTestLoading(true);
 
-      if (!notificationsSupported) {
-        throw new Error("Push notifications are not supported on this device.");
-      }
-
       if (Notification.permission !== "granted") {
-        setNotificationPermission(Notification.permission);
-        setPushError(getPermissionMessage(Notification.permission));
+        setMessage({
+          type: "error",
+          text: "Notification permission not granted.",
+        });
         return;
       }
 
-      const reg = await getServiceWorkerRegistration();
-      const subscription = await savePushSubscription(reg);
-      setPushSubscribed(true);
+      const reg = await getCachedSW();
+      const subscription = await reg.pushManager.getSubscription();
 
-      const result = await sendTestPushNotificationToDevice(
-        subscription.endpoint,
-      );
-
-      if (!result.success) {
-        throw new Error(result.error || "Test push notification failed.");
+      if (!subscription) {
+        setMessage({ type: "error", text: "No push subscription found. Enable notifications first." });
+        return;
       }
 
-      setPushSuccess("Test sent. Check your device notifications.");
+      // Optimistic UI: show queued immediately and send in background
+      setMessage({ type: "success", text: "Test queued — check your device shortly." });
+
+      void sendTestPushNotificationToDevice(subscription.endpoint).then((result) => {
+        if (!result?.success) {
+          // eslint-disable-next-line no-console
+          console.debug('[push] server test response', result);
+          setMessage({ type: 'error', text: result?.error || 'Test failed on server.' });
+        } else {
+          // server succeeded; keep optimistic message or update
+          setMessage({ type: 'success', text: '✓ Test sent! Check your device for a notification.' });
+        }
+      }).catch((err) => {
+        // eslint-disable-next-line no-console
+        console.debug('[push] test push error', err);
+        setMessage({ type: 'error', text: 'Test notification failed.' });
+      });
     } catch (error) {
-      setPushError(
-        error instanceof Error
-          ? error.message
-          : "Failed to test push notification.",
-      );
-      setPushDiagnostics(await getPushDiagnostics());
+      setMessage({
+        type: "error",
+        text: "Test notification failed.",
+      });
     } finally {
       setIsTestLoading(false);
     }
   }
 
-  function dismiss() {
-    if (!isStandalone) {
-      localStorage.setItem("pwa-dismissed", "true");
-      setDismissed(true);
-    }
+  async function testLocalServiceWorkerNotification() {
+    try {
+      setMessage(null);
 
-    localStorage.setItem("push-dismissed", "true");
-    setPushDismissed(true);
+      if (!notificationsSupported) {
+        setMessage({ type: 'error', text: 'Notifications are not supported on this device.' });
+        return;
+      }
+
+      if (Notification.permission !== 'granted') {
+        const p = await Notification.requestPermission();
+        if (p !== 'granted') {
+          setMessage({ type: 'error', text: 'Notification permission not granted.' });
+          return;
+        }
+      }
+
+      const reg = await getCachedSW();
+      if (reg.active) {
+        reg.active.postMessage({ type: 'SHOW_TEST_NOTIFICATION', payload: { title: 'Lqitha local test', body: 'Local SW can display notifications.' } });
+      } else {
+        await reg.showNotification('Lqitha local test', { body: 'Local SW can display notifications.' });
+      }
+
+      setMessage({ type: 'success', text: 'Local notification displayed (if allowed).' });
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.debug('[push] local test error', err);
+      setMessage({ type: 'error', text: 'Local notification failed.' });
+    }
   }
 
+  function dismiss() {
+    localStorage.setItem("pwa-dismissed", "true");
+    setDismissed(true);
+  }
+
+  const canPromptForInstall = !isStandalone && !dismissed && deferredPrompt;
   const canPromptForPush =
     isAuthenticated &&
     notificationsSupported &&
     !pushSubscribed &&
-    notificationPermission !== "denied" &&
-    (!pushDismissed || notificationPermission === "granted");
+    !dismissed &&
+    Notification.permission !== "denied";
   const canTestPush =
     isAuthenticated &&
     notificationsSupported &&
     pushSubscribed &&
-    notificationPermission === "granted";
-  const canTestLocalSw =
-    isAuthenticated &&
-    notificationsSupported &&
-    notificationPermission !== "denied";
-  const shouldShowPermissionStatus =
-    isAuthenticated &&
-    notificationsSupported &&
-    notificationPermission === "denied";
-  const showInstallPrompt = !isStandalone && !dismissed;
+    !dismissed &&
+    Notification.permission === "granted";
 
-  if (
-    !showInstallPrompt &&
-    !canPromptForPush &&
-    !canTestPush &&
-    !canTestLocalSw &&
-    !shouldShowPermissionStatus
-  ) {
+  const shouldShow =
+    canPromptForInstall || canPromptForPush || canTestPush;
+
+  if (!shouldShow) {
     return null;
   }
 
   return (
     <div className="fixed bottom-4 left-4 right-4 z-50 rounded-xl border border-primary/20 bg-card p-4 shadow-xl md:left-auto md:right-4 md:max-w-sm">
-      <div className="mb-2 flex items-start justify-between">
+      <div className="mb-3 flex items-start justify-between">
         <div className="flex items-center gap-2">
-          <Download className="h-5 w-5 text-primary" />
-          <span className="font-interface text-sm font-semibold text-foreground">
-            Install Lqitha
-          </span>
+          {canPromptForInstall ? (
+            <>
+              <Download className="h-5 w-5 text-primary" />
+              <span className="font-interface text-sm font-semibold text-foreground">
+                Install Lqitha App
+              </span>
+            </>
+          ) : (
+            <>
+              <Bell className="h-5 w-5 text-primary" />
+              <span className="font-interface text-sm font-semibold text-foreground">
+                Enable Notifications
+              </span>
+            </>
+          )}
         </div>
         <button type="button" onClick={dismiss} aria-label="Dismiss prompt">
-          <X className="h-4 w-4 text-muted-foreground" />
+          <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
         </button>
       </div>
 
-      {showInstallPrompt && (
-        <p className="mb-3 text-xs text-muted-foreground">
-          Add the app to your home screen for faster access.
-        </p>
-      )}
-
       <div className="flex flex-col gap-2">
-        {showInstallPrompt && isIOS && (
-          <p className="text-xs text-muted-foreground">
-            Tap Share, then Add to Home Screen.
-          </p>
-        )}
-
-        {showInstallPrompt && !isIOS && deferredPrompt && (
+        {canPromptForInstall && !isIOS && (
           <button
             type="button"
-            onClick={() => deferredPrompt.prompt()}
-            className="rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-background"
+            onClick={() => deferredPrompt?.prompt()}
+            className="rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-background hover:bg-primary/90 transition-colors"
           >
             Install app
           </button>
+        )}
+
+        {canPromptForInstall && isIOS && (
+          <p className="text-xs text-muted-foreground">
+            Tap Share, then Add to Home Screen
+          </p>
         )}
 
         {canPromptForPush && (
@@ -437,9 +387,9 @@ export default function InstallPrompt({
             type="button"
             onClick={enablePushNotifications}
             disabled={isPushLoading}
-            className="rounded-lg border border-primary/30 px-4 py-2 text-xs text-primary transition-opacity disabled:opacity-60"
+            className="rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-background hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            {isPushLoading ? "Activating notifications..." : "Enable device notifications"}
+            {isPushLoading ? "Enabling..." : "Enable notifications"}
           </button>
         )}
 
@@ -448,39 +398,32 @@ export default function InstallPrompt({
             type="button"
             onClick={testPushNotification}
             disabled={isTestLoading}
-            className="rounded-lg border border-emerald-400/30 px-4 py-2 text-xs text-emerald-400 transition-opacity disabled:opacity-60"
+            className="rounded-lg border border-primary/30 px-4 py-2 text-xs font-semibold text-primary hover:bg-primary/5 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            {isTestLoading ? "Sending test..." : "Test device notification"}
+            {isTestLoading ? "Testing..." : "Test notification"}
           </button>
         )}
 
-        {canTestLocalSw && (
+        {notificationsSupported && !dismissed && (
           <button
             type="button"
             onClick={testLocalServiceWorkerNotification}
-            disabled={isLocalTestLoading}
-            className="rounded-lg border border-primary/20 px-4 py-2 text-xs text-muted-foreground transition-opacity disabled:opacity-60"
+            className="rounded-lg border border-primary/20 px-4 py-2 text-xs font-semibold text-muted-foreground hover:bg-primary/5 transition-colors"
           >
-            {isLocalTestLoading ? "Testing SW..." : "Test local SW notification"}
+            Test local notification
           </button>
         )}
 
-        {shouldShowPermissionStatus && (
-          <p className="text-xs text-red-400">
-            {getPermissionMessage(notificationPermission)}
-          </p>
-        )}
-        {pushSuccess && <p className="text-xs text-emerald-400">{pushSuccess}</p>}
-        {pushError && <p className="text-xs text-red-400">{pushError}</p>}
-        {pushDiagnostics.length > 0 && (
-          <details className="rounded-lg border border-primary/10 p-3 text-xs text-muted-foreground">
-            <summary className="cursor-pointer text-primary">Push diagnostics</summary>
-            <ul className="mt-2 space-y-1">
-              {pushDiagnostics.map((detail) => (
-                <li key={detail}>{detail}</li>
-              ))}
-            </ul>
-          </details>
+        {message && (
+          <div
+            className={`rounded-lg p-2 text-xs font-medium ${
+              message.type === "success"
+                ? "bg-emerald-400/10 text-emerald-400 border border-emerald-400/30"
+                : "bg-red-400/10 text-red-400 border border-red-400/30"
+            }`}
+          >
+            {message.text}
+          </div>
         )}
       </div>
     </div>

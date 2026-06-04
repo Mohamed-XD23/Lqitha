@@ -12,6 +12,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import HeartbeatProvider from "@/components/providers/HeartbeatProvider";
 import StreamChatProvider from "@/components/providers/StreamChatProvider";
 import InstallPrompt from "@/components/ui/InstallPrompt";
+import ServiceWorkerLoader from "@/components/client/ServiceWorkerLoader";
 import { getDictionary } from "@/lib/dictionary";
 import db from "@/lib/db";
 import { auth } from "@/lib/auth";
@@ -86,6 +87,7 @@ export default async function RootLayout({
             >
               <ChatProvider>
                 <Navbar />
+               <ServiceWorkerLoader />
                 <main className="flex-1">
                   <ScrollUp dict={dict} />
                   <InstallPrompt isAuthenticated={Boolean(session?.user?.id)} />
