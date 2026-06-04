@@ -6,10 +6,9 @@ import NextImage from "next/image";
 import {
   LayoutDashboard,
   Settings,
-  LogOut,
   User as UserIcon,
 } from "lucide-react";
-import { handleSignOut } from "@/actions/auth.actions";
+import SignOutButton from "./SignOutButton";
 
 interface UserNavMenuProps {
   user: {
@@ -160,17 +159,12 @@ export default function UserNavMenu({ user, dict }: UserNavMenuProps) {
 
             <div className="my-1 border-t border-primary/5" />
 
-            <form action={handleSignOut}>
-              <button
-                type="submit"
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xs text-red-400 hover:bg-red-500/10 transition-all group"
-              >
-                <LogOut className="w-4 h-4" strokeWidth={2} />
-                <span className="font-interface text-[11px] font-medium tracking-[2px] uppercase">
-                  {dict.nav.signOut}
-                </span>
-              </button>
-            </form>
+            <SignOutButton
+              label={dict.nav.signOut}
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xs text-red-400 hover:bg-red-500/10 group"
+              iconClassName="w-4 h-4"
+              labelClassName="font-interface text-[11px] font-medium tracking-[2px] uppercase"
+            />
           </div>
         </div>
       )}

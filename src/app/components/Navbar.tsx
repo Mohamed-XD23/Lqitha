@@ -8,8 +8,8 @@ import NotificationBell from "@/components/ui/NotificationBell";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 import UserNavMenu from "@/components/ui/UserNavMenu";
 import { getLocale, getDictionary } from "@/lib/dictionary";
-import { handleSignOut } from "@/actions/auth.actions";
-import { LogOut, LayoutDashboard, Settings } from "lucide-react";
+import { LayoutDashboard, Settings } from "lucide-react";
+import SignOutButton from "@/components/ui/SignOutButton";
 import { Dictionary } from "@/lib/dictionary.types";
 import { ThemeSwitcher } from "@/components/ui/theme-switcher";
 
@@ -258,18 +258,13 @@ export default async function Navbar() {
                     </div>
                   </div>
 
-                  <form action={handleSignOut} className="w-full">
-                    <button
-                      type="submit"
-                      className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xs border border-red-500/20 px-4 py-4 font-interface text-sm font-medium uppercase tracking-[0.24em] text-red-400 transition-all hover:bg-red-500/10 rtl:flex-row-reverse"
-                    >
-                      {t.signOut}
-                      <LogOut
-                        className="h-5 w-5"
-                        strokeWidth={2.5}
-                      />
-                    </button>
-                  </form>
+                  <SignOutButton
+                    label={t.signOut}
+                    showIcon
+                    className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xs border border-red-500/20 px-4 py-4 font-interface text-sm font-medium uppercase tracking-[0.24em] text-red-400 transition-all hover:bg-red-500/10 rtl:flex-row-reverse"
+                    iconClassName="h-5 w-5"
+                    labelClassName=""
+                  />
                 </div>
               )}
 
