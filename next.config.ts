@@ -7,7 +7,7 @@ const securityHeaders = [
       default-src 'self';
       script-src 'self' 'unsafe-inline' 'unsafe-eval';
       style-src 'self' 'unsafe-inline';
-      img-src 'self' data: blob: https://res.cloudinary.com https://*.tile.openstreetmap.org https://unpkg.com https://*.basemaps.cartocdn.com https://*.cartocdn.com;
+      img-src 'self' data: blob: https://res.cloudinary.com https://*.tile.openstreetmap.org https://unpkg.com https://*.basemaps.cartocdn.com https://*.cartocdn.com https://picsum.photos https://*.picsum.photos;
       font-src 'self';
       connect-src 'self' https: wss: https://nominatim.openstreetmap.org;
       frame-ancestors 'self';
